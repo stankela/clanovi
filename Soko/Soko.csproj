@@ -1,0 +1,373 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F8558FD8-F014-4810-9CEE-C27954461902}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Soko</RootNamespace>
+    <AssemblyName>Soko</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dao\ClanDAO.cs" />
+    <Compile Include="Dao\DAO.cs" />
+    <Compile Include="Dao\GrupaDAO.cs" />
+    <Compile Include="Dao\InstitucijaDAO.cs" />
+    <Compile Include="Dao\KategorijaDAO.cs" />
+    <Compile Include="Dao\MapperRegistry.cs" />
+    <Compile Include="Dao\MesecnaClanarinaDAO.cs" />
+    <Compile Include="Dao\MestoDAO.cs" />
+    <Compile Include="Dao\UplataClanarineDAO.cs" />
+    <Compile Include="Domain\Clan.cs" />
+    <Compile Include="Domain\DomainObject.cs" />
+    <Compile Include="Domain\Grupa.cs" />
+    <Compile Include="Domain\Institucija.cs" />
+    <Compile Include="Domain\Kategorija.cs" />
+    <Compile Include="Domain\Key.cs" />
+    <Compile Include="Domain\MesecnaClanarina.cs" />
+    <Compile Include="Domain\Mesto.cs" />
+    <Compile Include="Domain\SifraGrupe.cs" />
+    <Compile Include="Domain\UplataClanarine.cs" />
+    <Compile Include="Exceptions\BusinessException.cs" />
+    <Compile Include="Exceptions\InfrastructureException.cs" />
+    <Compile Include="Exceptions\InvalidPropertyException.cs" />
+    <Compile Include="Exceptions\SmallPageSizeException.cs" />
+    <Compile Include="Misc\SingleInstanceApplication.cs" />
+    <Compile Include="UI\BiracClana.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\BiracClana.Designer.cs">
+      <DependentUpon>BiracClana.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\BiracDana.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\BiracDana.Designer.cs">
+      <DependentUpon>BiracDana.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\BiracIntervala.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\BiracIntervala.Designer.cs">
+      <DependentUpon>BiracIntervala.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CenaDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CenaDialog.Designer.cs">
+      <DependentUpon>CenaDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CenovnikForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CenovnikForm.Designer.cs">
+      <DependentUpon>CenovnikForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ClanDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ClanDialog.Designer.cs">
+      <DependentUpon>ClanDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ClanoviForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ClanoviForm.Designer.cs">
+      <DependentUpon>ClanoviForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\EntityListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\EntityListForm.Designer.cs">
+      <DependentUpon>EntityListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FontChooserDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FontChooserDialog.Designer.cs">
+      <DependentUpon>FontChooserDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Misc\ConfigurationParameters.cs" />
+    <Compile Include="Misc\DatabaseUpdater.cs" />
+    <Compile Include="Misc\Language.cs" />
+    <Compile Include="Misc\Notification.cs" />
+    <Compile Include="Misc\NotificationMessage.cs" />
+    <Compile Include="Misc\Options.cs" />
+    <Compile Include="Misc\SortComparer.cs" />
+    <Compile Include="Misc\Strings.cs" />
+    <Compile Include="Misc\UplataDTO.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="UI\BiracClana.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BiracClana.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\BiracDana.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BiracDana.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\BiracIntervala.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BiracIntervala.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\CenaDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CenaDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\CenovnikForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CenovnikForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ClanDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ClanDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ClanoviForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ClanoviForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\EntityDetailForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EntityDetailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\EntityListForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EntityListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FontChooserDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FontChooserDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\Form1.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\PreviewResursi.resX">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\SlikeResursi.resX">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\UIResursi.resX">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\GrupaDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>GrupaDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\GrupeBezKategorijaDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>GrupeBezKategorijaDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\GrupeForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>GrupeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\InstitucijaDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>InstitucijaDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\InstitucijeForm.resx">
+      <DependentUpon>InstitucijeForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\KategorijaDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>KategorijaDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\KategorijeForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>KategorijeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MestaForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MestaForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MestoDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MestoDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PotvrdaDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PotvrdaDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PotvrdaUplateForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PotvrdaUplateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PreviewDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PreviewDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\PrinterSelectionForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PrinterSelectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UplataClanarineDialog.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>UplataClanarineDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Report\CenovnikIzvestaj.cs" />
+    <Compile Include="Report\DnevniPrihodiGrupeIzvestaj.cs" />
+    <Compile Include="Report\DnevniPrihodiIzvestaj.cs" />
+    <Compile Include="Report\DnevniPrihodiKategorijeIzvestaj.cs" />
+    <Compile Include="Report\Izvestaj.cs" />
+    <Compile Include="Report\MesecniPrihodiIzvestaj.cs" />
+    <Compile Include="Report\PeriodicniClanoviIzvestaj.cs" />
+    <Compile Include="Report\PeriodicniPrihodiIzvestaj.cs" />
+    <Compile Include="Report\PotvrdaIzvestaj.cs" />
+    <Compile Include="Report\Report.cs" />
+    <Compile Include="Report\UplateClanovaIzvestaj.cs" />
+    <Compile Include="UI\EntityDetailForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\EntityDetailForm.Designer.cs">
+      <DependentUpon>EntityDetailForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\GrupaDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\GrupaDialog.Designer.cs">
+      <DependentUpon>GrupaDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\GrupeBezKategorijaDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\GrupeBezKategorijaDialog.Designer.cs">
+      <DependentUpon>GrupeBezKategorijaDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\GrupeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\GrupeForm.Designer.cs">
+      <DependentUpon>GrupeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\InstitucijaDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\InstitucijaDialog.Designer.cs">
+      <DependentUpon>InstitucijaDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\InstitucijeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\InstitucijeForm.Designer.cs">
+      <DependentUpon>InstitucijeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\KategorijaDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\KategorijaDialog.Designer.cs">
+      <DependentUpon>KategorijaDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\KategorijeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\KategorijeForm.Designer.cs">
+      <DependentUpon>KategorijeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\MessageDialogs.cs" />
+    <Compile Include="UI\MestaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\MestaForm.Designer.cs">
+      <DependentUpon>MestaForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\MestoDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\MestoDialog.Designer.cs">
+      <DependentUpon>MestoDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PotvrdaDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PotvrdaDialog.Designer.cs">
+      <DependentUpon>PotvrdaDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PotvrdaUplateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PotvrdaUplateForm.Designer.cs">
+      <DependentUpon>PotvrdaUplateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PreviewDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PreviewDialog.Designer.cs">
+      <DependentUpon>PreviewDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PrinterSelectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PrinterSelectionForm.Designer.cs">
+      <DependentUpon>PrinterSelectionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UplataClanarineDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\UplataClanarineDialog.Designer.cs">
+      <DependentUpon>UplataClanarineDialog.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
