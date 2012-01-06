@@ -28,9 +28,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\Iesi.Collections.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="NHibernate, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.ByteCode.LinFu, Version=2.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\NHibernate.ByteCode.LinFu.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SqlServerCe, Version=9.0.242.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libs\System.Data.SqlServerCe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -46,6 +63,24 @@
     <Compile Include="Dao\MesecnaClanarinaDAO.cs" />
     <Compile Include="Dao\MestoDAO.cs" />
     <Compile Include="Dao\UplataClanarineDAO.cs" />
+    <Compile Include="Data\DataAccessProviderFactory.cs" />
+    <Compile Include="Data\IDataContext.cs" />
+    <Compile Include="Data\IDataProviderFactory.cs" />
+    <Compile Include="Data\NHibernate\DataProviderFactory.cs" />
+    <Compile Include="Data\NHibernate\NHibernateDataContext.cs" />
+    <Compile Include="Data\NHibernate\NHibernateHelper.cs" />
+    <Compile Include="Data\NHibernate\PersistentConfigurationBuilder.cs" />
+    <Compile Include="Data\NHibernate\QueryTranslator.cs" />
+    <Compile Include="Data\QueryLanguageType.cs" />
+    <Compile Include="Data\QueryModel\AssociationAlias.cs" />
+    <Compile Include="Data\QueryModel\AssociationFetch.cs" />
+    <Compile Include="Data\QueryModel\CriteriaOperator.cs" />
+    <Compile Include="Data\QueryModel\Criterion.cs" />
+    <Compile Include="Data\QueryModel\OrderClause.cs" />
+    <Compile Include="Data\QueryModel\Query.cs" />
+    <Compile Include="Data\QueryModel\QueryOperator.cs" />
+    <Compile Include="Data\QueryModel\StringMatchMode.cs" />
+    <Compile Include="Data\TransactionException.cs" />
     <Compile Include="Domain\Clan.cs" />
     <Compile Include="Domain\DomainObject.cs" />
     <Compile Include="Domain\Grupa.cs" />
@@ -60,6 +95,7 @@
     <Compile Include="Exceptions\InfrastructureException.cs" />
     <Compile Include="Exceptions\InvalidPropertyException.cs" />
     <Compile Include="Exceptions\SmallPageSizeException.cs" />
+    <Compile Include="Misc\SqlCeUtilities.cs" />
     <Compile Include="Misc\SingleInstanceApplication.cs" />
     <Compile Include="UI\BiracClana.cs">
       <SubType>Form</SubType>
@@ -249,7 +285,10 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="App.config" />
+    <EmbeddedResource Include="create_all_objects.sqlce" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -362,6 +401,18 @@
       <DependentUpon>UplataClanarineDialog.cs</DependentUpon>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Data\NHibernate\Mappings\Mesto.hbm.xml" />
+    <EmbeddedResource Include="Data\NHibernate\Mappings\Institucija.hbm.xml" />
+    <EmbeddedResource Include="Data\NHibernate\Mappings\Clan.hbm.xml" />
+    <EmbeddedResource Include="Data\NHibernate\Mappings\Kategorija.hbm.xml" />
+    <EmbeddedResource Include="Data\NHibernate\Mappings\Grupa.hbm.xml" />
+    <EmbeddedResource Include="Data\NHibernate\Mappings\MesecnaClanarina.hbm.xml" />
+    <EmbeddedResource Include="Data\NHibernate\Mappings\UplataClanarine.hbm.xml" />
+    <Content Include="hibernate.cfg.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -370,4 +421,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(ProjectDir)..\Libs\sqlce*.dll" "$(ProjectDir)$(OutDir)"
+copy "$(ProjectDir)..\Libs\LinFu.DynamicProxy.dll" "$(ProjectDir)$(OutDir)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

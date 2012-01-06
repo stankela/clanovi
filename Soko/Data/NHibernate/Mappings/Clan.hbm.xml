@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="Soko"
+                   namespace="Soko.Domain">
+
+  <class name="Clan" table="clanovi" lazy="true">
+    <id name="Id" column="clan_id">
+      <generator class="identity" />
+    </id>
+    <property name="Broj" column="broj" />
+    <property name="Ime" column="ime" />
+    <property name="Prezime" column="prezime" />
+    <property name="DatumRodjenja" column="datum_rodjenja" />
+    <property name="Adresa" column="adresa" />
+    <property name="Telefon1" column="telefon1" />
+    <property name="Telefon2" column="telefon2" />
+    <property name="Napomena" column="napomena" />
+    <many-to-one name="Mesto" class="Mesto" column="mesto_id" />
+    <many-to-one name="Institucija" class="Institucija" column="institucija_id" />
+  </class>
+
+</hibernate-mapping>

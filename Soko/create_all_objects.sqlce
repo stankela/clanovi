@@ -1,0 +1,65 @@
+create table mesta (
+	mesto_id int identity(1,1) primary key,
+    zip nvarchar(5),
+	naziv nvarchar(30)
+);
+GO
+
+create table institucije (
+	institucija_id int identity(1,1) primary key,
+    naziv nvarchar(50),
+	adresa nvarchar(50),
+    mesto_id int references mesta(mesto_id)
+);
+GO
+
+create table clanovi (
+    clan_id int identity(1,1) primary key,
+    broj int,
+    ime nvarchar(20),
+    prezime nvarchar(30),
+    datum_rodjenja datetime,
+    adresa nvarchar(70),
+    telefon1 nvarchar(20),
+    telefon2 nvarchar(20),
+    institucija_id int references institucije(institucija_id),
+    napomena nvarchar(255),
+    mesto_id int references mesta(mesto_id)
+);
+GO
+
+create table kategorije (
+    kategorija_id int identity(1,1) primary key,
+    naziv nvarchar(50)
+);
+GO
+
+create table grupe (
+    grupa_id int identity(1,1) primary key,
+    broj_grupe int,
+    podgrupa nvarchar(5),
+    naziv nvarchar(50),
+    sort_order int,
+    kategorija_id int references kategorije(kategorija_id)
+);
+GO
+
+create table clanarine (
+    clanarina_id int identity(1,1) primary key,
+    vazi_od datetime,
+    iznos money,
+    grupa_id int references grupe(grupa_id)
+);
+GO
+
+create table uplate (
+    uplata_id int identity(1,1) primary key,
+    datum_vreme_uplate datetime,
+    vazi_od datetime,
+    iznos money,
+    napomena nvarchar(200),
+    korisnik nvarchar(50),
+    clan_id int references clanovi(clan_id),
+    grupa_id int references grupe(grupa_id)
+);
+GO

@@ -7,8 +7,8 @@ namespace Soko.Domain
 	/// </summary>
 	public class UplataClanarine : DomainObject
 	{
-		public readonly int NAPOMENA_MAX_LENGTH = 200;
-		public readonly int KORISNIK_MAX_LENGTH = 50;
+		public static readonly int NAPOMENA_MAX_LENGTH = 200;
+		public static readonly int KORISNIK_MAX_LENGTH = 50;
 
 		public UplataClanarine()
 		{
@@ -16,56 +16,69 @@ namespace Soko.Domain
 		}
 
 		private Clan clan;
-		public Clan Clan
+		public virtual Clan Clan
 		{
 			get { return clan; }
 			set { clan = value; }
 		}
 
 		private Grupa grupa;
-		public Grupa Grupa
+		public virtual Grupa Grupa
 		{
 			get { return grupa; }
 			set { grupa = value; }
 		}
 
 		private Nullable<DateTime> datumUplate;
-		public Nullable<DateTime> DatumUplate
+		public virtual Nullable<DateTime> DatumUplate
 		{
 			get { return datumUplate; }
 			set { datumUplate = value; }
 		}
 
 		private Nullable<TimeSpan> vremeUplate;
-		public Nullable<TimeSpan> VremeUplate
+		public virtual Nullable<TimeSpan> VremeUplate
 		{
 			get { return vremeUplate; }
 			set { vremeUplate = value; } 
 		}
 
-		private Nullable<DateTime> vaziOd;
-		public Nullable<DateTime> VaziOd
+        private Nullable<DateTime> datumVremeUplate;
+        public virtual Nullable<DateTime> DatumVremeUplate
+        {
+            get
+            {
+                Nullable<DateTime> result = new DateTime(
+                    DatumUplate.Value.Year, DatumUplate.Value.Month, DatumUplate.Value.Day,
+                    VremeUplate.Value.Hours, VremeUplate.Value.Minutes, VremeUplate.Value.Seconds);
+                return result;
+            }
+            set { datumVremeUplate = value; }
+        }
+
+        private Nullable<DateTime> vaziOd;
+		public virtual Nullable<DateTime> VaziOd
 		{
 			get { return vaziOd; }
 			set { vaziOd = value; }
 		}
 
 		private Nullable<decimal> iznos;
-		public Nullable<decimal> Iznos
+		public virtual Nullable<decimal> Iznos
 		{
 			get { return iznos; }
 			set { iznos = value; }
 		}
 
 		private string napomena;
-		public string Napomena
+		public virtual string Napomena
 		{
 			get { return napomena; }
 			set { napomena = value; }
 		}
 
 		private string korisnik;
-		public string Korisnik
+		public virtual string Korisnik
 		{
 			get { return korisnik; }
 			set { korisnik = value; }

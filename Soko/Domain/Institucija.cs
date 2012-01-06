@@ -11,27 +11,27 @@ namespace Soko.Domain
 		public static readonly int ADRESA_MAX_LENGTH = 50;
     
 		private string naziv;
-		public string Naziv
+		public virtual string Naziv
 		{
 			get { return naziv; }
 			set { naziv = value; }
 		}
 
 		private string adresa;
-		public string Adresa
+		public virtual string Adresa
 		{
 			get { return adresa; }
 			set { adresa = value; }
 		}
 
 		private Mesto mesto;
-		public Mesto Mesto
+		public virtual Mesto Mesto
 		{
 			get { return mesto; }
 			set { mesto = value; }
 		}
 
-		public string MestoNaziv
+		public virtual string MestoNaziv
 		{
 			get
 			{
@@ -42,7 +42,7 @@ namespace Soko.Domain
 			}
 		}
 
-		public string NazivAdresaMesto
+		public virtual string NazivAdresaMesto
 		{
 			get
 			{

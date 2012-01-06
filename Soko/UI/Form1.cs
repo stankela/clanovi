@@ -10,6 +10,7 @@ using Soko.Exceptions;
 using Soko.Report;
 using Soko.Dao;
 using Soko.Domain;
+using Soko.Data;
 
 namespace Soko.UI
 {
@@ -543,6 +544,492 @@ namespace Soko.UI
                 Options.Instance.PrinterNamePotvrda = form.PrinterNamePotvrda;
                 Options.Instance.PrinterNameIzvestaj = form.PrinterNameIzvestaj;
             }
+        }
+
+        private void mestaPrimaryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addMesta();
+        }
+
+        private void addMesta()
+        {
+            List<Mesto> mesta = MapperRegistry.mestoDAO().getAll();
+
+            IDataContext dataContext = null;
+            try
+            {
+                DataAccessProviderFactory factory = new DataAccessProviderFactory();
+                dataContext = factory.GetDataContext();
+                dataContext.BeginTransaction();
+
+                foreach (Mesto m in mesta)
+                {
+                    dataContext.Add(m);
+                }
+
+                dataContext.Commit();
+            }
+            catch (Exception ex)
+            {
+                if (dataContext != null && dataContext.IsInTransaction)
+                    dataContext.Rollback();
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            finally
+            {
+                if (dataContext != null)
+                    dataContext.Dispose();
+                dataContext = null;
+            }
+        }
+
+        private void institucijeMestoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addInstitucije();
+        }
+
+        private void addInstitucije()
+        {
+            List<Institucija> institucije = MapperRegistry.institucijaDAO().getAll();
+
+            IDataContext dataContext = null;
+            try
+            {
+                DataAccessProviderFactory factory = new DataAccessProviderFactory();
+                dataContext = factory.GetDataContext();
+                dataContext.BeginTransaction();
+
+                IList<Mesto> mesta = loadMesta(dataContext);
+
+                foreach (Institucija i in institucije)
+                {
+                    if (i.Mesto != null)
+                    {
+                        Mesto m = findMesto(mesta, i.Mesto.Zip);
+                        if (m == null)
+                            throw new Exception("greska");
+                        i.Mesto = m;
+                    }
+                    dataContext.Add(i);
+                }
+
+                dataContext.Commit();
+            }
+            catch (Exception ex)
+            {
+                if (dataContext != null && dataContext.IsInTransaction)
+                    dataContext.Rollback();
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            finally
+            {
+                if (dataContext != null)
+                    dataContext.Dispose();
+                dataContext = null;
+            }
+        }
+
+        private void clanMestoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addClanovi();
+        }
+
+        private void addClanovi()
+        {
+            List<Clan> clanovi = MapperRegistry.clanDAO().getAll();
+
+            IDataContext dataContext = null;
+            try
+            {
+                DataAccessProviderFactory factory = new DataAccessProviderFactory();
+                dataContext = factory.GetDataContext();
+                dataContext.BeginTransaction();
+
+                IList<Mesto> mesta = loadMesta(dataContext);
+                IList<Institucija> institucije = loadInstitucije(dataContext);
+
+                foreach (Clan c in clanovi)
+                {
+                    if (c.Broj == 751)
+                    {
+                        c.DatumRodjenja = new DateTime(1994, 1, 10);
+                    }
+                    if (c.Mesto != null)
+                    {
+                        Mesto m = findMesto(mesta, c.Mesto.Zip);
+                        if (m == null)
+                            throw new Exception("greska");
+                        c.Mesto = m;
+                    }
+                    if (c.Institucija != null)
+                    {
+                        Institucija i = findInstitucija(institucije, c.Institucija.Naziv);
+                        if (i == null)
+                            throw new Exception("greska");
+                        c.Institucija = i;
+                    }
+                    dataContext.Add(c);
+                }
+
+                dataContext.Commit();
+            }
+            catch (Exception ex)
+            {
+                if (dataContext != null && dataContext.IsInTransaction)
+                    dataContext.Rollback();
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            finally
+            {
+                if (dataContext != null)
+                    dataContext.Dispose();
+                dataContext = null;
+            }
+        }
+
+        private void kategorijaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addKategorije();
+        }
+
+        private void addKategorije()
+        {
+            List<Kategorija> kategorije = MapperRegistry.kategorijaDAO().getAll();
+
+            IDataContext dataContext = null;
+            try
+            {
+                DataAccessProviderFactory factory = new DataAccessProviderFactory();
+                dataContext = factory.GetDataContext();
+                dataContext.BeginTransaction();
+
+                foreach (Kategorija k in kategorije)
+                {
+                    dataContext.Add(k);
+                }
+
+                dataContext.Commit();
+            }
+            catch (Exception ex)
+            {
+                if (dataContext != null && dataContext.IsInTransaction)
+                    dataContext.Rollback();
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            finally
+            {
+                if (dataContext != null)
+                    dataContext.Dispose();
+                dataContext = null;
+            }
+        }
+
+        private void grupaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addGrupe();
+        }
+
+        private void addGrupe()
+        {
+            List<Grupa> grupe = MapperRegistry.grupaDAO().getAll();
+
+            IDataContext dataContext = null;
+            try
+            {
+                DataAccessProviderFactory factory = new DataAccessProviderFactory();
+                dataContext = factory.GetDataContext();
+                dataContext.BeginTransaction();
+
+                IList<Kategorija> kategorije = loadKategorije(dataContext);
+
+                foreach (Grupa g in grupe)
+                {
+                    if (g.Kategorija != null)
+                    {
+                        Kategorija k = findKategorija(kategorije, g.Kategorija.Naziv);
+                        if (k == null)
+                            throw new Exception("greska");
+                        g.Kategorija = k;
+                    }
+                    dataContext.Add(g);
+                }
+
+                dataContext.Commit();
+            }
+            catch (Exception ex)
+            {
+                if (dataContext != null && dataContext.IsInTransaction)
+                    dataContext.Rollback();
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            finally
+            {
+                if (dataContext != null)
+                    dataContext.Dispose();
+                dataContext = null;
+            }
+        }
+
+        private void cenovnikToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addClanarine();
+        }
+
+        private void addClanarine()
+        {
+            List<MesecnaClanarina> clanarine = MapperRegistry.mesecnaClanarinaDAO().getAll();
+
+            IDataContext dataContext = null;
+            try
+            {
+                DataAccessProviderFactory factory = new DataAccessProviderFactory();
+                dataContext = factory.GetDataContext();
+                dataContext.BeginTransaction();
+
+                IList<Grupa> grupe = loadGrupe(dataContext);
+
+                foreach (MesecnaClanarina c in clanarine)
+                {
+                    if (c.Grupa != null)
+                    {
+                        Grupa g = findGrupa(grupe, c.Grupa);
+                        if (g == null)
+                            throw new Exception("greska");
+                        c.Grupa = g;
+                    }
+                    dataContext.Add(c);
+                }
+
+                dataContext.Commit();
+            }
+            catch (Exception ex)
+            {
+                if (dataContext != null && dataContext.IsInTransaction)
+                    dataContext.Rollback();
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            finally
+            {
+                if (dataContext != null)
+                    dataContext.Dispose();
+                dataContext = null;
+            }
+        }
+
+        private void clanarinaGrupaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            addUplate();
+        }
+
+        private void addUplate()
+        {
+            List<UplataClanarine> uplate = MapperRegistry.uplataClanarineDAO().getAll();
+
+            IDataContext dataContext = null;
+            try
+            {
+                DataAccessProviderFactory factory = new DataAccessProviderFactory();
+                dataContext = factory.GetDataContext();
+                dataContext.BeginTransaction();
+
+                IList<Clan> clanovi = loadClanovi(dataContext);
+                IList<Grupa> grupe = loadGrupe(dataContext);
+
+
+                IDictionary<int, Clan> clanoviMap = new Dictionary<int, Clan>();
+                foreach (Clan c in clanovi)
+                {
+                    clanoviMap.Add(c.Broj.Value, c);
+                }
+
+
+                foreach (UplataClanarine u in uplate)
+                {
+                    if (u.Key.intValue() == 398)
+                    {
+                        u.VaziOd = new DateTime(2003, u.VaziOd.Value.Month, u.VaziOd.Value.Day);
+                    }
+                    if (u.Clan != null)
+                    {
+                        u.Clan = clanoviMap[u.Clan.Broj.Value];
+                        if (u.Clan == null)
+                            throw new Exception("greska");
+                    }
+                    if (u.Grupa != null)
+                    {
+                        Grupa g = findGrupa(grupe, u.Grupa);
+                        if (g == null)
+                            throw new Exception("greska");
+                        u.Grupa = g;
+                    }
+                    dataContext.Add(u);
+                }
+
+                dataContext.Commit();
+            }
+            catch (Exception ex)
+            {
+                if (dataContext != null && dataContext.IsInTransaction)
+                    dataContext.Rollback();
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            finally
+            {
+                if (dataContext != null)
+                    dataContext.Dispose();
+                dataContext = null;
+            }
+        }
+
+        private void addColumnsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<string> messages = new List<string>();
+            try
+            {
+                addColumns(messages);
+                if (messages.Count > 0)
+                {
+                    string msg = messages[0];
+                    for (int i = 1; i < messages.Count; i++)
+                        msg += '\n' + messages[i];
+                    MessageDialogs.showMessage(msg, "Info");
+                }
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, "Greska");
+            }
+        }
+
+        private void addColumns(List<string> messages)
+        {
+            addColumn("Mesta", "MestoID", messages);
+            addColumn("Institucije", "MestoID", messages);
+            addColumn("Clanovi", "MestoID", messages);
+            addColumn("Grupe", "GrupaID", messages);
+            addColumn("Clanarina", "GrupaID", messages);
+            addColumn("Cenovnik", "GrupaID", messages);
+            addColumn("Cenovnik", "CenovnikID", messages);
+        }
+
+        private void addColumn(string tableName, string columnName, List<string> messages)
+        {
+            // NOTE: Ovde sam DAO parametrizovao sa proizvoljnim tipom (DomainObject u 
+            // ovom slucaju) da bih mogao da koristim staticke metode u klasi DAO
+
+            if (DAO<DomainObject>.addColumn(tableName, columnName, "INTEGER"))
+            {
+                string msg = "Added column '" + tableName + "." + columnName + "'.";
+                messages.Add(msg);
+            }
+        }
+
+        private IList<Mesto> loadMesta(IDataContext dataContext)
+        {
+            string query = @"from Mesto";
+            IList<Mesto> result = dataContext.
+                ExecuteQuery<Mesto>(QueryLanguageType.HQL, query,
+                        new string[] { }, new object[] { });
+            return result;
+        }
+
+        private Mesto findMesto(IList<Mesto> mesta, string zip)
+        {
+            foreach (Mesto m in mesta)
+            {
+                if (m.Zip.ToUpper() == zip.ToUpper())
+                    return m;
+            }
+            return null;
+        }
+
+        private IList<Institucija> loadInstitucije(IDataContext dataContext)
+        {
+            string query = @"from Institucija";
+            IList<Institucija> result = dataContext.
+                ExecuteQuery<Institucija>(QueryLanguageType.HQL, query,
+                        new string[] { }, new object[] { });
+            return result;
+        }
+
+        private Institucija findInstitucija(IList<Institucija> institucije, string naziv)
+        {
+            foreach (Institucija i in institucije)
+            {
+                if (i.Naziv.ToUpper() == naziv.ToUpper())
+                    return i;
+            }
+            return null;
+        }
+
+        private IList<Kategorija> loadKategorije(IDataContext dataContext)
+        {
+            string query = @"from Kategorija";
+            IList<Kategorija> result = dataContext.
+                ExecuteQuery<Kategorija>(QueryLanguageType.HQL, query,
+                        new string[] { }, new object[] { });
+            return result;
+        }
+
+        private Kategorija findKategorija(IList<Kategorija> kategorije, string naziv)
+        {
+            foreach (Kategorija k in kategorije)
+            {
+                if (k.Naziv.ToUpper() == naziv.ToUpper())
+                    return k;
+            }
+            return null;
+        }
+
+        private IList<Grupa> loadGrupe(IDataContext dataContext)
+        {
+            string query = @"from Grupa";
+            IList<Grupa> result = dataContext.
+                ExecuteQuery<Grupa>(QueryLanguageType.HQL, query,
+                        new string[] { }, new object[] { });
+            return result;
+        }
+
+        private Grupa findGrupa(IList<Grupa> grupe, Grupa grupa)
+        {
+            foreach (Grupa g in grupe)
+            {
+                if (g.Sifra == grupa.Sifra)
+                    return g;
+            }
+            return null;
+        }
+
+        private IList<Clan> loadClanovi(IDataContext dataContext)
+        {
+            string query = @"from Clan";
+            IList<Clan> result = dataContext.
+                ExecuteQuery<Clan>(QueryLanguageType.HQL, query,
+                        new string[] { }, new object[] { });
+            return result;
+        }
+
+        private Clan findClan(IList<Clan> clanovi, Clan clan)
+        {
+            foreach (Clan c in clanovi)
+            {
+                if (c.Broj == clan.Broj)
+                    return c;
+            }
+            return null;
+        }
+
+        private void convertAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new SqlCeUtilities().CreateDatabase(@"..\..\clanovi_podaci2.sdf", "sdv");
+
+            addMesta();
+            addInstitucije();
+            addClanovi();
+            addKategorije();
+            addGrupe();
+            addClanarine();
+            addUplate();
         }
 
     }

@@ -19,76 +19,76 @@ namespace Soko.Domain
 		}
 
 		private Nullable<int> broj;
-        public Nullable<int> Broj
+        public virtual Nullable<int> Broj
 		{
 			get { return broj; }
 			set { broj = value; }
 		}
 
 		private string ime;
-		public string Ime
+		public virtual string Ime
 		{
 			get { return ime; }
 			set { ime = value; }
 		}
 
 		private string prezime;
-		public string Prezime
+		public virtual string Prezime
 		{
 			get { return prezime; }
 			set { prezime = value; }
 		}
 
 		private Nullable<DateTime> datumRodjenja;
-        public Nullable<DateTime> DatumRodjenja
+        public virtual Nullable<DateTime> DatumRodjenja
 		{
 			get { return datumRodjenja; }
 			set { datumRodjenja = value; }
 		}
 
 		private string adresa;
-		public string Adresa
+		public virtual string Adresa
 		{
 			get { return adresa; }
 			set { adresa = value; }
 		}
 
 		private Mesto mesto;
-		public Mesto Mesto
+		public virtual Mesto Mesto
 		{
 			get { return mesto; }
 			set { mesto = value; }
 		}
 
 		private string telefon1;
-		public string Telefon1
+		public virtual string Telefon1
 		{
 			get { return telefon1; }
 			set { telefon1 = value; }
 		}
 
 		private string telefon2;
-		public string Telefon2
+		public virtual string Telefon2
 		{
 			get { return telefon2; }
 			set { telefon2 = value; }
 		}
 
 		private Institucija institucija;
-		public Institucija Institucija
+		public virtual Institucija Institucija
 		{
 			get { return institucija; }
 			set { institucija = value; }
 		}
 
 		private string napomena;
-		public string Napomena
+		public virtual string Napomena
 		{
 			get { return napomena; }
 			set { napomena = value; }
 		}
 
-		public string BrojPrezimeImeDatumRodjenja
+		public virtual string BrojPrezimeImeDatumRodjenja
 		{
 			get
 			{
@@ -117,7 +117,7 @@ namespace Soko.Domain
 			}
 		}
 
-		public string BrojImePrezime
+		public virtual string BrojImePrezime
 		{
 			get
 			{
@@ -145,7 +145,7 @@ namespace Soko.Domain
 			return BrojImePrezime;
 		}
 
-		public string NazivMesta
+		public virtual string NazivMesta
 		{
 			get
 			{
@@ -156,7 +156,7 @@ namespace Soko.Domain
 			}
 		}
 
-		public string PrezimeImeBrojDatumRodjAdresaMesto
+		public virtual string PrezimeImeBrojDatumRodjAdresaMesto
 		{
 			get
 			{

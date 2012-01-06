@@ -15,7 +15,7 @@ namespace Soko.Domain
 		}
 
 		private Grupa grupa;
-		public Grupa Grupa
+		public virtual Grupa Grupa
 		{
 			get { return grupa; }
 			set
@@ -30,7 +30,7 @@ namespace Soko.Domain
 			}
 		}
 
-		public DateTime VaziOd
+		public virtual DateTime VaziOd
 		{
 			get
 			{
@@ -49,7 +49,7 @@ namespace Soko.Domain
 		}
 
 		private Nullable<decimal> iznos;
-        public Nullable<decimal> Iznos
+        public virtual Nullable<decimal> Iznos
 		{
 			get { return iznos; }
 			set { iznos = value; }

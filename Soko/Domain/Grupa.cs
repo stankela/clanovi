@@ -10,7 +10,7 @@ namespace Soko.Domain
 		public static readonly int SIFRA_MAX_LENGTH = 6;
 		public static readonly int NAZIV_MAX_LENGTH = 50;
 		
-		public SifraGrupe Sifra
+		public virtual SifraGrupe Sifra
 		{
 			get
 			{
@@ -24,22 +24,22 @@ namespace Soko.Domain
 			}
 		}
 
-		private string naziv;
-		public string Naziv
+        private string naziv;
+		public virtual string Naziv
 		{
 			get { return naziv; }
 			set { naziv = value; }
 		}
 
 		private Kategorija kategorija;
-		public Kategorija Kategorija
+		public virtual Kategorija Kategorija
 		{
 			get { return kategorija; }
 			set { kategorija = value; }
 		}
 
 		private int sortOrder;
-		public int SortOrder
+		public virtual int SortOrder
 		{
 			get { return sortOrder; }
 			set { sortOrder = value; }
@@ -57,12 +57,12 @@ namespace Soko.Domain
 			this.kategorija = kategorija;
 		}
 
-		public string SifraNaziv
+		public virtual string SifraNaziv
 		{
 			get { return Sifra.Value + "   " + Naziv; }
 		}
 
-		public string SifraCrtaNaziv
+		public virtual string SifraCrtaNaziv
 		{
 			// TODO: Umesto sto kreiras nova svojstva za razlicite formate ispisa,
 			// mozda bi bilo bolje da implementiras ToString koji prima format
@@ -111,7 +111,7 @@ namespace Soko.Domain
 
 		#region IComparable Members
 
-		public int CompareTo(object obj)
+		public virtual int CompareTo(object obj)
 		{
 			if (!(obj is Grupa))
 				throw new ArgumentException();

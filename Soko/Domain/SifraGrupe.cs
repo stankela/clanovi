@@ -8,22 +8,23 @@ namespace Soko.Domain
 	/// </summary>
 	public class SifraGrupe : IComparable
 	{
-		private string sifra;
 		public string Value
 		{
-			get { return sifra; }
+			get { return BrojGrupe.ToString() + Podgrupa; }
 		}
 
 		private int brojGrupe;
 		public int BrojGrupe
 		{
 			get { return brojGrupe; }
+            private set { brojGrupe = value; }
 		}
 
 		private string podgrupa;
 		public string Podgrupa
 		{
 			get { return podgrupa; }
+            private set { podgrupa = value; }
 		}
 
 		public SifraGrupe(string sifra)
@@ -32,14 +33,12 @@ namespace Soko.Domain
 			if (!TryParse(sifra, out sg))
 				throw new ArgumentException();
 
-			this.sifra = sifra;
 			this.brojGrupe = sg.BrojGrupe;
 			this.podgrupa = sg.podgrupa;
 		}
 
-		protected SifraGrupe(string sifra, int brojGrupe, string podgrupa)
+		protected SifraGrupe(int brojGrupe, string podgrupa)
 		{
-			this.sifra = sifra;
 			this.brojGrupe = brojGrupe;
 			this.podgrupa = podgrupa;
 		}
@@ -72,7 +71,7 @@ namespace Soko.Domain
 			}
 			string podgrupa = parts[1].Trim();
 
-			return new SifraGrupe(s, broj, podgrupa);
+			return new SifraGrupe(broj, podgrupa);
 		}
 
 		private static bool startsWithDigit(string s)
@@ -119,13 +118,13 @@ namespace Soko.Domain
 			}
 			string podgrupa = parts[1].Trim();
 
-			result = new SifraGrupe(s, broj, podgrupa);
+			result = new SifraGrupe(broj, podgrupa);
 			return true;
 		}
 
 		public override string ToString()
 		{
-			return sifra;
+			return Value;
 		}
 
 		public override bool Equals(object other)
@@ -135,7 +134,7 @@ namespace Soko.Domain
 			if (!(other is SifraGrupe))
 				return false;
 			SifraGrupe that = (SifraGrupe)other;
-			return this.sifra == that.sifra;
+			return this.BrojGrupe == that.BrojGrupe && this.Podgrupa == that.Podgrupa;
 		}
 
 		public override int GetHashCode()
@@ -143,7 +142,7 @@ namespace Soko.Domain
 			unchecked
 			{
 				int result = 14;
-				result = 29 * result + sifra.GetHashCode();
+				result = 29 * result + BrojGrupe.GetHashCode() + Podgrupa.GetHashCode();
 				return result;
 			}
 		}

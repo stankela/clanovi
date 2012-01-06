@@ -15,7 +15,7 @@ namespace Soko.Domain
 
 		}
 
-		public string Zip
+		public virtual string Zip
 		{
 			get
 			{
@@ -30,7 +30,7 @@ namespace Soko.Domain
 		}
 
 		private string naziv;
-		public string Naziv
+		public virtual string Naziv
 		{
 			get { return naziv; }
 			set { naziv = value; }
@@ -47,7 +47,7 @@ namespace Soko.Domain
 			return ZipNaziv;
 		}
 
-		public string ZipNaziv
+		public virtual string ZipNaziv
 		{
 			get { return Zip + " " + Naziv; }
 		}

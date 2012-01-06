@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualBasic.ApplicationServices;
 using Soko.UI;
+using Soko.Data;
 
 namespace Soko
 {
@@ -32,7 +33,8 @@ namespace Soko
         protected override void OnCreateMainForm()
         {
             // Do your initialization here
-            
+            new DataAccessProviderFactory().GetDataContext();
+     
             // Then create the main form, the splash screen will automatically close
             this.MainForm = new Form1();
         }

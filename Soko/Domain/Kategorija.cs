@@ -10,7 +10,7 @@ namespace Soko.Domain
 		public static readonly int NAZIV_MAX_LENGTH = 50;
 
 		private string naziv;
-		public string Naziv
+		public virtual string Naziv
 		{
 			get { return naziv; }
 			set { naziv = value; }
@@ -44,7 +44,7 @@ namespace Soko.Domain
 
 		#region IComparable Members
 
-		public int CompareTo(object obj)
+		public virtual int CompareTo(object obj)
 		{
 			if (!(obj is Kategorija))
 				throw new ArgumentException();

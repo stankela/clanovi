@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="Soko"
+                   namespace="Soko.Domain">
+
+  <class name="UplataClanarine" table="uplate" lazy="true">
+    <id name="Id" column="uplata_id">
+      <generator class="identity" />
+    </id>
+    <property name="DatumVremeUplate" column="datum_vreme_uplate" />
+    <property name="VaziOd" column="vazi_od" />
+    <property name="Iznos" column="iznos" />
+    <property name="Napomena" column="napomena" />
+    <property name="Korisnik" column="korisnik" />
+    <many-to-one name="Clan" class="Clan" column="clan_id" />
+    <many-to-one name="Grupa" class="Grupa" column="grupa_id" />
+  </class>
+
+</hibernate-mapping>

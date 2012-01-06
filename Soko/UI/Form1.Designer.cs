@@ -52,6 +52,16 @@ namespace Soko.UI
             this.mnPodesavanja = new System.Windows.Forms.ToolStripMenuItem();
             this.mnFont = new System.Windows.Forms.ToolStripMenuItem();
             this.mnStampaci = new System.Windows.Forms.ToolStripMenuItem();
+            this.convertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mestaPrimaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.institucijeMestoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clanMestoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.kategorijaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.grupaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cenovnikToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clanarinaGrupaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.convertAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,7 +71,8 @@ namespace Soko.UI
             this.mnDatoteka,
             this.mnClanovi,
             this.mnIzvestaji,
-            this.mnPodesavanja});
+            this.mnPodesavanja,
+            this.convertToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(466, 24);
@@ -248,6 +259,85 @@ namespace Soko.UI
             this.mnStampaci.Text = "Stampaci";
             this.mnStampaci.Click += new System.EventHandler(this.mnStampaci_Click);
             // 
+            // convertToolStripMenuItem
+            // 
+            this.convertToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addColumnsToolStripMenuItem,
+            this.mestaPrimaryToolStripMenuItem,
+            this.institucijeMestoToolStripMenuItem,
+            this.clanMestoToolStripMenuItem,
+            this.kategorijaToolStripMenuItem,
+            this.grupaToolStripMenuItem,
+            this.cenovnikToolStripMenuItem,
+            this.clanarinaGrupaToolStripMenuItem,
+            this.convertAllToolStripMenuItem});
+            this.convertToolStripMenuItem.Name = "convertToolStripMenuItem";
+            this.convertToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
+            this.convertToolStripMenuItem.Text = "Convert";
+            // 
+            // addColumnsToolStripMenuItem
+            // 
+            this.addColumnsToolStripMenuItem.Name = "addColumnsToolStripMenuItem";
+            this.addColumnsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addColumnsToolStripMenuItem.Text = "Add columns";
+            this.addColumnsToolStripMenuItem.Click += new System.EventHandler(this.addColumnsToolStripMenuItem_Click);
+            // 
+            // mestaPrimaryToolStripMenuItem
+            // 
+            this.mestaPrimaryToolStripMenuItem.Name = "mestaPrimaryToolStripMenuItem";
+            this.mestaPrimaryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.mestaPrimaryToolStripMenuItem.Text = "Mesto";
+            this.mestaPrimaryToolStripMenuItem.Click += new System.EventHandler(this.mestaPrimaryToolStripMenuItem_Click);
+            // 
+            // institucijeMestoToolStripMenuItem
+            // 
+            this.institucijeMestoToolStripMenuItem.Name = "institucijeMestoToolStripMenuItem";
+            this.institucijeMestoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.institucijeMestoToolStripMenuItem.Text = "Institucija ";
+            this.institucijeMestoToolStripMenuItem.Click += new System.EventHandler(this.institucijeMestoToolStripMenuItem_Click);
+            // 
+            // clanMestoToolStripMenuItem
+            // 
+            this.clanMestoToolStripMenuItem.Name = "clanMestoToolStripMenuItem";
+            this.clanMestoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clanMestoToolStripMenuItem.Text = "Clan";
+            this.clanMestoToolStripMenuItem.Click += new System.EventHandler(this.clanMestoToolStripMenuItem_Click);
+            // 
+            // kategorijaToolStripMenuItem
+            // 
+            this.kategorijaToolStripMenuItem.Name = "kategorijaToolStripMenuItem";
+            this.kategorijaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.kategorijaToolStripMenuItem.Text = "Kategorija";
+            this.kategorijaToolStripMenuItem.Click += new System.EventHandler(this.kategorijaToolStripMenuItem_Click);
+            // 
+            // grupaToolStripMenuItem
+            // 
+            this.grupaToolStripMenuItem.Name = "grupaToolStripMenuItem";
+            this.grupaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.grupaToolStripMenuItem.Text = "Grupa";
+            this.grupaToolStripMenuItem.Click += new System.EventHandler(this.grupaToolStripMenuItem_Click);
+            // 
+            // cenovnikToolStripMenuItem
+            // 
+            this.cenovnikToolStripMenuItem.Name = "cenovnikToolStripMenuItem";
+            this.cenovnikToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cenovnikToolStripMenuItem.Text = "Clanarina";
+            this.cenovnikToolStripMenuItem.Click += new System.EventHandler(this.cenovnikToolStripMenuItem_Click);
+            // 
+            // clanarinaGrupaToolStripMenuItem
+            // 
+            this.clanarinaGrupaToolStripMenuItem.Name = "clanarinaGrupaToolStripMenuItem";
+            this.clanarinaGrupaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clanarinaGrupaToolStripMenuItem.Text = "Uplata";
+            this.clanarinaGrupaToolStripMenuItem.Click += new System.EventHandler(this.clanarinaGrupaToolStripMenuItem_Click);
+            // 
+            // convertAllToolStripMenuItem
+            // 
+            this.convertAllToolStripMenuItem.Name = "convertAllToolStripMenuItem";
+            this.convertAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.convertAllToolStripMenuItem.Text = "Convert all";
+            this.convertAllToolStripMenuItem.Click += new System.EventHandler(this.convertAllToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -291,6 +381,16 @@ namespace Soko.UI
         private System.Windows.Forms.ToolStripMenuItem mnPodesavanja;
         private System.Windows.Forms.ToolStripMenuItem mnFont;
         private System.Windows.Forms.ToolStripMenuItem mnStampaci;
+        private System.Windows.Forms.ToolStripMenuItem convertToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mestaPrimaryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem institucijeMestoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clanMestoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem grupaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clanarinaGrupaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cenovnikToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addColumnsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem kategorijaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem convertAllToolStripMenuItem;
     }
 }
 
