@@ -68,7 +68,7 @@ namespace Soko.UI
                 });
         }
 
-        protected override EntityDetailForm createEntityDetailForm(Key entityId)
+        protected override EntityDetailForm createEntityDetailForm(Nullable<int> entityId)
         {
             return new ClanDialog(entityId);
         }
@@ -108,19 +108,14 @@ namespace Soko.UI
             return true;
         }
 
-        protected override bool delete(DomainObject entity)
+        protected override void delete(DomainObject entity)
         {
-            return MapperRegistry.clanDAO().delete((Clan)entity);
+            MapperRegistry.clanDAO().delete((Clan)entity);
         }
 
         protected override string deleteErrorMessage(DomainObject entity)
         {
             return "Greska prilikom brisanja clana.";
-        }
-
-        protected override string deleteConcurrencyErrorMessage(DomainObject entity)
-        {
-            return "Neuspesno brisanje clana.";
         }
 
         private void btnZatvori_Click(object sender, System.EventArgs e)

@@ -51,7 +51,7 @@ namespace Soko.UI
                 });
         }
 
-        protected override EntityDetailForm createEntityDetailForm(Key entityId)
+        protected override EntityDetailForm createEntityDetailForm(Nullable<int> entityId)
         {
             return new InstitucijaDialog(entityId);
         }
@@ -97,19 +97,14 @@ namespace Soko.UI
             return true;
         }
 
-        protected override bool delete(DomainObject entity)
+        protected override void delete(DomainObject entity)
         {
-            return MapperRegistry.institucijaDAO().delete((Institucija)entity);
+            MapperRegistry.institucijaDAO().delete((Institucija)entity);
         }
 
         protected override string deleteErrorMessage(DomainObject entity)
         {
             return "Greska prilikom brisanja institucije.";
-        }
-
-        protected override string deleteConcurrencyErrorMessage(DomainObject entity)
-        {
-            return "Neuspesno brisanje institucije.";
         }
 
         private void btnZatvori_Click(object sender, System.EventArgs e)

@@ -15,7 +15,7 @@ namespace Soko.UI
         private List<Mesto> mesta;
         private List<Institucija> institucije;
 
-        public ClanDialog(Key entityId)
+        public ClanDialog(Nullable<int> entityId)
         {
             InitializeComponent();
             initialize(entityId, true);
@@ -27,7 +27,7 @@ namespace Soko.UI
             return new Clan();
         }
 
-        protected override DomainObject getEntityById(Key id)
+        protected override DomainObject getEntityById(int id)
         {
             return MapperRegistry.clanDAO().getById(id);
         }
@@ -293,14 +293,14 @@ namespace Soko.UI
                 c.Napomena = null;
         }
 
-        protected override bool insertEntity(DomainObject entity)
+        protected override void insertEntity(DomainObject entity)
         {
-            return MapperRegistry.clanDAO().insert((Clan)entity);
+            MapperRegistry.clanDAO().insert((Clan)entity);
         }
 
-        protected override bool updateEntity(DomainObject entity)
+        protected override void updateEntity(DomainObject entity)
         {
-            return MapperRegistry.clanDAO().update((Clan)entity);
+            MapperRegistry.clanDAO().update((Clan)entity);
         }
 
         private void txtNazivMesta_TextChanged(object sender, System.EventArgs e)

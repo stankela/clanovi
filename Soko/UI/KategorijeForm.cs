@@ -47,7 +47,7 @@ namespace Soko.UI
                 });
         }
 
-        protected override EntityDetailForm createEntityDetailForm(Key entityId)
+        protected override EntityDetailForm createEntityDetailForm(Nullable<int> entityId)
         {
             return new KategorijaDialog(entityId);
         }
@@ -93,19 +93,14 @@ namespace Soko.UI
             return true;
         }
 
-        protected override bool delete(DomainObject entity)
+        protected override void delete(DomainObject entity)
         {
-            return MapperRegistry.kategorijaDAO().delete((Kategorija)entity);
+            MapperRegistry.kategorijaDAO().delete((Kategorija)entity);
         }
 
         protected override string deleteErrorMessage(DomainObject entity)
         {
             return "Greska prilikom brisanja kategorije.";
-        }
-
-        protected override string deleteConcurrencyErrorMessage(DomainObject entity)
-        {
-            return "Neuspesno brisanje kategorije.";
         }
 
         private void btnZatvori_Click(object sender, System.EventArgs e)

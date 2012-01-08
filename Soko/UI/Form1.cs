@@ -195,6 +195,10 @@ namespace Soko.UI
             {
                 MessageDialogs.showError(ex.Message, this.Text);
             }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
         }
 
         private void mnInstitucije_Click(object sender, EventArgs e)
@@ -546,9 +550,17 @@ namespace Soko.UI
             }
         }
 
-        private void mestaPrimaryToolStripMenuItem_Click(object sender, EventArgs e)
+        private void convertAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            new SqlCeUtilities().CreateDatabase(@"..\..\clanovi_podaci2.sdf", "sdv");
+
             addMesta();
+            addInstitucije();
+            addClanovi();
+            addKategorije();
+            addGrupe();
+            addClanarine();
+            addUplate();
         }
 
         private void addMesta()
@@ -581,11 +593,6 @@ namespace Soko.UI
                     dataContext.Dispose();
                 dataContext = null;
             }
-        }
-
-        private void institucijeMestoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            addInstitucije();
         }
 
         private void addInstitucije()
@@ -627,11 +634,6 @@ namespace Soko.UI
                     dataContext.Dispose();
                 dataContext = null;
             }
-        }
-
-        private void clanMestoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            addClanovi();
         }
 
         private void addClanovi()
@@ -687,11 +689,6 @@ namespace Soko.UI
             }
         }
 
-        private void kategorijaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            addKategorije();
-        }
-
         private void addKategorije()
         {
             List<Kategorija> kategorije = MapperRegistry.kategorijaDAO().getAll();
@@ -722,11 +719,6 @@ namespace Soko.UI
                     dataContext.Dispose();
                 dataContext = null;
             }
-        }
-
-        private void grupaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            addGrupe();
         }
 
         private void addGrupe()
@@ -770,11 +762,6 @@ namespace Soko.UI
             }
         }
 
-        private void cenovnikToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            addClanarine();
-        }
-
         private void addClanarine()
         {
             List<MesecnaClanarina> clanarine = MapperRegistry.mesecnaClanarinaDAO().getAll();
@@ -814,11 +801,6 @@ namespace Soko.UI
                     dataContext.Dispose();
                 dataContext = null;
             }
-        }
-
-        private void clanarinaGrupaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            addUplate();
         }
 
         private void addUplate()
@@ -878,49 +860,6 @@ namespace Soko.UI
                 if (dataContext != null)
                     dataContext.Dispose();
                 dataContext = null;
-            }
-        }
-
-        private void addColumnsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            List<string> messages = new List<string>();
-            try
-            {
-                addColumns(messages);
-                if (messages.Count > 0)
-                {
-                    string msg = messages[0];
-                    for (int i = 1; i < messages.Count; i++)
-                        msg += '\n' + messages[i];
-                    MessageDialogs.showMessage(msg, "Info");
-                }
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, "Greska");
-            }
-        }
-
-        private void addColumns(List<string> messages)
-        {
-            addColumn("Mesta", "MestoID", messages);
-            addColumn("Institucije", "MestoID", messages);
-            addColumn("Clanovi", "MestoID", messages);
-            addColumn("Grupe", "GrupaID", messages);
-            addColumn("Clanarina", "GrupaID", messages);
-            addColumn("Cenovnik", "GrupaID", messages);
-            addColumn("Cenovnik", "CenovnikID", messages);
-        }
-
-        private void addColumn(string tableName, string columnName, List<string> messages)
-        {
-            // NOTE: Ovde sam DAO parametrizovao sa proizvoljnim tipom (DomainObject u 
-            // ovom slucaju) da bih mogao da koristim staticke metode u klasi DAO
-
-            if (DAO<DomainObject>.addColumn(tableName, columnName, "INTEGER"))
-            {
-                string msg = "Added column '" + tableName + "." + columnName + "'.";
-                messages.Add(msg);
             }
         }
 
@@ -1017,19 +956,6 @@ namespace Soko.UI
                     return c;
             }
             return null;
-        }
-
-        private void convertAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            new SqlCeUtilities().CreateDatabase(@"..\..\clanovi_podaci2.sdf", "sdv");
-
-            addMesta();
-            addInstitucije();
-            addClanovi();
-            addKategorije();
-            addGrupe();
-            addClanarine();
-            addUplate();
         }
 
     }

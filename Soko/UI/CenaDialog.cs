@@ -17,7 +17,7 @@ namespace Soko.UI
         private List<Grupa> grupe;
         private SifraGrupe pocetnaSifraGrupe;
 
-        public CenaDialog(Key entityId, SifraGrupe pocetnaSifraGrupe)
+        public CenaDialog(Nullable<int> entityId, SifraGrupe pocetnaSifraGrupe)
         {
             if (entityId != null)
                 throw new ArgumentException("CenaDialog radi samo u add modu.");
@@ -173,9 +173,9 @@ namespace Soko.UI
             }
         }
 
-        protected override bool insertEntity(DomainObject entity)
+        protected override void insertEntity(DomainObject entity)
         {
-            return MapperRegistry.mesecnaClanarinaDAO().insert((MesecnaClanarina)entity);
+            MapperRegistry.mesecnaClanarinaDAO().insert((MesecnaClanarina)entity);
         }
 
         private void btnOdustani_Click(object sender, System.EventArgs e)

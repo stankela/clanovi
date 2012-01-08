@@ -6,7 +6,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Soko.Domain;
-using Soko.Dao;
+using Bilten.Dao;
+using NHibernate;
+using NHibernate.Context;
+using Soko.Data;
+using Soko.Exceptions;
 
 namespace Soko.UI
 {
@@ -42,14 +46,15 @@ namespace Soko.UI
 
         protected override List<object> loadEntities()
         {
-            return MapperRegistry.mestoDAO().getAll().ConvertAll<object>(
+            MestoDAO mestoDAO = DAOFactoryFactory.DAOFactory.GetMestoDAO();
+            return new List<Mesto>(mestoDAO.FindAll()).ConvertAll<object>(
                 delegate(Mesto m)
                 {
                     return m;
                 });
         }
 
-        protected override EntityDetailForm createEntityDetailForm(Key entityId)
+        protected override EntityDetailForm createEntityDetailForm(Nullable<int> entityId)
         {
             return new MestoDialog(entityId);
         }
@@ -77,10 +82,10 @@ namespace Soko.UI
         protected override bool refIntegrityDeleteDlg(DomainObject entity)
         {
             Mesto m = (Mesto)entity;
-            ClanDAO clanDao = MapperRegistry.clanDAO();
-            InstitucijaDAO instDao = MapperRegistry.institucijaDAO();
+            ClanDAO clanDao = DAOFactoryFactory.DAOFactory.GetClanDAO();
+            InstitucijaDAO instDao = DAOFactoryFactory.DAOFactory.GetInstitucijaDAO();
 
-            if (clanDao.existsClanMesto(m.Zip))
+            if (clanDao.existsClanMesto(m))
             {
                 string msg = "Mesto '{0}' nije moguce izbrisati zato sto postoje " +
                     "clanovi iz datog mesta. \n\nDa bi neko mesto moglo da se izbrise, " +
@@ -93,7 +98,7 @@ namespace Soko.UI
                 MessageDialogs.showMessage(String.Format(msg, m), this.Text);
                 return false;
             }
-            else if (instDao.existsInstitucijaZip(m.Zip))
+            else if (instDao.existsInstitucijaMesto(m))
             {
                 string msg = "Mesto '{0}' nije moguce izbrisati zato sto postoje " +
                     "institucije iz datog mesta. \n\nDa bi neko mesto moglo da se izbrise, " +
@@ -109,19 +114,15 @@ namespace Soko.UI
             return true;
         }
 
-        protected override bool delete(DomainObject entity)
+        protected override void delete(DomainObject entity)
         {
-            return MapperRegistry.mestoDAO().delete((Mesto)entity);
+            MestoDAO mestoDAO = DAOFactoryFactory.DAOFactory.GetMestoDAO();
+            mestoDAO.MakeTransient((Mesto)entity);
         }
 
         protected override string deleteErrorMessage(DomainObject entity)
         {
             return "Greska prilikom brisanja mesta.";
-        }
-
-        protected override string deleteConcurrencyErrorMessage(DomainObject entity)
-        {
-            return "Neuspesno brisanje mesta.";
         }
 
         private void btnZatvori_Click(object sender, System.EventArgs e)

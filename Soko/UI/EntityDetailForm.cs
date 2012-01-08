@@ -6,8 +6,10 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Soko.Domain;
-using Soko.Dao;
 using Soko.Exceptions;
+using NHibernate;
+using Soko.Data;
+using NHibernate.Context;
 
 namespace Soko.UI
 {
@@ -29,27 +31,30 @@ namespace Soko.UI
             InitializeComponent();
         }
 
-        protected void initialize(Key entityId, bool persistEntity)
+        protected void initialize(Nullable<int> entityId, bool persistEntity)
         {
             this.persistEntity = persistEntity;
-            MapperRegistry.initialize();
             try
             {
-                if (entityId != null)
+                using (ISession session = NHibernateHelper.OpenSession())
+                using (session.BeginTransaction())
                 {
-                    editMode = true;
-                    initUpdateMode(entityId);
-                }
-                else
-                {
-                    editMode = false;
-                    initAddMode();
+                    CurrentSessionContext.Bind(session);
+                    if (entityId != null)
+                    {
+                        editMode = true;
+                        initUpdateMode(entityId.Value);
+                    }
+                    else
+                    {
+                        editMode = false;
+                        initAddMode();
+                    }
                 }
             }
-            catch (Exception ex)
+            finally
             {
-                throw new InfrastructureException(
-                    Strings.getFullDatabaseAccessExceptionMessage(ex.Message), ex);
+                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
             }
         }
 
@@ -75,7 +80,7 @@ namespace Soko.UI
             Font = Options.Instance.Font;
         }
 
-        protected virtual void initUpdateMode(Key entityId)
+        protected virtual void initUpdateMode(int entityId)
         {
             // Najpre se ucitava objekt, zatim ostali podaci potrebni za UI,
             // i tek nakon toga se inicijalizuje UI. Razlog za ovakav redosled je
@@ -88,7 +93,7 @@ namespace Soko.UI
             updateUIFromEntity(entity);
         }
 
-        protected virtual DomainObject getEntityById(Key id)
+        protected virtual DomainObject getEntityById(int id)
         {
             throw new Exception("Derived class should implement this method.");
         }
@@ -107,37 +112,29 @@ namespace Soko.UI
         {
             try
             {
-                Notification notification = new Notification();
-                requiredFieldsAndFormatValidation(notification);
-                if (!notification.IsValid())
-                    throw new BusinessException(notification);
-
-                if (!beforePersistDlg(entity))
+                using (ISession session = NHibernateHelper.OpenSession())
+                using (session.BeginTransaction())
                 {
-                    this.DialogResult = DialogResult.Cancel;
-                    closedByCancel = true;
-                    return;
-                }
+                    CurrentSessionContext.Bind(session);
+                    Notification notification = new Notification();
+                    requiredFieldsAndFormatValidation(notification);
+                    if (!notification.IsValid())
+                        throw new BusinessException(notification);
 
-                bool success;
-                if (editMode)
-                    success = update();
-                else
-                    success = add();
+                    if (!beforePersistDlg(entity))
+                    {
+                        this.DialogResult = DialogResult.Cancel;
+                        closedByCancel = true;
+                        return;
+                    }
 
-                if (!success)
-                {
-                    string errMsg;
                     if (editMode)
-                        errMsg = "Neuspesna promena mesta.";
+                        update();
                     else
-                        errMsg = "Neuspesno dodavanje mesta.";
-                    MessageDialogs.showMessage(errMsg, this.Text);
-                    this.DialogResult = DialogResult.Cancel;
-                    closedByCancel = true;
-                }
-                else
+                        add();
+                    session.Transaction.Commit();
                     closedByOK = true;
+                }
             }
             catch (InvalidPropertyException ex)
             {
@@ -174,6 +171,10 @@ namespace Soko.UI
                 this.DialogResult = DialogResult.Cancel;
                 closedByCancel = true;
             }
+            finally
+            {
+                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+            }
         }
 
         protected virtual void requiredFieldsAndFormatValidation(Notification notification)
@@ -186,15 +187,13 @@ namespace Soko.UI
             // Empty
         }
 
-        private bool add()
+        private void add()
         {
             updateEntityFromUI(entity);
             validateEntity(entity);
             checkBusinessRulesOnAdd(entity);
             if (persistEntity)
-                return insertEntity(entity);
-
-            return true;
+                insertEntity(entity);
         }
 
         protected virtual void updateEntityFromUI(DomainObject entity)
@@ -220,20 +219,18 @@ namespace Soko.UI
             // Empty
         }
 
-        protected virtual bool insertEntity(DomainObject entity)
+        protected virtual void insertEntity(DomainObject entity)
         {
             throw new Exception("Derived class should implement this method.");
         }
 
-        private bool update()
+        private void update()
         {
             updateEntityFromUI(entity);
             validateEntity(entity);
             checkBusinessRulesOnUpdate(entity);
             if (persistEntity)
-                return updateEntity(entity);
-
-            return true;
+                updateEntity(entity);
         }
 
         protected virtual void checkBusinessRulesOnUpdate(DomainObject entity)
@@ -241,7 +238,7 @@ namespace Soko.UI
             // Empty
         }
 
-        protected virtual bool updateEntity(DomainObject entity)
+        protected virtual void updateEntity(DomainObject entity)
         {
             throw new Exception("Derived class should implement this method.");
         }

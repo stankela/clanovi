@@ -16,7 +16,7 @@ namespace Soko.UI
         private List<Clan> clanovi;
         private List<Grupa> grupe;
 
-        public UplataClanarineDialog(Key entityId)
+        public UplataClanarineDialog(Nullable<int> entityId)
         {
             if (entityId != null)
                 throw new ArgumentException("UplataClanarineDialog radi samo u add modu.");
@@ -246,9 +246,9 @@ namespace Soko.UI
             uc.Korisnik = "Admin";
         }
 
-        protected override bool insertEntity(DomainObject entity)
+        protected override void insertEntity(DomainObject entity)
         {
-            return MapperRegistry.uplataClanarineDAO().insert((UplataClanarine)entity);
+            MapperRegistry.uplataClanarineDAO().insert((UplataClanarine)entity);
         }
 
         private void txtSifraClana_TextChanged(object sender, System.EventArgs e)

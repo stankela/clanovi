@@ -6,17 +6,16 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Soko.Domain;
-using Soko.Dao;
 using Soko.Exceptions;
+using Bilten.Dao;
 
 namespace Soko.UI
 {
     public partial class MestoDialog : EntityDetailForm
     {
-        private string oldZip;
         private string oldNaziv;
 
-        public MestoDialog(Key entityId)
+        public MestoDialog(Nullable<int> entityId)
         {
             InitializeComponent();
             initialize(entityId, true);
@@ -27,9 +26,10 @@ namespace Soko.UI
             return new Mesto();
         }
 
-        protected override DomainObject getEntityById(Key id)
+        protected override DomainObject getEntityById(int id)
         {
-            return MapperRegistry.mestoDAO().getById(id);
+            MestoDAO mestoDAO = DAOFactoryFactory.DAOFactory.GetMestoDAO();
+            return mestoDAO.FindById(id);
         }
 
         protected override void initUI()
@@ -44,7 +44,6 @@ namespace Soko.UI
         protected override void saveOriginalData(DomainObject entity)
         {
             Mesto m = (Mesto)entity;
-            oldZip = m.Zip;
             oldNaziv = m.Naziv;
         }
 
@@ -108,22 +107,18 @@ namespace Soko.UI
             Mesto m = (Mesto)entity;
             Notification notification = new Notification();
 
-            MestoDAO mestoDAO = MapperRegistry.mestoDAO();
-            if (mestoDAO.getById(m.Zip) != null)
-            {
-                notification.RegisterMessage("Zip", "Mesto sa datim postanskim brojem vec postoji.");
-                throw new BusinessException(notification);
-            }
-            if (mestoDAO.existsMestoNaziv(m.Naziv))
+            MestoDAO mestoDAO = DAOFactoryFactory.DAOFactory.GetMestoDAO();
+            if (mestoDAO.FindMestoByNaziv(m.Naziv).Count > 0)
             {
                 notification.RegisterMessage("Naziv", "Mesto sa datim nazivom vec postoji.");
                 throw new BusinessException(notification);
             }
         }
 
-        protected override bool insertEntity(DomainObject entity)
+        protected override void insertEntity(DomainObject entity)
         {
-            return MapperRegistry.mestoDAO().insert((Mesto)entity);
+            MestoDAO mestoDAO = DAOFactoryFactory.DAOFactory.GetMestoDAO();
+            mestoDAO.MakePersistent((Mesto)entity);
         }
 
         protected override void checkBusinessRulesOnUpdate(DomainObject entity)
@@ -131,29 +126,20 @@ namespace Soko.UI
             Mesto m = (Mesto)entity;
             Notification notification = new Notification();
 
-            MestoDAO mestoDAO = MapperRegistry.mestoDAO();
-            bool zipChanged = (m.Zip.ToUpper() != oldZip.ToUpper()) ? true : false;
-            if (zipChanged && mestoDAO.getById(m.Zip) != null)
-            {
-                notification.RegisterMessage("Zip", "Mesto sa datim postanskim brojem vec postoji.");
-                throw new BusinessException(notification);
-            }
-
+            MestoDAO mestoDAO = DAOFactoryFactory.DAOFactory.GetMestoDAO();
             bool nazivChanged = (m.Naziv.ToUpper() != oldNaziv.ToUpper()) ? true : false;
-            if (nazivChanged && mestoDAO.existsMestoNaziv(m.Naziv))
+            if (nazivChanged && mestoDAO.FindMestoByNaziv(m.Naziv).Count > 0)
             {
                 notification.RegisterMessage("Naziv", "Mesto sa datim nazivom vec postoji.");
                 throw new BusinessException(notification);
             }
         }
 
-        protected override bool updateEntity(DomainObject entity)
+        protected override void updateEntity(DomainObject entity)
         {
             Mesto m = (Mesto)entity;
-            if (m.Zip == oldZip)
-                return MapperRegistry.mestoDAO().update(m);
-            else
-                return MapperRegistry.mestoDAO().update(m, oldZip);
+            MestoDAO mestoDAO = DAOFactoryFactory.DAOFactory.GetMestoDAO();
+            mestoDAO.MakePersistent(m);
         }
 
         private void btnOdustani_Click(object sender, System.EventArgs e)

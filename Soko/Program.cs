@@ -47,7 +47,7 @@ namespace Soko
                 MessageDialogs.showError(ex.Message, "Greska");
             }
 
-            new SqlCeUtilities().CreateDatabase(@"..\..\clanovi_podaci2.sdf", "sdv");
+            //new SqlCeUtilities().CreateDatabase(@"..\..\clanovi_podaci2.sdf", "sdv");
 
 
             Application.EnableVisualStyles();

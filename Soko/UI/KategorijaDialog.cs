@@ -15,7 +15,7 @@ namespace Soko.UI
     {
         private string oldNaziv;
 
-        public KategorijaDialog(Key entityId)
+        public KategorijaDialog(Nullable<int> entityId)
         {
             InitializeComponent();
             initialize(entityId, true);
@@ -26,7 +26,7 @@ namespace Soko.UI
             return new Kategorija();
         }
 
-        protected override DomainObject getEntityById(Key id)
+        protected override DomainObject getEntityById(int id)
         {
             return MapperRegistry.kategorijaDAO().getById(id);
         }
@@ -102,9 +102,9 @@ namespace Soko.UI
             }
         }
 
-        protected override bool insertEntity(DomainObject entity)
+        protected override void insertEntity(DomainObject entity)
         {
-            return MapperRegistry.kategorijaDAO().insert((Kategorija)entity);
+            MapperRegistry.kategorijaDAO().insert((Kategorija)entity);
         }
 
         protected override void checkBusinessRulesOnUpdate(DomainObject entity)
@@ -121,9 +121,9 @@ namespace Soko.UI
             }
         }
 
-        protected override bool updateEntity(DomainObject entity)
+        protected override void updateEntity(DomainObject entity)
         {
-            return MapperRegistry.kategorijaDAO().update((Kategorija)entity);
+            MapperRegistry.kategorijaDAO().update((Kategorija)entity);
         }
 
         private void btnOdustani_Click(object sender, System.EventArgs e)

@@ -17,7 +17,7 @@ namespace Soko.UI
         private string oldNaziv;
         private const string PRAZNO = "<<prazno>>";
 
-        public InstitucijaDialog(Key entityId)
+        public InstitucijaDialog(Nullable<int> entityId)
         {
             InitializeComponent();
             initialize(entityId, true);
@@ -28,7 +28,7 @@ namespace Soko.UI
             return new Institucija();
         }
 
-        protected override DomainObject getEntityById(Key id)
+        protected override DomainObject getEntityById(int id)
         {
             return MapperRegistry.institucijaDAO().getById(id);
         }
@@ -165,9 +165,9 @@ namespace Soko.UI
             }
         }
 
-        protected override bool insertEntity(DomainObject entity)
+        protected override void insertEntity(DomainObject entity)
         {
-            return MapperRegistry.institucijaDAO().insert((Institucija)entity);
+            MapperRegistry.institucijaDAO().insert((Institucija)entity);
         }
 
         protected override void checkBusinessRulesOnUpdate(DomainObject entity)
@@ -184,9 +184,9 @@ namespace Soko.UI
             }
         }
 
-        protected override bool updateEntity(DomainObject entity)
+        protected override void updateEntity(DomainObject entity)
         {
-            return MapperRegistry.institucijaDAO().update((Institucija)entity);
+            MapperRegistry.institucijaDAO().update((Institucija)entity);
         }
 
         private void btnOdustani_Click(object sender, System.EventArgs e)

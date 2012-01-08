@@ -5,10 +5,12 @@
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F8558FD8-F014-4810-9CEE-C27954461902}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Soko</RootNamespace>
     <AssemblyName>Soko</AssemblyName>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,14 +57,25 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dao\ClanDAO.cs" />
-    <Compile Include="Dao\DAO.cs" />
-    <Compile Include="Dao\GrupaDAO.cs" />
     <Compile Include="Dao\InstitucijaDAO.cs" />
-    <Compile Include="Dao\KategorijaDAO.cs" />
-    <Compile Include="Dao\MapperRegistry.cs" />
-    <Compile Include="Dao\MesecnaClanarinaDAO.cs" />
+    <Compile Include="Dao\NHibernate\ClanDAOImpl.cs" />
+    <Compile Include="Dao\NHibernate\InstitucijaDAOImpl.cs" />
+    <Compile Include="Dao\Old\ClanDAO.cs" />
+    <Compile Include="Dao\Old\DAO.cs" />
+    <Compile Include="Dao\DAOFactory.cs" />
+    <Compile Include="Dao\DAOFactoryFactory.cs" />
+    <Compile Include="Dao\GenericDAO.cs" />
+    <Compile Include="Dao\Old\GrupaDAO.cs" />
+    <Compile Include="Dao\Old\InstitucijaDAO.cs" />
+    <Compile Include="Dao\Old\KategorijaDAO.cs" />
     <Compile Include="Dao\MestoDAO.cs" />
-    <Compile Include="Dao\UplataClanarineDAO.cs" />
+    <Compile Include="Dao\Old\MapperRegistry.cs" />
+    <Compile Include="Dao\Old\MesecnaClanarinaDAO.cs" />
+    <Compile Include="Dao\Old\MestoDAO.cs" />
+    <Compile Include="Dao\NHibernate\GenericNHibernateDAO.cs" />
+    <Compile Include="Dao\NHibernate\MestoDAOImpl.cs" />
+    <Compile Include="Dao\NHibernate\NHibernateDAOFactory.cs" />
+    <Compile Include="Dao\Old\UplataClanarineDAO.cs" />
     <Compile Include="Data\DataAccessProviderFactory.cs" />
     <Compile Include="Data\IDataContext.cs" />
     <Compile Include="Data\IDataProviderFactory.cs" />

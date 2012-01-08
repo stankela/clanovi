@@ -51,7 +51,7 @@ namespace Soko.UI
                 });
         }
 
-        protected override EntityDetailForm createEntityDetailForm(Key entityId)
+        protected override EntityDetailForm createEntityDetailForm(Nullable<int> entityId)
         {
             return new GrupaDialog(entityId);
         }
@@ -100,19 +100,14 @@ namespace Soko.UI
             return true;
         }
 
-        protected override bool delete(DomainObject entity)
+        protected override void delete(DomainObject entity)
         {
-            return MapperRegistry.grupaDAO().delete((Grupa)entity);
+            MapperRegistry.grupaDAO().delete((Grupa)entity);
         }
 
         protected override string deleteErrorMessage(DomainObject entity)
         {
             return "Greska prilikom brisanja grupe.";
-        }
-
-        protected override string deleteConcurrencyErrorMessage(DomainObject entity)
-        {
-            return "Neuspesno brisanje grupe.";
         }
 
         private void btnZatvori_Click(object sender, System.EventArgs e)

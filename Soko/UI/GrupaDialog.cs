@@ -17,7 +17,7 @@ namespace Soko.UI
         private string oldNaziv;
         private List<Kategorija> kategorije;
 
-        public GrupaDialog(Key entityId)
+        public GrupaDialog(Nullable<int> entityId)
         {
             InitializeComponent();
             initialize(entityId, true);
@@ -28,9 +28,9 @@ namespace Soko.UI
             return new Grupa();
         }
 
-        protected override DomainObject getEntityById(Key id)
+        protected override DomainObject getEntityById(int id)
         {
-            return MapperRegistry.grupaDAO().getById(id);
+            return MapperRegistry.grupaDAO().getById(new Key(id));
         }
 
         protected override void loadData()
@@ -182,9 +182,9 @@ namespace Soko.UI
             }
         }
 
-        protected override bool insertEntity(DomainObject entity)
+        protected override void insertEntity(DomainObject entity)
         {
-            return MapperRegistry.grupaDAO().insert((Grupa)entity);
+            MapperRegistry.grupaDAO().insert((Grupa)entity);
         }
 
         protected override void checkBusinessRulesOnUpdate(DomainObject entity)
@@ -208,13 +208,13 @@ namespace Soko.UI
             }
         }
 
-        protected override bool updateEntity(DomainObject entity)
+        protected override void updateEntity(DomainObject entity)
         {
             Grupa g = (Grupa)entity;
             if (g.Sifra == oldSifra)
-                return MapperRegistry.grupaDAO().update(g);
+                MapperRegistry.grupaDAO().update(g);
             else
-                return MapperRegistry.grupaDAO().update(g, oldSifra);
+                MapperRegistry.grupaDAO().update(g, oldSifra);
         }
 
         private void btnOdustani_Click(object sender, System.EventArgs e)

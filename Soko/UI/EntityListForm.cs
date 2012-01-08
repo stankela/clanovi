@@ -6,8 +6,10 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Soko.Domain;
-using Soko.Dao;
 using Soko.Exceptions;
+using NHibernate;
+using Soko.Data;
+using NHibernate.Context;
 
 namespace Soko.UI
 {
@@ -48,20 +50,23 @@ namespace Soko.UI
         {
             initUI();
             this.entityType = entityType;
+
+            List<object> list;
             try
             {
-                MapperRegistry.initialize();
-                setEntities(loadEntities());
+                using (ISession session = NHibernateHelper.OpenSession())
+                using (session.BeginTransaction())
+                {
+                    CurrentSessionContext.Bind(session);
+                    list = loadEntities();
+                }
             }
-            catch (InfrastructureException ex)
+            finally
             {
-                throw ex;
+                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
             }
-            catch (Exception ex)
-            {
-                throw new InfrastructureException(
-                    Strings.getFullDatabaseAccessExceptionMessage(ex.Message), ex);
-            }
+
+            setEntities(list);
         }
 
         protected virtual void initUI()
@@ -239,22 +244,29 @@ namespace Soko.UI
 
         protected void addCommand()
         {
-            MapperRegistry.initialize();  // nova sesija
+            EntityDetailForm form;
             try
             {
-                EntityDetailForm form = createEntityDetailForm(null);
-                if (form.ShowDialog() == DialogResult.OK)
-                {
-                    onEntityAdded(form.Entity);
-                }
+                form = createEntityDetailForm(null);
             }
             catch (InfrastructureException ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                onEntityAdded(form.Entity);
             }
         }
 
-        protected virtual EntityDetailForm createEntityDetailForm(Key entityId)
+        protected virtual EntityDetailForm createEntityDetailForm(Nullable<int> entityId)
         {
             throw new Exception("Derived class should override this method.");
         }
@@ -350,22 +362,29 @@ namespace Soko.UI
 
         protected void editCommand()
         {
-            MapperRegistry.initialize();  // nova sesija
             DomainObject entity = (DomainObject)getSelectedEntity();
             if (entity == null)
                 return;
 
+            EntityDetailForm form;
             try
             {
-                EntityDetailForm form = createEntityDetailForm(entity.Key);
-                if (form.ShowDialog() == DialogResult.OK)
-                {
-                    onEntityUpdated(form.Entity);
-                }
+                form = createEntityDetailForm(entity.Id);
             }
             catch (InfrastructureException ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                onEntityUpdated(form.Entity);
             }
         }
 
@@ -391,7 +410,6 @@ namespace Soko.UI
 
         protected void deleteCommand()
         {
-            MapperRegistry.initialize();  // nova sesija
             DomainObject entity = (DomainObject)getSelectedEntity();
             if (entity == null)
                 return;
@@ -400,17 +418,15 @@ namespace Soko.UI
 
             try
             {
-                if (refIntegrityDeleteDlg(entity))
+                using (ISession session = NHibernateHelper.OpenSession())
+                using (session.BeginTransaction())
                 {
-                    if (delete(entity))
+                    CurrentSessionContext.Bind(session);
+                    if (refIntegrityDeleteDlg(entity))
                     {
+                        delete(entity);
+                        session.Transaction.Commit();
                         onEntityDeleted(entity);
-                    }
-                    else
-                    {
-                        // Greska zbog konkurentnosti
-                        string errMsg = deleteConcurrencyErrorMessage(entity);
-                        MessageDialogs.showError(errMsg, this.Text);
                     }
                 }
             }
@@ -420,6 +436,17 @@ namespace Soko.UI
                 MessageDialogs.showError(
                     String.Format("{0} \n\n{1}", errMsg, ex.Message),
                     this.Text);
+            }
+            catch (Exception ex)
+            {
+                string errMsg = deleteErrorMessage(entity);
+                MessageDialogs.showError(
+                    String.Format("{0} \n\n{1}", errMsg, ex.Message),
+                    this.Text);
+            }
+            finally
+            {
+                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
             }
         }
 
@@ -444,17 +471,12 @@ namespace Soko.UI
             throw new Exception("Derived class should implement this method.");
         }
 
-        protected virtual bool delete(DomainObject entity)
+        protected virtual void delete(DomainObject entity)
         {
             throw new Exception("Derived class should implement this method.");
         }
 
         protected virtual string deleteErrorMessage(DomainObject entity)
-        {
-            throw new Exception("Derived class should implement this method.");
-        }
-
-        protected virtual string deleteConcurrencyErrorMessage(DomainObject entity)
         {
             throw new Exception("Derived class should implement this method.");
         }

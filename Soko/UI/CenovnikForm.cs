@@ -173,7 +173,7 @@ namespace Soko.UI
                 });
         }
 
-        protected override EntityDetailForm createEntityDetailForm(Key entityId)
+        protected override EntityDetailForm createEntityDetailForm(Nullable<int> entityId)
         {
             MesecnaClanarina mc = (MesecnaClanarina)getSelectedEntity();
             SifraGrupe sifra = null;
@@ -254,19 +254,14 @@ namespace Soko.UI
             return true;
         }
 
-        protected override bool delete(DomainObject entity)
+        protected override void delete(DomainObject entity)
         {
-            return MapperRegistry.mesecnaClanarinaDAO().delete((MesecnaClanarina)entity);
+            MapperRegistry.mesecnaClanarinaDAO().delete((MesecnaClanarina)entity);
         }
 
         protected override string deleteErrorMessage(DomainObject entity)
         {
             return "Greska prilikom brisanja cenovnika za grupu.";
-        }
-
-        protected override string deleteConcurrencyErrorMessage(DomainObject entity)
-        {
-            return "Neuspesno brisanje cenovnika za grupu.";
         }
 
         private void btnZatvori_Click(object sender, System.EventArgs e)
