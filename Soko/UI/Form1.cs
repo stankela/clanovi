@@ -110,11 +110,16 @@ namespace Soko.UI
                 MessageDialogs.showError(ex.Message, this.Text);
                 return;
             }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
 
             if (dlg.DialogResult != DialogResult.OK)
                 return;
 
-            int idStavke = dlg.Entity.Key.intValue();
+            int idStavke = dlg.Entity.Id;
             string naslov = "Uplata clanarine";
             string pitanje = "Da li zelite da stampate potvrdu o uplati?";
             PotvrdaDialog dlg2 = new PotvrdaDialog(naslov, pitanje);
@@ -143,6 +148,10 @@ namespace Soko.UI
             {
                 MessageDialogs.showError(ex.Message, this.Text);
             }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
         }
 
         private void mnCenovnik_Click(object sender, EventArgs e)
@@ -153,6 +162,10 @@ namespace Soko.UI
                 d.ShowDialog();
             }
             catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
             }
@@ -169,6 +182,10 @@ namespace Soko.UI
             {
                 MessageDialogs.showError(ex.Message, this.Text);
             }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
         }
 
         private void mnKategorije_Click(object sender, EventArgs e)
@@ -179,6 +196,10 @@ namespace Soko.UI
                 f.ShowDialog();
             }
             catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
             }
@@ -212,6 +233,10 @@ namespace Soko.UI
             {
                 MessageDialogs.showError(ex.Message, this.Text);
             }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
         }
 
         private void mnUplate_Click(object sender, EventArgs e)
@@ -221,10 +246,14 @@ namespace Soko.UI
 
             try
             {
-                PotvrdaUplateForm d = new PotvrdaUplateForm();
+                UplataClanarineForm d = new UplataClanarineForm();
                 d.ShowDialog();
             }
             catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
             }

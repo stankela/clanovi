@@ -6,8 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Soko.Domain;
-using Soko.Dao;
 using Soko.Exceptions;
+using Bilten.Dao;
 
 namespace Soko.UI
 {
@@ -30,7 +30,7 @@ namespace Soko.UI
 
         protected override DomainObject getEntityById(int id)
         {
-            return MapperRegistry.institucijaDAO().getById(id);
+            return DAOFactoryFactory.DAOFactory.GetInstitucijaDAO().FindById(id);
         }
 
         protected override void loadData()
@@ -40,7 +40,7 @@ namespace Soko.UI
 
         private List<Mesto> loadMesta()
         {
-            List<Mesto> result = MapperRegistry.mestoDAO().getAll();
+            List<Mesto> result = new List<Mesto>(DAOFactoryFactory.DAOFactory.GetMestoDAO().FindAll());
 
             PropertyDescriptor propDesc = TypeDescriptor.GetProperties(typeof(Mesto))["Naziv"];
             result.Sort(new SortComparer<Mesto>(propDesc, ListSortDirection.Ascending));
@@ -157,7 +157,7 @@ namespace Soko.UI
             Institucija inst = (Institucija)entity;
             Notification notification = new Notification();
 
-            InstitucijaDAO instDAO = MapperRegistry.institucijaDAO();
+            InstitucijaDAO instDAO = DAOFactoryFactory.DAOFactory.GetInstitucijaDAO();
             if (instDAO.existsInstitucijaNaziv(inst.Naziv))
             {
                 notification.RegisterMessage("Naziv", "Institucija sa datim nazivom vec postoji.");
@@ -167,14 +167,14 @@ namespace Soko.UI
 
         protected override void insertEntity(DomainObject entity)
         {
-            MapperRegistry.institucijaDAO().insert((Institucija)entity);
+            DAOFactoryFactory.DAOFactory.GetInstitucijaDAO().MakePersistent((Institucija)entity);
         }
 
         protected override void checkBusinessRulesOnUpdate(DomainObject entity)
         {
             Institucija inst = (Institucija)entity;
             Notification notification = new Notification();
-            InstitucijaDAO instDAO = MapperRegistry.institucijaDAO();
+            InstitucijaDAO instDAO = DAOFactoryFactory.DAOFactory.GetInstitucijaDAO();
 
             bool nazivChanged = (inst.Naziv.ToUpper() != oldNaziv.ToUpper()) ? true : false;
             if (nazivChanged && instDAO.existsInstitucijaNaziv(inst.Naziv))
@@ -186,7 +186,7 @@ namespace Soko.UI
 
         protected override void updateEntity(DomainObject entity)
         {
-            MapperRegistry.institucijaDAO().update((Institucija)entity);
+            DAOFactoryFactory.DAOFactory.GetInstitucijaDAO().MakePersistent((Institucija)entity);
         }
 
         private void btnOdustani_Click(object sender, System.EventArgs e)

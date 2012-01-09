@@ -6,8 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Soko.Domain;
-using Soko.Dao;
 using Soko.Exceptions;
+using Bilten.Dao;
 
 namespace Soko.UI
 {
@@ -30,7 +30,7 @@ namespace Soko.UI
 
         protected override DomainObject getEntityById(int id)
         {
-            return MapperRegistry.grupaDAO().getById(new Key(id));
+            return DAOFactoryFactory.DAOFactory.GetGrupaDAO().FindById(id);
         }
 
         protected override void loadData()
@@ -40,7 +40,7 @@ namespace Soko.UI
 
         private List<Kategorija> loadKategorije()
         {
-            List<Kategorija> result = MapperRegistry.kategorijaDAO().getAll();
+            List<Kategorija> result = new List<Kategorija>(DAOFactoryFactory.DAOFactory.GetKategorijaDAO().FindAll());
 
             PropertyDescriptor propDesc = TypeDescriptor.GetProperties(typeof(Kategorija))["Naziv"];
             result.Sort(new SortComparer<Kategorija>(propDesc, ListSortDirection.Ascending));
@@ -169,8 +169,8 @@ namespace Soko.UI
             Grupa g = (Grupa)entity;
             Notification notification = new Notification();
 
-            GrupaDAO grupaDAO = MapperRegistry.grupaDAO();
-            if (grupaDAO.getById(g.Sifra) != null)
+            GrupaDAO grupaDAO = DAOFactoryFactory.DAOFactory.GetGrupaDAO();
+            if (grupaDAO.existsGrupaSifra(g.Sifra))
             {
                 notification.RegisterMessage("Sifra", "Grupa sa datom sifrom vec postoji.");
                 throw new BusinessException(notification);
@@ -184,7 +184,7 @@ namespace Soko.UI
 
         protected override void insertEntity(DomainObject entity)
         {
-            MapperRegistry.grupaDAO().insert((Grupa)entity);
+            DAOFactoryFactory.DAOFactory.GetGrupaDAO().MakePersistent((Grupa)entity);
         }
 
         protected override void checkBusinessRulesOnUpdate(DomainObject entity)
@@ -192,9 +192,9 @@ namespace Soko.UI
             Grupa g = (Grupa)entity;
             Notification notification = new Notification();
 
-            GrupaDAO grupaDAO = MapperRegistry.grupaDAO();
+            GrupaDAO grupaDAO = DAOFactoryFactory.DAOFactory.GetGrupaDAO();
             bool sifraChanged = (g.Sifra != oldSifra) ? true : false;
-            if (sifraChanged && grupaDAO.getById(g.Sifra) != null)
+            if (sifraChanged && grupaDAO.existsGrupaSifra(g.Sifra))
             {
                 notification.RegisterMessage("Sifra", "Grupa sa datom sifrom vec postoji.");
                 throw new BusinessException(notification);
@@ -210,11 +210,7 @@ namespace Soko.UI
 
         protected override void updateEntity(DomainObject entity)
         {
-            Grupa g = (Grupa)entity;
-            if (g.Sifra == oldSifra)
-                MapperRegistry.grupaDAO().update(g);
-            else
-                MapperRegistry.grupaDAO().update(g, oldSifra);
+            DAOFactoryFactory.DAOFactory.GetGrupaDAO().MakePersistent((Grupa)entity);
         }
 
         private void btnOdustani_Click(object sender, System.EventArgs e)

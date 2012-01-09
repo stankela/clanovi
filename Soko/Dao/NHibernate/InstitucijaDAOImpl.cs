@@ -18,9 +18,24 @@ namespace Bilten.Dao.NHibernate
         {
             try
             {
-
                 IQuery q = Session.CreateQuery("select count(*) from Institucija i where i.Mesto = :mesto");
                 q.SetEntity("mesto", m);
+                return (long)q.UniqueResult() > 0;
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
+        public virtual bool existsInstitucijaNaziv(string naziv)
+        {
+            try
+            {
+                IQuery q = Session.CreateQuery("select count(*) from Institucija i where i.Naziv = :naziv");
+                q.SetString("naziv", naziv);
                 return (long)q.UniqueResult() > 0;
             }
             catch (HibernateException ex)
@@ -37,7 +52,7 @@ namespace Bilten.Dao.NHibernate
         {
             try
             {
-                IQuery q = Session.CreateQuery(@"from Institucija");
+                IQuery q = Session.CreateQuery(@"from Institucija i left join fetch i.Mesto");
                 return q.List<Institucija>();
             }
             catch (HibernateException ex)

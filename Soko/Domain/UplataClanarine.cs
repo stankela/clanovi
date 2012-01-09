@@ -29,30 +29,32 @@ namespace Soko.Domain
 			set { grupa = value; }
 		}
 
-		private Nullable<DateTime> datumUplate;
 		public virtual Nullable<DateTime> DatumUplate
 		{
-			get { return datumUplate; }
-			set { datumUplate = value; }
+			get
+            {
+                if (DatumVremeUplate == null)
+                    return null;
+                else
+                    return DatumVremeUplate.Value.Date; 
+            }
 		}
 
-		private Nullable<TimeSpan> vremeUplate;
 		public virtual Nullable<TimeSpan> VremeUplate
 		{
-			get { return vremeUplate; }
-			set { vremeUplate = value; } 
-		}
+            get
+            {
+                if (DatumVremeUplate == null)
+                    return null;
+                else
+                    return DatumVremeUplate.Value.TimeOfDay;
+            }
+        }
 
         private Nullable<DateTime> datumVremeUplate;
         public virtual Nullable<DateTime> DatumVremeUplate
         {
-            get
-            {
-                Nullable<DateTime> result = new DateTime(
-                    DatumUplate.Value.Year, DatumUplate.Value.Month, DatumUplate.Value.Day,
-                    VremeUplate.Value.Hours, VremeUplate.Value.Minutes, VremeUplate.Value.Seconds);
-                return result;
-            }
+            get { return datumVremeUplate; }
             set { datumVremeUplate = value; }
         }
 
@@ -84,7 +86,29 @@ namespace Soko.Domain
 			set { korisnik = value; }
 		}
 
-		public override void validate(Notification notification)
+        public virtual string PrezimeImeBrojDatumRodj
+        {
+            get
+            {
+                if (Clan != null)
+                    return Clan.PrezimeImeBrojDatumRodj;
+                else
+                    return String.Empty;
+            }
+        }
+
+        public virtual string SifraGrupeCrtaNazivGrupe
+        {
+            get
+            {
+                if (Grupa != null)
+                    return Grupa.SifraCrtaNaziv;
+                else
+                    return String.Empty;
+            }
+        }
+
+        public override void validate(Notification notification)
 		{
 			if (Clan == null)
 			{

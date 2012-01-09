@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Soko.Domain;
-using Soko.Dao;
+using Bilten.Dao;
 
 namespace Soko.UI
 {
@@ -29,7 +29,7 @@ namespace Soko.UI
 
         protected override DomainObject getEntityById(int id)
         {
-            return MapperRegistry.clanDAO().getById(id);
+            return DAOFactoryFactory.DAOFactory.GetClanDAO().FindById(id);
         }
 
         protected override void loadData()
@@ -40,7 +40,7 @@ namespace Soko.UI
 
         private List<Mesto> loadMesta()
         {
-            List<Mesto> result = MapperRegistry.mestoDAO().getAll();
+            List<Mesto> result = new List<Mesto>(DAOFactoryFactory.DAOFactory.GetMestoDAO().FindAll());
 
             PropertyDescriptor propDesc = TypeDescriptor.GetProperties(typeof(Mesto))["Naziv"];
             result.Sort(new SortComparer<Mesto>(propDesc, ListSortDirection.Ascending));
@@ -50,7 +50,7 @@ namespace Soko.UI
 
         private List<Institucija> loadInstitucije()
         {
-            List<Institucija> result = MapperRegistry.institucijaDAO().getAll();
+            List<Institucija> result = new List<Institucija>(DAOFactoryFactory.DAOFactory.GetInstitucijaDAO().FindAll());
 
             PropertyDescriptor propDesc = TypeDescriptor.GetProperties(typeof(Institucija))["Naziv"];
             result.Sort(new SortComparer<Institucija>(propDesc, ListSortDirection.Ascending));
@@ -163,7 +163,7 @@ namespace Soko.UI
 
         private int getNewBroj()
         {
-            return MapperRegistry.clanDAO().getMaxBroj() + 1;
+            return DAOFactoryFactory.DAOFactory.GetClanDAO().getMaxBroj() + 1;
         }
 
         private void btnOk_Click(object sender, System.EventArgs e)
@@ -295,12 +295,12 @@ namespace Soko.UI
 
         protected override void insertEntity(DomainObject entity)
         {
-            MapperRegistry.clanDAO().insert((Clan)entity);
+            DAOFactoryFactory.DAOFactory.GetClanDAO().MakePersistent((Clan)entity);
         }
 
         protected override void updateEntity(DomainObject entity)
         {
-            MapperRegistry.clanDAO().update((Clan)entity);
+            DAOFactoryFactory.DAOFactory.GetClanDAO().MakePersistent((Clan)entity);
         }
 
         private void txtNazivMesta_TextChanged(object sender, System.EventArgs e)

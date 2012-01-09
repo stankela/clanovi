@@ -10,6 +10,6 @@ namespace Bilten.Dao
     /// </summary>
     public interface MestoDAO : GenericDAO<Mesto, int>
     {
-        IList<Mesto> FindMestoByNaziv(string naziv);
+        bool existsMestoNaziv(string naziv);
     }
 }

@@ -57,9 +57,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dao\ClanDAO.cs" />
+    <Compile Include="Dao\GrupaDAO.cs" />
     <Compile Include="Dao\InstitucijaDAO.cs" />
+    <Compile Include="Dao\KategorijaDAO.cs" />
+    <Compile Include="Dao\MesecnaClanarinaDAO.cs" />
     <Compile Include="Dao\NHibernate\ClanDAOImpl.cs" />
+    <Compile Include="Dao\NHibernate\GrupaDAOImpl.cs" />
     <Compile Include="Dao\NHibernate\InstitucijaDAOImpl.cs" />
+    <Compile Include="Dao\NHibernate\KategorijaDAOImpl.cs" />
+    <Compile Include="Dao\NHibernate\MesecnaClanarinaDAOImpl.cs" />
+    <Compile Include="Dao\NHibernate\UplataClanarineDAOImpl.cs" />
     <Compile Include="Dao\Old\ClanDAO.cs" />
     <Compile Include="Dao\Old\DAO.cs" />
     <Compile Include="Dao\DAOFactory.cs" />
@@ -76,6 +83,7 @@
     <Compile Include="Dao\NHibernate\MestoDAOImpl.cs" />
     <Compile Include="Dao\NHibernate\NHibernateDAOFactory.cs" />
     <Compile Include="Dao\Old\UplataClanarineDAO.cs" />
+    <Compile Include="Dao\UplataClanarineDAO.cs" />
     <Compile Include="Data\DataAccessProviderFactory.cs" />
     <Compile Include="Data\IDataContext.cs" />
     <Compile Include="Data\IDataProviderFactory.cs" />
@@ -279,9 +287,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>PotvrdaDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\PotvrdaUplateForm.resx">
+    <EmbeddedResource Include="UI\UplataClanarineForm.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>PotvrdaUplateForm.cs</DependentUpon>
+      <DependentUpon>UplataClanarineForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\PreviewDialog.resx">
       <SubType>Designer</SubType>
@@ -347,7 +355,6 @@
       <DependentUpon>GrupeForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\InstitucijaDialog.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\InstitucijaDialog.Designer.cs">
       <DependentUpon>InstitucijaDialog.cs</DependentUpon>
@@ -389,11 +396,11 @@
     <Compile Include="UI\PotvrdaDialog.Designer.cs">
       <DependentUpon>PotvrdaDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\PotvrdaUplateForm.cs">
+    <Compile Include="UI\UplataClanarineForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\PotvrdaUplateForm.Designer.cs">
-      <DependentUpon>PotvrdaUplateForm.cs</DependentUpon>
+    <Compile Include="UI\UplataClanarineForm.Designer.cs">
+      <DependentUpon>UplataClanarineForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\PreviewDialog.cs">
       <SubType>Form</SubType>

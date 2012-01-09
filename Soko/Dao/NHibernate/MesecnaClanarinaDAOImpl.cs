@@ -8,18 +8,18 @@ using Soko;
 namespace Bilten.Dao.NHibernate
 {
     /// <summary>
-    /// NHibernate-specific implementation of <see cref="MestoDAO"/>.
+    /// NHibernate-specific implementation of <see cref="MesecnaClanarinaDAO"/>.
     /// </summary>
-    public class MestoDAOImpl : GenericNHibernateDAO<Mesto, int>, MestoDAO
+    public class MesecnaClanarinaDAOImpl : GenericNHibernateDAO<MesecnaClanarina, int>, MesecnaClanarinaDAO
     {
-        #region MestoDAO Members
+        #region MesecnaClanarinaDAO Members
 
-        public virtual bool existsMestoNaziv(string naziv)
+        public virtual bool existsClanarinaGrupa(Grupa g)
         {
             try
             {
-                IQuery q = Session.CreateQuery("select count(*) from Mesto m where m.Naziv like :naziv");
-                q.SetString("naziv", naziv);
+                IQuery q = Session.CreateQuery("select count(*) from MesecnaClanarina mc where mc.Grupa = :grupa");
+                q.SetEntity("grupa", g);
                 return (long)q.UniqueResult() > 0;
             }
             catch (HibernateException ex)
@@ -32,12 +32,12 @@ namespace Bilten.Dao.NHibernate
 
         #endregion
 
-        public override IList<Mesto> FindAll()
+        public override IList<MesecnaClanarina> FindAll()
         {
             try
             {
-                IQuery q = Session.CreateQuery(@"from Mesto");
-                return q.List<Mesto>();
+                IQuery q = Session.CreateQuery(@"from MesecnaClanarina");
+                return q.List<MesecnaClanarina>();
             }
             catch (HibernateException ex)
             {

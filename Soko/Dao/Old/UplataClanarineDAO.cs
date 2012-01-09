@@ -87,8 +87,9 @@ namespace Soko.Dao
 
             entity.Clan = clan;
             entity.Grupa = grupa;
-            entity.DatumUplate = datumUplate;
-            entity.VremeUplate = vremeUplate;
+            entity.DatumVremeUplate = new DateTime(
+                datumUplate.Value.Year, datumUplate.Value.Month, datumUplate.Value.Day,
+                vremeUplate.Value.Hours, vremeUplate.Value.Minutes, vremeUplate.Value.Seconds);
             entity.VaziOd = vaziOd;
             entity.Iznos = iznos;
             entity.Napomena = napomena;

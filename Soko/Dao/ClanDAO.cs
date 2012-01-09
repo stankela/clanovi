@@ -11,5 +11,7 @@ namespace Bilten.Dao
     public interface ClanDAO : GenericDAO<Clan, int>
     {
         bool existsClanMesto(Mesto m);
+        bool existsClanInstitucija(Institucija i);
+        int getMaxBroj();
     }
 }

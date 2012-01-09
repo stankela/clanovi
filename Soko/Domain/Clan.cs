@@ -181,7 +181,24 @@ namespace Soko.Domain
 			}
 		}
 
-		public static string formatPrezimeImeBrojDatumRodjAdresaMesto(string prezime,
+        public virtual string PrezimeImeBrojDatumRodj
+        {
+            get
+            {
+                string p = String.Empty;
+                if (Prezime != null)
+                    p = Prezime;
+
+                string i = String.Empty;
+                if (Ime != null)
+                    i = Ime;
+
+                return formatPrezimeImeBrojDatumRodjAdresaMesto(
+                    p, i, Broj, DatumRodjenja, String.Empty, String.Empty);
+            }
+        }
+
+        public static string formatPrezimeImeBrojDatumRodjAdresaMesto(string prezime,
 			string ime, Nullable<int> broj, Nullable<DateTime> datumRodjenja, 
             string adresa, string mesto)
 		{

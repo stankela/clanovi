@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Soko.Domain;
-using Soko.Dao;
+using Bilten.Dao;
 
 namespace Soko.UI
 {
@@ -61,10 +61,11 @@ namespace Soko.UI
 
         protected override List<object> loadEntities()
         {
-            return MapperRegistry.clanDAO().getAll().ConvertAll<object>(
-                delegate(Clan clan)
+            ClanDAO clanDAO = DAOFactoryFactory.DAOFactory.GetClanDAO();
+            return new List<Clan>(clanDAO.FindAll()).ConvertAll<object>(
+                delegate(Clan c)
                 {
-                    return clan;
+                    return c;
                 });
         }
 
@@ -96,9 +97,9 @@ namespace Soko.UI
         protected override bool refIntegrityDeleteDlg(DomainObject entity)
         {
             Clan c = (Clan)entity;
-            UplataClanarineDAO uplataDao = MapperRegistry.uplataClanarineDAO();
+            UplataClanarineDAO uplataDao = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
 
-            if (uplataDao.existsUplataClan(c.Key.intValue()))
+            if (uplataDao.existsUplataClan(c))
             {
                 string msg = "Clana '{0}' nije moguce izbrisati zato sto postoje " +
                     "podaci o uplatama za datog clana.";
@@ -110,7 +111,7 @@ namespace Soko.UI
 
         protected override void delete(DomainObject entity)
         {
-            MapperRegistry.clanDAO().delete((Clan)entity);
+            DAOFactoryFactory.DAOFactory.GetClanDAO().MakeTransient((Clan)entity);
         }
 
         protected override string deleteErrorMessage(DomainObject entity)

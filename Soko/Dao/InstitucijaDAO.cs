@@ -11,5 +11,6 @@ namespace Bilten.Dao
     public interface InstitucijaDAO : GenericDAO<Institucija, int>
     {
         bool existsInstitucijaMesto(Mesto m);
+        bool existsInstitucijaNaziv(string naziv);
     }
 }

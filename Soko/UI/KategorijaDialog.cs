@@ -6,8 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Soko.Domain;
-using Soko.Dao;
 using Soko.Exceptions;
+using Bilten.Dao;
 
 namespace Soko.UI
 {
@@ -28,7 +28,7 @@ namespace Soko.UI
 
         protected override DomainObject getEntityById(int id)
         {
-            return MapperRegistry.kategorijaDAO().getById(id);
+            return DAOFactoryFactory.DAOFactory.GetKategorijaDAO().FindById(id);
         }
 
         protected override void initUI()
@@ -94,8 +94,8 @@ namespace Soko.UI
             Kategorija k = (Kategorija)entity;
             Notification notification = new Notification();
 
-            KategorijaDAO katDAO = MapperRegistry.kategorijaDAO();
-            if (katDAO.existsKategorija(k.Naziv))
+            KategorijaDAO katDAO = DAOFactoryFactory.DAOFactory.GetKategorijaDAO();
+            if (katDAO.existsKategorijaNaziv(k.Naziv))
             {
                 notification.RegisterMessage("Naziv", "Kategorija sa datim nazivom vec postoji.");
                 throw new BusinessException(notification);
@@ -104,7 +104,7 @@ namespace Soko.UI
 
         protected override void insertEntity(DomainObject entity)
         {
-            MapperRegistry.kategorijaDAO().insert((Kategorija)entity);
+            DAOFactoryFactory.DAOFactory.GetKategorijaDAO().MakePersistent((Kategorija)entity);
         }
 
         protected override void checkBusinessRulesOnUpdate(DomainObject entity)
@@ -112,9 +112,9 @@ namespace Soko.UI
             Kategorija k = (Kategorija)entity;
             Notification notification = new Notification();
 
-            KategorijaDAO katDAO = MapperRegistry.kategorijaDAO();
+            KategorijaDAO katDAO = DAOFactoryFactory.DAOFactory.GetKategorijaDAO();
             bool nazivChanged = (k.Naziv.ToUpper() != oldNaziv.ToUpper()) ? true : false;
-            if (nazivChanged && katDAO.existsKategorija(k.Naziv))
+            if (nazivChanged && katDAO.existsKategorijaNaziv(k.Naziv))
             {
                 notification.RegisterMessage("Naziv", "Kategorija sa datim nazivom vec postoji.");
                 throw new BusinessException(notification);
@@ -123,7 +123,7 @@ namespace Soko.UI
 
         protected override void updateEntity(DomainObject entity)
         {
-            MapperRegistry.kategorijaDAO().update((Kategorija)entity);
+            DAOFactoryFactory.DAOFactory.GetKategorijaDAO().MakePersistent((Kategorija)entity);
         }
 
         private void btnOdustani_Click(object sender, System.EventArgs e)

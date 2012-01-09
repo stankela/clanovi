@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Soko.Domain;
-using Soko.Dao;
+using Bilten.Dao;
 
 namespace Soko.UI
 {
@@ -44,7 +44,8 @@ namespace Soko.UI
 
         protected override List<object> loadEntities()
         {
-            return MapperRegistry.grupaDAO().getAll().ConvertAll<object>(
+            GrupaDAO grupaDAO = DAOFactoryFactory.DAOFactory.GetGrupaDAO();
+            return new List<Grupa>(grupaDAO.FindAll()).ConvertAll<object>(
                 delegate(Grupa g)
                 {
                     return g;
@@ -79,17 +80,17 @@ namespace Soko.UI
         protected override bool refIntegrityDeleteDlg(DomainObject entity)
         {
             Grupa g = (Grupa)entity;
-            UplataClanarineDAO uplataDao = MapperRegistry.uplataClanarineDAO();
-            MesecnaClanarinaDAO mesecnaClanarinaDao = MapperRegistry.mesecnaClanarinaDAO();
+            UplataClanarineDAO uplataDao = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
+            MesecnaClanarinaDAO mesecnaClanarinaDao = DAOFactoryFactory.DAOFactory.GetMesecnaClanarinaDAO();
 
-            if (uplataDao.existsUplataGrupa(g.Sifra.Value))
+            if (uplataDao.existsUplataGrupa(g))
             {
                 string msg = "Grupu '{0}' nije moguce izbrisati zato sto postoje " +
                     "podaci o uplatama za datu grupu.";
                 MessageDialogs.showMessage(String.Format(msg, g), this.Text);
                 return false;
             }
-            else if (mesecnaClanarinaDao.existsClanarinaGrupa(g.Sifra.Value))
+            else if (mesecnaClanarinaDao.existsClanarinaGrupa(g))
             {
                 string msg = "Grupu '{0}' nije moguce izbrisati zato sto postoji " +
                     "cenovnik za datu grupu. \n\nDa bi mogli da izbrisete neku grupu, " +
@@ -102,7 +103,7 @@ namespace Soko.UI
 
         protected override void delete(DomainObject entity)
         {
-            MapperRegistry.grupaDAO().delete((Grupa)entity);
+            DAOFactoryFactory.DAOFactory.GetGrupaDAO().MakeTransient((Grupa)entity);
         }
 
         protected override string deleteErrorMessage(DomainObject entity)

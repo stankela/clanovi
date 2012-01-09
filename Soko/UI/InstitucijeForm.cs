@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Soko.Domain;
-using Soko.Dao;
+using Bilten.Dao;
 
 namespace Soko.UI
 {
@@ -44,10 +44,11 @@ namespace Soko.UI
 
         protected override List<object> loadEntities()
         {
-            return MapperRegistry.institucijaDAO().getAll().ConvertAll<object>(
-                delegate(Institucija inst)
+            InstitucijaDAO institucijaDAO = DAOFactoryFactory.DAOFactory.GetInstitucijaDAO();
+            return new List<Institucija>(institucijaDAO.FindAll()).ConvertAll<object>(
+                delegate(Institucija i)
                 {
-                    return inst;
+                    return i;
                 });
         }
 
@@ -79,9 +80,9 @@ namespace Soko.UI
         protected override bool refIntegrityDeleteDlg(DomainObject entity)
         {
             Institucija inst = (Institucija)entity;
-            ClanDAO clanDao = MapperRegistry.clanDAO();
+            ClanDAO clanDao = DAOFactoryFactory.DAOFactory.GetClanDAO();
 
-            if (clanDao.existsClanInstitucija(inst.Key.intValue()))
+            if (clanDao.existsClanInstitucija(inst))
             {
                 string msg = "Instituciju '{0}' nije moguce izbrisati zato sto postoje " +
                     "clanovi iz date institucije. \n\nDa bi neka institucija mogla da se izbrise, " +
@@ -99,7 +100,7 @@ namespace Soko.UI
 
         protected override void delete(DomainObject entity)
         {
-            MapperRegistry.institucijaDAO().delete((Institucija)entity);
+            DAOFactoryFactory.DAOFactory.GetInstitucijaDAO().MakeTransient((Institucija)entity);
         }
 
         protected override string deleteErrorMessage(DomainObject entity)

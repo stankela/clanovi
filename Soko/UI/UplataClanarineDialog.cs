@@ -6,8 +6,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Soko.Domain;
-using Soko.Dao;
 using System.Globalization;
+using Bilten.Dao;
 
 namespace Soko.UI
 {
@@ -38,7 +38,7 @@ namespace Soko.UI
 
         private List<Clan> loadClanovi()
         {
-            List<Clan> result = MapperRegistry.clanDAO().getAll();
+            List<Clan> result = new List<Clan>(DAOFactoryFactory.DAOFactory.GetClanDAO().FindAll());
 
             PropertyDescriptor propDescPrez = TypeDescriptor.GetProperties(typeof(Clan))["Prezime"];
             PropertyDescriptor propDescIme = TypeDescriptor.GetProperties(typeof(Clan))["Ime"];
@@ -53,7 +53,7 @@ namespace Soko.UI
 
         private List<Grupa> loadGrupe()
         {
-            List<Grupa> result = MapperRegistry.grupaDAO().getAll();
+            List<Grupa> result = new List<Grupa>(DAOFactoryFactory.DAOFactory.GetGrupaDAO().FindAll());
 
             PropertyDescriptor propDesc = TypeDescriptor.GetProperties(typeof(Grupa))["Naziv"];
             result.Sort(new SortComparer<Grupa>(propDesc, ListSortDirection.Ascending));
@@ -90,56 +90,26 @@ namespace Soko.UI
 
         private void setClanovi(List<Clan> clanovi)
         {
-            cmbClan.Items.Clear();
-            foreach (Clan c in clanovi)
-            {
-                cmbClan.Items.Add(c.BrojPrezimeImeDatumRodjenja);
-            }
+            cmbClan.DataSource = clanovi;
+            cmbClan.DisplayMember = "BrojPrezimeImeDatumRodjenja";
         }
 
         private Clan SelectedClan
         {
-            get
-            {
-                if (cmbClan.SelectedIndex >= 0)
-                    return clanovi[cmbClan.SelectedIndex];
-                else
-                    return null;
-            }
-            set
-            {
-                if (value == null || clanovi.IndexOf(value) == -1)
-                    cmbClan.SelectedIndex = -1;
-                else
-                    cmbClan.SelectedIndex = clanovi.IndexOf(value);
-            }
+            get { return cmbClan.SelectedItem as Clan; }
+            set { cmbClan.SelectedItem = value; }
         }
 
         private void setGrupe(List<Grupa> grupe)
         {
-            cmbGrupa.Items.Clear();
-            foreach (Grupa g in grupe)
-            {
-                cmbGrupa.Items.Add(g.SifraNaziv);
-            }
+            cmbGrupa.DataSource = grupe;
+            cmbGrupa.DisplayMember = "SifraNaziv";
         }
 
         private Grupa SelectedGrupa
         {
-            get
-            {
-                if (cmbGrupa.SelectedIndex >= 0)
-                    return grupe[cmbGrupa.SelectedIndex];
-                else
-                    return null;
-            }
-            set
-            {
-                if (value == null || grupe.IndexOf(value) == -1)
-                    cmbGrupa.SelectedIndex = -1;
-                else
-                    cmbGrupa.SelectedIndex = grupe.IndexOf(value);
-            }
+            get { return cmbGrupa.SelectedItem as Grupa; }
+            set { cmbGrupa.SelectedItem = value; }
         }
 
         private void UplataClanarineDialog_Shown(object sender, EventArgs e)
@@ -233,9 +203,11 @@ namespace Soko.UI
             UplataClanarine uc = (UplataClanarine)entity;
             uc.Clan = SelectedClan;
             uc.Grupa = SelectedGrupa;
-            uc.DatumUplate = DateTime.Parse(txtDatumUplate.Text);
-            if (!editMode)
-                uc.VremeUplate = DateTime.Now.TimeOfDay;
+            DateTime datumUplate = DateTime.Parse(txtDatumUplate.Text);
+            TimeSpan vremeUplate = DateTime.Now.TimeOfDay;
+            uc.DatumVremeUplate = new DateTime(
+                datumUplate.Year, datumUplate.Month, datumUplate.Day,
+                vremeUplate.Hours, vremeUplate.Minutes, vremeUplate.Seconds);
             uc.VaziOd = dateTimePickerDatumClanarine.Value.Date;
             uc.Iznos = decimal.Parse(txtIznos.Text);
             if (txtNapomena.Text.Trim() != String.Empty)
@@ -248,7 +220,7 @@ namespace Soko.UI
 
         protected override void insertEntity(DomainObject entity)
         {
-            MapperRegistry.uplataClanarineDAO().insert((UplataClanarine)entity);
+            DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO().MakePersistent((UplataClanarine)entity);
         }
 
         private void txtSifraClana_TextChanged(object sender, System.EventArgs e)

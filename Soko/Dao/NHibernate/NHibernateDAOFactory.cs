@@ -23,5 +23,25 @@ namespace Bilten.Dao.NHibernate
         {
             return new InstitucijaDAOImpl();
         }
+
+        public override UplataClanarineDAO GetUplataClanarineDAO()
+        {
+            return new UplataClanarineDAOImpl();
+        }
+
+        public override KategorijaDAO GetKategorijaDAO()
+        {
+            return new KategorijaDAOImpl();
+        }
+
+        public override GrupaDAO GetGrupaDAO()
+        {
+            return new GrupaDAOImpl();
+        }
+
+        public override MesecnaClanarinaDAO GetMesecnaClanarinaDAO()
+        {
+            return new MesecnaClanarinaDAOImpl();
+        }
     }
 }

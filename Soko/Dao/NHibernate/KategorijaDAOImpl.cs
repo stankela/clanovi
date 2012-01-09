@@ -8,17 +8,17 @@ using Soko;
 namespace Bilten.Dao.NHibernate
 {
     /// <summary>
-    /// NHibernate-specific implementation of <see cref="MestoDAO"/>.
+    /// NHibernate-specific implementation of <see cref="KategorijaDAO"/>.
     /// </summary>
-    public class MestoDAOImpl : GenericNHibernateDAO<Mesto, int>, MestoDAO
+    public class KategorijaDAOImpl : GenericNHibernateDAO<Kategorija, int>, KategorijaDAO
     {
-        #region MestoDAO Members
+        #region KategorijaDAO Members
 
-        public virtual bool existsMestoNaziv(string naziv)
+        public virtual bool existsKategorijaNaziv(string naziv)
         {
             try
             {
-                IQuery q = Session.CreateQuery("select count(*) from Mesto m where m.Naziv like :naziv");
+                IQuery q = Session.CreateQuery("select count(*) from Kategorija k where k.Naziv like :naziv");
                 q.SetString("naziv", naziv);
                 return (long)q.UniqueResult() > 0;
             }
@@ -32,12 +32,12 @@ namespace Bilten.Dao.NHibernate
 
         #endregion
 
-        public override IList<Mesto> FindAll()
+        public override IList<Kategorija> FindAll()
         {
             try
             {
-                IQuery q = Session.CreateQuery(@"from Mesto");
-                return q.List<Mesto>();
+                IQuery q = Session.CreateQuery(@"from Kategorija");
+                return q.List<Kategorija>();
             }
             catch (HibernateException ex)
             {

@@ -28,8 +28,7 @@ namespace Soko.UI
 
         protected override DomainObject getEntityById(int id)
         {
-            MestoDAO mestoDAO = DAOFactoryFactory.DAOFactory.GetMestoDAO();
-            return mestoDAO.FindById(id);
+            return DAOFactoryFactory.DAOFactory.GetMestoDAO().FindById(id);
         }
 
         protected override void initUI()
@@ -108,7 +107,7 @@ namespace Soko.UI
             Notification notification = new Notification();
 
             MestoDAO mestoDAO = DAOFactoryFactory.DAOFactory.GetMestoDAO();
-            if (mestoDAO.FindMestoByNaziv(m.Naziv).Count > 0)
+            if (mestoDAO.existsMestoNaziv(m.Naziv))
             {
                 notification.RegisterMessage("Naziv", "Mesto sa datim nazivom vec postoji.");
                 throw new BusinessException(notification);
@@ -117,8 +116,7 @@ namespace Soko.UI
 
         protected override void insertEntity(DomainObject entity)
         {
-            MestoDAO mestoDAO = DAOFactoryFactory.DAOFactory.GetMestoDAO();
-            mestoDAO.MakePersistent((Mesto)entity);
+            DAOFactoryFactory.DAOFactory.GetMestoDAO().MakePersistent((Mesto)entity);
         }
 
         protected override void checkBusinessRulesOnUpdate(DomainObject entity)
@@ -128,7 +126,7 @@ namespace Soko.UI
 
             MestoDAO mestoDAO = DAOFactoryFactory.DAOFactory.GetMestoDAO();
             bool nazivChanged = (m.Naziv.ToUpper() != oldNaziv.ToUpper()) ? true : false;
-            if (nazivChanged && mestoDAO.FindMestoByNaziv(m.Naziv).Count > 0)
+            if (nazivChanged && mestoDAO.existsMestoNaziv(m.Naziv))
             {
                 notification.RegisterMessage("Naziv", "Mesto sa datim nazivom vec postoji.");
                 throw new BusinessException(notification);
@@ -137,9 +135,7 @@ namespace Soko.UI
 
         protected override void updateEntity(DomainObject entity)
         {
-            Mesto m = (Mesto)entity;
-            MestoDAO mestoDAO = DAOFactoryFactory.DAOFactory.GetMestoDAO();
-            mestoDAO.MakePersistent(m);
+            DAOFactoryFactory.DAOFactory.GetMestoDAO().MakePersistent((Mesto)entity);
         }
 
         private void btnOdustani_Click(object sender, System.EventArgs e)

@@ -6,7 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Soko.Domain;
-using Soko.Dao;
+using Bilten.Dao;
 
 namespace Soko.UI
 {
@@ -40,7 +40,8 @@ namespace Soko.UI
 
         protected override List<object> loadEntities()
         {
-            return MapperRegistry.kategorijaDAO().getAll().ConvertAll<object>(
+            KategorijaDAO kategorijaDAO = DAOFactoryFactory.DAOFactory.GetKategorijaDAO();
+            return new List<Kategorija>(kategorijaDAO.FindAll()).ConvertAll<object>(
                 delegate(Kategorija kat)
                 {
                     return kat;
@@ -75,9 +76,9 @@ namespace Soko.UI
         protected override bool refIntegrityDeleteDlg(DomainObject entity)
         {
             Kategorija k = (Kategorija)entity;
-            GrupaDAO grupaDao = MapperRegistry.grupaDAO();
+            GrupaDAO grupaDao = DAOFactoryFactory.DAOFactory.GetGrupaDAO();
 
-            if (grupaDao.existsGrupa(k.Key.intValue()))
+            if (grupaDao.existsGrupa(k))
             {
                 string msg = "Kategoriju '{0}' nije moguce izbrisati zato sto postoje " +
                     "grupe za datu kategoriju. \n\nDa bi neka kategorija mogla da se " +
@@ -95,7 +96,7 @@ namespace Soko.UI
 
         protected override void delete(DomainObject entity)
         {
-            MapperRegistry.kategorijaDAO().delete((Kategorija)entity);
+            DAOFactoryFactory.DAOFactory.GetKategorijaDAO().MakeTransient((Kategorija)entity);
         }
 
         protected override string deleteErrorMessage(DomainObject entity)
