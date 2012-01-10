@@ -15,18 +15,11 @@ namespace Soko.Domain
 
 		}
 
+        private string zip;
 		public virtual string Zip
 		{
-			get
-			{
-				if (Key != null)
-					return Key.stringValue();
-				return null;
-			}
-			set
-			{
-				Key = new Key(value);
-			}
+			get { return zip; }
+			set { zip = value; }
 		}
 
 		private string naziv;
@@ -38,7 +31,7 @@ namespace Soko.Domain
 	
 		public Mesto(string zip, string naziv)
 		{
-			this.Key = new Key(zip);
+			this.zip = zip;
 			this.naziv = naziv;
 		}
 

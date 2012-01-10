@@ -106,7 +106,7 @@ namespace Soko.UI
         private void btnOk_Click(object sender, System.EventArgs e)
         {
             if (SelectedClan != null)
-                idClana = SelectedClan.Key.intValue();
+                idClana = SelectedClan.Id;
             else
                 idClana = -1;
         }

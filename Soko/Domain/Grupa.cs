@@ -9,19 +9,12 @@ namespace Soko.Domain
 	{
 		public static readonly int SIFRA_MAX_LENGTH = 6;
 		public static readonly int NAZIV_MAX_LENGTH = 50;
-		
+
+        private SifraGrupe sifra;
 		public virtual SifraGrupe Sifra
 		{
-			get
-			{
-				if (Key != null)
-					return (SifraGrupe)Key.Value();
-				return null;
-			}
-			set
-			{
-				Key = new Key(value);
-			}
+			get { return sifra; }
+			set { sifra = value; }
 		}
 
         private string naziv;
@@ -52,7 +45,7 @@ namespace Soko.Domain
 
 		public Grupa(SifraGrupe sifra, string naziv, Kategorija kategorija)
 		{
-			Sifra = sifra;
+			this.sifra = sifra;
 			this.naziv = naziv;
 			this.kategorija = kategorija;
 		}

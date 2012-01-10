@@ -11,5 +11,8 @@ namespace Bilten.Dao
     public interface MesecnaClanarinaDAO : GenericDAO<MesecnaClanarina, int>
     {
         bool existsClanarinaGrupa(Grupa g);
+        IList<MesecnaClanarina> getCenovnik();
+        IList<MesecnaClanarina> findForGrupa(Grupa g);
+        MesecnaClanarina getVazecaClanarinaForGrupa(Grupa g);
     }
 }

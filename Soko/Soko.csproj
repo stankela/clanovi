@@ -142,11 +142,11 @@
     <Compile Include="UI\CenaDialog.Designer.cs">
       <DependentUpon>CenaDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\CenovnikForm.cs">
+    <Compile Include="UI\MesecneClanarineForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\CenovnikForm.Designer.cs">
-      <DependentUpon>CenovnikForm.cs</DependentUpon>
+    <Compile Include="UI\MesecneClanarineForm.Designer.cs">
+      <DependentUpon>MesecneClanarineForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\ClanDialog.cs">
       <SubType>Form</SubType>
@@ -205,9 +205,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>CenaDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\CenovnikForm.resx">
+    <EmbeddedResource Include="UI\MesecneClanarineForm.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>CenovnikForm.cs</DependentUpon>
+      <DependentUpon>MesecneClanarineForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ClanDialog.resx">
       <SubType>Designer</SubType>
@@ -287,9 +287,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>PotvrdaDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\UplataClanarineForm.resx">
+    <EmbeddedResource Include="UI\UplateClanarineForm.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>UplataClanarineForm.cs</DependentUpon>
+      <DependentUpon>UplateClanarineForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\PreviewDialog.resx">
       <SubType>Designer</SubType>
@@ -355,6 +355,7 @@
       <DependentUpon>GrupeForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\InstitucijaDialog.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\InstitucijaDialog.Designer.cs">
       <DependentUpon>InstitucijaDialog.cs</DependentUpon>
@@ -396,11 +397,11 @@
     <Compile Include="UI\PotvrdaDialog.Designer.cs">
       <DependentUpon>PotvrdaDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\UplataClanarineForm.cs">
+    <Compile Include="UI\UplateClanarineForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\UplataClanarineForm.Designer.cs">
-      <DependentUpon>UplataClanarineForm.cs</DependentUpon>
+    <Compile Include="UI\UplateClanarineForm.Designer.cs">
+      <DependentUpon>UplateClanarineForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\PreviewDialog.cs">
       <SubType>Form</SubType>

@@ -158,7 +158,7 @@ namespace Soko.UI
         {
             try
             {
-                CenovnikForm d = new CenovnikForm();
+                MesecneClanarineForm d = new MesecneClanarineForm();
                 d.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -246,7 +246,7 @@ namespace Soko.UI
 
             try
             {
-                UplataClanarineForm d = new UplataClanarineForm();
+                UplateClanarineForm d = new UplateClanarineForm();
                 d.ShowDialog();
             }
             catch (InfrastructureException ex)
