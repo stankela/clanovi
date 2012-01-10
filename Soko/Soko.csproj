@@ -136,11 +136,11 @@
     <Compile Include="UI\BiracIntervala.Designer.cs">
       <DependentUpon>BiracIntervala.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\CenaDialog.cs">
+    <Compile Include="UI\MesecnaClanarinaDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\CenaDialog.Designer.cs">
-      <DependentUpon>CenaDialog.cs</DependentUpon>
+    <Compile Include="UI\MesecnaClanarinaDialog.Designer.cs">
+      <DependentUpon>MesecnaClanarinaDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\MesecneClanarineForm.cs">
       <SubType>Form</SubType>
@@ -201,9 +201,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>BiracIntervala.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\CenaDialog.resx">
+    <EmbeddedResource Include="UI\MesecnaClanarinaDialog.resx">
       <SubType>Designer</SubType>
-      <DependentUpon>CenaDialog.cs</DependentUpon>
+      <DependentUpon>MesecnaClanarinaDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MesecneClanarineForm.resx">
       <SubType>Designer</SubType>

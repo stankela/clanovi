@@ -12,12 +12,12 @@ using Soko.Exceptions;
 
 namespace Soko.UI
 {
-    public partial class CenaDialog : EntityDetailForm
+    public partial class MesecnaClanarinaDialog : EntityDetailForm
     {
         private List<Grupa> grupe;
         private SifraGrupe pocetnaSifraGrupe;
 
-        public CenaDialog(Nullable<int> entityId, SifraGrupe pocetnaSifraGrupe)
+        public MesecnaClanarinaDialog(Nullable<int> entityId, SifraGrupe pocetnaSifraGrupe)
         {
             if (entityId != null)
                 throw new ArgumentException("CenaDialog radi samo u add modu.");

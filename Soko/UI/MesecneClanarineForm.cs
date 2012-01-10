@@ -223,7 +223,7 @@ namespace Soko.UI
                 sifra = mc.Grupa.Sifra;
             else if (rbtGrupa.Checked && SelectedGrupa != null)
                 sifra = SelectedGrupa.Sifra;
-            return new CenaDialog(entityId, sifra);
+            return new MesecnaClanarinaDialog(entityId, sifra);
         }
 
         private void btnNovaCena_Click(object sender, System.EventArgs e)

@@ -1,6 +1,6 @@
 namespace Soko.UI
 {
-    partial class CenaDialog
+    partial class MesecnaClanarinaDialog
     {
         /// <summary>
         /// Required designer variable.
