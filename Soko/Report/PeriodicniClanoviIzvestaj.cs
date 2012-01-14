@@ -14,7 +14,7 @@ namespace Soko.Report
 	{
 		private DateTime fromDate;
 		private DateTime toDate;
-        private List<SifraGrupe> grupe;
+        private List<Grupa> grupe;
 
 		private ReportText ukupnoClanovaBrojReportText;
 		private ReportText ukupnoClanovaCaptionReportText;
@@ -24,7 +24,7 @@ namespace Soko.Report
 		private Font ukupnoClanovaBrojFont;
 
         public PeriodicniClanoviIzvestaj(DateTime from, DateTime to, 
-            List<SifraGrupe> grupe)
+            List<Grupa> grupe)
 		{
 			this.fromDate = from.Date;
 			this.toDate = to.Date;
@@ -98,7 +98,7 @@ namespace Soko.Report
 	{
 		private DateTime fromDate;
 		private DateTime toDate;
-        private List<SifraGrupe> grupe;
+        private List<Grupa> grupe;
 
 		private float relClan = 0.0f;
 		private float relDatumUplate = 14.0f;
@@ -106,7 +106,7 @@ namespace Soko.Report
 		private Font groupTitleFont;
 		private float groupTitleHeight;
 
-        public PeriodicniClanoviLista(DateTime from, DateTime to, List<SifraGrupe> grupe,
+        public PeriodicniClanoviLista(DateTime from, DateTime to, List<Grupa> grupe,
 			Izvestaj izvestaj, int pageNum, float y,
 			Font itemFont, Font itemsHeaderFont, Font groupTitleFont) 
 			: base(izvestaj, pageNum, y, itemFont, itemsHeaderFont)

@@ -282,7 +282,7 @@ namespace Soko.Dao
 		}
 
         public List<object[]> getDnevniPrihodiClanoviReportItems(DateTime from, 
-			DateTime to, List<SifraGrupe> grupe)
+			DateTime to, List<Grupa> grupe)
 		{
 			// placeholder {0} predstavlja filter grupa
 			string selectDnevniPrihodiClanoviReportItems =
@@ -314,12 +314,12 @@ ORDER BY C2.[Datum uplate] DESC, G.[Sort order], C1.Prezime, C1.Ime";
 			return result;
 		}
 
-		private void addGrupeFilterParams(OleDbCommand cmd, List<SifraGrupe> grupe)
+		private void addGrupeFilterParams(OleDbCommand cmd, List<Grupa> grupe)
 		{
 			for (int i = 0; i < grupe.Count; i++)
 			{
 				cmd.Parameters.Add("@Grupa" + i.ToString(), OleDbType.VarWChar, 
-					Grupa.SIFRA_MAX_LENGTH).Value = grupe[i].Value;
+					Grupa.SIFRA_MAX_LENGTH).Value = grupe[i].Sifra.Value;
 			}
 		}
 
@@ -329,7 +329,7 @@ ORDER BY C2.[Datum uplate] DESC, G.[Sort order], C1.Prezime, C1.Ime";
 			cmd.Parameters.Add("@To", OleDbType.DBDate).Value = to;
 		}
 
-		private string getGrupeFilter(List<SifraGrupe> grupe, string table, string grupaColumn)
+		private string getGrupeFilter(List<Grupa> grupe, string table, string grupaColumn)
 		{
 			string result;
 			if (table != String.Empty)
@@ -349,7 +349,7 @@ ORDER BY C2.[Datum uplate] DESC, G.[Sort order], C1.Prezime, C1.Ime";
 		}
 
         public List<ReportGrupa> getDnevniPrihodiClanoviReportGrupeDanGrupa(DateTime from,
-			DateTime to, List<SifraGrupe> grupe)
+			DateTime to, List<Grupa> grupe)
 		{
 			string selectDnevniPrihodiClanoviReportGrupeDanGrupa =
 @"SELECT C.Grupa, G.Naziv, Sum(C.Iznos) AS [Ukupan iznos], Count(*) AS [Broj clanova]
@@ -399,7 +399,7 @@ ORDER BY C.[Datum uplate] DESC, G.[Sort order]";
 		}
 
         public List<ReportGrupa> getDnevniPrihodiClanoviReportGrupeDan(DateTime from,
-            DateTime to, List<SifraGrupe> grupe)
+            DateTime to, List<Grupa> grupe)
 		{
 			string selectDnevniPrihodiClanoviReportGrupeDan =
 @"SELECT C.[Datum uplate], Sum(C.Iznos) AS [Ukupan iznos], Count(*) AS [Broj clanova]
@@ -446,7 +446,7 @@ ORDER BY C.[Datum uplate] DESC";
 		}
 
 		public decimal getUkupanPrihod(DateTime from, DateTime to, 
-            List<SifraGrupe> grupe)
+            List<Grupa> grupe)
 		{
 			string selectUkupanPrihod = "SELECT Sum(Iznos) FROM Clanarina " +
 				"WHERE ([Datum uplate] BETWEEN ? AND ?) ";
@@ -467,7 +467,7 @@ ORDER BY C.[Datum uplate] DESC";
 		}
 
         public List<object[]> getDnevniPrihodiGrupeReportItems(DateTime from,
-            DateTime to, List<SifraGrupe> grupe)
+            DateTime to, List<Grupa> grupe)
 		{
 			// Datum uplate kolona u rezultatu je potreban da bi po njemu mogli rucno da
 			// se grupisu itemi
@@ -569,7 +569,7 @@ ORDER BY Year(C.[Datum uplate]) DESC, Month(C.[Datum uplate]) DESC, G.[Sort orde
 		}
 
         public List<object[]> getPeriodicniPrihodiUplateReportItems(DateTime from,
-            DateTime to, List<SifraGrupe> grupe)
+            DateTime to, List<Grupa> grupe)
 		{
 			string selectPeriodicniPrihodiUplateReportItems =
 @"SELECT C1.Broj, C1.Ime, C1.Prezime, C1.Adresa, M.Naziv AS NazivMesta,
@@ -600,7 +600,7 @@ ORDER BY G.[Sort order], C1.Prezime, C1.Ime, C2.[Datum uplate] DESC";
 		}
 
         public List<ReportGrupa> getPeriodicniPrihodiUplateReportGrupe(DateTime from,
-            DateTime to, List<SifraGrupe> grupe)
+            DateTime to, List<Grupa> grupe)
 		{
 			string selectPeriodicniPrihodiUplateReportGrupe =
 @"SELECT C.Grupa, G.Naziv, Sum(C.Iznos) AS [Ukupan iznos], Count(*) AS [Broj clanova]

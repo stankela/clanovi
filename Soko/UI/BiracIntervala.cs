@@ -5,20 +5,22 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using Soko.Dao;
 using Soko.Domain;
+using NHibernate;
+using Soko.Data;
+using NHibernate.Context;
+using Bilten.Dao;
 
 namespace Soko.UI
 {
     public partial class BiracIntervala : Form
     {
-        private List<SifraGrupe> grupe = null;
+        private List<Grupa> grupe = null;
         private List<Grupa> sveGrupe;
 
         public BiracIntervala(string naslov, bool izborGrupa)
         {
             InitializeComponent();
-            MapperRegistry.initialize();
 
             this.Text = naslov;
             this.dtpOd.CustomFormat = "d.M.yyyy";
@@ -26,7 +28,20 @@ namespace Soko.UI
             this.dtpDo.CustomFormat = "d.M.yyyy";
             this.dtpDo.Format = DateTimePickerFormat.Custom;
 
-            sveGrupe = MapperRegistry.grupaDAO().getAll();
+            try
+            {
+                using (ISession session = NHibernateHelper.OpenSession())
+                using (session.BeginTransaction())
+                {
+                    CurrentSessionContext.Bind(session);
+                    sveGrupe = new List<Grupa>(DAOFactoryFactory.DAOFactory.GetGrupaDAO().FindAll());
+                }
+            }
+            finally
+            {
+                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+            }
+
             sveGrupe.Sort();
             fillCheckedListBoxGrupa(sveGrupe);
 
@@ -59,7 +74,7 @@ namespace Soko.UI
             get { return dtpDo.Value.Date; }
         }
 
-        public List<SifraGrupe> Grupe
+        public List<Grupa> Grupe
         {
             get { return grupe; }
         }
@@ -141,11 +156,11 @@ namespace Soko.UI
             }
             else
             {
-                grupe = new List<SifraGrupe>();
+                grupe = new List<Grupa>();
                 for (int i = 0; i < checkedListBoxGrupe.Items.Count; i++)
                 {
                     if (checkedListBoxGrupe.GetItemChecked(i))
-                        grupe.Add(sveGrupe[i].Sifra);
+                        grupe.Add(sveGrupe[i]);
                 }
             }
         }

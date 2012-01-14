@@ -1,6 +1,5 @@
 using System;
 using System.Drawing;
-using Soko.Dao;
 
 namespace Soko.Report
 {
@@ -50,7 +49,6 @@ namespace Soko.Report
 
 		public Izvestaj()
 		{
-			MapperRegistry.initialize();
 			createFormats();
 			createFonts();
         

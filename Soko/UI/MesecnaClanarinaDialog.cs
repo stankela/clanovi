@@ -6,9 +6,9 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Soko.Domain;
-using Soko.Dao;
 using System.Globalization;
 using Soko.Exceptions;
+using Bilten.Dao;
 
 namespace Soko.UI
 {
@@ -39,7 +39,7 @@ namespace Soko.UI
 
         private List<Grupa> loadGrupe()
         {
-            List<Grupa> result = MapperRegistry.grupaDAO().getAll();
+            List<Grupa> result = new List<Grupa>(DAOFactoryFactory.DAOFactory.GetGrupaDAO().FindAll());
 
             PropertyDescriptor propDesc = TypeDescriptor.GetProperties(typeof(Grupa))["Naziv"];
             result.Sort(new SortComparer<Grupa>(propDesc, ListSortDirection.Ascending));
@@ -60,36 +60,31 @@ namespace Soko.UI
 
             setGrupe(grupe);
             if (pocetnaSifraGrupe != null)
-                SelectedGrupa = MapperRegistry.grupaDAO().getById(pocetnaSifraGrupe);
+                SelectedGrupa = findGrupa(pocetnaSifraGrupe);
             else
                 SelectedGrupa = null;
         }
 
-        private void setGrupe(List<Grupa> grupe)
+        private Grupa findGrupa(SifraGrupe sifra)
         {
-            cmbGrupa.Items.Clear();
             foreach (Grupa g in grupe)
             {
-                cmbGrupa.Items.Add(g.SifraNaziv);
+                if (g.Sifra == sifra)
+                    return g;
             }
+            return null;
+        }
+
+        private void setGrupe(List<Grupa> grupe)
+        {
+            cmbGrupa.DataSource = grupe;
+            cmbGrupa.DisplayMember = "SifraNaziv";
         }
 
         private Grupa SelectedGrupa
         {
-            get
-            {
-                if (cmbGrupa.SelectedIndex >= 0)
-                    return grupe[cmbGrupa.SelectedIndex];
-                else
-                    return null;
-            }
-            set
-            {
-                if (value == null || grupe.IndexOf(value) == -1)
-                    cmbGrupa.SelectedIndex = -1;
-                else
-                    cmbGrupa.SelectedIndex = grupe.IndexOf(value);
-            }
+            get { return cmbGrupa.SelectedItem as Grupa; }
+            set { cmbGrupa.SelectedItem = value; }
         }
 
         private void CenaDialog_Shown(object sender, EventArgs e)
@@ -165,8 +160,8 @@ namespace Soko.UI
             MesecnaClanarina mc = (MesecnaClanarina)entity;
             Notification notification = new Notification();
 
-            MesecnaClanarinaDAO mcDAO = MapperRegistry.mesecnaClanarinaDAO();
-            if (mcDAO.getById(mc.Grupa.Sifra, mc.VaziOd) != null)
+            MesecnaClanarinaDAO mcDAO = DAOFactoryFactory.DAOFactory.GetMesecnaClanarinaDAO();
+            if (mcDAO.findForGrupaVaziOd(mc.Grupa, mc.VaziOd) != null)
             {
                 notification.RegisterMessage("Grupa", "Vec postoji clanarina za izabranu grupu i datum.");
                 throw new BusinessException(notification);
@@ -175,7 +170,7 @@ namespace Soko.UI
 
         protected override void insertEntity(DomainObject entity)
         {
-            MapperRegistry.mesecnaClanarinaDAO().insert((MesecnaClanarina)entity);
+            DAOFactoryFactory.DAOFactory.GetMesecnaClanarinaDAO().MakePersistent((MesecnaClanarina)entity);
         }
 
         private void btnOdustani_Click(object sender, System.EventArgs e)

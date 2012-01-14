@@ -4,6 +4,10 @@ using Soko.Domain;
 using Soko.Dao;
 using Soko.Exceptions;
 using System.Collections.Generic;
+using NHibernate;
+using Soko.Data;
+using NHibernate.Context;
+using Bilten.Dao;
 
 namespace Soko.Report
 {
@@ -54,8 +58,9 @@ namespace Soko.Report
 
 		private void fetchItems()
 		{
-			items = MapperRegistry.mesecnaClanarinaDAO().getCenovnikReportItems();
-			int maxLength = 0;
+            items = DAOFactoryFactory.DAOFactory.GetMesecnaClanarinaDAO().getCenovnikReportItems();
+
+            int maxLength = 0;
 			foreach (object[] item in items)
 			{
 				string sifra = (string)item[0];

@@ -1,9 +1,12 @@
 using System;
 using System.Drawing;
 using Soko.Exceptions;
-using Soko.Dao;
 using System.Collections.Generic;
 using Soko.Domain;
+using Bilten.Dao;
+using NHibernate;
+using NHibernate.Context;
+using Soko.Data;
 
 namespace Soko.Report
 {
@@ -21,10 +24,10 @@ namespace Soko.Report
 
 		private DateTime fromDate;
 		private DateTime toDate;
-		private List<SifraGrupe> grupe;
+		private List<Grupa> grupe;
 
         public DnevniPrihodiGrupeIzvestaj(DateTime from, DateTime to, 
-            List<SifraGrupe> grupe)
+            List<Grupa> grupe)
 		{
 			this.fromDate = from.Date;
 			this.toDate = to.Date;
@@ -53,7 +56,7 @@ namespace Soko.Report
 			ukupanPrihodText += fromDate.ToShortDateString() + " - "
 				+ toDate.ToShortDateString();
 
-			decimal ukupanPrihod = MapperRegistry.uplataClanarineDAO().getUkupanPrihod(fromDate, toDate, grupe);
+            decimal ukupanPrihod = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO().getUkupanPrihod(fromDate, toDate, grupe);
 			string ukupanPrihodIznos = "   " + ukupanPrihod.ToString("F2");
 
 			StringFormat format = new StringFormat();
@@ -98,7 +101,7 @@ namespace Soko.Report
 	{
 		protected DateTime fromDate;
 		protected DateTime toDate;
-		protected List<SifraGrupe> grupe;
+		protected List<Grupa> grupe;
 		
 		private float relGrupa = 0.5f;
 		private float relNazivGrupe = 2.5f;
@@ -108,7 +111,7 @@ namespace Soko.Report
 		protected Font groupTitleFont;
 		protected float groupTitleHeight;
 
-        public GrupniPrihodiLista(DateTime from, DateTime to, List<SifraGrupe> grupe,
+        public GrupniPrihodiLista(DateTime from, DateTime to, List<Grupa> grupe,
 			Izvestaj izvestaj, int pageNum, float y,
 			Font itemFont, Font itemsHeaderFont, Font groupTitleFont) 
 			: base(izvestaj, pageNum, y, itemFont, itemsHeaderFont)
@@ -202,7 +205,7 @@ namespace Soko.Report
 	{
 
 		public DnevniPrihodiGrupeLista(DateTime from, DateTime to, 
-            List<SifraGrupe> grupe, Izvestaj izvestaj, int pageNum, float y,
+            List<Grupa> grupe, Izvestaj izvestaj, int pageNum, float y,
 			Font itemFont, Font itemsHeaderFont, Font groupTitleFont) 
 			: base(from, to, grupe, izvestaj, pageNum, y, itemFont, itemsHeaderFont,
 			groupTitleFont)
@@ -212,9 +215,9 @@ namespace Soko.Report
 
 		private void fetchItems()
 		{
-			items = MapperRegistry.uplataClanarineDAO()
-				.getDnevniPrihodiGrupeReportItems(fromDate, toDate, grupe);
-			createGroups();
+            items = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO()
+                .getDnevniPrihodiGrupeReportItems(fromDate, toDate, grupe);
+            createGroups();
 		}
 
 		private void createGroups()

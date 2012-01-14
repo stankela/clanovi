@@ -11,6 +11,9 @@ using Soko.Report;
 using Soko.Dao;
 using Soko.Domain;
 using Soko.Data;
+using NHibernate;
+using NHibernate.Context;
+using Bilten.Dao;
 
 namespace Soko.UI
 {
@@ -270,17 +273,30 @@ namespace Soko.UI
             if (dlg.ShowDialog() != DialogResult.OK)
                 return;
 
-            MapperRegistry.initialize();
             List<Grupa> grupeBezKategorija;
             try
             {
-                grupeBezKategorija = MapperRegistry.uplataClanarineDAO().
-                    getGrupeBezKategorija(dlg.Datum.Date);
+                using (ISession session = NHibernateHelper.OpenSession())
+                using (session.BeginTransaction())
+                {
+                    CurrentSessionContext.Bind(session);
+                    grupeBezKategorija = new List<Grupa>(DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO().
+                        getGrupeBezKategorija(dlg.Datum.Date));
+                }
             }
             catch (InfrastructureException ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
                 return;
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            finally
+            {
+                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
             }
 
             if (grupeBezKategorija.Count > 0)
@@ -294,16 +310,26 @@ namespace Soko.UI
             Cursor.Show();
             try
             {
-                PreviewDialog p = new PreviewDialog();
-                p.setIzvestaj(new DnevniPrihodiKategorijeIzvestaj(dlg.Datum.Date));
-                p.ShowDialog();
+                using (ISession session = NHibernateHelper.OpenSession())
+                using (session.BeginTransaction())
+                {
+                    CurrentSessionContext.Bind(session);
+                    PreviewDialog p = new PreviewDialog();
+                    p.setIzvestaj(new DnevniPrihodiKategorijeIzvestaj(dlg.Datum.Date));
+                    p.ShowDialog();
+                }
             }
             catch (InfrastructureException ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
             }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
             finally
             {
+                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
                 Cursor.Hide();
                 Cursor.Current = Cursors.Arrow;
             }
@@ -326,6 +352,11 @@ namespace Soko.UI
                 MessageDialogs.showError(ex.Message, this.Text);
                 return;
             }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
 
             if (dlg.DialogResult != DialogResult.OK)
                 return;
@@ -334,17 +365,27 @@ namespace Soko.UI
             Cursor.Show();
             try
             {
-                PreviewDialog p = new PreviewDialog();
-                p.setIzvestaj(new DnevniPrihodiGrupeIzvestaj(dlg.OdDatum.Date,
-                    dlg.DoDatum.Date, dlg.Grupe));
-                p.ShowDialog();
+                using (ISession session = NHibernateHelper.OpenSession())
+                using (session.BeginTransaction())
+                {
+                    CurrentSessionContext.Bind(session);
+                    PreviewDialog p = new PreviewDialog();
+                    p.setIzvestaj(new DnevniPrihodiGrupeIzvestaj(dlg.OdDatum.Date,
+                        dlg.DoDatum.Date, dlg.Grupe));
+                    p.ShowDialog();
+                }
             }
             catch (InfrastructureException ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
             }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
             finally
             {
+                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
                 Cursor.Hide();
                 Cursor.Current = Cursors.Arrow;
             }
@@ -504,16 +545,26 @@ namespace Soko.UI
             Cursor.Show();
             try
             {
-                PreviewDialog p = new PreviewDialog();
-                p.setIzvestaj(new CenovnikIzvestaj());
-                p.ShowDialog();
+                using (ISession session = NHibernateHelper.OpenSession())
+                using (session.BeginTransaction())
+                {
+                    CurrentSessionContext.Bind(session);
+                    PreviewDialog p = new PreviewDialog();
+                    p.setIzvestaj(new CenovnikIzvestaj());
+                    p.ShowDialog();
+                }
             }
             catch (InfrastructureException ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
             }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
             finally
             {
+                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
                 Cursor.Hide();
                 Cursor.Current = Cursors.Arrow;
             }

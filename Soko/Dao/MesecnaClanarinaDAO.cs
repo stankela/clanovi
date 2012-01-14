@@ -14,5 +14,7 @@ namespace Bilten.Dao
         IList<MesecnaClanarina> getCenovnik();
         IList<MesecnaClanarina> findForGrupa(Grupa g);
         MesecnaClanarina getVazecaClanarinaForGrupa(Grupa g);
+        MesecnaClanarina findForGrupaVaziOd(Grupa g, DateTime vaziOd);
+        List<object[]> getCenovnikReportItems();
     }
 }

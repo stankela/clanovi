@@ -98,6 +98,58 @@ namespace Bilten.Dao.NHibernate
             }
         }
 
+        public virtual MesecnaClanarina findForGrupaVaziOd(Grupa g, DateTime vaziOd)
+        {
+            try
+            {
+                IQuery q = Session.CreateQuery(@"from MesecnaClanarina mc
+                                                 left join fetch mc.Grupa g
+                                                 where g = :grupa and mc.VaziOd = :vaziOd");
+                q.SetEntity("grupa", g);
+                q.SetDateTime("vaziOd", vaziOd);
+                IList<MesecnaClanarina> result = q.List<MesecnaClanarina>();
+                if (result.Count > 0)
+                    return result[0];
+                else
+                    return null;
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
+        // TODO2: Izbaciti sort_order kolonu iz table grupe
+        public virtual List<object[]> getCenovnikReportItems()
+        {
+            try
+            {
+                IQuery q = Session.CreateQuery(@"from MesecnaClanarina mc
+                                                 left join fetch mc.Grupa
+                                                 order by mc.Grupa.Sifra.BrojGrupe asc, mc.Grupa.Sifra.Podgrupa asc, mc.VaziOd desc");
+                IList<MesecnaClanarina> result = q.List<MesecnaClanarina>();
+                List<object[]> result2 = new List<object[]>();
+                int prevId = -1;
+                foreach (MesecnaClanarina mc in result)
+                {
+                    if (mc.Grupa.Id != prevId)
+                    {
+                        result2.Add(new object[] { mc.Grupa.Sifra.Value, mc.Grupa.Naziv, mc.Iznos, mc.VaziOd });
+                        prevId = mc.Grupa.Id;
+                    }
+                }
+                return result2;
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
         #endregion
 
         public override IList<MesecnaClanarina> FindAll()
