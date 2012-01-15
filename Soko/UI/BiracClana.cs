@@ -6,7 +6,10 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Soko.Domain;
-using Soko.Dao;
+using NHibernate;
+using Soko.Data;
+using NHibernate.Context;
+using Bilten.Dao;
 
 namespace Soko.UI
 {
@@ -18,11 +21,21 @@ namespace Soko.UI
         public BiracClana(string naslov)
         {
             InitializeComponent();
-            MapperRegistry.initialize();
-
             this.Text = naslov;
+            try
+            {
+                using (ISession session = NHibernateHelper.OpenSession())
+                using (session.BeginTransaction())
+                {
+                    CurrentSessionContext.Bind(session);
+                    clanovi = loadClanovi();
+                }
+            }
+            finally
+            {
+                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+            }
 
-            clanovi = loadClanovi();
             setClanovi(clanovi);
             if (clanovi.Count > 0)
                 SelectedClan = clanovi[0];
@@ -36,7 +49,7 @@ namespace Soko.UI
 
         private List<Clan> loadClanovi()
         {
-            List<Clan> result = MapperRegistry.clanDAO().getAll();
+            List<Clan> result = new List<Clan>(DAOFactoryFactory.DAOFactory.GetClanDAO().FindAll());
 
             PropertyDescriptor propDescPrez = TypeDescriptor.GetProperties(typeof(Clan))["Prezime"];
             PropertyDescriptor propDescIme = TypeDescriptor.GetProperties(typeof(Clan))["Ime"];

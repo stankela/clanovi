@@ -1,8 +1,9 @@
 using System;
 using System.Drawing;
-using Soko.Dao;
 using Soko.Domain;
 using Soko.Exceptions;
+using Bilten.Dao;
+using System.Collections.Generic;
 
 namespace Soko.Report
 {
@@ -77,19 +78,20 @@ namespace Soko.Report
 
 		private void fetchItems()
 		{
-			if (ceoIzvestaj)
-				items = MapperRegistry.uplataClanarineDAO()
+            IDictionary<int, Mesto> mestaMap = DAOFactoryFactory.DAOFactory.GetMestoDAO().getMestaMap();
+            if (ceoIzvestaj)
+                items = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO()
 					.getUplateClanovaReportItems(-1);
 			else
-				items = MapperRegistry.uplataClanarineDAO()
+                items = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO()
 					.getUplateClanovaReportItems(idClana);
 		
 			if (ceoIzvestaj)
-				groups = MapperRegistry.uplataClanarineDAO()
-					.getUplateClanovaReportGroups(-1);
+                groups = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO()
+                    .getUplateClanovaReportGroups(-1, mestaMap);
 			else
-				groups = MapperRegistry.uplataClanarineDAO()
-					.getUplateClanovaReportGroups(idClana);
+                groups = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO()
+                    .getUplateClanovaReportGroups(idClana, mestaMap);
 
 			int start = 0;
 			for (int i = 0; i < groups.Count; i++)

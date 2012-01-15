@@ -1,8 +1,8 @@
 using System;
 using System.Drawing;
 using Soko.Exceptions;
-using Soko.Dao;
 using System.Collections.Generic;
+using Bilten.Dao;
 
 namespace Soko.Report
 {
@@ -237,8 +237,8 @@ namespace Soko.Report
 			g.DrawString(svega, summaryFontLower, blackBrush, svegaLocation);
 
 			//decimal ukupanIznos = ((DnevniPrihodiKategorijeGrupa)groups[0]).UkupanIznos;
-			decimal ukupanIznos = MapperRegistry.uplataClanarineDAO().getUkupanPrihod(datum, datum, null);
-			float ukupanIznosX = svegaLocation.X + g.MeasureString(svega + "99", summaryFontLower).Width;
+            decimal ukupanIznos = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO().getUkupanPrihod(datum, datum, null);
+            float ukupanIznosX = svegaLocation.X + g.MeasureString(svega + "99", summaryFontLower).Width;
 			float ukupanIznosBottom = svegaLocation.Y + g.MeasureString(svega, summaryFontLower).Height;
 			PointF ukupanIznosBottomLeft = new PointF(ukupanIznosX, ukupanIznosBottom);
 			string ukupanIznosStr = ukupanIznos.ToString("F2");
@@ -278,7 +278,7 @@ namespace Soko.Report
 
 		private void fetchItems()
 		{
-			items = MapperRegistry.uplataClanarineDAO()
+			items = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO()
 				.getDnevniPrihodiKategorijeReportItems(datum);
 		
 			groups = new List<ReportGrupa>();

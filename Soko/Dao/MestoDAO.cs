@@ -11,5 +11,6 @@ namespace Bilten.Dao
     public interface MestoDAO : GenericDAO<Mesto, int>
     {
         bool existsMestoNaziv(string naziv);
+        IDictionary<int, Mesto> getMestaMap();
     }
 }

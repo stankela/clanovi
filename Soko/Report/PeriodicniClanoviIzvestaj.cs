@@ -1,9 +1,9 @@
 using System;
 using System.Drawing;
 using Soko.Domain;
-using Soko.Dao;
 using Soko.Exceptions;
 using System.Collections.Generic;
+using Bilten.Dao;
 
 namespace Soko.Report
 {
@@ -121,10 +121,11 @@ namespace Soko.Report
 
 		private void fetchItems()
 		{
-			items = MapperRegistry.uplataClanarineDAO()
-				.getPeriodicniPrihodiUplateReportItems(fromDate, toDate, grupe);
-		
-			groups = MapperRegistry.uplataClanarineDAO()
+            IDictionary<int, Mesto> mestaMap = DAOFactoryFactory.DAOFactory.GetMestoDAO().getMestaMap();
+            items = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO()
+				.getPeriodicniPrihodiUplateReportItems(fromDate, toDate, grupe, mestaMap);
+
+            groups = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO()
 				.getPeriodicniPrihodiUplateReportGrupe(fromDate, toDate, grupe);
 
 			int start = 0;

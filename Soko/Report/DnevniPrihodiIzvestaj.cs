@@ -1,9 +1,9 @@
 using System;
 using System.Drawing;
-using Soko.Dao;
 using Soko.Domain;
 using Soko.Exceptions;
 using System.Collections.Generic;
+using Bilten.Dao;
 
 namespace Soko.Report
 {
@@ -53,7 +53,7 @@ namespace Soko.Report
 			ukupanPrihodText += fromDate.ToShortDateString() + " - "
 				+ toDate.ToShortDateString();
 
-			decimal ukupanPrihod = MapperRegistry.uplataClanarineDAO().getUkupanPrihod(fromDate, toDate, grupe);
+            decimal ukupanPrihod = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO().getUkupanPrihod(fromDate, toDate, grupe);
 			string ukupanPrihodIznos = "   " + ukupanPrihod.ToString("F2");
 
 			StringFormat format = new StringFormat();
@@ -127,9 +127,13 @@ namespace Soko.Report
 
 		private void fetchItems()
 		{
-			items = MapperRegistry.uplataClanarineDAO().getDnevniPrihodiClanoviReportItems(fromDate, toDate, grupe);
-			groups = MapperRegistry.uplataClanarineDAO().getDnevniPrihodiClanoviReportGrupeDanGrupa(fromDate, toDate, grupe);
-			masterGroups = MapperRegistry.uplataClanarineDAO().getDnevniPrihodiClanoviReportGrupeDan(fromDate, toDate, grupe);
+            IDictionary<int, Mesto> mestaMap = DAOFactoryFactory.DAOFactory.GetMestoDAO().getMestaMap();
+            items = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO()
+                .getDnevniPrihodiClanoviReportItems(fromDate, toDate, grupe, mestaMap);
+            groups = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO()
+                .getDnevniPrihodiClanoviReportGrupeDanGrupa(fromDate, toDate, grupe);
+            masterGroups = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO()
+                .getDnevniPrihodiClanoviReportGrupeDan(fromDate, toDate, grupe);
 
 			int start = 0;
 			for (int i = 0; i < groups.Count; i++)

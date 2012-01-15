@@ -1,8 +1,8 @@
 using System;
 using System.Drawing;
 using Soko.Exceptions;
-using Soko.Dao;
 using System.Collections.Generic;
+using Bilten.Dao;
 
 namespace Soko.Report
 {
@@ -58,7 +58,7 @@ namespace Soko.Report
 			ukupanPrihodText += fromDate.ToShortDateString() + " - "
 				+ toDate.ToShortDateString();
 
-			decimal ukupanPrihod = MapperRegistry.uplataClanarineDAO().getUkupanPrihod(fromDate, toDate, null);
+            decimal ukupanPrihod = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO().getUkupanPrihod(fromDate, toDate, null);
 			string ukupanPrihodIznos = "   " + ukupanPrihod.ToString("F2");
 
 			StringFormat format = new StringFormat();
@@ -113,7 +113,7 @@ namespace Soko.Report
 
 		private void fetchItems()
 		{
-			items = MapperRegistry.uplataClanarineDAO()
+            items = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO()
 				.getMesecniPrihodiReportItems(fromDate, toDate);
 			createGroups();
 		}

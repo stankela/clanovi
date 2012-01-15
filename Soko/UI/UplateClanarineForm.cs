@@ -266,9 +266,29 @@ namespace Soko.UI
             if (uplata == null)
                 return;
 
-            PreviewDialog p = new PreviewDialog();
-            p.setIzvestaj(new PotvrdaIzvestaj(uplata.Id));
-            p.ShowDialog();
+            try
+            {
+                using (ISession session = NHibernateHelper.OpenSession())
+                using (session.BeginTransaction())
+                {
+                    CurrentSessionContext.Bind(session);
+                    PreviewDialog p = new PreviewDialog();
+                    p.setIzvestaj(new PotvrdaIzvestaj(uplata.Id));
+                    p.ShowDialog();
+                }
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            finally
+            {
+                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+            }
         }
 
         private void btnZatvori_Click(object sender, System.EventArgs e)

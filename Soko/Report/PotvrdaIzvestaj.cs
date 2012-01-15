@@ -1,7 +1,7 @@
 using System;
 using System.Drawing;
-using Soko.Dao;
 using Soko.Domain;
+using Bilten.Dao;
 
 namespace Soko.Report
 {
@@ -48,7 +48,7 @@ namespace Soko.Report
 
 		private void getData()
 		{
-			UplataClanarine uplata = MapperRegistry.uplataClanarineDAO().getById(idStavke);
+            UplataClanarine uplata = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO().FindById(idStavke);
 			broj = uplata.Clan.Broj.Value;
 			ime = String.Empty;
 			if (uplata.Clan.Ime != null)

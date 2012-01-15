@@ -30,6 +30,17 @@ namespace Bilten.Dao.NHibernate
             }
         }
 
+        public virtual IDictionary<int, Mesto> getMestaMap()
+        {
+            IList<Mesto> mesta = FindAll();
+            IDictionary<int, Mesto> result = new Dictionary<int, Mesto>();
+            foreach (Mesto m in mesta)
+            {
+                result.Add(m.Id, m);
+            }
+            return result;
+        }
+
         #endregion
 
         public override IList<Mesto> FindAll()

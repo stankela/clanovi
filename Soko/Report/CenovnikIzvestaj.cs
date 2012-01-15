@@ -1,7 +1,6 @@
 using System;
 using System.Drawing;
 using Soko.Domain;
-using Soko.Dao;
 using Soko.Exceptions;
 using System.Collections.Generic;
 using NHibernate;
