@@ -720,15 +720,15 @@ namespace Soko.UI
 
         private void convertAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new SqlCeUtilities().CreateDatabase(@"..\..\clanovi_podaci2.sdf", "sdv");
+            new SqlCeUtilities().CreateDatabase(@"..\..\clanovi_podaci4.sdf", "sdv");
 
-            addMesta();
+            /*addMesta();
             addInstitucije();
             addClanovi();
             addKategorije();
             addGrupe();
             addClanarine();
-            addUplate();
+            addUplate();*/
         }
 
         private void addMesta()

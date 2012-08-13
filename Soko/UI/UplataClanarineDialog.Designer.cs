@@ -45,11 +45,13 @@ namespace Soko.UI
             this.lblClan = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnOdustani = new System.Windows.Forms.Button();
+            this.ckbPristupnica = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.ckbPristupnica);
             this.groupBox1.Controls.Add(this.txtNapomena);
             this.groupBox1.Controls.Add(this.lblNapomena);
             this.groupBox1.Controls.Add(this.txtIznos);
@@ -212,6 +214,17 @@ namespace Soko.UI
             this.btnOdustani.UseVisualStyleBackColor = true;
             this.btnOdustani.Click += new System.EventHandler(this.btnOdustani_Click);
             // 
+            // ckbPristupnica
+            // 
+            this.ckbPristupnica.AutoSize = true;
+            this.ckbPristupnica.Location = new System.Drawing.Point(322, 115);
+            this.ckbPristupnica.Name = "ckbPristupnica";
+            this.ckbPristupnica.Size = new System.Drawing.Size(78, 17);
+            this.ckbPristupnica.TabIndex = 13;
+            this.ckbPristupnica.TabStop = false;
+            this.ckbPristupnica.Text = "Pristupnica";
+            this.ckbPristupnica.UseVisualStyleBackColor = true;
+            // 
             // UplataClanarineDialog
             // 
             this.AcceptButton = this.btnOk;
@@ -255,5 +268,6 @@ namespace Soko.UI
         private System.Windows.Forms.TextBox txtIznos;
         private System.Windows.Forms.Label lblNapomena;
         private System.Windows.Forms.TextBox txtNapomena;
+        private System.Windows.Forms.CheckBox ckbPristupnica;
     }
 }

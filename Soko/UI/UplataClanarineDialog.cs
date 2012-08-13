@@ -80,6 +80,7 @@ namespace Soko.UI
 
             txtIznos.Text = String.Empty;
             txtNapomena.Text = String.Empty;
+            ckbPristupnica.Checked = false;
 
             setClanovi(clanovi);
             SelectedClan = null;
@@ -221,6 +222,11 @@ namespace Soko.UI
         protected override void insertEntity(DomainObject entity)
         {
             DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO().MakePersistent((UplataClanarine)entity);
+            if (SelectedClan.ImaPristupnicu != ckbPristupnica.Checked)
+            {
+                SelectedClan.ImaPristupnicu = ckbPristupnica.Checked;
+                DAOFactoryFactory.DAOFactory.GetClanDAO().MakePersistent(SelectedClan);
+            }
         }
 
         private void txtSifraClana_TextChanged(object sender, System.EventArgs e)
@@ -230,10 +236,15 @@ namespace Soko.UI
             {
                 broj = int.Parse(txtSifraClana.Text);
                 SelectedClan = findClan(broj);
+                if (SelectedClan != null)
+                    ckbPristupnica.Checked = SelectedClan.ImaPristupnicu;
+                else
+                    ckbPristupnica.Checked = false;
             }
             catch (Exception)
             {
                 SelectedClan = null;
+                ckbPristupnica.Checked = false;
             }
         }
 
@@ -269,9 +280,15 @@ namespace Soko.UI
         private void cmbClan_SelectionChangeCommitted(object sender, System.EventArgs e)
         {
             if (SelectedClan != null)
+            {
                 txtSifraClana.Text = SelectedClan.Broj.ToString();
+                ckbPristupnica.Checked = SelectedClan.ImaPristupnicu;
+            }
             else
+            {
                 txtSifraClana.Text = String.Empty;
+                ckbPristupnica.Checked = false;
+            }
         }
 
         private void cmbGrupa_SelectionChangeCommitted(object sender, System.EventArgs e)

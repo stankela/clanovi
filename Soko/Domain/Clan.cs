@@ -74,7 +74,14 @@ namespace Soko.Domain
 			set { telefon2 = value; }
 		}
 
-		private Institucija institucija;
+        private bool imaPristupnicu;
+        public virtual bool ImaPristupnicu
+        {
+            get { return imaPristupnicu; }
+            set { imaPristupnicu = value; }
+        }
+
+        private Institucija institucija;
 		public virtual Institucija Institucija
 		{
 			get { return institucija; }

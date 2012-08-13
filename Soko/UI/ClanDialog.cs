@@ -74,6 +74,7 @@ namespace Soko.UI
             txtTelefon1.Text = String.Empty;
             txtTelefon2.Text = String.Empty;
             txtNapomena.Text = String.Empty;
+            ckbPristupnica.Checked = false;
 
             setMesta(mesta);
             SelectedMesto = null;
@@ -154,6 +155,7 @@ namespace Soko.UI
             txtTelefon2.Text = c.Telefon2;
             SelectedInstitucija = c.Institucija;
             txtNapomena.Text = c.Napomena;
+            ckbPristupnica.Checked = c.ImaPristupnicu;
         }
 
         private void ClanDialog_Shown(object sender, EventArgs e)
@@ -236,6 +238,10 @@ namespace Soko.UI
                     txtNapomena.Focus();
                     break;
 
+                case "Pristupnica":
+                    ckbPristupnica.Focus();
+                    break;
+
                 default:
                     throw new ArgumentException();
             }
@@ -291,6 +297,8 @@ namespace Soko.UI
                 c.Napomena = napomena;
             else
                 c.Napomena = null;
+
+            c.ImaPristupnicu = ckbPristupnica.Checked;
         }
 
         protected override void insertEntity(DomainObject entity)

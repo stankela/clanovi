@@ -15,6 +15,7 @@
     <property name="Telefon1" column="telefon1" />
     <property name="Telefon2" column="telefon2" />
     <property name="Napomena" column="napomena" />
+    <property name="ImaPristupnicu" column="ima_pristupnicu" />
     <many-to-one name="Mesto" class="Mesto" column="mesto_id" />
     <many-to-one name="Institucija" class="Institucija" column="institucija_id" />
   </class>
