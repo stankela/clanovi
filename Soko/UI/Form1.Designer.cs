@@ -52,8 +52,6 @@ namespace Soko.UI
             this.mnPodesavanja = new System.Windows.Forms.ToolStripMenuItem();
             this.mnFont = new System.Windows.Forms.ToolStripMenuItem();
             this.mnStampaci = new System.Windows.Forms.ToolStripMenuItem();
-            this.convertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.convertAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,8 +61,7 @@ namespace Soko.UI
             this.mnDatoteka,
             this.mnClanovi,
             this.mnIzvestaji,
-            this.mnPodesavanja,
-            this.convertToolStripMenuItem});
+            this.mnPodesavanja});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(466, 24);
@@ -82,7 +79,7 @@ namespace Soko.UI
             // mnKraj
             // 
             this.mnKraj.Name = "mnKraj";
-            this.mnKraj.Size = new System.Drawing.Size(104, 22);
+            this.mnKraj.Size = new System.Drawing.Size(152, 22);
             this.mnKraj.Text = "Kraj";
             this.mnKraj.Click += new System.EventHandler(this.mnKraj_Click);
             // 
@@ -251,21 +248,6 @@ namespace Soko.UI
             this.mnStampaci.Text = "Stampaci";
             this.mnStampaci.Click += new System.EventHandler(this.mnStampaci_Click);
             // 
-            // convertToolStripMenuItem
-            // 
-            this.convertToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.convertAllToolStripMenuItem});
-            this.convertToolStripMenuItem.Name = "convertToolStripMenuItem";
-            this.convertToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
-            this.convertToolStripMenuItem.Text = "Convert";
-            // 
-            // convertAllToolStripMenuItem
-            // 
-            this.convertAllToolStripMenuItem.Name = "convertAllToolStripMenuItem";
-            this.convertAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.convertAllToolStripMenuItem.Text = "Convert all";
-            this.convertAllToolStripMenuItem.Click += new System.EventHandler(this.convertAllToolStripMenuItem_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -309,8 +291,6 @@ namespace Soko.UI
         private System.Windows.Forms.ToolStripMenuItem mnPodesavanja;
         private System.Windows.Forms.ToolStripMenuItem mnFont;
         private System.Windows.Forms.ToolStripMenuItem mnStampaci;
-        private System.Windows.Forms.ToolStripMenuItem convertToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem convertAllToolStripMenuItem;
     }
 }
 

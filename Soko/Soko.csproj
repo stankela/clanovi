@@ -74,33 +74,6 @@
     <Compile Include="Dao\NHibernate\GenericNHibernateDAO.cs" />
     <Compile Include="Dao\NHibernate\MestoDAOImpl.cs" />
     <Compile Include="Dao\NHibernate\NHibernateDAOFactory.cs" />
-    <Compile Include="Dao\Old\ClanDAO.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Dao\Old\DAO.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Dao\Old\GrupaDAO.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Dao\Old\InstitucijaDAO.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Dao\Old\KategorijaDAO.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Dao\Old\MapperRegistry.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Dao\Old\MesecnaClanarinaDAO.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Dao\Old\MestoDAO.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Dao\Old\UplataClanarineDAO.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Dao\UplataClanarineDAO.cs" />
     <Compile Include="Data\DataAccessProviderFactory.cs" />
     <Compile Include="Data\IDataContext.cs" />
@@ -196,8 +169,6 @@
     <Compile Include="UI\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Misc\ConfigurationParameters.cs" />
-    <Compile Include="Misc\DatabaseUpdater.cs" />
     <Compile Include="Misc\Language.cs" />
     <Compile Include="Misc\Notification.cs" />
     <Compile Include="Misc\NotificationMessage.cs" />

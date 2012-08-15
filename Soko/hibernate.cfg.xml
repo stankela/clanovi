@@ -4,7 +4,7 @@
     <property name="connection.provider">NHibernate.Connection.DriverConnectionProvider</property>
     <property name="dialect">NHibernate.Dialect.MsSqlCeDialect</property>
     <property name="connection.driver_class">NHibernate.Driver.SqlServerCeDriver</property>
-    <property name="connection.connection_string">Data Source="..\..\clanovi_podaci4.sdf";Password="sdv"</property>
+    <property name="connection.connection_string">Data Source="..\..\clanovi_podaci.sdf";Password="sdv"</property>
     <property name="proxyfactory.factory_class">
       NHibernate.ByteCode.LinFu.ProxyFactoryFactory, NHibernate.ByteCode.LinFu
     </property>
