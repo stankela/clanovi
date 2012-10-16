@@ -11,12 +11,12 @@ namespace Soko.Domain
             set { id = value; }
         }
 
-        private Key key;
+        /*private Key key;
         public virtual Key Key
 		{
 			get { return key; }
 			set { key = value; }
-		}
+		}*/
 	
 		public virtual void validate(Notification notification)
 		{

@@ -132,7 +132,8 @@ namespace Soko.UI
                         update();
                     else
                         add();
-                    session.Transaction.Commit();
+                    if (persistEntity)
+                        session.Transaction.Commit();
                     closedByOK = true;
                 }
             }
