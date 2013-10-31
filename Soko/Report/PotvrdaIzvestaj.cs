@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using Soko.Domain;
 using Bilten.Dao;
+using System.Collections.Generic;
 
 namespace Soko.Report
 {
@@ -70,14 +71,26 @@ namespace Soko.Report
 			lastPageNum = 1;
 		}
 
-		public override void drawHeader(Graphics g, int pageNum)
+        public override void drawHeader(Graphics g, int pageNum)
 		{
-			RectangleF contentBounds = new RectangleF(conv(5), conv(1),
-				conv(85), conv(85));
-			using(Pen pen = new Pen(Color.Black, 1/72f * 0.25f))
+            RectangleF contentBounds;
+            bool maliStampac = pageBounds.Width > 2.83f && pageBounds.Width < 2.85f;
+            bool velikiStampac = pageBounds.Width < 2.83f || pageBounds.Width > 2.85f;
+            if (maliStampac)
+                contentBounds = new RectangleF(conv(0), conv(0), conv(72), conv(77));
+            else if (velikiStampac)
+                contentBounds = new RectangleF(conv(5), conv(1), conv(85), conv(85));
+            else
+                contentBounds = this.contentBounds;
+            //string msg = "page: {0}\n header: {1}\n content: {2}\n";
+            //Soko.UI.MessageDialogs.showMessage(String.Format(msg, pageBounds.Width, headerBounds.Width, contentBounds.Width),
+              //  "");
+            //contentBounds = new RectangleF(pageBounds.X, pageBounds.Y,
+              //  pageBounds.Width, pageBounds.Width);
+            using (Pen pen = new Pen(Color.Black, 1 / 72f * 0.25f))
 			{
-				//			g.DrawRectangle(pen, contentBounds.X, contentBounds.Y, contentBounds.Width,
-				//				contentBounds.Height);
+							//g.DrawRectangle(pen, contentBounds.X, contentBounds.Y, contentBounds.Width,
+							//	contentBounds.Height);
 
 
 				System.Resources.ResourceManager resourceManager = new 
@@ -112,7 +125,7 @@ namespace Soko.Report
 				// priznanica
 				string priznanica = "PRIZNANICA";
 				float xPrizCenter = contentBounds.Width / 2;
-				float yPrizCenter = conv(15);
+				float yPrizCenter = conv(17);
 				StringFormat prizFormat = new StringFormat();
 				prizFormat.Alignment = StringAlignment.Center;
 				prizFormat.LineAlignment = StringAlignment.Center;
@@ -172,9 +185,48 @@ namespace Soko.Report
 				y += dy;
 				g.DrawString(clanZaGrupu, arial9Font, blackBrush, 
 					new PointF(x, y), f1);
-				g.DrawString(FormatGrupa(sifraGrupe, nazivGrupe), arial9BoldFont, blackBrush, 
-					new PointF(x2, y), f2);
-				y += dy;
+                string nazivGrupeCeo = FormatGrupa(sifraGrupe, nazivGrupe);
+
+                List<string> splittedNazivList = new List<string>();
+                foreach (string s in nazivGrupeCeo.Split(' '))
+                {
+                    splittedNazivList.Add(s);
+                    splittedNazivList.Add(" ");
+                }
+                List<string> nazivGrupeList = new List<string>();
+                string linija = String.Empty;
+                foreach (string s in splittedNazivList)
+                {
+                    if (g.MeasureString(linija + s, arial9BoldFont).Width <= contentBounds.Width - clanZaGrupuSize.Width)
+                        linija += s;
+                    else
+                    {
+                        nazivGrupeList.Add(linija);
+                        linija = s;
+                    }
+                }
+                nazivGrupeList.Add(linija);
+                foreach (string s in nazivGrupeList)
+                {
+                    g.DrawString(s, arial9BoldFont, blackBrush,
+                        new PointF(x2, y), f2);
+                    y += dy;
+                }
+
+
+                /*SizeF clanZaGrupuSize2 = g.MeasureString(nazivGrupeCeo, arial9BoldFont);
+                if (clanZaGrupuSize.Width + clanZaGrupuSize2.Width <= contentBounds.Width)
+                {
+                    g.DrawString(nazivGrupeCeo, arial9BoldFont, blackBrush,
+                        new PointF(x2, y), f2);
+                }
+                else
+                {
+                    y += dy;
+                    g.DrawString(nazivGrupeCeo, arial9BoldFont, blackBrush,
+                        new PointF(contentBounds.X + contentBounds.Width, y), f1);
+                }
+				y += dy;*/
 				g.DrawString(kojaVazi, arial9Font, blackBrush, 
 					new PointF(x, y), f1);
 				g.DrawString(datumClanarine.ToShortDateString(), 

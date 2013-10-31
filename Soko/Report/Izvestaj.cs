@@ -26,6 +26,7 @@ namespace Soko.Report
 
 		protected RectangleF headerBounds;
 		protected RectangleF contentBounds;
+        protected RectangleF pageBounds;
 
 		protected int lastPageNum;
 		public int LastPageNum
@@ -204,10 +205,11 @@ namespace Soko.Report
 			g.DrawString(adresa, adresaFont, blackBrush, adresaBounds, titleFormat); 
 		}
 
-		public void setupContent(Graphics g, RectangleF marginBounds)
+        public void setupContent(Graphics g, RectangleF marginBounds, RectangleF pageBounds)
 		{
 			headerBounds = getHeaderBounds(g, marginBounds);
 			contentBounds = getContentBounds(g, marginBounds);
+            this.pageBounds = pageBounds;
 			doSetupContent(g);
 			contentSetupDone = true;
 		}

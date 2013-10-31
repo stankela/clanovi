@@ -110,6 +110,7 @@ namespace Soko.UI
 
         private void setupContent()
         {
+            RectangleF pageBounds;
             Graphics g;
             RectangleF marginBounds;
             if (rezimRada == RezimRada.MyPreviewDraw)
@@ -117,7 +118,7 @@ namespace Soko.UI
                 g = bitmapGraphics;
                 g.PageUnit = GraphicsUnit.Inch;
                 g.PageScale = 1f;
-                RectangleF pageBounds = g.VisibleClipBounds;
+                pageBounds = g.VisibleClipBounds;
 
                 float leftMargin = 1f;
                 float topMargin = 1f;
@@ -145,11 +146,11 @@ namespace Soko.UI
                 g.PageUnit = GraphicsUnit.Inch;
                 g.PageScale = 1f;
 
-                RectangleF pageBounds = TranslateBounds(g, pBounds);
+                pageBounds = TranslateBounds(g, pBounds);
                 marginBounds = TranslateBounds(g, Rectangle.Truncate(marginBounds));
             }
 
-            izvestaj.setupContent(g, marginBounds);
+            izvestaj.setupContent(g, marginBounds, pageBounds);
         }
 
         private void PreviewDialog_Load(object sender, System.EventArgs e)
