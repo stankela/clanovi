@@ -151,10 +151,16 @@
 	<data name="uplate_clanova_izvestaj_title">
 		<value>Uplate članova</value>
 	</data>
-	<data name="izvestaj_header_tel_fax_mail">
+  <data name="akt_clan_grupe_izvestaj_title">
+    <value>Aktivni članovi po grupama</value>
+  </data>
+  <data name="izvestaj_header_tel_fax_mail">
 		<value>Tel/fax: +381 21 529568, E-mail: gym3@nscable.net</value>
 	</data>
 	<data name="per_clanovi_izv_uk_clan_caption">
-		<value>Ukupan broj članova sa plaćenom članarinom za period</value>
+		<value>Ukupan broj uplata za period</value>
 	</data>
+  <data name="akt_clan_grupe_izv_uk_clan_caption">
+    <value>Ukupan broj članova sa plaćenom članarinom za period</value>
+  </data>
 </root>

@@ -26,6 +26,10 @@ namespace Bilten.Dao
         List<object[]> getPeriodicniPrihodiUplateReportItems(DateTime from, DateTime to, List<Grupa> grupe,
             IDictionary<int, Mesto> mestaMap);
         List<ReportGrupa> getPeriodicniPrihodiUplateReportGrupe(DateTime from, DateTime to, List<Grupa> grupe);
+        List<object[]> getAktivniClanoviPoGrupamaReportItems(DateTime from, DateTime to, List<Grupa> grupe,
+            IDictionary<int, Mesto> mestaMap, IDictionary<SifraGrupe, int> duplikati);
+        List<ReportGrupa> getAktivniClanoviPoGrupamaReportGrupe(DateTime from, DateTime to, List<Grupa> grupe,
+            IDictionary<SifraGrupe, int> duplikati);
         List<object[]> getMesecniPrihodiReportItems(DateTime from, DateTime to);
         List<object[]> getUplateClanovaReportItems(int idClana);
         List<ReportGrupa> getUplateClanovaReportGroups(int idClana, IDictionary<int, Mesto> mestaMap);

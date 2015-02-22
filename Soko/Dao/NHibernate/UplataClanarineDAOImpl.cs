@@ -545,6 +545,142 @@ ORDER BY g.broj_grupe, g.podgrupa
             }
         }
 
+        public virtual List<object[]> getAktivniClanoviPoGrupamaReportItems(DateTime from, DateTime to, List<Grupa> grupe,
+            IDictionary<int, Mesto> mestaMap, IDictionary<SifraGrupe, int> duplikati)
+        {
+            from = from.Date;
+            to = to.Date.AddDays(1);
+            try
+            {
+                string query = @"
+SELECT
+    c.broj, c.ime, c.prezime, c.adresa, c.mesto_id,
+    g.broj_grupe, g.podgrupa
+FROM grupe g INNER JOIN (uplate u INNER JOIN clanovi c
+	ON u.clan_id = c.clan_id)
+	ON g.grupa_id = u.grupa_id
+WHERE
+    (u.datum_vreme_uplate BETWEEN '{0}' AND '{1}')
+{2}
+ORDER BY
+    g.broj_grupe, g.podgrupa, c.prezime, c.ime, c.broj
+";
+                bool filterGrupe = grupe != null && grupe.Count > 0;
+                string filter = String.Empty;
+                if (filterGrupe)
+                    filter = " AND " + getGrupeFilter(grupe, "g", "grupa_id");
+                query = String.Format(query, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"), filter);
+
+                ISQLQuery q = Session.CreateSQLQuery(query);
+                IList<object[]> result = q.List<object[]>();
+                List<object[]> result2 = new List<object[]>();
+
+                int prevBroj = -1;
+                string prevSifra = "bezveze";
+                
+                foreach (object[] row in result)
+                {
+                    int broj = (int)row[0];
+                    string ime = (string)row[1];
+                    string prezime = (string)row[2];
+                    string adresa = (string)row[3];
+
+                    Nullable<int> mesto_id = null;
+                    string mesto = String.Empty;
+                    if (row[4] != null)
+                    {
+                        mesto_id = (int)row[4];
+                        mesto = mestaMap[mesto_id.Value].Naziv;
+                    }
+
+                    string sifra = (int)row[5] + (string)row[6];
+
+                    if (broj != prevBroj || sifra != prevSifra)
+                    {
+                        string clan = Clan.formatPrezimeImeBrojAdresaMesto(
+                                prezime, ime, broj, adresa, mesto);
+                        result2.Add(new object[] { clan });
+                    }
+                    else
+                    {
+                        SifraGrupe sifraGrupe = new SifraGrupe(sifra);
+                        if (duplikati.ContainsKey(sifraGrupe))
+                        {
+                            duplikati[sifraGrupe]++;
+                        }
+                        else
+                        {
+                            duplikati.Add(sifraGrupe, 1);
+                        }
+                    }
+                    prevBroj = broj;
+                    prevSifra = sifra;
+                }
+                return result2;
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
+        public virtual List<ReportGrupa> getAktivniClanoviPoGrupamaReportGrupe(DateTime from, DateTime to,
+            List<Grupa> grupe, IDictionary<SifraGrupe, int> duplikati)
+        {
+            from = from.Date;
+            to = to.Date.AddDays(1);
+            try
+            {
+                string query = @"
+SELECT u.grupa_id, g.broj_grupe, g.podgrupa, g.naziv, Sum(u.iznos), Count(*)
+FROM uplate u INNER JOIN grupe g
+	ON u.grupa_id = g.grupa_id
+WHERE (u.datum_vreme_uplate BETWEEN '{0}' AND '{1}')
+{2}
+GROUP BY u.grupa_id, g.broj_grupe, g.podgrupa, g.naziv
+ORDER BY g.broj_grupe, g.podgrupa
+";
+                bool filterGrupe = grupe != null && grupe.Count > 0;
+                string filter = String.Empty;
+                if (filterGrupe)
+                    filter = " AND " + getGrupeFilter(grupe, "g", "grupa_id");
+                query = String.Format(query, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"), filter);
+
+                ISQLQuery q = Session.CreateSQLQuery(query);
+                IList<object[]> result = q.List<object[]>();
+                List<ReportGrupa> result2 = new List<ReportGrupa>();
+                foreach (object[] row in result)
+                {
+                    int grupa_id = (int)row[0];
+                    int brojGrupe = (int)row[1];
+                    string podgrupa = (string)row[2];
+                    string nazivGrupe = (string)row[3];
+                    decimal ukupanIznos = (decimal)row[4];
+                    int brojClanova = (int)row[5];
+                    string sifra = brojGrupe + podgrupa;
+
+                    SifraGrupe sifraGrupe = new SifraGrupe(sifra);
+                    if (duplikati.ContainsKey(sifraGrupe))
+                    {
+                        brojClanova -= duplikati[sifraGrupe];
+                    }
+
+                    object[] data = new object[] { new SifraGrupe(sifra), nazivGrupe, 
+												 ukupanIznos };
+                    result2.Add(new ReportGrupa(data, brojClanova));
+                }
+                return result2;
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
         public virtual List<object[]> getMesecniPrihodiReportItems(DateTime from, DateTime to)
         {
             from = from.Date;
