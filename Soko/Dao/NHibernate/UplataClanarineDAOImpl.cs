@@ -554,7 +554,7 @@ ORDER BY g.broj_grupe, g.podgrupa
             {
                 string query = @"
 SELECT
-    c.broj, c.ime, c.prezime, c.adresa, c.mesto_id,
+    c.broj, c.ime, c.prezime, c.datum_rodjenja, c.adresa, c.mesto_id,
     g.broj_grupe, g.podgrupa
 FROM grupe g INNER JOIN (uplate u INNER JOIN clanovi c
 	ON u.clan_id = c.clan_id)
@@ -583,22 +583,27 @@ ORDER BY
                     int broj = (int)row[0];
                     string ime = (string)row[1];
                     string prezime = (string)row[2];
-                    string adresa = (string)row[3];
+
+                    Nullable<DateTime> datumRodjenja = null;
+                    if (row[3] != null)
+                        datumRodjenja = (DateTime)row[3];
+
+                    string adresa = (string)row[4];
 
                     Nullable<int> mesto_id = null;
                     string mesto = String.Empty;
-                    if (row[4] != null)
+                    if (row[5] != null)
                     {
-                        mesto_id = (int)row[4];
+                        mesto_id = (int)row[5];
                         mesto = mestaMap[mesto_id.Value].Naziv;
                     }
 
-                    string sifra = (int)row[5] + (string)row[6];
+                    string sifra = (int)row[6] + (string)row[7];
 
                     if (broj != prevBroj || sifra != prevSifra)
                     {
-                        string clan = Clan.formatPrezimeImeBrojAdresaMesto(
-                                prezime, ime, broj, adresa, mesto);
+                        string clan = Clan.formatPrezimeImeDatumRodjAdresaMesto(
+                                prezime, ime, datumRodjenja, adresa, mesto);
                         result2.Add(new object[] { clan });
                     }
                     else

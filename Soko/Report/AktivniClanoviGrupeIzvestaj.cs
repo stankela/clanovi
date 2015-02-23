@@ -183,7 +183,7 @@ namespace Soko.Report
 			ReportGrupa gr = groups[groupId];
 			string sifra = ((SifraGrupe)gr.Data[0]).Value;
 			string naziv = (string)gr.Data[1];
-			string sifNaz = sifra + " - " + naziv;
+			string sifNaz = /*sifra + " - " +*/ naziv;
 
 			float xClan = columns[0].X;
 			float xOffset = xClan - groupHeaderRect.X;
