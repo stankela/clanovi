@@ -254,7 +254,43 @@ namespace Soko.Domain
 				null, adresa, mesto);
 		}
 
-		public override void validate(Notification notification)
+        public static string formatPrezimeImeDatumRodjAdresaMesto(string prezime,
+            string ime, Nullable<DateTime> datumRodjenja,
+            string adresa, string mesto)
+        {
+            string result = String.Empty;
+            if (prezime != String.Empty)
+            {
+                result += prezime;
+            }
+            if (ime != String.Empty)
+            {
+                if (result != String.Empty)
+                    result += " ";
+                result += ime;
+            }
+            if (datumRodjenja != null)
+            {
+                if (result != String.Empty)
+                    result += ", ";
+                result += datumRodjenja.Value.ToShortDateString();
+            }
+            if (adresa != String.Empty)
+            {
+                if (result != String.Empty)
+                    result += ", ";
+                result += adresa;
+            }
+            if (mesto != String.Empty)
+            {
+                if (result != String.Empty)
+                    result += ", ";
+                result += mesto;
+            }
+            return result;
+        }
+
+        public override void validate(Notification notification)
 		{
 			if (Broj == null)
 			{

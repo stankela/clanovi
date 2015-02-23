@@ -30,6 +30,7 @@ namespace Bilten.Dao
             IDictionary<int, Mesto> mestaMap, IDictionary<SifraGrupe, int> duplikati);
         List<ReportGrupa> getAktivniClanoviPoGrupamaReportGrupe(DateTime from, DateTime to, List<Grupa> grupe,
             IDictionary<SifraGrupe, int> duplikati);
+        List<object[]> getAktivniClanoviReportItems(DateTime from, DateTime to, IDictionary<int, Mesto> mestaMap);
         List<object[]> getMesecniPrihodiReportItems(DateTime from, DateTime to);
         List<object[]> getUplateClanovaReportItems(int idClana);
         List<ReportGrupa> getUplateClanovaReportGroups(int idClana, IDictionary<int, Mesto> mestaMap);

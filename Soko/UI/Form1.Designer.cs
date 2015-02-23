@@ -49,10 +49,11 @@ namespace Soko.UI
             this.mnPrihodiMesecni = new System.Windows.Forms.ToolStripMenuItem();
             this.mnIzvestajiCenovnik = new System.Windows.Forms.ToolStripMenuItem();
             this.mnUplateClanova = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnAktivniClanoviGrupe = new System.Windows.Forms.ToolStripMenuItem();
             this.mnPodesavanja = new System.Windows.Forms.ToolStripMenuItem();
             this.mnFont = new System.Windows.Forms.ToolStripMenuItem();
             this.mnStampaci = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnAktivniClanoviGrupe = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnAktivniClanovi = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -166,6 +167,7 @@ namespace Soko.UI
             this.mnPrihodiMesecni,
             this.mnIzvestajiCenovnik,
             this.mnUplateClanova,
+            this.mnAktivniClanovi,
             this.mnAktivniClanoviGrupe});
             this.mnIzvestaji.Name = "mnIzvestaji";
             this.mnIzvestaji.Size = new System.Drawing.Size(60, 20);
@@ -227,6 +229,13 @@ namespace Soko.UI
             this.mnUplateClanova.Text = "Uplate clanova";
             this.mnUplateClanova.Click += new System.EventHandler(this.mnUplateClanova_Click);
             // 
+            // mnAktivniClanoviGrupe
+            // 
+            this.mnAktivniClanoviGrupe.Name = "mnAktivniClanoviGrupe";
+            this.mnAktivniClanoviGrupe.Size = new System.Drawing.Size(194, 22);
+            this.mnAktivniClanoviGrupe.Text = "Aktivni clanovi - grupe";
+            this.mnAktivniClanoviGrupe.Click += new System.EventHandler(this.mnAktivniClanoviGrupe_Click);
+            // 
             // mnPodesavanja
             // 
             this.mnPodesavanja.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -250,12 +259,12 @@ namespace Soko.UI
             this.mnStampaci.Text = "Stampaci";
             this.mnStampaci.Click += new System.EventHandler(this.mnStampaci_Click);
             // 
-            // mnAktivniClanoviGrupe
+            // mnAktivniClanovi
             // 
-            this.mnAktivniClanoviGrupe.Name = "mnAktivniClanoviGrupe";
-            this.mnAktivniClanoviGrupe.Size = new System.Drawing.Size(194, 22);
-            this.mnAktivniClanoviGrupe.Text = "Aktivni clanovi - grupe";
-            this.mnAktivniClanoviGrupe.Click += new System.EventHandler(this.mnAktivniClanoviGrupe_Click);
+            this.mnAktivniClanovi.Name = "mnAktivniClanovi";
+            this.mnAktivniClanovi.Size = new System.Drawing.Size(194, 22);
+            this.mnAktivniClanovi.Text = "Aktivni clanovi";
+            this.mnAktivniClanovi.Click += new System.EventHandler(this.mnAktivniClanovi_Click);
             // 
             // Form1
             // 
@@ -301,6 +310,7 @@ namespace Soko.UI
         private System.Windows.Forms.ToolStripMenuItem mnFont;
         private System.Windows.Forms.ToolStripMenuItem mnStampaci;
         private System.Windows.Forms.ToolStripMenuItem mnAktivniClanoviGrupe;
+        private System.Windows.Forms.ToolStripMenuItem mnAktivniClanovi;
     }
 }
 

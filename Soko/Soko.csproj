@@ -132,7 +132,8 @@
     <Compile Include="Exceptions\SmallPageSizeException.cs" />
     <Compile Include="Misc\SqlCeUtilities.cs" />
     <Compile Include="Misc\SingleInstanceApplication.cs" />
-    <Compile Include="Report\AktivniClanoviGrupeIzvestaj .cs" />
+    <Compile Include="Report\AktivniClanoviGrupeIzvestaj.cs" />
+    <Compile Include="Report\AktivniClanoviIzvestaj.cs" />
     <Compile Include="UI\BiracClana.cs">
       <SubType>Form</SubType>
     </Compile>

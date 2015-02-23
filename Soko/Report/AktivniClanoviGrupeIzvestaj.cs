@@ -33,7 +33,7 @@ namespace Soko.Report
 			System.Resources.ResourceManager resourceManager = new 
 				System.Resources.ResourceManager("Soko.Resources.PreviewResursi", this.GetType().Assembly);
 
-            Title = resourceManager.GetString("akt_clan_grupe_izvestaj_title");
+            Title = resourceManager.GetString("akt_clan_izvestaj_title") + " po grupama";
 			SubTitle = fromDate.ToShortDateString() + " - " + toDate.ToShortDateString();
 			DocumentName = Title;
 	
@@ -104,7 +104,6 @@ namespace Soko.Report
         private List<Grupa> grupe;
 
 		private float relClan = 0.0f;
-		private float relDatumUplate = 14.0f;
 		
 		private Font groupTitleFont;
 		private float groupTitleHeight;

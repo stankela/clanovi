@@ -768,5 +768,57 @@ namespace Soko.UI
                 Cursor.Current = Cursors.Arrow;
             }
         }
+
+        private void mnAktivniClanovi_Click(object sender, EventArgs e)
+        {
+            BiracIntervala dlg;
+            try
+            {
+                dlg = new BiracIntervala("Aktivni clanovi", false);
+                dlg.ShowDialog();
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+
+            if (dlg.DialogResult != DialogResult.OK)
+                return;
+
+            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Show();
+            try
+            {
+                using (ISession session = NHibernateHelper.OpenSession())
+                using (session.BeginTransaction())
+                {
+                    CurrentSessionContext.Bind(session);
+                    PreviewDialog p = new PreviewDialog();
+                    p.setIzvestaj(new AktivniClanoviIzvestaj(dlg.OdDatum.Date,
+                        dlg.DoDatum.Date));
+                    p.ShowDialog();
+                }
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            finally
+            {
+                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                Cursor.Hide();
+                Cursor.Current = Cursors.Arrow;
+            }
+        }
     }
 }
