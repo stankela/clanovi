@@ -89,6 +89,28 @@ namespace Bilten.Dao.NHibernate
             }
         }
 
+        public virtual IList<UplataClanarine> findUplate(Clan clan, DateTime from, DateTime to)
+        {
+            from = from.Date;
+            to = to.Date.AddDays(1);
+            try
+            {
+                IQuery q = Session.CreateQuery(@"from UplataClanarine u
+                                                 where u.Clan = :clan
+                                                 and u.DatumVremeUplate >= :from and u.DatumVremeUplate <= :to");
+                q.SetEntity("clan", clan);
+                q.SetDateTime("from", from);
+                q.SetDateTime("to", to);
+                return q.List<UplataClanarine>();
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
         // Vraca grupe za koje postoje uplate za dati datumUplate, a ne postoje
         // kategorije
         public virtual IList<Grupa> getGrupeBezKategorija(DateTime datumUplate)

@@ -13,15 +13,30 @@ using Soko.Data;
 using NHibernate;
 using NHibernate.Context;
 using Bilten.Dao;
+using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace Soko.UI
 {
     public partial class Form1 : Form
     {
+        [DllImport("PanReaderIf.dll")]
+        private static extern ulong ReadDataCard(int comport, ref string sType, ref string sID1, ref string sID2, ref string sName);
+        [DllImport("PanReaderIf.dll")]
+        private static extern ulong WriteDataCard(int comport, string sType, string sID1, string sID2, string sName);
+        [DllImport("PanReaderIf.dll")]
+        private static extern ulong WaitDataCard(int comport, int nSecs);
+        [DllImport("PanReaderIf.dll")]
+        private static extern ulong WaitAndReadDataCard(int comport, int nSecs, ref string sType, ref string sID1, ref string sID2, ref string sName);
+
+        private int nComPort = Soko.UI.Form1.N_COM_PORT;
+
         const string RegKey = @"Software\SasaStankovic\Program";
         const string FontSizeRegKey = "FontSize";
         const string StampacPotvrdaRegKey = "StampacPotvrda";
         const string StampacIzvestajRegKey = "StampacIzvestaj";
+
+        public static int N_COM_PORT = 3;
 
         public Form1()
         {
@@ -30,6 +45,11 @@ namespace Soko.UI
             //LocalizeUI();
 
             loadOptions();
+        }
+
+        public void setStatusBarText(string text)
+        {
+            statusStrip1.Items[0].Text = text;
         }
 
         private void LocalizeUI()
@@ -819,6 +839,85 @@ namespace Soko.UI
                 Cursor.Hide();
                 Cursor.Current = Cursors.Arrow;
             }
+        }
+
+        private void mnProveraKartice_Click(object sender, EventArgs e)
+        {
+            Program.workerObject.RequestStop();
+            Program.workerThread.Join();
+
+            MessageBox.Show("Provera kartice. Prislonite karticu na citac i kliknite OK.");
+
+            nComPort = 0;
+            if (/*this.comboBoxPort.SelectedIndex >= 0*/true)
+            {
+                //nComPort = Convert.ToUInt16(this.comboBoxPort.SelectedIndex + 1);
+                nComPort = Soko.UI.Form1.N_COM_PORT;
+            }
+            if (nComPort <= 0)
+            {
+                MessageBox.Show("Potrebno je da podesite COM port za citac kartica.");
+            }
+
+            ulong retval = 0;
+            string sType = " ";
+            string sID1 = "          ";
+            string sID2 = "          ";
+            string sName = "                                ";
+
+            retval = ReadDataCard(nComPort, ref sType, ref sID1, ref sID2, ref sName) & 0xFFFFFFFF;
+
+            if (retval > 0)
+            {
+                //SingleInstanceApplication.GlavniProzor.setStatusBarText(
+                //  String.Format("Broj:   {0}     Ime:   {1}", sID1, sName));
+                MessageBox.Show(String.Format("Broj kartice:   {0}\nIme:   {1}", sID1, sName));
+            }
+            else
+            {
+                //SingleInstanceApplication.GlavniProzor.setStatusBarText(
+                //String.Format("Neuspesno citanje kartice."));
+                MessageBox.Show("Neuspesno citanje kartice.");
+            }
+
+            Program.workerObject = new CitacKartica();
+            Program.workerThread = new Thread(Program.workerObject.DoWork);
+            Program.workerThread.Start();
+            while (!Program.workerThread.IsAlive) ;
+        }
+
+        private void mnPravljenjeKartice_Click(object sender, EventArgs e)
+        {
+            PravljenjeKarticeForm dlg;
+            try
+            {
+                dlg = new PravljenjeKarticeForm();
+                dlg.ShowDialog();
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }                                   
+        }
+
+        private CitacKarticaForm citacKarticaForm;
+        public CitacKarticaForm CitacKarticaForm
+        {
+            get { return citacKarticaForm; }
+        }
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            citacKarticaForm = new CitacKarticaForm();
+            citacKarticaForm.Show();
+            citacKarticaForm.Location = new Point(this.Location.X + this.Width + 100, this.Location.Y);
+            citacKarticaForm.BackColor = Color.Yellow;
         }
     }
 }

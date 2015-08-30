@@ -16,6 +16,7 @@ GO
 create table clanovi (
     clan_id int identity(1,1) primary key,
     broj int,
+    broj_kartice int,
     ime nvarchar(20),
     prezime nvarchar(30),
     datum_rodjenja datetime,

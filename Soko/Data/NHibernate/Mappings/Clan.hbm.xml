@@ -8,6 +8,7 @@
       <generator class="identity" />
     </id>
     <property name="Broj" column="broj" />
+    <property name="BrojKartice" column="broj_kartice" />
     <property name="Ime" column="ime" />
     <property name="Prezime" column="prezime" />
     <property name="DatumRodjenja" column="datum_rodjenja" />

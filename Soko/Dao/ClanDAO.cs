@@ -13,5 +13,7 @@ namespace Bilten.Dao
         bool existsClanMesto(Mesto m);
         bool existsClanInstitucija(Institucija i);
         int getMaxBroj();
+        int getMaxBrojKartice();
+        Clan findForBrojKartice(int brojKartice);
     }
 }

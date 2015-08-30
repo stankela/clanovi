@@ -25,7 +25,14 @@ namespace Soko.Domain
 			set { broj = value; }
 		}
 
-		private string ime;
+        private Nullable<int> brojKartice;
+        public virtual Nullable<int> BrojKartice
+        {
+            get { return brojKartice; }
+            set { brojKartice = value; }
+        }
+
+        private string ime;
 		public virtual string Ime
 		{
 			get { return ime; }

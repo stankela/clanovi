@@ -49,12 +49,18 @@ namespace Soko.UI
             this.mnPrihodiMesecni = new System.Windows.Forms.ToolStripMenuItem();
             this.mnIzvestajiCenovnik = new System.Windows.Forms.ToolStripMenuItem();
             this.mnUplateClanova = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnAktivniClanovi = new System.Windows.Forms.ToolStripMenuItem();
             this.mnAktivniClanoviGrupe = new System.Windows.Forms.ToolStripMenuItem();
             this.mnPodesavanja = new System.Windows.Forms.ToolStripMenuItem();
             this.mnFont = new System.Windows.Forms.ToolStripMenuItem();
             this.mnStampaci = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnAktivniClanovi = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnCitacKartica = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnPravljenjeKartice = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnProveraKartice = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -63,7 +69,8 @@ namespace Soko.UI
             this.mnDatoteka,
             this.mnClanovi,
             this.mnIzvestaji,
-            this.mnPodesavanja});
+            this.mnPodesavanja,
+            this.mnCitacKartica});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(466, 24);
@@ -229,6 +236,13 @@ namespace Soko.UI
             this.mnUplateClanova.Text = "Uplate clanova";
             this.mnUplateClanova.Click += new System.EventHandler(this.mnUplateClanova_Click);
             // 
+            // mnAktivniClanovi
+            // 
+            this.mnAktivniClanovi.Name = "mnAktivniClanovi";
+            this.mnAktivniClanovi.Size = new System.Drawing.Size(194, 22);
+            this.mnAktivniClanovi.Text = "Aktivni clanovi";
+            this.mnAktivniClanovi.Click += new System.EventHandler(this.mnAktivniClanovi_Click);
+            // 
             // mnAktivniClanoviGrupe
             // 
             this.mnAktivniClanoviGrupe.Name = "mnAktivniClanoviGrupe";
@@ -259,25 +273,61 @@ namespace Soko.UI
             this.mnStampaci.Text = "Stampaci";
             this.mnStampaci.Click += new System.EventHandler(this.mnStampaci_Click);
             // 
-            // mnAktivniClanovi
+            // mnCitacKartica
             // 
-            this.mnAktivniClanovi.Name = "mnAktivniClanovi";
-            this.mnAktivniClanovi.Size = new System.Drawing.Size(194, 22);
-            this.mnAktivniClanovi.Text = "Aktivni clanovi";
-            this.mnAktivniClanovi.Click += new System.EventHandler(this.mnAktivniClanovi_Click);
+            this.mnCitacKartica.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnPravljenjeKartice,
+            this.mnProveraKartice});
+            this.mnCitacKartica.Name = "mnCitacKartica";
+            this.mnCitacKartica.Size = new System.Drawing.Size(84, 20);
+            this.mnCitacKartica.Text = "Citac kartica";
+            // 
+            // mnPravljenjeKartice
+            // 
+            this.mnPravljenjeKartice.Name = "mnPravljenjeKartice";
+            this.mnPravljenjeKartice.Size = new System.Drawing.Size(163, 22);
+            this.mnPravljenjeKartice.Text = "Pravljenje kartice";
+            this.mnPravljenjeKartice.Click += new System.EventHandler(this.mnPravljenjeKartice_Click);
+            // 
+            // mnProveraKartice
+            // 
+            this.mnProveraKartice.Name = "mnProveraKartice";
+            this.mnProveraKartice.Size = new System.Drawing.Size(163, 22);
+            this.mnProveraKartice.Text = "Provera kartice";
+            this.mnProveraKartice.Click += new System.EventHandler(this.mnProveraKartice_Click);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 252);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(466, 22);
+            this.statusStrip1.TabIndex = 1;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(118, 17);
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(466, 274);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Shown += new System.EventHandler(this.Form1_Shown);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -311,6 +361,11 @@ namespace Soko.UI
         private System.Windows.Forms.ToolStripMenuItem mnStampaci;
         private System.Windows.Forms.ToolStripMenuItem mnAktivniClanoviGrupe;
         private System.Windows.Forms.ToolStripMenuItem mnAktivniClanovi;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripMenuItem mnCitacKartica;
+        private System.Windows.Forms.ToolStripMenuItem mnProveraKartice;
+        private System.Windows.Forms.ToolStripMenuItem mnPravljenjeKartice;
     }
 }
 

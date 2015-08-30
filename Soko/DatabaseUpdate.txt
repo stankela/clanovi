@@ -1,0 +1,4 @@
+29-AVG-2015
+
+ALTER TABLE clanovi ADD COLUMN broj_kartice int;
+UPDATE clanovi SET broj_kartice = 0;

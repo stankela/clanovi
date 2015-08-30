@@ -29,6 +29,7 @@ namespace Soko.UI
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.ckbPristupnica = new System.Windows.Forms.CheckBox();
             this.txtNapomena = new System.Windows.Forms.TextBox();
             this.lblNapomena = new System.Windows.Forms.Label();
             this.txtIznos = new System.Windows.Forms.TextBox();
@@ -45,7 +46,6 @@ namespace Soko.UI
             this.lblClan = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnOdustani = new System.Windows.Forms.Button();
-            this.ckbPristupnica = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,6 +71,17 @@ namespace Soko.UI
             this.groupBox1.Size = new System.Drawing.Size(416, 240);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            // 
+            // ckbPristupnica
+            // 
+            this.ckbPristupnica.AutoSize = true;
+            this.ckbPristupnica.Location = new System.Drawing.Point(322, 115);
+            this.ckbPristupnica.Name = "ckbPristupnica";
+            this.ckbPristupnica.Size = new System.Drawing.Size(78, 17);
+            this.ckbPristupnica.TabIndex = 13;
+            this.ckbPristupnica.TabStop = false;
+            this.ckbPristupnica.Text = "Pristupnica";
+            this.ckbPristupnica.UseVisualStyleBackColor = true;
             // 
             // txtNapomena
             // 
@@ -213,17 +224,6 @@ namespace Soko.UI
             this.btnOdustani.Text = "Odustani";
             this.btnOdustani.UseVisualStyleBackColor = true;
             this.btnOdustani.Click += new System.EventHandler(this.btnOdustani_Click);
-            // 
-            // ckbPristupnica
-            // 
-            this.ckbPristupnica.AutoSize = true;
-            this.ckbPristupnica.Location = new System.Drawing.Point(322, 115);
-            this.ckbPristupnica.Name = "ckbPristupnica";
-            this.ckbPristupnica.Size = new System.Drawing.Size(78, 17);
-            this.ckbPristupnica.TabIndex = 13;
-            this.ckbPristupnica.TabStop = false;
-            this.ckbPristupnica.Text = "Pristupnica";
-            this.ckbPristupnica.UseVisualStyleBackColor = true;
             // 
             // UplataClanarineDialog
             // 
