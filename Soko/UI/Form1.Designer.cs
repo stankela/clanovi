@@ -55,8 +55,8 @@ namespace Soko.UI
             this.mnFont = new System.Windows.Forms.ToolStripMenuItem();
             this.mnStampaci = new System.Windows.Forms.ToolStripMenuItem();
             this.mnCitacKartica = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnCOMPort = new System.Windows.Forms.ToolStripMenuItem();
             this.mnPravljenjeKartice = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnProveraKartice = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
@@ -276,11 +276,18 @@ namespace Soko.UI
             // mnCitacKartica
             // 
             this.mnCitacKartica.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnPravljenjeKartice,
-            this.mnProveraKartice});
+            this.mnCOMPort,
+            this.mnPravljenjeKartice});
             this.mnCitacKartica.Name = "mnCitacKartica";
             this.mnCitacKartica.Size = new System.Drawing.Size(84, 20);
             this.mnCitacKartica.Text = "Citac kartica";
+            // 
+            // mnCOMPort
+            // 
+            this.mnCOMPort.Name = "mnCOMPort";
+            this.mnCOMPort.Size = new System.Drawing.Size(163, 22);
+            this.mnCOMPort.Text = "COM port";
+            this.mnCOMPort.Click += new System.EventHandler(this.mnCOMPort_Click);
             // 
             // mnPravljenjeKartice
             // 
@@ -288,13 +295,6 @@ namespace Soko.UI
             this.mnPravljenjeKartice.Size = new System.Drawing.Size(163, 22);
             this.mnPravljenjeKartice.Text = "Pravljenje kartice";
             this.mnPravljenjeKartice.Click += new System.EventHandler(this.mnPravljenjeKartice_Click);
-            // 
-            // mnProveraKartice
-            // 
-            this.mnProveraKartice.Name = "mnProveraKartice";
-            this.mnProveraKartice.Size = new System.Drawing.Size(163, 22);
-            this.mnProveraKartice.Text = "Provera kartice";
-            this.mnProveraKartice.Click += new System.EventHandler(this.mnProveraKartice_Click);
             // 
             // statusStrip1
             // 
@@ -364,8 +364,8 @@ namespace Soko.UI
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripMenuItem mnCitacKartica;
-        private System.Windows.Forms.ToolStripMenuItem mnProveraKartice;
         private System.Windows.Forms.ToolStripMenuItem mnPravljenjeKartice;
+        private System.Windows.Forms.ToolStripMenuItem mnCOMPort;
     }
 }
 

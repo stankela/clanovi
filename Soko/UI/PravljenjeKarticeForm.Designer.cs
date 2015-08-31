@@ -33,6 +33,7 @@ namespace Soko.UI
             this.txtSifraClana = new System.Windows.Forms.TextBox();
             this.lblClan = new System.Windows.Forms.Label();
             this.btnZatvori = new System.Windows.Forms.Button();
+            this.btnOcitajKarticu = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnNapraviKarticu
@@ -81,12 +82,23 @@ namespace Soko.UI
             this.btnZatvori.Text = "Zatvori";
             this.btnZatvori.UseVisualStyleBackColor = true;
             // 
+            // btnOcitajKarticu
+            // 
+            this.btnOcitajKarticu.Location = new System.Drawing.Point(167, 108);
+            this.btnOcitajKarticu.Name = "btnOcitajKarticu";
+            this.btnOcitajKarticu.Size = new System.Drawing.Size(98, 23);
+            this.btnOcitajKarticu.TabIndex = 15;
+            this.btnOcitajKarticu.Text = "Ocitaj karticu";
+            this.btnOcitajKarticu.UseVisualStyleBackColor = true;
+            this.btnOcitajKarticu.Click += new System.EventHandler(this.btnOcitajKarticu_Click);
+            // 
             // PravljenjeKarticeForm
             // 
             this.AcceptButton = this.btnZatvori;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(419, 162);
+            this.Controls.Add(this.btnOcitajKarticu);
             this.Controls.Add(this.cmbClan);
             this.Controls.Add(this.btnNapraviKarticu);
             this.Controls.Add(this.txtSifraClana);
@@ -112,5 +124,6 @@ namespace Soko.UI
         private System.Windows.Forms.TextBox txtSifraClana;
         private System.Windows.Forms.ComboBox cmbClan;
         private System.Windows.Forms.Button btnNapraviKarticu;
+        private System.Windows.Forms.Button btnOcitajKarticu;
     }
 }

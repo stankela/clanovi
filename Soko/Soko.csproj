@@ -159,6 +159,12 @@
     <Compile Include="UI\CitacKarticaForm.Designer.cs">
       <DependentUpon>CitacKarticaForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\COMPortForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\COMPortForm.Designer.cs">
+      <DependentUpon>COMPortForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\MesecnaClanarinaDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -459,6 +465,9 @@
     <EmbeddedResource Include="Data\NHibernate\Mappings\UplataClanarine.hbm.xml" />
     <EmbeddedResource Include="UI\CitacKarticaForm.resx">
       <DependentUpon>CitacKarticaForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\COMPortForm.resx">
+      <DependentUpon>COMPortForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\PravljenjeKarticeForm.resx">
       <DependentUpon>PravljenjeKarticeForm.cs</DependentUpon>

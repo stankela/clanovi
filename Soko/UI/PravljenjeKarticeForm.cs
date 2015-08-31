@@ -27,8 +27,6 @@ namespace Soko.UI
         [DllImport("PanReaderIf.dll")]
         private static extern ulong WaitAndReadDataCard(int comport, int nSecs, ref string sType, ref string sID1, ref string sID2, ref string sName);
 
-        private int nComPort = Soko.UI.Form1.N_COM_PORT;
-        
         private List<Clan> clanovi;
 
         public PravljenjeKarticeForm()
@@ -134,7 +132,7 @@ namespace Soko.UI
 
         private bool napraviKarticuDlg(Clan c)
         {
-            string naslov = "Kartica";
+            string naslov = "Pravljenje kartice";
             string pitanje = String.Format(
                 "Da li zelite da napravite karticu za clana \"{0}\"?", c.BrojPrezimeImeDatumRodjenja);
             return MessageDialogs.queryConfirmation(pitanje, naslov);
@@ -149,7 +147,7 @@ namespace Soko.UI
         {
             if (SelectedClan == null)
             {
-                MessageBox.Show("Izaberite clana.", this.Text);
+                MessageBox.Show("Izaberite clana.", "Pravljenje kartice");
                 return;
             }
 
@@ -158,20 +156,7 @@ namespace Soko.UI
 
             if (napraviKarticuDlg(SelectedClan))
             {
-                nComPort = 0;
-                if (/*this.comboBoxPort.SelectedIndex >= 0*/true)
-                {
-                    //nComPort = Convert.ToUInt16(this.comboBoxPort.SelectedIndex + 1);
-                    nComPort = Soko.UI.Form1.N_COM_PORT;
-                }
-                if (nComPort <= 0)
-                {
-                    MessageBox.Show("Potrebno je da podesite COM port za citac kartica.");
-                }
-
                 MessageBox.Show("Prislonite karticu na citac i kliknite OK.", "Pravljenje kartice");
-
-
                 try
                 {
                     using (ISession session = NHibernateHelper.OpenSession())
@@ -182,17 +167,22 @@ namespace Soko.UI
                         SelectedClan.BrojKartice = getNewBrojKartice();
                         DAOFactoryFactory.DAOFactory.GetClanDAO().MakePersistent(SelectedClan);
 
+                        int nComPort = Options.Instance.COMPort;
                         ulong retval = 0;
                         string sType = "";
                         string sID1 = SelectedClan.BrojKartice.ToString();
                         string sID2 = "";
                         string sName = SelectedClan.BrojImePrezime;
 
+                        // TODO2: Prvo proveri da li je kartica vazeca, i prikazi upozorenje ako jeste.
+
                         retval = WriteDataCard(nComPort, sType, sID1, sID2, sName) & 0xFFFFFFFF;
 
                         if (retval == 0)
                         {
-                            throw new Exception("Neuspesno pravljenje kartice. Proverite da li je podesen COM port za citac kartica.");
+                            string msg = "Neuspesno pravljenje kartice. " +
+                                "Proverite da li je uredjaj prikljucen, i da li je podesen COM port.";
+                            throw new Exception(msg);
                         }
                         else
                         {
@@ -212,7 +202,7 @@ namespace Soko.UI
                             {
                                 session.Transaction.Commit();
                                 MessageBox.Show(String.Format("Kartica je napravljena.\n\nBroj kartice:   {0}\nIme:   {1}",
-                                    sID1_2, sName2));
+                                    sID1_2, sName2), "Pravljenje kartice");
                             }
                             else
                             {
@@ -225,12 +215,45 @@ namespace Soko.UI
                 catch (Exception ex)
                 {
                     //discardChanges();
-                    MessageDialogs.showMessage(ex.Message, this.Text);
+                    MessageDialogs.showMessage(ex.Message, "Pravljenje kartice");
                 }
                 finally
                 {
                     CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
                 }
+            }
+
+            Program.workerObject = new CitacKartica();
+            Program.workerThread = new Thread(Program.workerObject.DoWork);
+            Program.workerThread.Start();
+            while (!Program.workerThread.IsAlive) ;
+        }
+
+        private void btnOcitajKarticu_Click(object sender, EventArgs e)
+        {
+            Program.workerObject.RequestStop();
+            Program.workerThread.Join();
+
+            MessageBox.Show("Ocitavanje kartice. Prislonite karticu na citac i kliknite OK.", "Ocitavanje kartice");
+
+            int nComPort = Options.Instance.COMPort;
+            ulong retval = 0;
+            string sType = " ";
+            string sID1 = "          ";
+            string sID2 = "          ";
+            string sName = "                                ";
+
+            retval = ReadDataCard(nComPort, ref sType, ref sID1, ref sID2, ref sName) & 0xFFFFFFFF;
+
+            if (retval > 0)
+            {
+                MessageBox.Show(String.Format("Broj kartice:   {0}\nIme:   {1}", sID1, sName), "Ocitavanje kartice");
+            }
+            else
+            {
+                string msg = "Neuspesno citanje kartice. " + 
+                    "Proverite da li je uredjaj prikljucen, i da li je podesen COM port.";
+                MessageBox.Show(msg, "Ocitavanje kartice");
             }
 
             Program.workerObject = new CitacKartica();

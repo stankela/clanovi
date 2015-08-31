@@ -36,7 +36,7 @@ namespace Soko
             {
                 ulong retval = 0;
                 int nSecs = 1;
-          		int nComPort = Soko.UI.Form1.N_COM_PORT;
+          		int nComPort = Options.Instance.COMPort;
 
                 string sType = " ";
                 string sID1 = "          ";
