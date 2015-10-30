@@ -504,6 +504,9 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>copy "$(ProjectDir)..\Libs\sqlce*.dll" "$(ProjectDir)$(OutDir)"
+copy "$(ProjectDir)..\Libs\MasterCom.dll" "$(ProjectDir)$(OutDir)"
+copy "$(ProjectDir)..\Libs\MasterRD.dll" "$(ProjectDir)$(OutDir)"
+copy "$(ProjectDir)..\Libs\PanReaderIf.dll" "$(ProjectDir)$(OutDir)"
 </PostBuildEvent>
   </PropertyGroup>
 </Project>
