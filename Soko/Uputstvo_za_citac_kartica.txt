@@ -1,0 +1,13 @@
+1. Instalirati SiLabs USB driver (CP210xVCPInstaller.exe) [folder: UsbDriver]
+
+2. Prikljuciti uredjaj na USB port racunara
+
+3. Pogledati u Device manageru koji COM port je dodeljen uredjaju:
+
+a) Otvoriti Device Manager: Start -> Control Panel -> System and Security -> System -> Device Manager
+b) Dvoklik na Ports ‘(COM& LPT)’
+
+Pronaci opciju "CP210x USB to UART Bridge Controller (COM4)". Broj COM porta je dat u
+zagradi (u ovom slucaju je to port 4, tj. COM4)
+
+4. Podesiti u programu isti taj broj COM porta, u prozoru Citac kartica -> COM port.
