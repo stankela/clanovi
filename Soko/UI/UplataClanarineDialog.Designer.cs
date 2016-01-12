@@ -46,6 +46,7 @@ namespace Soko.UI
             this.lblClan = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnOdustani = new System.Windows.Forms.Button();
+            this.btnOcitajKarticu = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -225,6 +226,16 @@ namespace Soko.UI
             this.btnOdustani.UseVisualStyleBackColor = true;
             this.btnOdustani.Click += new System.EventHandler(this.btnOdustani_Click);
             // 
+            // btnOcitajKarticu
+            // 
+            this.btnOcitajKarticu.Location = new System.Drawing.Point(12, 256);
+            this.btnOcitajKarticu.Name = "btnOcitajKarticu";
+            this.btnOcitajKarticu.Size = new System.Drawing.Size(96, 23);
+            this.btnOcitajKarticu.TabIndex = 3;
+            this.btnOcitajKarticu.Text = "Ocitaj karticu";
+            this.btnOcitajKarticu.UseVisualStyleBackColor = true;
+            this.btnOcitajKarticu.Click += new System.EventHandler(this.btnOcitajKarticu_Click);
+            // 
             // UplataClanarineDialog
             // 
             this.AcceptButton = this.btnOk;
@@ -232,6 +243,7 @@ namespace Soko.UI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnOdustani;
             this.ClientSize = new System.Drawing.Size(434, 288);
+            this.Controls.Add(this.btnOcitajKarticu);
             this.Controls.Add(this.btnOdustani);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.groupBox1);
@@ -269,5 +281,6 @@ namespace Soko.UI
         private System.Windows.Forms.Label lblNapomena;
         private System.Windows.Forms.TextBox txtNapomena;
         private System.Windows.Forms.CheckBox ckbPristupnica;
+        private System.Windows.Forms.Button btnOcitajKarticu;
     }
 }

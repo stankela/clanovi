@@ -303,5 +303,15 @@ namespace Soko.UI
         {
             handleCancelClick();
         }
+
+        private void btnOcitajKarticu_Click(object sender, EventArgs e)
+        {
+            string notUsed;
+            int id = CitacKartica.readId(Options.Instance.COMPortWriter, true, out notUsed);
+            if (id != -1)
+            { 
+            
+            }
+        }
     }
 }

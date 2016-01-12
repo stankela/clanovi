@@ -25,102 +25,98 @@ namespace Soko
         private static extern ulong WaitDataCard(int comport, int nSecs);
         [DllImport("PanReaderIf.dll")]
         private static extern ulong WaitAndReadDataCard(int comport, int nSecs, ref string sType, ref string sID1, ref string sID2, ref string sName);
-        
-        // This method will be called when the thread is started.
-        public void DoWork()
+
+        public static int readId(int comPort, bool showErrorMessages, out string sName)
         {
-            Thread.Sleep(3000);
-            int i = 0;
-            int j = 0;
-            while (!_shouldStop)
+            string sType = " ";
+            string sID1 = "          ";
+            string sID2 = "          ";
+            sName = "                                ";
+
+            ulong retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref sName) & 0xFFFFFFFF;
+            if (retval > 0)
             {
-                ulong retval = 0;
-                int nSecs = 1;
-          		int nComPort = Options.Instance.COMPort;
-
-                string sType = " ";
-                string sID1 = "          ";
-                string sID2 = "          ";
-                string sName = "                                ";
-
-                retval = WaitAndReadDataCard(nComPort, nSecs, ref sType, ref sID1, ref sID2, ref sName) & 0xFFFFFFFF;
-                if (_shouldStop)
-                    break;
-
-                int notUsed;
-                if (retval > 1 && Int32.TryParse(sID1, out notUsed))
+                int id;
+                if (Int32.TryParse(sID1, out id) && id > 0)
                 {
-                    ++j;
-                    SingleInstanceApplication.GlavniProzor.setStatusBarText(
-                        String.Format("Card detected {0}     Broj kartice: {1}   Ime: {2}", j, sID1, sName));
-
-                    try
-                    {
-                        using (ISession session = NHibernateHelper.OpenSession())
-                        using (session.BeginTransaction())
-                        {
-                            CurrentSessionContext.Bind(session);
-
-                            Clan clan = DAOFactoryFactory.DAOFactory.GetClanDAO().findForBrojKartice(Int32.Parse(sID1));
-                            if (clan != null)
-                            {
-                                int prevMonth = DateTime.Today.AddMonths(-1).Month;
-                                DateTime from = new DateTime(DateTime.Today.Year, prevMonth, 1);
-                                DateTime to = DateTime.Now;
-                                //DateTime firstDayInMonth = DateTime.Today.AddDays(-(DateTime.Today.Day - 1));
-                                
-                                UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
-                                IList<UplataClanarine> uplate = uplataClanarineDAO.findUplate(clan, from, to);
-                                if (uplate.Count > 0)
-                                {
-                                    SingleInstanceApplication.GlavniProzor.CitacKarticaForm.BackColor = Color.Green;
-                                    Thread.Sleep(2000);
-                                    SingleInstanceApplication.GlavniProzor.CitacKarticaForm.BackColor = Color.Yellow;
-                                }
-                                else
-                                {
-                                    SingleInstanceApplication.GlavniProzor.CitacKarticaForm.BackColor = Color.Red;
-                                    Thread.Sleep(2000);
-                                    SingleInstanceApplication.GlavniProzor.CitacKarticaForm.BackColor = Color.Yellow;
-                                }
-
-                                // izgleda da ova linija srusi program kada se program zatvori odmah nakon sto je kartica
-                                // detektovana.
-                                //SingleInstanceApplication.GlavniProzor.setStatusBarText("");
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        //discardChanges();
-                        MessageDialogs.showMessage(ex.Message, "Citac kartica");
-                    }
-                    finally
-                    {
-                        CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
-                    }
-                }
-                else if (retval == 1)
-                {
-                    ++i;
-                    SingleInstanceApplication.GlavniProzor.setStatusBarText(
-                        String.Format("Waiting time elapsed {0}", i));
-                    //MessageBox.Show("Waiting time elapsed!");
+                    return id;
                 }
                 else
                 {
-                    //MessageBox.Show("Wrong card!");
+                    if (showErrorMessages)
+                    {
+                        string msg = "Lose formatirana kartica.";
+                        MessageBox.Show(msg, "Ocitavanje kartice");
+                    }
+                    return -1;
                 }
+            }
+            else
+            {
+                if (showErrorMessages)
+                {
+                    string msg = "Neuspesno citanje kartice. " +
+                        "Proverite da li je uredjaj prikljucen, i da li je podesen COM port.";
+                    MessageBox.Show(msg, "Ocitavanje kartice");
+                }
+                return -1;
             }
         }
 
-        public void RequestStop()
+        public static void Read()
         {
-            _shouldStop = true;
-        }
+            string sName;
+            int id = CitacKartica.readId(Options.Instance.COMPortReader, false, out sName);
+            if (id == -1)
+                return;
+            
+            SingleInstanceApplication.GlavniProzor.setStatusBarText(
+                String.Format("Broj kartice: {0}   Ime: {1}", id, sName));
 
-        // Volatile is used as hint to the compiler that this data 
-        // member will be accessed by multiple threads. 
-        private volatile bool _shouldStop = false;
+            try
+            {
+                using (ISession session = NHibernateHelper.OpenSession())
+                using (session.BeginTransaction())
+                {
+                    CurrentSessionContext.Bind(session);
+
+                    Clan clan = DAOFactoryFactory.DAOFactory.GetClanDAO().findForBrojKartice(id);
+                    if (clan != null)
+                    {
+                        int prevMonth = DateTime.Today.AddMonths(-1).Month;
+                        DateTime from = new DateTime(DateTime.Today.Year, prevMonth, 1);
+                        DateTime to = DateTime.Now;
+                        //DateTime firstDayInMonth = DateTime.Today.AddDays(-(DateTime.Today.Day - 1));
+
+                        UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
+                        IList<UplataClanarine> uplate = uplataClanarineDAO.findUplate(clan, from, to);
+                        if (uplate.Count > 0)
+                        {
+                            SingleInstanceApplication.GlavniProzor.CitacKarticaForm.BackColor = Color.Green;
+                            Thread.Sleep(1000);
+                            SingleInstanceApplication.GlavniProzor.CitacKarticaForm.BackColor = Color.Yellow;
+                        }
+                        else
+                        {
+                            SingleInstanceApplication.GlavniProzor.CitacKarticaForm.BackColor = Color.Red;
+                            Thread.Sleep(1000);
+                            SingleInstanceApplication.GlavniProzor.CitacKarticaForm.BackColor = Color.Yellow;
+                        }
+
+                        // izgleda da ova linija srusi program kada se program zatvori odmah nakon sto je kartica
+                        // detektovana.
+                        SingleInstanceApplication.GlavniProzor.setStatusBarText("");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showMessage(ex.Message, "Citac kartica");
+            }
+            finally
+            {
+                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+            }
+        }
     }
 }

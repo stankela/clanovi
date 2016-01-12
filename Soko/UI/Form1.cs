@@ -22,7 +22,8 @@ namespace Soko.UI
         const string FontSizeRegKey = "FontSize";
         const string StampacPotvrdaRegKey = "StampacPotvrda";
         const string StampacIzvestajRegKey = "StampacIzvestaj";
-        const string COMPortRegKey = "COMPort";
+        const string COMPortReaderRegKey = "COMPortReader";
+        const string COMPortWriterRegKey = "COMPortWriter";
 
         public Form1()
         {
@@ -59,7 +60,8 @@ namespace Soko.UI
             float fontSize = Font.SizeInPoints;
             string stampacPotvrda = null;
             string stampacIzvestaj = null;
-            int comPort = 1;
+            int comPortReader = 1;
+            int comPortWriter = 2;
             if (regkey != null)
             {
                 if (regkey.GetValue(FontSizeRegKey) != null)
@@ -68,14 +70,17 @@ namespace Soko.UI
                     stampacPotvrda = (string)regkey.GetValue(StampacPotvrdaRegKey);
                 if (regkey.GetValue(StampacIzvestajRegKey) != null)
                     stampacIzvestaj = (string)regkey.GetValue(StampacIzvestajRegKey);
-                if (regkey.GetValue(COMPortRegKey) != null)
-                    comPort = int.Parse((string)regkey.GetValue(COMPortRegKey));
+                if (regkey.GetValue(COMPortReaderRegKey) != null)
+                    comPortReader = int.Parse((string)regkey.GetValue(COMPortReaderRegKey));
+                if (regkey.GetValue(COMPortWriterRegKey) != null)
+                    comPortWriter = int.Parse((string)regkey.GetValue(COMPortWriterRegKey));
                 regkey.Close();
             }
             Options.Instance.Font = new Font(Font.FontFamily, fontSize);
             Options.Instance.PrinterNamePotvrda = stampacPotvrda;
             Options.Instance.PrinterNameIzvestaj = stampacIzvestaj;
-            Options.Instance.COMPort = comPort;
+            Options.Instance.COMPortReader = comPortReader;
+            Options.Instance.COMPortWriter = comPortWriter;
         }
 
         private void saveOptions()
@@ -96,7 +101,8 @@ namespace Soko.UI
                 stampacIzvestaj = Options.Instance.PrinterNameIzvestaj;
             regkey.SetValue(StampacIzvestajRegKey, stampacIzvestaj);
 
-            regkey.SetValue(COMPortRegKey, Options.Instance.COMPort.ToString());
+            regkey.SetValue(COMPortReaderRegKey, Options.Instance.COMPortReader.ToString());
+            regkey.SetValue(COMPortWriterRegKey, Options.Instance.COMPortWriter.ToString());
             
             regkey.Close();
         }
@@ -108,6 +114,7 @@ namespace Soko.UI
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
+            aTimer.Enabled = false;
             saveOptions();
         }
 
@@ -872,7 +879,59 @@ namespace Soko.UI
             COMPortForm form = new COMPortForm();
             if (form.ShowDialog() == DialogResult.OK)
             {
-                Options.Instance.COMPort = form.COMPort;
+                Options.Instance.COMPortReader = form.COMPortReader;
+                Options.Instance.COMPortWriter = form.COMPortWriter;
+            }
+        }
+
+        private System.Timers.Timer aTimer;
+        private int numTimerEvents = 0;
+        public bool CardWriterReadEnabled = true;
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            // Normally, the timer is declared at the class level, 
+            // so that it stays in scope as long as it is needed. 
+            // If the timer is declared in a long-running method,   
+            // KeepAlive must be used to prevent the JIT compiler  
+            // from allowing aggressive garbage collection to occur  
+            // before the method ends. You can experiment with this 
+            // by commenting out the class-level declaration and  
+            // uncommenting the declaration below; then uncomment 
+            // the GC.KeepAlive(aTimer) at the end of the method. 
+            //System.Timers.Timer aTimer; 
+
+            // Create a timer with a ten second interval.
+            aTimer = new System.Timers.Timer();
+
+            // Hook up the Elapsed event for the timer.
+            aTimer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimedEvent);
+
+            // Set the Interval to 0.5 seconds (500 milliseconds).
+            aTimer.Interval = 500;
+            aTimer.Enabled = true;
+
+            // If the timer is declared in a long-running method, use 
+            // KeepAlive to prevent garbage collection from occurring 
+            // before the method ends. 
+            //GC.KeepAlive(aTimer);        
+        }
+
+        // Specify what you want to happen when the Elapsed event is  
+        // raised. 
+        private void OnTimedEvent(object source, System.Timers.ElapsedEventArgs e)
+        {
+            ++numTimerEvents;
+            if (numTimerEvents % 2 == 0)
+            {
+                CitacKartica.Read();
+            }
+            else
+            {
+                if (PravljenjeKarticeForm.PendingWrite)
+                {
+                    PravljenjeKarticeForm.Write();
+                }
             }
         }
     }

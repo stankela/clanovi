@@ -38,7 +38,6 @@
             this.Name = "CitacKarticaForm";
             this.Text = "CitacKarticaForm";
             this.Shown += new System.EventHandler(this.CitacKarticaForm_Shown);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CitacKarticaForm_FormClosed);
             this.ResumeLayout(false);
 
         }

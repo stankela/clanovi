@@ -45,11 +45,18 @@ namespace Soko
             set { printerNameIzvestaj = value; }
         }
 
-        private int comPort;
-        public int COMPort
+        private int comPortReader;
+        public int COMPortReader
         {
-            get { return comPort; }
-            set { comPort = value; }
+            get { return comPortReader; }
+            set { comPortReader = value; }
+        }
+
+        private int comPortWriter;
+        public int COMPortWriter
+        {
+            get { return comPortWriter; }
+            set { comPortWriter = value; }
         }
     }
 }

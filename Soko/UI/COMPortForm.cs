@@ -11,10 +11,16 @@ namespace Soko.UI
 {
     public partial class COMPortForm : Form
     {
-        private int comPort;
-        public int COMPort
+        private int comPortReader;
+        public int COMPortReader
         {
-            get { return comPort; }
+            get { return comPortReader; }
+        }
+
+        private int comPortWriter;
+        public int COMPortWriter
+        {
+            get { return comPortWriter; }
         }
 
         public COMPortForm()
@@ -24,12 +30,14 @@ namespace Soko.UI
 
         private void COMPortForm_Load(object sender, EventArgs e)
         {
-            cmbCOMPort.SelectedIndex = Options.Instance.COMPort - 1;
+            cmbCOMPortReader.SelectedIndex = Options.Instance.COMPortReader - 1;
+            cmbCOMPortWriter.SelectedIndex = Options.Instance.COMPortWriter - 1;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            comPort = cmbCOMPort.SelectedIndex + 1;
+            comPortReader = cmbCOMPortReader.SelectedIndex + 1;
+            comPortWriter = cmbCOMPortWriter.SelectedIndex + 1;
         }
     }
 }

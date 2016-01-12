@@ -28,17 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.cmbCOMPort = new System.Windows.Forms.ComboBox();
-            this.lblCOMPort = new System.Windows.Forms.Label();
+            this.cmbCOMPortReader = new System.Windows.Forms.ComboBox();
+            this.lblCOMPortReader = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.cmbCOMPortWriter = new System.Windows.Forms.ComboBox();
+            this.lblCOMPortWriter = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // cmbCOMPort
+            // cmbCOMPortReader
             // 
-            this.cmbCOMPort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCOMPort.FormattingEnabled = true;
-            this.cmbCOMPort.Items.AddRange(new object[] {
+            this.cmbCOMPortReader.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCOMPortReader.FormattingEnabled = true;
+            this.cmbCOMPortReader.Items.AddRange(new object[] {
             "COM 1",
             "COM 2",
             "COM 3",
@@ -69,24 +71,24 @@
             "COM 28",
             "COM 29",
             "COM 30"});
-            this.cmbCOMPort.Location = new System.Drawing.Point(21, 40);
-            this.cmbCOMPort.Name = "cmbCOMPort";
-            this.cmbCOMPort.Size = new System.Drawing.Size(121, 21);
-            this.cmbCOMPort.TabIndex = 0;
+            this.cmbCOMPortReader.Location = new System.Drawing.Point(21, 40);
+            this.cmbCOMPortReader.Name = "cmbCOMPortReader";
+            this.cmbCOMPortReader.Size = new System.Drawing.Size(132, 21);
+            this.cmbCOMPortReader.TabIndex = 0;
             // 
-            // lblCOMPort
+            // lblCOMPortReader
             // 
-            this.lblCOMPort.AutoSize = true;
-            this.lblCOMPort.Location = new System.Drawing.Point(18, 24);
-            this.lblCOMPort.Name = "lblCOMPort";
-            this.lblCOMPort.Size = new System.Drawing.Size(52, 13);
-            this.lblCOMPort.TabIndex = 1;
-            this.lblCOMPort.Text = "COM port";
+            this.lblCOMPortReader.AutoSize = true;
+            this.lblCOMPortReader.Location = new System.Drawing.Point(18, 24);
+            this.lblCOMPortReader.Name = "lblCOMPortReader";
+            this.lblCOMPortReader.Size = new System.Drawing.Size(127, 13);
+            this.lblCOMPortReader.TabIndex = 1;
+            this.lblCOMPortReader.Text = "COM port za citac kartica";
             // 
             // btnOK
             // 
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(20, 84);
+            this.btnOK.Location = new System.Drawing.Point(21, 146);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 2;
@@ -97,12 +99,61 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(115, 84);
+            this.btnCancel.Location = new System.Drawing.Point(111, 146);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            // 
+            // cmbCOMPortWriter
+            // 
+            this.cmbCOMPortWriter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCOMPortWriter.FormattingEnabled = true;
+            this.cmbCOMPortWriter.Items.AddRange(new object[] {
+            "COM 1",
+            "COM 2",
+            "COM 3",
+            "COM 4",
+            "COM 5",
+            "COM 6",
+            "COM 7",
+            "COM 8",
+            "COM 9",
+            "COM 10",
+            "COM 11",
+            "COM 12",
+            "COM 13",
+            "COM 14",
+            "COM 15",
+            "COM 16",
+            "COM 17",
+            "COM 18",
+            "COM 19",
+            "COM 20",
+            "COM 21",
+            "COM 22",
+            "COM 23",
+            "COM 24",
+            "COM 25",
+            "COM 26",
+            "COM 27",
+            "COM 28",
+            "COM 29",
+            "COM 30"});
+            this.cmbCOMPortWriter.Location = new System.Drawing.Point(21, 96);
+            this.cmbCOMPortWriter.Name = "cmbCOMPortWriter";
+            this.cmbCOMPortWriter.Size = new System.Drawing.Size(132, 21);
+            this.cmbCOMPortWriter.TabIndex = 4;
+            // 
+            // lblCOMPortWriter
+            // 
+            this.lblCOMPortWriter.AutoSize = true;
+            this.lblCOMPortWriter.Location = new System.Drawing.Point(18, 80);
+            this.lblCOMPortWriter.Name = "lblCOMPortWriter";
+            this.lblCOMPortWriter.Size = new System.Drawing.Size(129, 13);
+            this.lblCOMPortWriter.TabIndex = 5;
+            this.lblCOMPortWriter.Text = "COM port za pisac kartica";
             // 
             // COMPortForm
             // 
@@ -110,11 +161,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(216, 130);
+            this.ClientSize = new System.Drawing.Size(205, 186);
+            this.Controls.Add(this.lblCOMPortWriter);
+            this.Controls.Add(this.cmbCOMPortWriter);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.lblCOMPort);
-            this.Controls.Add(this.cmbCOMPort);
+            this.Controls.Add(this.lblCOMPortReader);
+            this.Controls.Add(this.cmbCOMPortReader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -129,9 +182,11 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox cmbCOMPort;
-        private System.Windows.Forms.Label lblCOMPort;
+        private System.Windows.Forms.ComboBox cmbCOMPortReader;
+        private System.Windows.Forms.Label lblCOMPortReader;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.ComboBox cmbCOMPortWriter;
+        private System.Windows.Forms.Label lblCOMPortWriter;
     }
 }

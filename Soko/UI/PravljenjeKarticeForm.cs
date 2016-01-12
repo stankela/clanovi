@@ -27,6 +27,9 @@ namespace Soko.UI
         [DllImport("PanReaderIf.dll")]
         private static extern ulong WaitAndReadDataCard(int comport, int nSecs, ref string sType, ref string sID1, ref string sID2, ref string sName);
 
+        private static int clanId;
+        public static bool PendingWrite = false;
+    
         private List<Clan> clanovi;
 
         public PravljenjeKarticeForm()
@@ -151,32 +154,40 @@ namespace Soko.UI
                 return;
             }
 
-            Program.workerObject.RequestStop();
-            Program.workerThread.Join();
-
             if (napraviKarticuDlg(SelectedClan))
             {
                 MessageBox.Show("Prislonite karticu na citac i kliknite OK.", "Pravljenje kartice");
+                clanId = SelectedClan.Id;
+                PendingWrite = true;
+            }
+        }
+
+        public static void Write()
+        {
+            if (PendingWrite)
+            {
                 try
                 {
                     using (ISession session = NHibernateHelper.OpenSession())
                     using (session.BeginTransaction())
                     {
                         CurrentSessionContext.Bind(session);
+                        Clan selectedClan = session.Load<Clan>(clanId);
 
-                        SelectedClan.BrojKartice = getNewBrojKartice();
-                        DAOFactoryFactory.DAOFactory.GetClanDAO().MakePersistent(SelectedClan);
+                        //selectedClan.BrojKartice = getNewBrojKartice();
+                        selectedClan.BrojKartice = clanId;
+                        DAOFactoryFactory.DAOFactory.GetClanDAO().MakePersistent(selectedClan);
 
-                        int nComPort = Options.Instance.COMPort;
-                        ulong retval = 0;
                         string sType = "";
-                        string sID1 = SelectedClan.BrojKartice.ToString();
+                        string sID1 = selectedClan.BrojKartice.ToString();
                         string sID2 = "";
-                        string sName = SelectedClan.BrojImePrezime;
+                        string sName = selectedClan.BrojImePrezime;
+                        ulong retval = WriteDataCard(Options.Instance.COMPortWriter,
+                            sType, sID1, sID2, sName) & 0xFFFFFFFF; 
+
+                        PendingWrite = false;
 
                         // TODO2: Prvo proveri da li je kartica vazeca, i prikazi upozorenje ako jeste.
-
-                        retval = WriteDataCard(nComPort, sType, sID1, sID2, sName) & 0xFFFFFFFF;
 
                         if (retval == 0)
                         {
@@ -186,28 +197,9 @@ namespace Soko.UI
                         }
                         else
                         {
-                            string sType2 = " ";
-                            string sID1_2 = "          ";
-                            string sID2_2 = "          ";
-                            string sName2 = "                                ";
-
-                            retval = ReadDataCard(nComPort, ref sType2, ref sID1_2, ref sID2_2, ref sName2) & 0xFFFFFFFF;
-
-                            // TODO2: Izbacio sam proveru da li su imena jednaka zato sto ne upisuje nasa slova
-                            // pravilno na karticu (slova sa kvacicom pretvori u slova bez kvacice). Proveravam
-                            // samo broj clana.
-                            string broj = sName.Split(' ')[0];
-                            string broj2 = sName2.Split(' ')[0];
-                            if (retval > 0 && sID1_2 == sID1 && broj == broj2 /*&& sName2 == sName*/)
-                            {
-                                session.Transaction.Commit();
-                                MessageBox.Show(String.Format("Kartica je napravljena.\n\nBroj kartice:   {0}\nIme:   {1}",
-                                    sID1_2, sName2), "Pravljenje kartice");
-                            }
-                            else
-                            {
-                                throw new Exception("Greska prilikom pravljenja kartice.");
-                            }
+                            session.Transaction.Commit();
+                            MessageBox.Show(String.Format("Kartica je napravljena.\n\nBroj kartice:   {0}\nIme:   {1}",
+                                sID1, sName), "Pravljenje kartice");
                         }
 
                     }
@@ -222,44 +214,6 @@ namespace Soko.UI
                     CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
                 }
             }
-
-            Program.workerObject = new CitacKartica();
-            Program.workerThread = new Thread(Program.workerObject.DoWork);
-            Program.workerThread.Start();
-            while (!Program.workerThread.IsAlive) ;
-        }
-
-        private void btnOcitajKarticu_Click(object sender, EventArgs e)
-        {
-            Program.workerObject.RequestStop();
-            Program.workerThread.Join();
-
-            MessageBox.Show("Ocitavanje kartice. Prislonite karticu na citac i kliknite OK.", "Ocitavanje kartice");
-
-            int nComPort = Options.Instance.COMPort;
-            ulong retval = 0;
-            string sType = " ";
-            string sID1 = "          ";
-            string sID2 = "          ";
-            string sName = "                                ";
-
-            retval = ReadDataCard(nComPort, ref sType, ref sID1, ref sID2, ref sName) & 0xFFFFFFFF;
-
-            if (retval > 0)
-            {
-                MessageBox.Show(String.Format("Broj kartice:   {0}\nIme:   {1}", sID1, sName), "Ocitavanje kartice");
-            }
-            else
-            {
-                string msg = "Neuspesno citanje kartice. " + 
-                    "Proverite da li je uredjaj prikljucen, i da li je podesen COM port.";
-                MessageBox.Show(msg, "Ocitavanje kartice");
-            }
-
-            Program.workerObject = new CitacKartica();
-            Program.workerThread = new Thread(Program.workerObject.DoWork);
-            Program.workerThread.Start();
-            while (!Program.workerThread.IsAlive) ;
         }
     }
 }
