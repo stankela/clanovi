@@ -932,6 +932,18 @@ namespace Soko.UI
                 {
                     PravljenjeKarticeForm.Write();
                 }
+                else if (UplataClanarineDialog.PendingRead)
+                {
+                    foreach (Form f in Application.OpenForms)
+                    {
+                        UplataClanarineDialog dlg = f as UplataClanarineDialog;
+                        if (dlg != null)
+                        {
+                            dlg.Read();
+                            break;
+                        }
+                    }
+                }
             }
         }
     }

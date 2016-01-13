@@ -8,6 +8,9 @@ using System.Windows.Forms;
 using Soko.Domain;
 using System.Globalization;
 using Bilten.Dao;
+using NHibernate;
+using Soko.Data;
+using NHibernate.Context;
 
 namespace Soko.UI
 {
@@ -16,6 +19,8 @@ namespace Soko.UI
         private List<Clan> clanovi;
         private List<Grupa> grupe;
 
+        public static bool PendingRead = false;
+        
         public UplataClanarineDialog(Nullable<int> entityId)
         {
             if (entityId != null)
@@ -115,7 +120,7 @@ namespace Soko.UI
 
         private void UplataClanarineDialog_Shown(object sender, EventArgs e)
         {
-            txtSifraClana.Focus();
+            txtBrojClana.Focus();
         }
 
         private void btnOk_Click(object sender, System.EventArgs e)
@@ -229,23 +234,16 @@ namespace Soko.UI
             }
         }
 
-        private void txtSifraClana_TextChanged(object sender, System.EventArgs e)
+        private void txtBrojClana_TextChanged(object sender, System.EventArgs e)
         {
+            Clan clan = null;
             int broj;
-            try
+            if (int.TryParse(txtBrojClana.Text, out broj))
             {
-                broj = int.Parse(txtSifraClana.Text);
-                SelectedClan = findClan(broj);
-                if (SelectedClan != null)
-                    ckbPristupnica.Checked = SelectedClan.ImaPristupnicu;
-                else
-                    ckbPristupnica.Checked = false;
+                clan = findClan(broj);
             }
-            catch (Exception)
-            {
-                SelectedClan = null;
-                ckbPristupnica.Checked = false;
-            }
+            SelectedClan = clan;
+            ckbPristupnica.Checked = SelectedClan != null && SelectedClan.ImaPristupnicu;
         }
 
         private Clan findClan(int broj)
@@ -281,12 +279,12 @@ namespace Soko.UI
         {
             if (SelectedClan != null)
             {
-                txtSifraClana.Text = SelectedClan.Broj.ToString();
+                txtBrojClana.Text = SelectedClan.Broj.ToString();
                 ckbPristupnica.Checked = SelectedClan.ImaPristupnicu;
             }
             else
             {
-                txtSifraClana.Text = String.Empty;
+                txtBrojClana.Text = String.Empty;
                 ckbPristupnica.Checked = false;
             }
         }
@@ -306,11 +304,83 @@ namespace Soko.UI
 
         private void btnOcitajKarticu_Click(object sender, EventArgs e)
         {
-            string notUsed;
-            int id = CitacKartica.readId(Options.Instance.COMPortWriter, true, out notUsed);
-            if (id != -1)
-            { 
-            
+            PendingRead = true;
+            btnOk.Focus();
+        }
+
+        public void Read()
+        {
+            if (PendingRead)
+            {
+                PendingRead = false;
+                int broj;
+                string notUsed;
+                if (CitacKartica.readCard(Options.Instance.COMPortWriter, true, out broj, out notUsed))
+                {
+                    // SelectedClan is updated in txtBrojClana_TextChanged
+                    txtBrojClana.Text = broj.ToString();
+                }
+                else
+                    txtBrojClana.Text = String.Empty;
+
+                updateGrupaFromUplate();
+            }
+        }
+
+        private void updateGrupaFromUplate()
+        {
+            if (SelectedClan == null)
+            {
+                txtSifraGrupe.Text = String.Empty;
+                return;
+            }
+            try
+            {
+                using (ISession session = NHibernateHelper.OpenSession())
+                using (session.BeginTransaction())
+                {
+                    CurrentSessionContext.Bind(session);
+                    UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
+                    List<UplataClanarine> uplate =
+                        new List<UplataClanarine>(uplataClanarineDAO.findUplate(SelectedClan));
+                    sortByDatumVremeDesc(uplate);
+                    if (uplate.Count > 0)
+                    {
+                        txtSifraGrupe.Text = uplate[0].Grupa.Sifra.Value;
+                    }
+                    else
+                    {
+                        txtSifraGrupe.Text = String.Empty;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showMessage(ex.Message, "Uplata clanarine");
+            }
+            finally
+            {
+                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+            }
+        }
+
+        private void sortByDatumVremeDesc(List<UplataClanarine> uplate)
+        {
+            PropertyDescriptor propDescDatum =
+                TypeDescriptor.GetProperties(typeof(UplataClanarine))["DatumUplate"];
+            PropertyDescriptor propDescVreme =
+                TypeDescriptor.GetProperties(typeof(UplataClanarine))["VremeUplate"];
+            PropertyDescriptor[] propDesc = new PropertyDescriptor[2] { propDescDatum, propDescVreme };
+            ListSortDirection[] direction = new ListSortDirection[2] { ListSortDirection.Descending, ListSortDirection.Descending };
+
+            uplate.Sort(new SortComparer<UplataClanarine>(propDesc, direction));
+        }
+
+        private void txtSifraGrupe_Enter(object sender, EventArgs e)
+        {
+            if (txtSifraGrupe.Text == String.Empty)
+            {
+                updateGrupaFromUplate();
             }
         }
     }

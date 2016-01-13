@@ -26,29 +26,30 @@ namespace Soko
         [DllImport("PanReaderIf.dll")]
         private static extern ulong WaitAndReadDataCard(int comport, int nSecs, ref string sType, ref string sID1, ref string sID2, ref string sName);
 
-        public static int readId(int comPort, bool showErrorMessages, out string sName)
+        public static bool readCard(int comPort, bool showErrorMessages, out int broj, out string name)
         {
             string sType = " ";
             string sID1 = "          ";
             string sID2 = "          ";
-            sName = "                                ";
+            name = "                                ";
+            broj = -1;
 
-            ulong retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref sName) & 0xFFFFFFFF;
-            if (retval > 0)
+            ulong retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+            if (retval == 1)
             {
-                int id;
-                if (Int32.TryParse(sID1, out id) && id > 0)
+                if (Int32.TryParse(sID1, out broj) && broj > 0)
                 {
-                    return id;
+                    return true;
                 }
                 else
                 {
                     if (showErrorMessages)
                     {
+                  
                         string msg = "Lose formatirana kartica.";
                         MessageBox.Show(msg, "Ocitavanje kartice");
                     }
-                    return -1;
+                    return false;
                 }
             }
             else
@@ -59,19 +60,19 @@ namespace Soko
                         "Proverite da li je uredjaj prikljucen, i da li je podesen COM port.";
                     MessageBox.Show(msg, "Ocitavanje kartice");
                 }
-                return -1;
+                return false;
             }
         }
 
         public static void Read()
         {
-            string sName;
-            int id = CitacKartica.readId(Options.Instance.COMPortReader, false, out sName);
-            if (id == -1)
+            int broj;
+            string name;
+            if (!CitacKartica.readCard(Options.Instance.COMPortReader, false, out broj, out name))
                 return;
             
             SingleInstanceApplication.GlavniProzor.setStatusBarText(
-                String.Format("Broj kartice: {0}   Ime: {1}", id, sName));
+                String.Format("Broj kartice: {0}   Ime: {1}", broj, name));
 
             try
             {
@@ -80,7 +81,7 @@ namespace Soko
                 {
                     CurrentSessionContext.Bind(session);
 
-                    Clan clan = DAOFactoryFactory.DAOFactory.GetClanDAO().findForBrojKartice(id);
+                    Clan clan = DAOFactoryFactory.DAOFactory.GetClanDAO().findForBrojKartice(broj);
                     if (clan != null)
                     {
                         int prevMonth = DateTime.Today.AddMonths(-1).Month;

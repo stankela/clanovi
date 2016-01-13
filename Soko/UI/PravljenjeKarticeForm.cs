@@ -166,6 +166,7 @@ namespace Soko.UI
         {
             if (PendingWrite)
             {
+                PendingWrite = false;
                 try
                 {
                     using (ISession session = NHibernateHelper.OpenSession())
@@ -175,7 +176,7 @@ namespace Soko.UI
                         Clan selectedClan = session.Load<Clan>(clanId);
 
                         //selectedClan.BrojKartice = getNewBrojKartice();
-                        selectedClan.BrojKartice = clanId;
+                        selectedClan.BrojKartice = selectedClan.Broj;
                         DAOFactoryFactory.DAOFactory.GetClanDAO().MakePersistent(selectedClan);
 
                         string sType = "";
@@ -184,8 +185,6 @@ namespace Soko.UI
                         string sName = selectedClan.BrojImePrezime;
                         ulong retval = WriteDataCard(Options.Instance.COMPortWriter,
                             sType, sID1, sID2, sName) & 0xFFFFFFFF; 
-
-                        PendingWrite = false;
 
                         // TODO2: Prvo proveri da li je kartica vazeca, i prikazi upozorenje ako jeste.
 

@@ -42,7 +42,7 @@ namespace Soko.UI
             this.txtSifraGrupe = new System.Windows.Forms.TextBox();
             this.lblGrupa = new System.Windows.Forms.Label();
             this.cmbClan = new System.Windows.Forms.ComboBox();
-            this.txtSifraClana = new System.Windows.Forms.TextBox();
+            this.txtBrojClana = new System.Windows.Forms.TextBox();
             this.lblClan = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnOdustani = new System.Windows.Forms.Button();
@@ -65,7 +65,7 @@ namespace Soko.UI
             this.groupBox1.Controls.Add(this.txtSifraGrupe);
             this.groupBox1.Controls.Add(this.lblGrupa);
             this.groupBox1.Controls.Add(this.cmbClan);
-            this.groupBox1.Controls.Add(this.txtSifraClana);
+            this.groupBox1.Controls.Add(this.txtBrojClana);
             this.groupBox1.Controls.Add(this.lblClan);
             this.groupBox1.Location = new System.Drawing.Point(8, 8);
             this.groupBox1.Name = "groupBox1";
@@ -168,6 +168,7 @@ namespace Soko.UI
             this.txtSifraGrupe.Size = new System.Drawing.Size(48, 20);
             this.txtSifraGrupe.TabIndex = 1;
             this.txtSifraGrupe.TextChanged += new System.EventHandler(this.txtSifraGrupe_TextChanged);
+            this.txtSifraGrupe.Enter += new System.EventHandler(this.txtSifraGrupe_Enter);
             // 
             // lblGrupa
             // 
@@ -187,13 +188,13 @@ namespace Soko.UI
             this.cmbClan.TabIndex = 2;
             this.cmbClan.SelectionChangeCommitted += new System.EventHandler(this.cmbClan_SelectionChangeCommitted);
             // 
-            // txtSifraClana
+            // txtBrojClana
             // 
-            this.txtSifraClana.Location = new System.Drawing.Point(112, 16);
-            this.txtSifraClana.Name = "txtSifraClana";
-            this.txtSifraClana.Size = new System.Drawing.Size(48, 20);
-            this.txtSifraClana.TabIndex = 0;
-            this.txtSifraClana.TextChanged += new System.EventHandler(this.txtSifraClana_TextChanged);
+            this.txtBrojClana.Location = new System.Drawing.Point(112, 16);
+            this.txtBrojClana.Name = "txtBrojClana";
+            this.txtBrojClana.Size = new System.Drawing.Size(48, 20);
+            this.txtBrojClana.TabIndex = 0;
+            this.txtBrojClana.TextChanged += new System.EventHandler(this.txtBrojClana_TextChanged);
             // 
             // lblClan
             // 
@@ -267,7 +268,7 @@ namespace Soko.UI
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnOdustani;
         private System.Windows.Forms.Label lblClan;
-        private System.Windows.Forms.TextBox txtSifraClana;
+        private System.Windows.Forms.TextBox txtBrojClana;
         private System.Windows.Forms.ComboBox cmbClan;
         private System.Windows.Forms.Label lblGrupa;
         private System.Windows.Forms.TextBox txtSifraGrupe;
