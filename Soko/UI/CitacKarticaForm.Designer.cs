@@ -37,6 +37,7 @@
             this.ClientSize = new System.Drawing.Size(1013, 166);
             this.Name = "CitacKarticaForm";
             this.Text = "CitacKarticaForm";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.CitacKarticaForm_Paint);
             this.Shown += new System.EventHandler(this.CitacKarticaForm_Shown);
             this.ResumeLayout(false);
 

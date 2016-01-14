@@ -21,5 +21,10 @@ namespace Soko.UI
         {
             SingleInstanceApplication.GlavniProzor.Activate();
         }
+
+        private void CitacKarticaForm_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.Clear(Color.Yellow);
+        }
     }
 }

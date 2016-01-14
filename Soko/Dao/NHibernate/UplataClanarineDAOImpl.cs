@@ -6,6 +6,7 @@ using Soko.Domain;
 using Soko;
 using System.Collections;
 using Soko.Report;
+using Soko.Misc;
 
 namespace Bilten.Dao.NHibernate
 {
@@ -160,7 +161,7 @@ order by god desc, mes desc, dan desc, g.broj_grupe, g. podgrupa
                 bool filterGrupe = grupe != null && grupe.Count > 0;
                 string filter = String.Empty;
                 if (filterGrupe)
-                    filter = " having " + getGrupeFilter(grupe, "g", "grupa_id");
+                    filter = " having " + Util.getGrupeFilter(grupe, "g", "grupa_id");
                 string selectItems = String.Format(query, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"), filter);
 
                 ISQLQuery q = Session.CreateSQLQuery(selectItems);
@@ -190,25 +191,6 @@ order by god desc, mes desc, dan desc, g.broj_grupe, g. podgrupa
             }
         }
 
-        private string getGrupeFilter(List<Grupa> grupe, string table, string grupaColumn)
-        {
-            string result;
-            if (table != String.Empty)
-                result = String.Format("({0}.{1} IN (", table, grupaColumn);
-            else
-                result = String.Format("({0} IN (", grupaColumn);
-
-            for (int i = 0; i < grupe.Count; i++)
-            {
-                if (i == 0)
-                    result += grupe[i].Id;
-                else
-                    result += "," + grupe[i].Id;
-            }
-            result += ")) ";
-            return result;
-        }
-
         public virtual decimal getUkupanPrihod(DateTime from, DateTime to, List<Grupa> grupe)
         {
             from = from.Date;
@@ -221,7 +203,7 @@ order by god desc, mes desc, dan desc, g.broj_grupe, g. podgrupa
                     ";
                 bool filterGrupe = grupe != null && grupe.Count > 0;
                 if (filterGrupe)
-                    query += " and " + getGrupeFilter(grupe, "u", "Grupa.Id");
+                    query += " and " + Util.getGrupeFilter(grupe, "u", "Grupa.Id");
 
                 IQuery q = Session.CreateQuery(query);
                 q.SetDateTime("from", from);
@@ -303,7 +285,7 @@ g.broj_grupe, g.podgrupa, c.prezime, c.ime;
                 bool filterGrupe = grupe != null && grupe.Count > 0;
                 string filter = String.Empty;
                 if (filterGrupe)
-                    filter = " AND " + getGrupeFilter(grupe, "g", "grupa_id");
+                    filter = " AND " + Util.getGrupeFilter(grupe, "g", "grupa_id");
                 query = String.Format(query, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"), filter);
 
                 ISQLQuery q = Session.CreateSQLQuery(query);
@@ -368,7 +350,7 @@ ORDER BY god DESC, mes DESC, dan DESC, g.broj_grupe, g.podgrupa
                 bool filterGrupe = grupe != null && grupe.Count > 0;
                 string filter = String.Empty;
                 if (filterGrupe)
-                    filter = " AND " + getGrupeFilter(grupe, "g", "grupa_id");
+                    filter = " AND " + Util.getGrupeFilter(grupe, "g", "grupa_id");
                 query = String.Format(query, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"), filter);
 
                 ISQLQuery q = Session.CreateSQLQuery(query);
@@ -423,7 +405,7 @@ ORDER BY god DESC, mes DESC, dan DESC
                 bool filterGrupe = grupe != null && grupe.Count > 0;
                 string filter = String.Empty;
                 if (filterGrupe)
-                    filter = " AND " + getGrupeFilter(grupe, "u", "grupa_id");
+                    filter = " AND " + Util.getGrupeFilter(grupe, "u", "grupa_id");
                 query = String.Format(query, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"), filter);
 
                 ISQLQuery q = Session.CreateSQLQuery(query);
@@ -478,7 +460,7 @@ ORDER BY
                 bool filterGrupe = grupe != null && grupe.Count > 0;
                 string filter = String.Empty;
                 if (filterGrupe)
-                    filter = " AND " + getGrupeFilter(grupe, "g", "grupa_id");
+                    filter = " AND " + Util.getGrupeFilter(grupe, "g", "grupa_id");
                 query = String.Format(query, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"), filter);
 
                 ISQLQuery q = Session.CreateSQLQuery(query);
@@ -537,7 +519,7 @@ ORDER BY g.broj_grupe, g.podgrupa
                 bool filterGrupe = grupe != null && grupe.Count > 0;
                 string filter = String.Empty;
                 if (filterGrupe)
-                    filter = " AND " + getGrupeFilter(grupe, "g", "grupa_id");
+                    filter = " AND " + Util.getGrupeFilter(grupe, "g", "grupa_id");
                 query = String.Format(query, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"), filter);
 
                 ISQLQuery q = Session.CreateSQLQuery(query);
@@ -590,7 +572,7 @@ ORDER BY
                 bool filterGrupe = grupe != null && grupe.Count > 0;
                 string filter = String.Empty;
                 if (filterGrupe)
-                    filter = " AND " + getGrupeFilter(grupe, "g", "grupa_id");
+                    filter = " AND " + Util.getGrupeFilter(grupe, "g", "grupa_id");
                 query = String.Format(query, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"), filter);
 
                 ISQLQuery q = Session.CreateSQLQuery(query);
@@ -672,7 +654,7 @@ ORDER BY g.broj_grupe, g.podgrupa
                 bool filterGrupe = grupe != null && grupe.Count > 0;
                 string filter = String.Empty;
                 if (filterGrupe)
-                    filter = " AND " + getGrupeFilter(grupe, "g", "grupa_id");
+                    filter = " AND " + Util.getGrupeFilter(grupe, "g", "grupa_id");
                 query = String.Format(query, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"), filter);
 
                 ISQLQuery q = Session.CreateSQLQuery(query);

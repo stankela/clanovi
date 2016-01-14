@@ -958,5 +958,59 @@ namespace Soko.UI
                 }
             }
         }
+
+        private void mnEvidencijaPrisustvaNaTreningu_Click(object sender, EventArgs e)
+        {
+            BiracIntervala dlg;
+            try
+            {
+                dlg = new BiracIntervala("Evidencija prisustva na treningu", true);
+                dlg.DateTimePickerFrom.CustomFormat = Application.CurrentCulture.DateTimeFormat.ShortTimePattern;
+                dlg.DateTimePickerTo.CustomFormat = Application.CurrentCulture.DateTimeFormat.ShortTimePattern;
+                dlg.ShowDialog();
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+
+            if (dlg.DialogResult != DialogResult.OK)
+                return;
+
+            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Show();
+            try
+            {
+                using (ISession session = NHibernateHelper.OpenSession())
+                using (session.BeginTransaction())
+                {
+                    CurrentSessionContext.Bind(session);
+                    PreviewDialog p = new PreviewDialog();
+                    p.setIzvestaj(new EvidencijaTreningaIzvestaj(dlg.OdDatumVreme,
+                        dlg.DoDatumVreme, dlg.Grupe));
+                    p.ShowDialog();
+                }
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            finally
+            {
+                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                Cursor.Hide();
+                Cursor.Current = Cursors.Arrow;
+            }
+        }
     }
 }

@@ -18,6 +18,16 @@ namespace Soko.UI
         private List<Grupa> grupe = null;
         private List<Grupa> sveGrupe;
 
+        public DateTimePicker DateTimePickerFrom
+        {
+            get { return dtpOd; }
+        }
+
+        public DateTimePicker DateTimePickerTo
+        {
+            get { return dtpDo; }
+        }
+
         public BiracIntervala(string naslov, bool izborGrupa)
         {
             InitializeComponent();
@@ -72,6 +82,16 @@ namespace Soko.UI
         public DateTime DoDatum
         {
             get { return dtpDo.Value.Date; }
+        }
+
+        public DateTime OdDatumVreme
+        {
+            get { return dtpOd.Value; }
+        }
+
+        public DateTime DoDatumVreme
+        {
+            get { return dtpDo.Value; }
         }
 
         public List<Grupa> Grupe

@@ -11,6 +11,7 @@ namespace Bilten.Dao
     /// </summary>
     public interface DolazakNaTreningDAO : GenericDAO<DolazakNaTrening, int>
     {
-
+        List<object[]> getEvidencijaTreningaReportItems(DateTime from, DateTime to, List<Grupa> grupe);
+        List<ReportGrupa> getEvidencijaTreningaReportGrupe(DateTime from, DateTime to, List<Grupa> grupe);
     }
 }
