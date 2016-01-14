@@ -11,6 +11,7 @@ using Bilten.Dao;
 using NHibernate;
 using Soko.Data;
 using NHibernate.Context;
+using Soko.Misc;
 
 namespace Soko.UI
 {
@@ -327,6 +328,8 @@ namespace Soko.UI
             }
         }
 
+        // TODO2: Dodaj da u txtBrojClana moze da se pretrazuje i po prezimenu
+        
         private void updateGrupaFromUplate()
         {
             if (SelectedClan == null)
@@ -343,7 +346,7 @@ namespace Soko.UI
                     UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
                     List<UplataClanarine> uplate =
                         new List<UplataClanarine>(uplataClanarineDAO.findUplate(SelectedClan));
-                    sortByDatumVremeDesc(uplate);
+                    Util.sortByDatumVremeUplateDesc(uplate);
                     if (uplate.Count > 0)
                     {
                         txtSifraGrupe.Text = uplate[0].Grupa.Sifra.Value;
@@ -362,18 +365,6 @@ namespace Soko.UI
             {
                 CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
             }
-        }
-
-        private void sortByDatumVremeDesc(List<UplataClanarine> uplate)
-        {
-            PropertyDescriptor propDescDatum =
-                TypeDescriptor.GetProperties(typeof(UplataClanarine))["DatumUplate"];
-            PropertyDescriptor propDescVreme =
-                TypeDescriptor.GetProperties(typeof(UplataClanarine))["VremeUplate"];
-            PropertyDescriptor[] propDesc = new PropertyDescriptor[2] { propDescDatum, propDescVreme };
-            ListSortDirection[] direction = new ListSortDirection[2] { ListSortDirection.Descending, ListSortDirection.Descending };
-
-            uplate.Sort(new SortComparer<UplataClanarine>(propDesc, direction));
         }
 
         private void txtSifraGrupe_Enter(object sender, EventArgs e)

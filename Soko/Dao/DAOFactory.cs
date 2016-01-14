@@ -11,5 +11,6 @@ namespace Bilten.Dao
         public abstract KategorijaDAO GetKategorijaDAO();
         public abstract GrupaDAO GetGrupaDAO();
         public abstract MesecnaClanarinaDAO GetMesecnaClanarinaDAO();
+        public abstract DolazakNaTreningDAO GetDolazakNaTreningDAO();
     }
 }

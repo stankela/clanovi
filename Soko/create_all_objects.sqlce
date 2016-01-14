@@ -65,3 +65,12 @@ create table uplate (
     grupa_id int references grupe(grupa_id)
 );
 GO
+
+create table dolazak_na_trening (
+    dolazak_id int identity(1,1) primary key,
+    datum_vreme_dolaska datetime,
+    datum_poslednje_uplate datetime,
+    clan_id int references clanovi(clan_id),
+    grupa_id int references grupe(grupa_id)
+);
+GO

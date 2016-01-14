@@ -34,11 +34,6 @@ namespace Soko.UI
             loadOptions();
         }
 
-        public void setStatusBarText(string text)
-        {
-            statusStrip1.Items[0].Text = text;
-        }
-
         private void LocalizeUI()
         {
             // TODO
@@ -870,8 +865,7 @@ namespace Soko.UI
         {
             citacKarticaForm = new CitacKarticaForm();
             citacKarticaForm.Show();
-            citacKarticaForm.Location = new Point(this.Location.X + this.Width + 100, this.Location.Y);
-            citacKarticaForm.BackColor = Color.Yellow;
+            citacKarticaForm.Location = new Point(this.Location.X, this.Location.Y + this.Height + 50);
         }
 
         private void mnCOMPort_Click(object sender, EventArgs e)
@@ -887,6 +881,8 @@ namespace Soko.UI
         private System.Timers.Timer aTimer;
         private int numTimerEvents = 0;
         public bool CardWriterReadEnabled = true;
+        private bool lastRead = false;
+        private bool repaint = true;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -924,7 +920,23 @@ namespace Soko.UI
             ++numTimerEvents;
             if (numTimerEvents % 2 == 0)
             {
-                CitacKartica.Read();
+                if (lastRead)
+                {
+                    lastRead = false;
+                    repaint = true;
+                }
+                else
+                {
+                    if (repaint)
+                    {
+                        Graphics g = SingleInstanceApplication.GlavniProzor.CitacKarticaForm.CreateGraphics();
+                        g.Clear(Color.Yellow);
+                        g.Dispose();
+                        repaint = false;
+                    }
+
+                    lastRead = CitacKartica.Read();
+                }
             }
             else
             {

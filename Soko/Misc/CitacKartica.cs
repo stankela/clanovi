@@ -12,6 +12,7 @@ using NHibernate.Context;
 using Bilten.Dao;
 using Soko.Domain;
 using Soko.UI;
+using Soko.Misc;
 
 namespace Soko
 {
@@ -25,6 +26,10 @@ namespace Soko
         private static extern ulong WaitDataCard(int comport, int nSecs);
         [DllImport("PanReaderIf.dll")]
         private static extern ulong WaitAndReadDataCard(int comport, int nSecs, ref string sType, ref string sID1, ref string sID2, ref string sName);
+
+        public static readonly int POSLEDNJI_DAN_ZA_UPLATE = 10;
+
+        private static Font font = new Font("Arial", 40, FontStyle.Bold);
 
         public static bool readCard(int comPort, bool showErrorMessages, out int broj, out string name)
         {
@@ -64,16 +69,13 @@ namespace Soko
             }
         }
 
-        public static void Read()
+        public static bool Read()
         {
             int broj;
             string name;
             if (!CitacKartica.readCard(Options.Instance.COMPortReader, false, out broj, out name))
-                return;
+                return false;
             
-            SingleInstanceApplication.GlavniProzor.setStatusBarText(
-                String.Format("Broj kartice: {0}   Ime: {1}", broj, name));
-
             try
             {
                 using (ISession session = NHibernateHelper.OpenSession())
@@ -82,37 +84,90 @@ namespace Soko
                     CurrentSessionContext.Bind(session);
 
                     Clan clan = DAOFactoryFactory.DAOFactory.GetClanDAO().findForBrojKartice(broj);
-                    if (clan != null)
+                    if (clan == null)
+                        return false;
+
+                    UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
+                    List<UplataClanarine> uplate = new List<UplataClanarine>(uplataClanarineDAO.findUplate(clan));
+
+                    UplataClanarine poslednjaUplata = null;
+                    if (uplate.Count > 0)
                     {
-                        int prevMonth = DateTime.Today.AddMonths(-1).Month;
-                        DateTime from = new DateTime(DateTime.Today.Year, prevMonth, 1);
-                        DateTime to = DateTime.Now;
-                        //DateTime firstDayInMonth = DateTime.Today.AddDays(-(DateTime.Today.Day - 1));
-
-                        UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
-                        IList<UplataClanarine> uplate = uplataClanarineDAO.findUplate(clan, from, to);
-                        if (uplate.Count > 0)
-                        {
-                            SingleInstanceApplication.GlavniProzor.CitacKarticaForm.BackColor = Color.Green;
-                            Thread.Sleep(1000);
-                            SingleInstanceApplication.GlavniProzor.CitacKarticaForm.BackColor = Color.Yellow;
-                        }
-                        else
-                        {
-                            SingleInstanceApplication.GlavniProzor.CitacKarticaForm.BackColor = Color.Red;
-                            Thread.Sleep(1000);
-                            SingleInstanceApplication.GlavniProzor.CitacKarticaForm.BackColor = Color.Yellow;
-                        }
-
-                        // izgleda da ova linija srusi program kada se program zatvori odmah nakon sto je kartica
-                        // detektovana.
-                        SingleInstanceApplication.GlavniProzor.setStatusBarText("");
+                        Util.sortByDatumVremeUplateDesc(uplate);
+                        poslednjaUplata = uplate[0];
                     }
+
+                    DolazakNaTrening dolazak = new DolazakNaTrening();
+                    dolazak.Clan = clan;
+                    dolazak.DatumVremeDolaska = DateTime.Now;
+                    if (poslednjaUplata != null)
+                    {
+                        dolazak.Grupa = poslednjaUplata.Grupa;
+                        dolazak.DatumPoslednjeUplate = poslednjaUplata.DatumVremeUplate;
+                    }
+                    else
+                    {
+                        dolazak.Grupa = null;
+                        dolazak.DatumPoslednjeUplate = null;
+                    }
+
+                    DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO().MakePersistent(dolazak);
+                    session.Transaction.Commit();
+
+                    bool okForTrening = false;
+                    if (poslednjaUplata != null)
+                    {
+                        // Najpre proveri da li postoji uplata u ovom mesecu.
+                        okForTrening =
+                            poslednjaUplata.DatumVremeUplate.Value.Year == DateTime.Now.Year
+                            && poslednjaUplata.DatumVremeUplate.Value.Month == DateTime.Now.Month;
+                        if (!okForTrening)
+                        {
+                            if (DateTime.Now.Day > CitacKartica.POSLEDNJI_DAN_ZA_UPLATE)
+                            {
+                                okForTrening = false;
+                            }
+                            else
+                            {
+                                // Proveri da li postoji uplata u prethodnom mesecu.
+                                /*DateTime prevMonth = DateTime.Today.AddMonths(-1);
+                                okForTrening =
+                                    poslednjaUplata.DatumVremeUplate.Value.Year == prevMonth.Year
+                                    && poslednjaUplata.DatumVremeUplate.Value.Month == prevMonth.Month;
+
+                                DateTime from = new DateTime(prevMonth.Year, prevMonth.Month, 1);
+                                DateTime to = DateTime.Now;
+                                okForTrening = poslednjaUplata.DatumVremeUplate >= from
+                                    && poslednjaUplata.DatumVremeUplate <= to;*/
+
+                                okForTrening = true;
+                            }
+                        }
+                    }
+
+                    string msg = broj.ToString();
+                    if (poslednjaUplata != null)
+                    {
+                        msg += "\n" + poslednjaUplata.Grupa.Naziv;
+                    }
+                    Graphics g = SingleInstanceApplication.GlavniProzor.CitacKarticaForm.CreateGraphics();
+                    if (okForTrening)
+                    {
+                        g.Clear(Color.Green);
+                    }
+                    else
+                    {
+                        g.Clear(Color.Red);
+                    }
+                    g.DrawString(msg, font, Brushes.Black, 0, 0);
+                    g.Dispose();
+                    return true;
                 }
             }
             catch (Exception ex)
             {
                 MessageDialogs.showMessage(ex.Message, "Citac kartica");
+                return false;
             }
             finally
             {

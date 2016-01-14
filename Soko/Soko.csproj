@@ -5,7 +5,7 @@
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{F8558FD8-F014-4810-9CEE-C27954461902}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Soko</RootNamespace>
     <AssemblyName>Soko</AssemblyName>
@@ -80,11 +80,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dao\ClanDAO.cs" />
+    <Compile Include="Dao\DolazakNaTreningDAO.cs" />
     <Compile Include="Dao\GrupaDAO.cs" />
     <Compile Include="Dao\InstitucijaDAO.cs" />
     <Compile Include="Dao\KategorijaDAO.cs" />
     <Compile Include="Dao\MesecnaClanarinaDAO.cs" />
     <Compile Include="Dao\NHibernate\ClanDAOImpl.cs" />
+    <Compile Include="Dao\NHibernate\DolazakNaTreningDAOImpl.cs" />
     <Compile Include="Dao\NHibernate\GrupaDAOImpl.cs" />
     <Compile Include="Dao\NHibernate\InstitucijaDAOImpl.cs" />
     <Compile Include="Dao\NHibernate\KategorijaDAOImpl.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="Data\QueryModel\StringMatchMode.cs" />
     <Compile Include="Data\TransactionException.cs" />
     <Compile Include="Domain\Clan.cs" />
+    <Compile Include="Domain\DolazakNaTrening.cs" />
     <Compile Include="Domain\DomainObject.cs" />
     <Compile Include="Domain\Grupa.cs" />
     <Compile Include="Domain\Institucija.cs" />
@@ -133,6 +136,7 @@
     <Compile Include="Misc\CitacKartica.cs" />
     <Compile Include="Misc\SqlCeUtilities.cs" />
     <Compile Include="Misc\SingleInstanceApplication.cs" />
+    <Compile Include="Misc\Util.cs" />
     <Compile Include="Report\AktivniClanoviGrupeIzvestaj.cs" />
     <Compile Include="Report\AktivniClanoviIzvestaj.cs" />
     <Compile Include="UI\BiracClana.cs">
@@ -473,6 +477,7 @@
       <DependentUpon>PravljenjeKarticeForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Data\NHibernate\Mappings\DolazakNaTrening.hbm.xml" />
     <Content Include="hibernate.cfg.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

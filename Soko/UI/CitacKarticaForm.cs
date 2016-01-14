@@ -14,6 +14,7 @@ namespace Soko.UI
         public CitacKarticaForm()
         {
             InitializeComponent();
+            Text = "Citac kartica";
         }
 
         private void CitacKarticaForm_Shown(object sender, EventArgs e)

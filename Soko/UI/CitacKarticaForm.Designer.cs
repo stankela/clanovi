@@ -34,7 +34,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(1013, 166);
             this.Name = "CitacKarticaForm";
             this.Text = "CitacKarticaForm";
             this.Shown += new System.EventHandler(this.CitacKarticaForm_Shown);
