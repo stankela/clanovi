@@ -99,7 +99,7 @@ ORDER BY g.broj_grupe, g.podgrupa
                 List<ReportGrupa> result2 = new List<ReportGrupa>();
                 foreach (object[] row in result)
                 {
-                    string sifraNaziv = "Gimnasticari koji nemaju nijednu uplatu";
+                    string sifraNaziv = String.Empty;
                     if (row[0] != null)
                     {
                         int grupa_id = (int)row[0];
@@ -109,10 +109,9 @@ ORDER BY g.broj_grupe, g.podgrupa
                         string sifra = brojGrupe + podgrupa;
                         sifraNaziv = sifra + " - " + nazivGrupe;
                     }
-                    decimal ukupanIznos = (decimal)0;
                     int brojClanova = (int)row[4];
 
-                    object[] data = new object[] { sifraNaziv, ukupanIznos };
+                    object[] data = new object[] { sifraNaziv };
                     result2.Add(new ReportGrupa(data, brojClanova));
                 }
                 return result2;
