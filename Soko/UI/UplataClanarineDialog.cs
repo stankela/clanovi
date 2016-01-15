@@ -237,11 +237,16 @@ namespace Soko.UI
 
         private void txtBrojClana_TextChanged(object sender, System.EventArgs e)
         {
+            string text = txtBrojClana.Text;
             Clan clan = null;
             int broj;
-            if (int.TryParse(txtBrojClana.Text, out broj))
+            if (int.TryParse(text, out broj))
             {
                 clan = findClan(broj);
+            }
+            else
+            {
+                clan = searchForClan(text);
             }
             SelectedClan = clan;
             ckbPristupnica.Checked = SelectedClan != null && SelectedClan.ImaPristupnicu;
@@ -252,6 +257,16 @@ namespace Soko.UI
             foreach (Clan c in clanovi)
             {
                 if (c.Broj == broj)
+                    return c;
+            }
+            return null;
+        }
+
+        private Clan searchForClan(string text)
+        {
+            foreach (Clan c in clanovi)
+            {
+                if (c.PrezimeIme.StartsWith(text, StringComparison.OrdinalIgnoreCase))
                     return c;
             }
             return null;

@@ -102,24 +102,38 @@ namespace Soko.Domain
 			set { napomena = value; }
 		}
 
-		public virtual string BrojPrezimeImeDatumRodjenja
+        public virtual string PrezimeIme
+        {
+            get
+            {
+                string result = String.Empty;
+                if (!String.IsNullOrEmpty(Prezime))
+                {
+                    result = Prezime;
+                }
+                if (!String.IsNullOrEmpty(Ime))
+                {
+                    if (result != String.Empty)
+                        result += new String(' ', 1);
+                    result += Ime;
+                }
+                return result;
+            }
+        }
+
+        public virtual string BrojPrezimeImeDatumRodjenja
 		{
 			get
 			{
 				string result = String.Empty;
 				if (Broj != null)
 					result += Broj.ToString();
-				if (!String.IsNullOrEmpty(Prezime))
+                string prezimeIme = PrezimeIme;
+                if (!String.IsNullOrEmpty(prezimeIme))
 				{
 					if (result != String.Empty)
 						result += new String(' ', 3);
-					result += Prezime;
-				}
-				if (!String.IsNullOrEmpty(Ime))
-				{
-					if (result != String.Empty)
-						result += new String(' ', 1);
-					result += Ime;
+                    result += prezimeIme;
 				}
 				if (DatumRodjenja != null)
 				{

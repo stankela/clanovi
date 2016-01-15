@@ -99,16 +99,18 @@ namespace Soko.UI
 
         private void txtSifraClana_TextChanged(object sender, System.EventArgs e)
         {
+            string text = txtSifraClana.Text;
+            Clan clan = null;
             int broj;
-            try
+            if (int.TryParse(text, out broj))
             {
-                broj = int.Parse(txtSifraClana.Text);
-                SelectedClan = findClan(broj);
+                clan = findClan(broj);
             }
-            catch (Exception)
+            else
             {
-                SelectedClan = null;
+                clan = searchForClan(text);
             }
+            SelectedClan = clan;                
         }
 
         private Clan findClan(int broj)
@@ -116,6 +118,16 @@ namespace Soko.UI
             foreach (Clan c in clanovi)
             {
                 if (c.Broj == broj)
+                    return c;
+            }
+            return null;
+        }
+
+        private Clan searchForClan(string text)
+        {
+            foreach (Clan c in clanovi)
+            {
+                if (c.PrezimeIme.StartsWith(text, StringComparison.OrdinalIgnoreCase))
                     return c;
             }
             return null;
