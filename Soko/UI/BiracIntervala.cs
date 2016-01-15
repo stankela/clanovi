@@ -84,14 +84,19 @@ namespace Soko.UI
             get { return dtpDo.Value.Date; }
         }
 
+        DateTime truncateSeconds(DateTime d)
+        {
+            return new DateTime(d.Year, d.Month, d.Day, d.Hour, d.Minute, 0);
+        }
+
         public DateTime OdDatumVreme
         {
-            get { return dtpOd.Value; }
+            get { return truncateSeconds(dtpOd.Value); }
         }
 
         public DateTime DoDatumVreme
         {
-            get { return dtpDo.Value; }
+            get { return truncateSeconds(dtpDo.Value); }
         }
 
         public List<Grupa> Grupe

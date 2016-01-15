@@ -55,22 +55,22 @@ namespace Soko.UI
             this.groupBox1.Controls.Add(this.lblInterval);
             this.groupBox1.Location = new System.Drawing.Point(8, 4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(416, 72);
+            this.groupBox1.Size = new System.Drawing.Size(441, 72);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
             // dtpDo
             // 
             this.dtpDo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpDo.Location = new System.Drawing.Point(288, 32);
+            this.dtpDo.Location = new System.Drawing.Point(302, 32);
             this.dtpDo.Name = "dtpDo";
-            this.dtpDo.Size = new System.Drawing.Size(112, 20);
+            this.dtpDo.Size = new System.Drawing.Size(123, 20);
             this.dtpDo.TabIndex = 3;
             // 
             // lblDo
             // 
             this.lblDo.AutoSize = true;
-            this.lblDo.Location = new System.Drawing.Point(261, 36);
+            this.lblDo.Location = new System.Drawing.Point(275, 36);
             this.lblDo.Name = "lblDo";
             this.lblDo.Size = new System.Drawing.Size(21, 13);
             this.lblDo.TabIndex = 5;
@@ -81,7 +81,7 @@ namespace Soko.UI
             this.dtpOd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpOd.Location = new System.Drawing.Point(136, 32);
             this.dtpOd.Name = "dtpOd";
-            this.dtpOd.Size = new System.Drawing.Size(112, 20);
+            this.dtpOd.Size = new System.Drawing.Size(123, 20);
             this.dtpOd.TabIndex = 2;
             // 
             // lblOd
@@ -111,7 +111,7 @@ namespace Soko.UI
             this.groupBox2.Controls.Add(this.rbtSveGrupe);
             this.groupBox2.Location = new System.Drawing.Point(8, 80);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(416, 224);
+            this.groupBox2.Size = new System.Drawing.Size(441, 224);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             // 
@@ -120,7 +120,7 @@ namespace Soko.UI
             this.listBoxGrupe.FormattingEnabled = true;
             this.listBoxGrupe.Location = new System.Drawing.Point(112, 120);
             this.listBoxGrupe.Name = "listBoxGrupe";
-            this.listBoxGrupe.Size = new System.Drawing.Size(296, 95);
+            this.listBoxGrupe.Size = new System.Drawing.Size(313, 95);
             this.listBoxGrupe.TabIndex = 7;
             // 
             // lblSelGrupe
@@ -137,7 +137,7 @@ namespace Soko.UI
             this.checkedListBoxGrupe.FormattingEnabled = true;
             this.checkedListBoxGrupe.Location = new System.Drawing.Point(112, 16);
             this.checkedListBoxGrupe.Name = "checkedListBoxGrupe";
-            this.checkedListBoxGrupe.Size = new System.Drawing.Size(296, 94);
+            this.checkedListBoxGrupe.Size = new System.Drawing.Size(313, 94);
             this.checkedListBoxGrupe.TabIndex = 4;
             this.checkedListBoxGrupe.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkedListBoxGrupe_ItemCheck);
             // 
@@ -168,7 +168,7 @@ namespace Soko.UI
             // btnOk
             // 
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(256, 312);
+            this.btnOk.Location = new System.Drawing.Point(286, 310);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 1;
@@ -179,7 +179,7 @@ namespace Soko.UI
             // btnOdustani
             // 
             this.btnOdustani.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnOdustani.Location = new System.Drawing.Point(344, 312);
+            this.btnOdustani.Location = new System.Drawing.Point(374, 310);
             this.btnOdustani.Name = "btnOdustani";
             this.btnOdustani.Size = new System.Drawing.Size(75, 23);
             this.btnOdustani.TabIndex = 2;
@@ -192,7 +192,7 @@ namespace Soko.UI
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnOdustani;
-            this.ClientSize = new System.Drawing.Size(430, 344);
+            this.ClientSize = new System.Drawing.Size(461, 344);
             this.Controls.Add(this.btnOdustani);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.groupBox2);

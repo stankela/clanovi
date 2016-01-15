@@ -965,8 +965,8 @@ namespace Soko.UI
             try
             {
                 dlg = new BiracIntervala("Evidencija prisustva na treningu", true);
-                dlg.DateTimePickerFrom.CustomFormat = "dd.MM.yy HH:mm";
-                dlg.DateTimePickerTo.CustomFormat = "dd.MM.yy HH:mm";
+                dlg.DateTimePickerFrom.CustomFormat = "dd.MM.yyyy HH:mm";
+                dlg.DateTimePickerTo.CustomFormat = "dd.MM.yyyy HH:mm";
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
