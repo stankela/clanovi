@@ -935,7 +935,7 @@ namespace Soko.UI
                         repaint = false;
                     }
 
-                    lastRead = CitacKartica.Read();
+                    lastRead = CitacKartica.getCitacKartica().Read();
                 }
             }
             else

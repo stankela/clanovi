@@ -316,7 +316,7 @@ namespace Soko.UI
                 PendingRead = false;
                 int broj;
                 string notUsed;
-                if (CitacKartica.readCard(Options.Instance.COMPortWriter, true, out broj, out notUsed))
+                if (CitacKartica.getCitacKartica().readCard(Options.Instance.COMPortWriter, true, out broj, out notUsed))
                 {
                     // SelectedClan is updated in txtBrojClana_TextChanged
                     txtBrojClana.Text = broj.ToString();

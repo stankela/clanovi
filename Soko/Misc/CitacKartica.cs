@@ -27,11 +27,23 @@ namespace Soko
         [DllImport("PanReaderIf.dll")]
         private static extern ulong WaitAndReadDataCard(int comport, int nSecs, ref string sType, ref string sID1, ref string sID2, ref string sName);
 
-        public static readonly int POSLEDNJI_DAN_ZA_UPLATE = 10;
+        private CitacKartica()
+        { 
+        
+        }
 
-        private static Font font = new Font("Arial", 40, FontStyle.Bold);
+        private static CitacKartica citacKartica = new CitacKartica();
 
-        public static bool readCard(int comPort, bool showErrorMessages, out int broj, out string name)
+        public static CitacKartica getCitacKartica()
+        {
+            return citacKartica;
+        }
+
+        public const int POSLEDNJI_DAN_ZA_UPLATE = 10;
+
+        private Font font = new Font("Arial", 40, FontStyle.Bold);
+
+        public bool readCard(int comPort, bool showErrorMessages, out int broj, out string name)
         {
             string sType = " ";
             string sID1 = "          ";
@@ -69,11 +81,11 @@ namespace Soko
             }
         }
 
-        public static bool Read()
+        public bool Read()
         {
             int broj;
             string name;
-            if (!CitacKartica.readCard(Options.Instance.COMPortReader, false, out broj, out name))
+            if (!readCard(Options.Instance.COMPortReader, false, out broj, out name))
                 return false;
             
             try
