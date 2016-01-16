@@ -1,6 +1,6 @@
 ﻿namespace Soko.UI
 {
-    partial class COMPortForm
+    partial class CitacKarticaDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -155,7 +155,7 @@
             this.lblCOMPortWriter.TabIndex = 5;
             this.lblCOMPortWriter.Text = "COM port za pisac kartica";
             // 
-            // COMPortForm
+            // CitacKarticaDialog
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -171,10 +171,10 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "COMPortForm";
+            this.Name = "CitacKarticaDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "COM port";
-            this.Load += new System.EventHandler(this.COMPortForm_Load);
+            this.Text = "Citac kartica";
+            this.Load += new System.EventHandler(this.CitacKarticaDialog_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

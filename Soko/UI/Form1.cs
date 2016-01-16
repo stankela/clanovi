@@ -868,9 +868,9 @@ namespace Soko.UI
             citacKarticaForm.Location = new Point(this.Location.X, this.Location.Y + this.Height + 50);
         }
 
-        private void mnCOMPort_Click(object sender, EventArgs e)
+        private void mnCitacKartica_Click(object sender, EventArgs e)
         {
-            COMPortForm form = new COMPortForm();
+            CitacKarticaDialog form = new CitacKarticaDialog();
             if (form.ShowDialog() == DialogResult.OK)
             {
                 Options.Instance.COMPortReader = form.COMPortReader;

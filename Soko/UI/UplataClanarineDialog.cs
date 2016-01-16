@@ -343,8 +343,6 @@ namespace Soko.UI
             }
         }
 
-        // TODO2: Dodaj da u txtBrojClana moze da se pretrazuje i po prezimenu
-        
         private void updateGrupaFromUplate()
         {
             if (SelectedClan == null)

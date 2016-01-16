@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace Soko.UI
 {
-    public partial class COMPortForm : Form
+    public partial class CitacKarticaDialog : Form
     {
         private int comPortReader;
         public int COMPortReader
@@ -23,12 +23,12 @@ namespace Soko.UI
             get { return comPortWriter; }
         }
 
-        public COMPortForm()
+        public CitacKarticaDialog()
         {
             InitializeComponent();
         }
 
-        private void COMPortForm_Load(object sender, EventArgs e)
+        private void CitacKarticaDialog_Load(object sender, EventArgs e)
         {
             cmbCOMPortReader.SelectedIndex = Options.Instance.COMPortReader - 1;
             cmbCOMPortWriter.SelectedIndex = Options.Instance.COMPortWriter - 1;
