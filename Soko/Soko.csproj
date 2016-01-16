@@ -158,17 +158,17 @@
     <Compile Include="UI\BiracIntervala.Designer.cs">
       <DependentUpon>BiracIntervala.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\CitacKarticaDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CitacKarticaDialog.Designer.cs">
+      <DependentUpon>CitacKarticaDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\CitacKarticaForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\CitacKarticaForm.Designer.cs">
       <DependentUpon>CitacKarticaForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\COMPortForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\COMPortForm.Designer.cs">
-      <DependentUpon>COMPortForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\MesecnaClanarinaDialog.cs">
       <SubType>Form</SubType>
@@ -468,11 +468,11 @@
     <EmbeddedResource Include="Data\NHibernate\Mappings\Grupa.hbm.xml" />
     <EmbeddedResource Include="Data\NHibernate\Mappings\MesecnaClanarina.hbm.xml" />
     <EmbeddedResource Include="Data\NHibernate\Mappings\UplataClanarine.hbm.xml" />
+    <EmbeddedResource Include="UI\CitacKarticaDialog.resx">
+      <DependentUpon>CitacKarticaDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\CitacKarticaForm.resx">
       <DependentUpon>CitacKarticaForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\COMPortForm.resx">
-      <DependentUpon>COMPortForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\PravljenjeKarticeForm.resx">
       <DependentUpon>PravljenjeKarticeForm.cs</DependentUpon>
