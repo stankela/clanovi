@@ -1,13 +1,22 @@
-1. Instalirati SiLabs USB driver (CP210xVCPInstaller.exe) [folder: UsbDriver]
+Uputstvo za instaliranje i podesavanje citaca kartica:
 
-2. Prikljuciti uredjaj na USB port racunara
 
-3. Pogledati u Device manageru koji COM port je dodeljen uredjaju:
+1. Da bi citaci kartica radili, najpre je potrebno instalirati SiLabs USB drajver
+   (nalazi se u folderu UsbDriver, fajl CP210xVCPInstaller.exe).
 
-a) Otvoriti Device Manager: Start -> Control Panel -> System and Security -> System -> Device Manager
-b) Dvoklik na Ports ‘(COM& LPT)’
+2. Nakon sto je drajver instaliran, potrebno je podesiti COM port za citac kartica:
 
-Pronaci opciju "CP210x USB to UART Bridge Controller (COM4)". Broj COM porta je dat u
-zagradi (u ovom slucaju je to port 4, tj. COM4)
+  a) Prikljuciti citac kartica na USB port racunara
 
-4. Podesiti u programu isti taj broj COM porta, u prozoru Citac kartica -> COM port.
+  b) Pogledati u Device manageru koji COM port je dodeljen uredjaju:
+
+    - Otvoriti Device Manager: Start -> Control Panel -> System and Security -> System -> Device Manager
+    - Dvoklik na Ports ‘(COM& LPT)’
+    - Pronaci opciju "CP210x USB to UART Bridge Controller (COM3)". Broj COM porta je dat u
+      zagradi (u ovom slucaju je to port 3, tj. COM3)
+
+  c) Podesiti u programu isti taj broj COM porta, u prozoru Podesavanja -> Citac kartica.
+
+3. Nakon sto se podesi COM port za jedan citac kartica, potrebno je na isti nacin podesiti COM port i za
+   drugi citac kartica, pri cemu prvi citac kartica treba i dalje da bude prikljucen na USB port
+   (dakle, kada se podesava COM port za drugi uredjaj, oba uredjaja treba da budu povezana na USB)
