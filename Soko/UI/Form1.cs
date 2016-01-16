@@ -24,6 +24,7 @@ namespace Soko.UI
         const string StampacIzvestajRegKey = "StampacIzvestaj";
         const string COMPortReaderRegKey = "COMPortReader";
         const string COMPortWriterRegKey = "COMPortWriter";
+        const string PoslednjiDanZaUplateRegKey = "PoslednjiDanZaUplate";
 
         public Form1()
         {
@@ -57,6 +58,7 @@ namespace Soko.UI
             string stampacIzvestaj = null;
             int comPortReader = 1;
             int comPortWriter = 2;
+            int poslednjiDanZaUplate = 10;
             if (regkey != null)
             {
                 if (regkey.GetValue(FontSizeRegKey) != null)
@@ -69,6 +71,8 @@ namespace Soko.UI
                     comPortReader = int.Parse((string)regkey.GetValue(COMPortReaderRegKey));
                 if (regkey.GetValue(COMPortWriterRegKey) != null)
                     comPortWriter = int.Parse((string)regkey.GetValue(COMPortWriterRegKey));
+                if (regkey.GetValue(PoslednjiDanZaUplateRegKey) != null)
+                    poslednjiDanZaUplate = int.Parse((string)regkey.GetValue(PoslednjiDanZaUplateRegKey));
                 regkey.Close();
             }
             Options.Instance.Font = new Font(Font.FontFamily, fontSize);
@@ -76,6 +80,7 @@ namespace Soko.UI
             Options.Instance.PrinterNameIzvestaj = stampacIzvestaj;
             Options.Instance.COMPortReader = comPortReader;
             Options.Instance.COMPortWriter = comPortWriter;
+            Options.Instance.PoslednjiDanZaUplate = poslednjiDanZaUplate;
         }
 
         private void saveOptions()
@@ -98,6 +103,7 @@ namespace Soko.UI
 
             regkey.SetValue(COMPortReaderRegKey, Options.Instance.COMPortReader.ToString());
             regkey.SetValue(COMPortWriterRegKey, Options.Instance.COMPortWriter.ToString());
+            regkey.SetValue(PoslednjiDanZaUplateRegKey, Options.Instance.PoslednjiDanZaUplate.ToString());
             
             regkey.Close();
         }
@@ -875,6 +881,7 @@ namespace Soko.UI
             {
                 Options.Instance.COMPortReader = form.COMPortReader;
                 Options.Instance.COMPortWriter = form.COMPortWriter;
+                Options.Instance.PoslednjiDanZaUplate = form.PoslednjiDanZaUplate;
             }
         }
 

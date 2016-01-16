@@ -39,8 +39,6 @@ namespace Soko
             return citacKartica;
         }
 
-        public const int POSLEDNJI_DAN_ZA_UPLATE = 10;
-
         private Font font = new Font("Arial", 40, FontStyle.Bold);
 
         public bool readCard(int comPort, bool showErrorMessages, out int broj, out string name)
@@ -135,7 +133,7 @@ namespace Soko
                             && poslednjaUplata.DatumVremeUplate.Value.Month == DateTime.Now.Month;
                         if (!okForTrening)
                         {
-                            if (DateTime.Now.Day > CitacKartica.POSLEDNJI_DAN_ZA_UPLATE)
+                            if (DateTime.Now.Day > Options.Instance.PoslednjiDanZaUplate)
                             {
                                 okForTrening = false;
                             }

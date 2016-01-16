@@ -34,6 +34,8 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.cmbCOMPortWriter = new System.Windows.Forms.ComboBox();
             this.lblCOMPortWriter = new System.Windows.Forms.Label();
+            this.lblPoslednjiDanZaUplate = new System.Windows.Forms.Label();
+            this.txtPoslednjiDanZaUplate = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // cmbCOMPortReader
@@ -71,7 +73,7 @@
             "COM 28",
             "COM 29",
             "COM 30"});
-            this.cmbCOMPortReader.Location = new System.Drawing.Point(21, 40);
+            this.cmbCOMPortReader.Location = new System.Drawing.Point(21, 75);
             this.cmbCOMPortReader.Name = "cmbCOMPortReader";
             this.cmbCOMPortReader.Size = new System.Drawing.Size(132, 21);
             this.cmbCOMPortReader.TabIndex = 0;
@@ -79,7 +81,7 @@
             // lblCOMPortReader
             // 
             this.lblCOMPortReader.AutoSize = true;
-            this.lblCOMPortReader.Location = new System.Drawing.Point(18, 24);
+            this.lblCOMPortReader.Location = new System.Drawing.Point(18, 59);
             this.lblCOMPortReader.Name = "lblCOMPortReader";
             this.lblCOMPortReader.Size = new System.Drawing.Size(127, 13);
             this.lblCOMPortReader.TabIndex = 1;
@@ -88,7 +90,7 @@
             // btnOK
             // 
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(21, 146);
+            this.btnOK.Location = new System.Drawing.Point(90, 180);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 2;
@@ -99,7 +101,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(111, 146);
+            this.btnCancel.Location = new System.Drawing.Point(180, 180);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 3;
@@ -141,7 +143,7 @@
             "COM 28",
             "COM 29",
             "COM 30"});
-            this.cmbCOMPortWriter.Location = new System.Drawing.Point(21, 96);
+            this.cmbCOMPortWriter.Location = new System.Drawing.Point(21, 129);
             this.cmbCOMPortWriter.Name = "cmbCOMPortWriter";
             this.cmbCOMPortWriter.Size = new System.Drawing.Size(132, 21);
             this.cmbCOMPortWriter.TabIndex = 4;
@@ -149,11 +151,27 @@
             // lblCOMPortWriter
             // 
             this.lblCOMPortWriter.AutoSize = true;
-            this.lblCOMPortWriter.Location = new System.Drawing.Point(18, 80);
+            this.lblCOMPortWriter.Location = new System.Drawing.Point(18, 113);
             this.lblCOMPortWriter.Name = "lblCOMPortWriter";
             this.lblCOMPortWriter.Size = new System.Drawing.Size(129, 13);
             this.lblCOMPortWriter.TabIndex = 5;
             this.lblCOMPortWriter.Text = "COM port za pisac kartica";
+            // 
+            // lblPoslednjiDanZaUplate
+            // 
+            this.lblPoslednjiDanZaUplate.AutoSize = true;
+            this.lblPoslednjiDanZaUplate.Location = new System.Drawing.Point(18, 24);
+            this.lblPoslednjiDanZaUplate.Name = "lblPoslednjiDanZaUplate";
+            this.lblPoslednjiDanZaUplate.Size = new System.Drawing.Size(165, 13);
+            this.lblPoslednjiDanZaUplate.TabIndex = 6;
+            this.lblPoslednjiDanZaUplate.Text = "Poslednji dan u mesecu za uplate";
+            // 
+            // txtPoslednjiDanZaUplate
+            // 
+            this.txtPoslednjiDanZaUplate.Location = new System.Drawing.Point(189, 21);
+            this.txtPoslednjiDanZaUplate.Name = "txtPoslednjiDanZaUplate";
+            this.txtPoslednjiDanZaUplate.Size = new System.Drawing.Size(45, 20);
+            this.txtPoslednjiDanZaUplate.TabIndex = 7;
             // 
             // CitacKarticaDialog
             // 
@@ -161,7 +179,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(205, 186);
+            this.ClientSize = new System.Drawing.Size(267, 225);
+            this.Controls.Add(this.txtPoslednjiDanZaUplate);
+            this.Controls.Add(this.lblPoslednjiDanZaUplate);
             this.Controls.Add(this.lblCOMPortWriter);
             this.Controls.Add(this.cmbCOMPortWriter);
             this.Controls.Add(this.btnCancel);
@@ -188,5 +208,7 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.ComboBox cmbCOMPortWriter;
         private System.Windows.Forms.Label lblCOMPortWriter;
+        private System.Windows.Forms.Label lblPoslednjiDanZaUplate;
+        private System.Windows.Forms.TextBox txtPoslednjiDanZaUplate;
     }
 }

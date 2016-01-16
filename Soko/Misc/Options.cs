@@ -58,5 +58,13 @@ namespace Soko
             get { return comPortWriter; }
             set { comPortWriter = value; }
         }
+
+        private int poslednjiDanZaUplate;
+        public int PoslednjiDanZaUplate
+        {
+            get { return poslednjiDanZaUplate; }
+            set { poslednjiDanZaUplate = value; }
+        }
+
     }
 }
