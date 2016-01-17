@@ -36,6 +36,7 @@
             this.lblCOMPortWriter = new System.Windows.Forms.Label();
             this.lblPoslednjiDanZaUplate = new System.Windows.Forms.Label();
             this.txtPoslednjiDanZaUplate = new System.Windows.Forms.TextBox();
+            this.btnEnableCitacKartica = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // cmbCOMPortReader
@@ -90,7 +91,7 @@
             // btnOK
             // 
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(90, 180);
+            this.btnOK.Location = new System.Drawing.Point(90, 246);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 2;
@@ -101,7 +102,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(180, 180);
+            this.btnCancel.Location = new System.Drawing.Point(180, 246);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 3;
@@ -173,13 +174,24 @@
             this.txtPoslednjiDanZaUplate.Size = new System.Drawing.Size(45, 20);
             this.txtPoslednjiDanZaUplate.TabIndex = 7;
             // 
+            // btnEnableCitacKartica
+            // 
+            this.btnEnableCitacKartica.Location = new System.Drawing.Point(21, 182);
+            this.btnEnableCitacKartica.Name = "btnEnableCitacKartica";
+            this.btnEnableCitacKartica.Size = new System.Drawing.Size(132, 23);
+            this.btnEnableCitacKartica.TabIndex = 8;
+            this.btnEnableCitacKartica.Text = "button1";
+            this.btnEnableCitacKartica.UseVisualStyleBackColor = true;
+            this.btnEnableCitacKartica.Click += new System.EventHandler(this.btnEnableCitacKartica_Click);
+            // 
             // CitacKarticaDialog
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(267, 225);
+            this.ClientSize = new System.Drawing.Size(267, 281);
+            this.Controls.Add(this.btnEnableCitacKartica);
             this.Controls.Add(this.txtPoslednjiDanZaUplate);
             this.Controls.Add(this.lblPoslednjiDanZaUplate);
             this.Controls.Add(this.lblCOMPortWriter);
@@ -210,5 +222,6 @@
         private System.Windows.Forms.Label lblCOMPortWriter;
         private System.Windows.Forms.Label lblPoslednjiDanZaUplate;
         private System.Windows.Forms.TextBox txtPoslednjiDanZaUplate;
+        private System.Windows.Forms.Button btnEnableCitacKartica;
     }
 }

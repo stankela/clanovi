@@ -15,10 +15,16 @@ namespace Soko.UI
         {
             InitializeComponent();
             Text = "Citac kartica";
+            this.ControlBox = false;
+            this.ShowInTaskbar = false;
+
         }
 
         private void CitacKarticaForm_Shown(object sender, EventArgs e)
         {
+            Rectangle screenRect = Screen.FromControl(this).Bounds;
+            this.Location = new Point(screenRect.Width - this.Width, 0);
+
             SingleInstanceApplication.GlavniProzor.Activate();
         }
 

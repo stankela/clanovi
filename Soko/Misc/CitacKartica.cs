@@ -163,7 +163,7 @@ namespace Soko
                     Graphics g = SingleInstanceApplication.GlavniProzor.CitacKarticaForm.CreateGraphics();
                     if (okForTrening)
                     {
-                        g.Clear(Color.Green);
+                        g.Clear(Color.SpringGreen);
                     }
                     else
                     {

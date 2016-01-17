@@ -367,10 +367,6 @@ namespace Soko.UI
             }
         }
 
-        // TODO: Probaj da u sokolskom drustvu izbrises tabele Clanovi Status, 
-        // Roditelj i SSS (prvo proveri da li su prazne). Koristi za to posebnu 
-        // verziju programa samo za tu namenu.   
-        
         private void mnPrihodiDnevniGrupe_Click(object sender, EventArgs e)
         {
             BiracIntervala dlg;
@@ -861,17 +857,44 @@ namespace Soko.UI
             }                                   
         }
 
-        private CitacKarticaForm citacKarticaForm;
         public CitacKarticaForm CitacKarticaForm
         {
-            get { return citacKarticaForm; }
+            get
+            {
+                foreach (Form f in Application.OpenForms)
+                {
+                    CitacKarticaForm form = f as CitacKarticaForm;
+                    if (form != null)
+                    {
+                        return form;
+                    }
+                }
+                return null;
+            }
         }
 
         private void Form1_Shown(object sender, EventArgs e)
         {
-            citacKarticaForm = new CitacKarticaForm();
-            citacKarticaForm.Show();
-            citacKarticaForm.Location = new Point(this.Location.X, this.Location.Y + this.Height + 50);
+            PokreniCitacKartica();
+        }
+
+        public void PokreniCitacKartica()
+        {
+            if (!CitacKarticaEnabled)
+            {
+                CitacKarticaForm citacKarticaForm = new CitacKarticaForm();
+                citacKarticaForm.Show();
+                CitacKarticaEnabled = true;
+            }
+        }
+
+        public void ZaustaviCitacKartica()
+        {
+            if (CitacKarticaEnabled)
+            {
+                CitacKarticaEnabled = false;
+                SingleInstanceApplication.GlavniProzor.CitacKarticaForm.Close();
+            }
         }
 
         private void mnCitacKartica_Click(object sender, EventArgs e)
@@ -887,9 +910,15 @@ namespace Soko.UI
 
         private System.Timers.Timer aTimer;
         private int numTimerEvents = 0;
-        public bool CardWriterReadEnabled = true;
         private bool lastRead = false;
         private bool repaint = true;
+
+        private bool citacKarticaEnabled = false;
+        public bool CitacKarticaEnabled
+        {
+            get { return citacKarticaEnabled; }
+            set { citacKarticaEnabled = value; }
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -927,6 +956,10 @@ namespace Soko.UI
             ++numTimerEvents;
             if (numTimerEvents % 2 == 0)
             {
+                // citac kartica
+                if (!CitacKarticaEnabled)
+                    return;
+
                 if (lastRead)
                 {
                     lastRead = false;
@@ -941,12 +974,12 @@ namespace Soko.UI
                         g.Dispose();
                         repaint = false;
                     }
-
                     lastRead = CitacKartica.getCitacKartica().Read();
                 }
             }
             else
             {
+                // pisac kartica
                 if (PravljenjeKarticeForm.PendingWrite)
                 {
                     PravljenjeKarticeForm.Write();

@@ -32,6 +32,19 @@ namespace Soko.UI
         public CitacKarticaDialog()
         {
             InitializeComponent();
+            updateCitacKarticaButtonText();
+        }
+
+        private void updateCitacKarticaButtonText()
+        {
+            if (SingleInstanceApplication.GlavniProzor.CitacKarticaEnabled)
+            {
+                btnEnableCitacKartica.Text = "Zaustavi citac kartica";
+            }
+            else
+            {
+                btnEnableCitacKartica.Text = "Pokreni citac kartica";
+            }
         }
 
         private void CitacKarticaDialog_Load(object sender, EventArgs e)
@@ -54,6 +67,19 @@ namespace Soko.UI
             comPortReader = cmbCOMPortReader.SelectedIndex + 1;
             comPortWriter = cmbCOMPortWriter.SelectedIndex + 1;
             poslednjiDanZaUplate = Int32.Parse(txtPoslednjiDanZaUplate.Text);
+        }
+
+        private void btnEnableCitacKartica_Click(object sender, EventArgs e)
+        {
+            if (SingleInstanceApplication.GlavniProzor.CitacKarticaEnabled)
+            {
+                SingleInstanceApplication.GlavniProzor.ZaustaviCitacKartica();
+            }
+            else
+            {
+                SingleInstanceApplication.GlavniProzor.PokreniCitacKartica();
+            }
+            updateCitacKarticaButtonText();
         }
     }
 }
