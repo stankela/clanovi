@@ -13,6 +13,7 @@ using Bilten.Dao;
 using Soko.Domain;
 using Soko.UI;
 using Soko.Misc;
+using System.Diagnostics;
 
 namespace Soko
 {
@@ -83,7 +84,18 @@ namespace Soko
         {
             int broj;
             string name;
+
+            //Stopwatch watch = Stopwatch.StartNew();
             if (!readCard(Options.Instance.COMPortReader, false, out broj, out name))
+                return false;
+            //watch.Stop();
+            //long elapsedMs = watch.ElapsedMilliseconds;
+
+            // Posto ocitavanje kartice traje relativno dugo (oko 374 ms), moguce je da je prozor zatvoren
+            // bas u trenutku dok se kartica ocitava. Korisnik je u tom slucaju cuo zvuk da je kartica
+            // ocitana ali nije video podatke u prozoru. U tom slucaju se podaci ne unose u bazu (korisnik mora
+            // da vidi da je kartica ocitana).
+            if (!SingleInstanceApplication.GlavniProzor.CitacKarticaEnabled)
                 return false;
             
             try
