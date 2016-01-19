@@ -40,8 +40,6 @@ namespace Soko
             return citacKartica;
         }
 
-        private Font font = new Font("Arial", 40, FontStyle.Bold);
-
         public bool readCard(int comPort, bool showErrorMessages, out int broj, out string name)
         {
             string sType = " ";
@@ -91,13 +89,6 @@ namespace Soko
             //watch.Stop();
             //long elapsedMs = watch.ElapsedMilliseconds;
 
-            // Posto ocitavanje kartice traje relativno dugo (oko 374 ms), moguce je da je prozor zatvoren
-            // bas u trenutku dok se kartica ocitava. Korisnik je u tom slucaju cuo zvuk da je kartica
-            // ocitana ali nije video podatke u prozoru. U tom slucaju se podaci ne unose u bazu (korisnik mora
-            // da vidi da je kartica ocitana).
-            if (!SingleInstanceApplication.GlavniProzor.CitacKarticaEnabled)
-                return false;
-            
             try
             {
                 using (ISession session = NHibernateHelper.OpenSession())
@@ -167,22 +158,30 @@ namespace Soko
                         }
                     }
 
-                    string msg = broj.ToString();
+                    string grupa = null;
                     if (poslednjaUplata != null)
                     {
-                        msg += "\n" + poslednjaUplata.Grupa.Naziv;
+                        grupa = poslednjaUplata.Grupa.Naziv;
                     }
-                    Graphics g = SingleInstanceApplication.GlavniProzor.CitacKarticaForm.CreateGraphics();
-                    if (okForTrening)
+                    string msg = FormatMessage(broj, grupa);
+
+                    // Posto ocitavanje kartice traje relativno dugo (oko 374 ms), moguce je da je prozor
+                    // zatvoren bas u trenutku dok se kartica ocitava. Korisnik je u tom slucaju cuo zvuk
+                    // da je kartica ocitana ali se na displeju ne prikazuje da je kartica ocitana.
+                    CitacKarticaForm form = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
+                    if (form != null)
                     {
-                        g.Clear(Color.SpringGreen);
+                        Color color;
+                        if (okForTrening)
+                        {
+                            color = Color.SpringGreen;
+                        }
+                        else
+                        {
+                            color = Color.Red;
+                        }
+                        form.PrikaziOcitavanje(msg, color);
                     }
-                    else
-                    {
-                        g.Clear(Color.Red);
-                    }
-                    g.DrawString(msg, font, Brushes.Black, 0, 0);
-                    g.Dispose();
                     return true;
                 }
             }
@@ -195,6 +194,20 @@ namespace Soko
             {
                 CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
             }
+        }
+
+        public string FormatMessage(int broj, string grupa)
+        {
+            string result = String.Empty;
+            if (Options.Instance.PrikaziBrojClanaKodOcitavanjaKartice)
+            {
+                result = broj.ToString() + "\n";
+            }
+            if (grupa != null)
+            {
+                result += grupa;
+            }
+            return result;
         }
     }
 }

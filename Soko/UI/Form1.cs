@@ -25,6 +25,7 @@ namespace Soko.UI
         const string COMPortReaderRegKey = "COMPortReader";
         const string COMPortWriterRegKey = "COMPortWriter";
         const string PoslednjiDanZaUplateRegKey = "PoslednjiDanZaUplate";
+        const string VelicinaSlovaNaDisplejuRegKey = "VelicinaSlovaNaDispleju";
 
         public Form1()
         {
@@ -54,33 +55,25 @@ namespace Soko.UI
         {
             RegistryKey regkey = Registry.CurrentUser.OpenSubKey(RegKey);
             float fontSize = Font.SizeInPoints;
-            string stampacPotvrda = null;
-            string stampacIzvestaj = null;
-            int comPortReader = 1;
-            int comPortWriter = 2;
-            int poslednjiDanZaUplate = 10;
             if (regkey != null)
             {
                 if (regkey.GetValue(FontSizeRegKey) != null)
                     fontSize = float.Parse((string)regkey.GetValue(FontSizeRegKey));
                 if (regkey.GetValue(StampacPotvrdaRegKey) != null)
-                    stampacPotvrda = (string)regkey.GetValue(StampacPotvrdaRegKey);
+                    Options.Instance.PrinterNamePotvrda = (string)regkey.GetValue(StampacPotvrdaRegKey);
                 if (regkey.GetValue(StampacIzvestajRegKey) != null)
-                    stampacIzvestaj = (string)regkey.GetValue(StampacIzvestajRegKey);
+                    Options.Instance.PrinterNameIzvestaj = (string)regkey.GetValue(StampacIzvestajRegKey);
                 if (regkey.GetValue(COMPortReaderRegKey) != null)
-                    comPortReader = int.Parse((string)regkey.GetValue(COMPortReaderRegKey));
+                    Options.Instance.COMPortReader = int.Parse((string)regkey.GetValue(COMPortReaderRegKey));
                 if (regkey.GetValue(COMPortWriterRegKey) != null)
-                    comPortWriter = int.Parse((string)regkey.GetValue(COMPortWriterRegKey));
+                    Options.Instance.COMPortWriter = int.Parse((string)regkey.GetValue(COMPortWriterRegKey));
                 if (regkey.GetValue(PoslednjiDanZaUplateRegKey) != null)
-                    poslednjiDanZaUplate = int.Parse((string)regkey.GetValue(PoslednjiDanZaUplateRegKey));
+                    Options.Instance.PoslednjiDanZaUplate = int.Parse((string)regkey.GetValue(PoslednjiDanZaUplateRegKey));
+                if (regkey.GetValue(VelicinaSlovaNaDisplejuRegKey) != null)
+                    Options.Instance.VelicinaSlovaZaCitacKartica = int.Parse((string)regkey.GetValue(VelicinaSlovaNaDisplejuRegKey));
                 regkey.Close();
             }
             Options.Instance.Font = new Font(Font.FontFamily, fontSize);
-            Options.Instance.PrinterNamePotvrda = stampacPotvrda;
-            Options.Instance.PrinterNameIzvestaj = stampacIzvestaj;
-            Options.Instance.COMPortReader = comPortReader;
-            Options.Instance.COMPortWriter = comPortWriter;
-            Options.Instance.PoslednjiDanZaUplate = poslednjiDanZaUplate;
         }
 
         private void saveOptions()
@@ -104,7 +97,8 @@ namespace Soko.UI
             regkey.SetValue(COMPortReaderRegKey, Options.Instance.COMPortReader.ToString());
             regkey.SetValue(COMPortWriterRegKey, Options.Instance.COMPortWriter.ToString());
             regkey.SetValue(PoslednjiDanZaUplateRegKey, Options.Instance.PoslednjiDanZaUplate.ToString());
-            
+            regkey.SetValue(VelicinaSlovaNaDisplejuRegKey, Options.Instance.VelicinaSlovaZaCitacKartica.ToString());
+      
             regkey.Close();
         }
 
@@ -873,11 +867,6 @@ namespace Soko.UI
             }
         }
 
-        private void Form1_Shown(object sender, EventArgs e)
-        {
-            PokreniCitacKartica();
-        }
-
         public void PokreniCitacKartica()
         {
             if (!CitacKarticaEnabled)
@@ -885,6 +874,7 @@ namespace Soko.UI
                 CitacKarticaForm citacKarticaForm = new CitacKarticaForm();
                 citacKarticaForm.Show();
                 CitacKarticaEnabled = true;
+                this.Activate();
             }
         }
 
@@ -902,9 +892,11 @@ namespace Soko.UI
             CitacKarticaDialog form = new CitacKarticaDialog();
             if (form.ShowDialog() == DialogResult.OK)
             {
-                Options.Instance.COMPortReader = form.COMPortReader;
-                Options.Instance.COMPortWriter = form.COMPortWriter;
-                Options.Instance.PoslednjiDanZaUplate = form.PoslednjiDanZaUplate;
+                CitacKarticaForm citacKarticaForm = this.CitacKarticaForm;
+                if (citacKarticaForm != null)
+                {
+                    citacKarticaForm.PodesiVelicinu();
+                }
             }
         }
 
@@ -922,6 +914,8 @@ namespace Soko.UI
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            PokreniCitacKartica();
+
             // Normally, the timer is declared at the class level, 
             // so that it stays in scope as long as it is needed. 
             // If the timer is declared in a long-running method,   

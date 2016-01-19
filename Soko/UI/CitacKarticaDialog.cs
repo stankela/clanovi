@@ -11,24 +11,6 @@ namespace Soko.UI
 {
     public partial class CitacKarticaDialog : Form
     {
-        private int comPortReader;
-        public int COMPortReader
-        {
-            get { return comPortReader; }
-        }
-
-        private int comPortWriter;
-        public int COMPortWriter
-        {
-            get { return comPortWriter; }
-        }
-
-        private int poslednjiDanZaUplate;
-        public int PoslednjiDanZaUplate
-        {
-            get { return poslednjiDanZaUplate; }
-        }
-
         public CitacKarticaDialog()
         {
             InitializeComponent();
@@ -52,21 +34,30 @@ namespace Soko.UI
             cmbCOMPortReader.SelectedIndex = Options.Instance.COMPortReader - 1;
             cmbCOMPortWriter.SelectedIndex = Options.Instance.COMPortWriter - 1;
             txtPoslednjiDanZaUplate.Text = Options.Instance.PoslednjiDanZaUplate.ToString();
+            txtVelicinaSlova.Text = Options.Instance.VelicinaSlovaZaCitacKartica.ToString();
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            int dan;
-            if (!Int32.TryParse(txtPoslednjiDanZaUplate.Text, out dan)
-                || dan < 1 || dan > 31)
+            int i;
+            if (!Int32.TryParse(txtPoslednjiDanZaUplate.Text, out i)
+                || i < 1 || i > 31)
             {
                 MessageDialogs.showMessage("Neispravna vrednost za poslednji dan u mesecu za uplate.", this.Text);
                 this.DialogResult = DialogResult.None;
                 return;
             }
-            comPortReader = cmbCOMPortReader.SelectedIndex + 1;
-            comPortWriter = cmbCOMPortWriter.SelectedIndex + 1;
-            poslednjiDanZaUplate = Int32.Parse(txtPoslednjiDanZaUplate.Text);
+            if (!Int32.TryParse(txtVelicinaSlova.Text, out i)
+                || i < 1 || i > 100)
+            {
+                MessageDialogs.showMessage("Neispravna vrednost za velicinu slova na displeju.", this.Text);
+                this.DialogResult = DialogResult.None;
+                return;
+            }
+            Options.Instance.COMPortReader = cmbCOMPortReader.SelectedIndex + 1;
+            Options.Instance.COMPortWriter = cmbCOMPortWriter.SelectedIndex + 1;
+            Options.Instance.PoslednjiDanZaUplate = Int32.Parse(txtPoslednjiDanZaUplate.Text);
+            Options.Instance.VelicinaSlovaZaCitacKartica = Int32.Parse(txtVelicinaSlova.Text);
         }
 
         private void btnEnableCitacKartica_Click(object sender, EventArgs e)

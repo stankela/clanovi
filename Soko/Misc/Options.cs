@@ -31,39 +31,54 @@ namespace Soko
 			set { font = value; }
 		}
 
-        private string printerNamePotvrda;
+        private string printerNamePotvrda = null;
         public string PrinterNamePotvrda
         {
             get { return printerNamePotvrda; }
             set { printerNamePotvrda = value; }
         }
 
-        private string printerNameIzvestaj;
+        private string printerNameIzvestaj = null;
         public string PrinterNameIzvestaj
         {
             get { return printerNameIzvestaj; }
             set { printerNameIzvestaj = value; }
         }
 
-        private int comPortReader;
+        private int comPortReader = 1;
         public int COMPortReader
         {
             get { return comPortReader; }
             set { comPortReader = value; }
         }
 
-        private int comPortWriter;
+        private int comPortWriter = 2;
         public int COMPortWriter
         {
             get { return comPortWriter; }
             set { comPortWriter = value; }
         }
 
-        private int poslednjiDanZaUplate;
+        private int poslednjiDanZaUplate = 10;
         public int PoslednjiDanZaUplate
         {
             get { return poslednjiDanZaUplate; }
             set { poslednjiDanZaUplate = value; }
+        }
+
+        private bool prikaziBrojClanaKodOcitavanjaKartice = true;
+        public bool PrikaziBrojClanaKodOcitavanjaKartice
+        {
+            get { return prikaziBrojClanaKodOcitavanjaKartice; }
+            set { prikaziBrojClanaKodOcitavanjaKartice = value; }
+
+        }
+
+        private int velicinaSlovaZaCitacKartica = 28;
+        public int VelicinaSlovaZaCitacKartica
+        {
+            get { return velicinaSlovaZaCitacKartica; }
+            set { velicinaSlovaZaCitacKartica = value; }
         }
 
     }
