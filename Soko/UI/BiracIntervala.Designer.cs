@@ -42,8 +42,14 @@ namespace Soko.UI
             this.rbtSveGrupe = new System.Windows.Forms.RadioButton();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnOdustani = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.rbtCeoIzvestaj = new System.Windows.Forms.RadioButton();
+            this.rbtClan = new System.Windows.Forms.RadioButton();
+            this.txtClan = new System.Windows.Forms.TextBox();
+            this.cmbClan = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -168,7 +174,7 @@ namespace Soko.UI
             // btnOk
             // 
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(286, 310);
+            this.btnOk.Location = new System.Drawing.Point(286, 424);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 1;
@@ -179,12 +185,66 @@ namespace Soko.UI
             // btnOdustani
             // 
             this.btnOdustani.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnOdustani.Location = new System.Drawing.Point(374, 310);
+            this.btnOdustani.Location = new System.Drawing.Point(374, 424);
             this.btnOdustani.Name = "btnOdustani";
             this.btnOdustani.Size = new System.Drawing.Size(75, 23);
             this.btnOdustani.TabIndex = 2;
             this.btnOdustani.Text = "Odustani";
             this.btnOdustani.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.cmbClan);
+            this.groupBox3.Controls.Add(this.txtClan);
+            this.groupBox3.Controls.Add(this.rbtClan);
+            this.groupBox3.Controls.Add(this.rbtCeoIzvestaj);
+            this.groupBox3.Location = new System.Drawing.Point(8, 310);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(441, 91);
+            this.groupBox3.TabIndex = 5;
+            this.groupBox3.TabStop = false;
+            // 
+            // rbtCeoIzvestaj
+            // 
+            this.rbtCeoIzvestaj.AutoSize = true;
+            this.rbtCeoIzvestaj.Location = new System.Drawing.Point(8, 19);
+            this.rbtCeoIzvestaj.Name = "rbtCeoIzvestaj";
+            this.rbtCeoIzvestaj.Size = new System.Drawing.Size(82, 17);
+            this.rbtCeoIzvestaj.TabIndex = 0;
+            this.rbtCeoIzvestaj.TabStop = true;
+            this.rbtCeoIzvestaj.Text = "Ceo izvestaj";
+            this.rbtCeoIzvestaj.UseVisualStyleBackColor = true;
+            this.rbtCeoIzvestaj.CheckedChanged += new System.EventHandler(this.rbtCeoIzvestaj_CheckedChanged);
+            // 
+            // rbtClan
+            // 
+            this.rbtClan.AutoSize = true;
+            this.rbtClan.Location = new System.Drawing.Point(8, 51);
+            this.rbtClan.Name = "rbtClan";
+            this.rbtClan.Size = new System.Drawing.Size(95, 17);
+            this.rbtClan.TabIndex = 1;
+            this.rbtClan.TabStop = true;
+            this.rbtClan.Text = "Samo za clana";
+            this.rbtClan.UseVisualStyleBackColor = true;
+            this.rbtClan.CheckedChanged += new System.EventHandler(this.rbtClan_CheckedChanged);
+            // 
+            // txtClan
+            // 
+            this.txtClan.Location = new System.Drawing.Point(112, 51);
+            this.txtClan.Name = "txtClan";
+            this.txtClan.Size = new System.Drawing.Size(82, 20);
+            this.txtClan.TabIndex = 2;
+            this.txtClan.TextChanged += new System.EventHandler(this.txtClan_TextChanged);
+            // 
+            // cmbClan
+            // 
+            this.cmbClan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbClan.FormattingEnabled = true;
+            this.cmbClan.Location = new System.Drawing.Point(213, 51);
+            this.cmbClan.Name = "cmbClan";
+            this.cmbClan.Size = new System.Drawing.Size(212, 21);
+            this.cmbClan.TabIndex = 3;
+            this.cmbClan.SelectionChangeCommitted += new System.EventHandler(this.cmbClan_SelectionChangeCommitted);
             // 
             // BiracIntervala
             // 
@@ -192,7 +252,8 @@ namespace Soko.UI
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnOdustani;
-            this.ClientSize = new System.Drawing.Size(461, 344);
+            this.ClientSize = new System.Drawing.Size(461, 466);
+            this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.btnOdustani);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.groupBox2);
@@ -210,6 +271,8 @@ namespace Soko.UI
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -230,5 +293,10 @@ namespace Soko.UI
         private System.Windows.Forms.ListBox listBoxGrupe;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnOdustani;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.RadioButton rbtClan;
+        private System.Windows.Forms.RadioButton rbtCeoIzvestaj;
+        private System.Windows.Forms.ComboBox cmbClan;
+        private System.Windows.Forms.TextBox txtClan;
     }
 }

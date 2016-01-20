@@ -17,6 +17,8 @@ namespace Soko.UI
     {
         private List<Grupa> grupe = null;
         private List<Grupa> sveGrupe;
+        private List<Clan> clanovi;
+        private bool izborClana;
 
         public DateTimePicker DateTimePickerFrom
         {
@@ -28,7 +30,10 @@ namespace Soko.UI
             get { return dtpDo; }
         }
 
-        public BiracIntervala(string naslov, bool izborGrupa)
+        // TODO2: Biranje clana se pojavljuje na vise mesta u programu. Probaj da napravis kontrolu
+        // koja to radi, i koja moze da se stavlja na form.
+
+        public BiracIntervala(string naslov, bool izborGrupa, bool izborClana)
         {
             InitializeComponent();
 
@@ -37,6 +42,7 @@ namespace Soko.UI
             this.dtpOd.Format = DateTimePickerFormat.Custom;
             this.dtpDo.CustomFormat = "d.M.yyyy";
             this.dtpDo.Format = DateTimePickerFormat.Custom;
+            this.izborClana = izborClana;
 
             try
             {
@@ -45,6 +51,7 @@ namespace Soko.UI
                 {
                     CurrentSessionContext.Bind(session);
                     sveGrupe = new List<Grupa>(DAOFactoryFactory.DAOFactory.GetGrupaDAO().FindAll());
+                    clanovi = loadClanovi();
                 }
             }
             finally
@@ -54,19 +61,61 @@ namespace Soko.UI
 
             sveGrupe.Sort();
             fillCheckedListBoxGrupa(sveGrupe);
-
             rbtSveGrupe.Checked = true;
 
+            setClanovi(clanovi);
+            if (clanovi.Count > 0)
+                SelectedClan = clanovi[0];
+            else
+                SelectedClan = null;
+            rbtCeoIzvestaj.Checked = true;
+
+
             Font = Options.Instance.Font;
+            if (!izborClana)
+            {
+                groupBox3.Visible = false;
+                groupBox3.Enabled = false;
+                int delta = groupBox3.Bottom - groupBox2.Bottom;
+                btnOk.Location = new Point(btnOk.Location.X, btnOk.Location.Y - delta);
+                btnOdustani.Location = new Point(btnOdustani.Location.X, btnOdustani.Location.Y - delta);
+                this.Size = new Size(Size.Width, Size.Height - delta);
+            }
             if (!izborGrupa)
             {
                 groupBox2.Visible = false;
                 groupBox2.Enabled = false;
-                int height = groupBox1.Height + btnOk.Height * 3 + (int)Math.Round(groupBox1.Location.Y * 1.5f);
-                this.Size = new Size(Size.Width, height);
-                btnOk.Location = new Point(btnOk.Location.X, groupBox1.Height + 3 * groupBox1.Location.Y);
-                btnOdustani.Location = new Point(btnOdustani.Location.X, btnOk.Location.Y);
+                int delta = groupBox2.Bottom - groupBox1.Bottom;
+                btnOk.Location = new Point(btnOk.Location.X, btnOk.Location.Y - delta);
+                btnOdustani.Location = new Point(btnOdustani.Location.X, btnOdustani.Location.Y - delta);
+                this.Size = new Size(Size.Width, Size.Height - delta);
             }
+        }
+
+        private List<Clan> loadClanovi()
+        {
+            List<Clan> result = new List<Clan>(DAOFactoryFactory.DAOFactory.GetClanDAO().FindAll());
+
+            PropertyDescriptor propDescPrez = TypeDescriptor.GetProperties(typeof(Clan))["Prezime"];
+            PropertyDescriptor propDescIme = TypeDescriptor.GetProperties(typeof(Clan))["Ime"];
+            PropertyDescriptor[] propDesc = new PropertyDescriptor[2] { propDescPrez, propDescIme };
+            ListSortDirection[] direction = new ListSortDirection[2] { ListSortDirection.Ascending, ListSortDirection.Ascending };
+
+            result.Sort(new SortComparer<Clan>(propDesc, direction));
+
+            return result;
+        }
+
+        private void setClanovi(List<Clan> clanovi)
+        {
+            cmbClan.DataSource = clanovi;
+            cmbClan.DisplayMember = "BrojPrezimeImeDatumRodjenja";
+        }
+
+        private Clan SelectedClan
+        {
+            get { return cmbClan.SelectedItem as Clan; }
+            set { cmbClan.SelectedItem = value; }
         }
 
         private void BiracIntervala_Shown(object sender, EventArgs e)
@@ -102,6 +151,20 @@ namespace Soko.UI
         public List<Grupa> Grupe
         {
             get { return grupe; }
+        }
+
+        public Nullable<int> ClanId
+        {
+            get
+            {
+                if (!izborClana || rbtCeoIzvestaj.Checked)
+                    return null;
+
+                if (SelectedClan != null)
+                    return SelectedClan.Id;
+                else
+                    return null;
+            }
         }
 
         private void fillCheckedListBoxGrupa(List<Grupa> grupe)
@@ -189,5 +252,70 @@ namespace Soko.UI
                 }
             }
         }
+
+        private void rbtCeoIzvestaj_CheckedChanged(object sender, EventArgs e)
+        {
+            onRbtClanChanged();
+        }
+
+        private void rbtClan_CheckedChanged(object sender, EventArgs e)
+        {
+            onRbtClanChanged();
+        }
+
+        private void onRbtClanChanged()
+        {
+            txtClan.Enabled = rbtClan.Checked;
+            cmbClan.Enabled = rbtClan.Checked;
+        }
+
+        private void txtClan_TextChanged(object sender, EventArgs e)
+        {
+            string text = txtClan.Text;
+            Clan clan = null;
+            int broj;
+            if (int.TryParse(text, out broj))
+            {
+                clan = findClan(broj);
+            }
+            else
+            {
+                clan = searchForClan(text);
+            }
+            SelectedClan = clan;
+        }
+
+        private Clan findClan(int broj)
+        {
+            foreach (Clan c in clanovi)
+            {
+                if (c.Broj == broj)
+                    return c;
+            }
+            return null;
+        }
+
+        private Clan searchForClan(string text)
+        {
+            foreach (Clan c in clanovi)
+            {
+                if (c.PrezimeIme.StartsWith(text, StringComparison.OrdinalIgnoreCase))
+                    return c;
+            }
+            return null;
+        }
+
+        private void cmbClan_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (SelectedClan != null)
+            {
+                txtClan.Text = SelectedClan.Broj.ToString();
+            }
+            else
+            {
+                txtClan.Text = String.Empty;
+            }
+        }
+
     }
 }

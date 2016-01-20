@@ -13,14 +13,9 @@ namespace Soko.Report
 	public class UplateClanovaIzvestaj : Izvestaj
 	{
 		private UplateClanovaLista lista;
-		private bool ceoIzvestaj;
-		private int idClana;
 
-		public UplateClanovaIzvestaj(bool ceoIzvestaj, int id)
+		public UplateClanovaIzvestaj(bool ceoIzvestaj, int idClana)
 		{
-			this.ceoIzvestaj = ceoIzvestaj;
-			idClana = id;
-
 			System.Resources.ResourceManager resourceManager = new 
 				System.Resources.ResourceManager("Soko.Resources.PreviewResursi", this.GetType().Assembly);
 			Title = resourceManager.GetString("uplate_clanova_izvestaj_title");
@@ -31,7 +26,6 @@ namespace Soko.Report
 			Font groupTitleFont = new Font("Courier New", 10, FontStyle.Bold);
 			lista = new UplateClanovaLista(ceoIzvestaj, idClana, this, 1, 0f, itemFont,
 				itemsHeaderFont, groupTitleFont);
-
 		}
 
 		protected override void doSetupContent(Graphics g)
@@ -46,7 +40,6 @@ namespace Soko.Report
 			lista.drawContent(g, contentBounds, pageNum);
 		}
 	}
-
 
 	public class UplateClanovaLista : ReportLista
 	{

@@ -366,7 +366,7 @@ namespace Soko.UI
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Izvestaj o dnevnim prihodima", true);
+                dlg = new BiracIntervala("Izvestaj o dnevnim prihodima", true, false);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -418,7 +418,7 @@ namespace Soko.UI
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Izvestaj o dnevnim prihodima", true);
+                dlg = new BiracIntervala("Izvestaj o dnevnim prihodima", true, false);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -470,7 +470,7 @@ namespace Soko.UI
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Izvestaj o prihodima", true);
+                dlg = new BiracIntervala("Izvestaj o prihodima", true, false);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -522,7 +522,7 @@ namespace Soko.UI
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Izvestaj o prihodima", true);
+                dlg = new BiracIntervala("Izvestaj o prihodima", true, false);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -574,7 +574,7 @@ namespace Soko.UI
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Izvestaj o mesecnim prihodima", false);
+                dlg = new BiracIntervala("Izvestaj o mesecnim prihodima", false, false);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -732,7 +732,7 @@ namespace Soko.UI
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Aktivni clanovi - grupe", true);
+                dlg = new BiracIntervala("Aktivni clanovi - grupe", true, false);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -784,7 +784,7 @@ namespace Soko.UI
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Aktivni clanovi", false);
+                dlg = new BiracIntervala("Aktivni clanovi", false, false);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -874,7 +874,6 @@ namespace Soko.UI
                 CitacKarticaForm citacKarticaForm = new CitacKarticaForm();
                 citacKarticaForm.Show();
                 CitacKarticaEnabled = true;
-                this.Activate();
             }
         }
 
@@ -998,7 +997,7 @@ namespace Soko.UI
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Evidencija prisustva na treningu", true);
+                dlg = new BiracIntervala("Evidencija prisustva na treningu", true, true);
                 dlg.DateTimePickerFrom.CustomFormat = "dd.MM.yyyy HH:mm";
                 dlg.DateTimePickerTo.CustomFormat = "dd.MM.yyyy HH:mm";
                 dlg.ShowDialog();
@@ -1026,7 +1025,7 @@ namespace Soko.UI
                 {
                     CurrentSessionContext.Bind(session);
                     PreviewDialog p = new PreviewDialog();
-                    p.setIzvestaj(new EvidencijaTreningaIzvestaj(dlg.OdDatumVreme,
+                    p.setIzvestaj(new EvidencijaTreningaIzvestaj(dlg.ClanId, dlg.OdDatumVreme,
                         dlg.DoDatumVreme, dlg.Grupe));
                     p.ShowDialog();
                 }
