@@ -32,6 +32,11 @@ namespace Soko.Domain
             set { brojKartice = value; }
         }
 
+        public virtual bool ImaKarticu
+        {
+            get { return BrojKartice != null && BrojKartice.Value > 0; }
+        }
+
         private string ime;
 		public virtual string Ime
 		{

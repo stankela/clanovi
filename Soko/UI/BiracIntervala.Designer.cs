@@ -43,10 +43,10 @@ namespace Soko.UI
             this.btnOk = new System.Windows.Forms.Button();
             this.btnOdustani = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.rbtCeoIzvestaj = new System.Windows.Forms.RadioButton();
-            this.rbtClan = new System.Windows.Forms.RadioButton();
-            this.txtClan = new System.Windows.Forms.TextBox();
             this.cmbClan = new System.Windows.Forms.ComboBox();
+            this.txtClan = new System.Windows.Forms.TextBox();
+            this.rbtClan = new System.Windows.Forms.RadioButton();
+            this.rbtCeoIzvestaj = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -204,17 +204,22 @@ namespace Soko.UI
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             // 
-            // rbtCeoIzvestaj
+            // cmbClan
             // 
-            this.rbtCeoIzvestaj.AutoSize = true;
-            this.rbtCeoIzvestaj.Location = new System.Drawing.Point(8, 19);
-            this.rbtCeoIzvestaj.Name = "rbtCeoIzvestaj";
-            this.rbtCeoIzvestaj.Size = new System.Drawing.Size(82, 17);
-            this.rbtCeoIzvestaj.TabIndex = 0;
-            this.rbtCeoIzvestaj.TabStop = true;
-            this.rbtCeoIzvestaj.Text = "Ceo izvestaj";
-            this.rbtCeoIzvestaj.UseVisualStyleBackColor = true;
-            this.rbtCeoIzvestaj.CheckedChanged += new System.EventHandler(this.rbtCeoIzvestaj_CheckedChanged);
+            this.cmbClan.FormattingEnabled = true;
+            this.cmbClan.Location = new System.Drawing.Point(213, 51);
+            this.cmbClan.Name = "cmbClan";
+            this.cmbClan.Size = new System.Drawing.Size(212, 21);
+            this.cmbClan.TabIndex = 3;
+            this.cmbClan.SelectionChangeCommitted += new System.EventHandler(this.cmbClan_SelectionChangeCommitted);
+            // 
+            // txtClan
+            // 
+            this.txtClan.Location = new System.Drawing.Point(112, 51);
+            this.txtClan.Name = "txtClan";
+            this.txtClan.Size = new System.Drawing.Size(82, 20);
+            this.txtClan.TabIndex = 2;
+            this.txtClan.TextChanged += new System.EventHandler(this.txtClan_TextChanged);
             // 
             // rbtClan
             // 
@@ -228,23 +233,17 @@ namespace Soko.UI
             this.rbtClan.UseVisualStyleBackColor = true;
             this.rbtClan.CheckedChanged += new System.EventHandler(this.rbtClan_CheckedChanged);
             // 
-            // txtClan
+            // rbtCeoIzvestaj
             // 
-            this.txtClan.Location = new System.Drawing.Point(112, 51);
-            this.txtClan.Name = "txtClan";
-            this.txtClan.Size = new System.Drawing.Size(82, 20);
-            this.txtClan.TabIndex = 2;
-            this.txtClan.TextChanged += new System.EventHandler(this.txtClan_TextChanged);
-            // 
-            // cmbClan
-            // 
-            this.cmbClan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbClan.FormattingEnabled = true;
-            this.cmbClan.Location = new System.Drawing.Point(213, 51);
-            this.cmbClan.Name = "cmbClan";
-            this.cmbClan.Size = new System.Drawing.Size(212, 21);
-            this.cmbClan.TabIndex = 3;
-            this.cmbClan.SelectionChangeCommitted += new System.EventHandler(this.cmbClan_SelectionChangeCommitted);
+            this.rbtCeoIzvestaj.AutoSize = true;
+            this.rbtCeoIzvestaj.Location = new System.Drawing.Point(8, 19);
+            this.rbtCeoIzvestaj.Name = "rbtCeoIzvestaj";
+            this.rbtCeoIzvestaj.Size = new System.Drawing.Size(82, 17);
+            this.rbtCeoIzvestaj.TabIndex = 0;
+            this.rbtCeoIzvestaj.TabStop = true;
+            this.rbtCeoIzvestaj.Text = "Ceo izvestaj";
+            this.rbtCeoIzvestaj.UseVisualStyleBackColor = true;
+            this.rbtCeoIzvestaj.CheckedChanged += new System.EventHandler(this.rbtCeoIzvestaj_CheckedChanged);
             // 
             // BiracIntervala
             // 

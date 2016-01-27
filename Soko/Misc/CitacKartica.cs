@@ -40,6 +40,8 @@ namespace Soko
             return citacKartica;
         }
 
+        public static readonly string NAME_FIELD = "SDV";
+
         public bool readCard(int comPort, bool showErrorMessages, out int broj, out string name)
         {
             string sType = " ";
@@ -51,7 +53,7 @@ namespace Soko
             ulong retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
             if (retval == 1)
             {
-                if (Int32.TryParse(sID1, out broj) && broj > 0)
+                if (Int32.TryParse(sID1, out broj) && broj > 0 && name == NAME_FIELD)
                 {
                     return true;
                 }

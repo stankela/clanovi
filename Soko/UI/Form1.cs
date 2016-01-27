@@ -30,6 +30,7 @@ namespace Soko.UI
         public Form1()
         {
             InitializeComponent();
+            this.Text = "Uplata clanarine";
 
             //LocalizeUI();
 

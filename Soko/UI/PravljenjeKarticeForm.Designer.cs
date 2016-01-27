@@ -33,11 +33,12 @@ namespace Soko.UI
             this.txtSifraClana = new System.Windows.Forms.TextBox();
             this.lblClan = new System.Windows.Forms.Label();
             this.btnZatvori = new System.Windows.Forms.Button();
+            this.ckbKartica = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnNapraviKarticu
             // 
-            this.btnNapraviKarticu.Location = new System.Drawing.Point(15, 108);
+            this.btnNapraviKarticu.Location = new System.Drawing.Point(151, 68);
             this.btnNapraviKarticu.Name = "btnNapraviKarticu";
             this.btnNapraviKarticu.Size = new System.Drawing.Size(111, 23);
             this.btnNapraviKarticu.TabIndex = 14;
@@ -48,7 +49,7 @@ namespace Soko.UI
             // cmbClan
             // 
             this.cmbClan.FormattingEnabled = true;
-            this.cmbClan.Location = new System.Drawing.Point(156, 32);
+            this.cmbClan.Location = new System.Drawing.Point(124, 22);
             this.cmbClan.Name = "cmbClan";
             this.cmbClan.Size = new System.Drawing.Size(232, 21);
             this.cmbClan.TabIndex = 2;
@@ -56,7 +57,7 @@ namespace Soko.UI
             // 
             // txtSifraClana
             // 
-            this.txtSifraClana.Location = new System.Drawing.Point(90, 32);
+            this.txtSifraClana.Location = new System.Drawing.Point(58, 22);
             this.txtSifraClana.Name = "txtSifraClana";
             this.txtSifraClana.Size = new System.Drawing.Size(48, 20);
             this.txtSifraClana.TabIndex = 0;
@@ -65,7 +66,7 @@ namespace Soko.UI
             // lblClan
             // 
             this.lblClan.AutoSize = true;
-            this.lblClan.Location = new System.Drawing.Point(12, 32);
+            this.lblClan.Location = new System.Drawing.Point(12, 22);
             this.lblClan.Name = "lblClan";
             this.lblClan.Size = new System.Drawing.Size(28, 13);
             this.lblClan.TabIndex = 0;
@@ -74,19 +75,30 @@ namespace Soko.UI
             // btnZatvori
             // 
             this.btnZatvori.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnZatvori.Location = new System.Drawing.Point(313, 108);
+            this.btnZatvori.Location = new System.Drawing.Point(281, 68);
             this.btnZatvori.Name = "btnZatvori";
             this.btnZatvori.Size = new System.Drawing.Size(75, 23);
             this.btnZatvori.TabIndex = 1;
             this.btnZatvori.Text = "Zatvori";
             this.btnZatvori.UseVisualStyleBackColor = true;
             // 
+            // ckbKartica
+            // 
+            this.ckbKartica.AutoSize = true;
+            this.ckbKartica.Location = new System.Drawing.Point(15, 74);
+            this.ckbKartica.Name = "ckbKartica";
+            this.ckbKartica.Size = new System.Drawing.Size(78, 17);
+            this.ckbKartica.TabIndex = 15;
+            this.ckbKartica.Text = "Ima karticu";
+            this.ckbKartica.UseVisualStyleBackColor = true;
+            // 
             // PravljenjeKarticeForm
             // 
             this.AcceptButton = this.btnZatvori;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(419, 162);
+            this.ClientSize = new System.Drawing.Size(378, 114);
+            this.Controls.Add(this.ckbKartica);
             this.Controls.Add(this.cmbClan);
             this.Controls.Add(this.btnNapraviKarticu);
             this.Controls.Add(this.txtSifraClana);
@@ -112,5 +124,6 @@ namespace Soko.UI
         private System.Windows.Forms.TextBox txtSifraClana;
         private System.Windows.Forms.ComboBox cmbClan;
         private System.Windows.Forms.Button btnNapraviKarticu;
+        private System.Windows.Forms.CheckBox ckbKartica;
     }
 }

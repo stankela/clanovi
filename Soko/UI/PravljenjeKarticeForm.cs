@@ -75,6 +75,8 @@ namespace Soko.UI
         {
             this.Text = "Pravljenje kartice";
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            ckbKartica.Checked = false;
+            cmbClan.DropDownStyle = ComboBoxStyle.DropDownList;
 
             setClanovi(clanovi);
             SelectedClan = null;
@@ -106,11 +108,12 @@ namespace Soko.UI
             {
                 clan = findClan(broj);
             }
-            else
+            else if (text != String.Empty)
             {
                 clan = searchForClan(text);
             }
-            SelectedClan = clan;                
+            SelectedClan = clan;
+            ckbKartica.Checked = SelectedClan != null && SelectedClan.ImaKarticu;
         }
 
         private Clan findClan(int broj)
@@ -138,10 +141,12 @@ namespace Soko.UI
             if (SelectedClan != null)
             {
                 txtSifraClana.Text = SelectedClan.Broj.ToString();
+                ckbKartica.Checked = SelectedClan.ImaKarticu;
             }
             else
             {
                 txtSifraClana.Text = String.Empty;
+                ckbKartica.Checked = false;
             }
         }
 
@@ -194,7 +199,7 @@ namespace Soko.UI
                         string sType = "";
                         string sID1 = selectedClan.BrojKartice.ToString();
                         string sID2 = "";
-                        string sName = selectedClan.BrojImePrezime;
+                        string sName = CitacKartica.NAME_FIELD;
                         ulong retval = WriteDataCard(Options.Instance.COMPortWriter,
                             sType, sID1, sID2, sName) & 0xFFFFFFFF; 
 
@@ -209,8 +214,9 @@ namespace Soko.UI
                         else
                         {
                             session.Transaction.Commit();
-                            MessageBox.Show(String.Format("Kartica je napravljena.\n\nBroj kartice:   {0}\nIme:   {1}",
-                                sID1, sName), "Pravljenje kartice");
+                            MessageBox.Show(String.Format("Kartica je napravljena.\n\nBroj kartice:   {0}\nClan:   {1}",
+                                sID1, selectedClan.BrojPrezimeImeDatumRodjenja), "Pravljenje kartice");
+                            //ckbKartica.Checked = true;
                         }
 
                     }

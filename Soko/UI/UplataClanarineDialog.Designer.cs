@@ -47,11 +47,13 @@ namespace Soko.UI
             this.btnOk = new System.Windows.Forms.Button();
             this.btnOdustani = new System.Windows.Forms.Button();
             this.btnOcitajKarticu = new System.Windows.Forms.Button();
+            this.ckbKartica = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.ckbKartica);
             this.groupBox1.Controls.Add(this.ckbPristupnica);
             this.groupBox1.Controls.Add(this.txtNapomena);
             this.groupBox1.Controls.Add(this.lblNapomena);
@@ -76,7 +78,7 @@ namespace Soko.UI
             // ckbPristupnica
             // 
             this.ckbPristupnica.AutoSize = true;
-            this.ckbPristupnica.Location = new System.Drawing.Point(322, 115);
+            this.ckbPristupnica.Location = new System.Drawing.Point(322, 101);
             this.ckbPristupnica.Name = "ckbPristupnica";
             this.ckbPristupnica.Size = new System.Drawing.Size(78, 17);
             this.ckbPristupnica.TabIndex = 13;
@@ -237,6 +239,16 @@ namespace Soko.UI
             this.btnOcitajKarticu.UseVisualStyleBackColor = true;
             this.btnOcitajKarticu.Click += new System.EventHandler(this.btnOcitajKarticu_Click);
             // 
+            // ckbKartica
+            // 
+            this.ckbKartica.AutoSize = true;
+            this.ckbKartica.Location = new System.Drawing.Point(322, 124);
+            this.ckbKartica.Name = "ckbKartica";
+            this.ckbKartica.Size = new System.Drawing.Size(59, 17);
+            this.ckbKartica.TabIndex = 14;
+            this.ckbKartica.Text = "Kartica";
+            this.ckbKartica.UseVisualStyleBackColor = true;
+            // 
             // UplataClanarineDialog
             // 
             this.AcceptButton = this.btnOk;
@@ -283,5 +295,6 @@ namespace Soko.UI
         private System.Windows.Forms.TextBox txtNapomena;
         private System.Windows.Forms.CheckBox ckbPristupnica;
         private System.Windows.Forms.Button btnOcitajKarticu;
+        private System.Windows.Forms.CheckBox ckbKartica;
     }
 }

@@ -87,6 +87,9 @@ namespace Soko.UI
             txtIznos.Text = String.Empty;
             txtNapomena.Text = String.Empty;
             ckbPristupnica.Checked = false;
+            ckbKartica.Checked = false;
+            cmbClan.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbGrupa.DropDownStyle = ComboBoxStyle.DropDownList;
 
             setClanovi(clanovi);
             SelectedClan = null;
@@ -244,12 +247,13 @@ namespace Soko.UI
             {
                 clan = findClan(broj);
             }
-            else
+            else if (text != String.Empty)
             {
                 clan = searchForClan(text);
             }
             SelectedClan = clan;
             ckbPristupnica.Checked = SelectedClan != null && SelectedClan.ImaPristupnicu;
+            ckbKartica.Checked = SelectedClan != null && SelectedClan.ImaKarticu;
         }
 
         private Clan findClan(int broj)
@@ -297,11 +301,13 @@ namespace Soko.UI
             {
                 txtBrojClana.Text = SelectedClan.Broj.ToString();
                 ckbPristupnica.Checked = SelectedClan.ImaPristupnicu;
+                ckbKartica.Checked = SelectedClan.ImaKarticu;
             }
             else
             {
                 txtBrojClana.Text = String.Empty;
                 ckbPristupnica.Checked = false;
+                ckbKartica.Checked = false;
             }
         }
 

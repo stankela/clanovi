@@ -44,6 +44,8 @@ namespace Soko.UI
             this.dtpDo.Format = DateTimePickerFormat.Custom;
             this.izborClana = izborClana;
 
+            cmbClan.DropDownStyle = ComboBoxStyle.DropDownList;
+
             try
             {
                 using (ISession session = NHibernateHelper.OpenSession())
@@ -267,6 +269,8 @@ namespace Soko.UI
         {
             txtClan.Enabled = rbtClan.Checked;
             cmbClan.Enabled = rbtClan.Checked;
+            if (rbtClan.Checked)
+                txtClan.Focus();
         }
 
         private void txtClan_TextChanged(object sender, EventArgs e)
@@ -278,7 +282,7 @@ namespace Soko.UI
             {
                 clan = findClan(broj);
             }
-            else
+            else if (text != String.Empty)
             {
                 clan = searchForClan(text);
             }
