@@ -868,6 +868,38 @@ namespace Soko.UI
             }
         }
 
+        public PravljenjeKarticeForm PravljenjeKarticeForm
+        {
+            get
+            {
+                foreach (Form f in Application.OpenForms)
+                {
+                    PravljenjeKarticeForm form = f as PravljenjeKarticeForm;
+                    if (form != null)
+                    {
+                        return form;
+                    }
+                }
+                return null;
+            }
+        }
+
+        public UplataClanarineDialog UplataClanarineDialog
+        {
+            get
+            {
+                foreach (Form f in Application.OpenForms)
+                {
+                    UplataClanarineDialog form = f as UplataClanarineDialog;
+                    if (form != null)
+                    {
+                        return form;
+                    }
+                }
+                return null;
+            }
+        }
+
         public void PokreniCitacKartica()
         {
             if (!CitacKarticaEnabled)
@@ -974,20 +1006,17 @@ namespace Soko.UI
             else
             {
                 // pisac kartica
-                if (PravljenjeKarticeForm.PendingWrite)
+                PravljenjeKarticeForm pkf = PravljenjeKarticeForm;
+                if (pkf != null && pkf.PendingWrite)
                 {
-                    PravljenjeKarticeForm.Write();
+                    pkf.Write();
                 }
-                else if (UplataClanarineDialog.PendingRead)
+                else
                 {
-                    foreach (Form f in Application.OpenForms)
+                    UplataClanarineDialog dlg = UplataClanarineDialog;
+                    if (dlg != null && dlg.PendingRead)
                     {
-                        UplataClanarineDialog dlg = f as UplataClanarineDialog;
-                        if (dlg != null)
-                        {
-                            dlg.Read();
-                            break;
-                        }
+                        dlg.Read();
                     }
                 }
             }

@@ -27,8 +27,8 @@ namespace Soko.UI
         [DllImport("PanReaderIf.dll")]
         private static extern ulong WaitAndReadDataCard(int comport, int nSecs, ref string sType, ref string sID1, ref string sID2, ref string sName);
 
-        private static int clanId;
-        public static bool PendingWrite = false;
+        private int clanId;
+        public bool PendingWrite = false;
     
         private List<Clan> clanovi;
 
@@ -179,7 +179,7 @@ namespace Soko.UI
             }
         }
 
-        public static void Write()
+        public void Write()
         {
             if (PendingWrite)
             {
@@ -216,7 +216,7 @@ namespace Soko.UI
                             session.Transaction.Commit();
                             MessageBox.Show(String.Format("Kartica je napravljena.\n\nBroj kartice:   {0}\nClan:   {1}",
                                 sID1, selectedClan.BrojPrezimeImeDatumRodjenja), "Pravljenje kartice");
-                            //ckbKartica.Checked = true;
+                            ckbKartica.Checked = true;
                         }
 
                     }

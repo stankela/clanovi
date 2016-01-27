@@ -20,7 +20,7 @@ namespace Soko.UI
         private List<Clan> clanovi;
         private List<Grupa> grupe;
 
-        public static bool PendingRead = false;
+        public bool PendingRead = false;
         
         public UplataClanarineDialog(Nullable<int> entityId)
         {
