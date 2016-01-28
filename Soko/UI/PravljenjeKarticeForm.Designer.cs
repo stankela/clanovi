@@ -34,11 +34,12 @@ namespace Soko.UI
             this.lblClan = new System.Windows.Forms.Label();
             this.btnZatvori = new System.Windows.Forms.Button();
             this.ckbKartica = new System.Windows.Forms.CheckBox();
+            this.ckbTestKartica = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnNapraviKarticu
             // 
-            this.btnNapraviKarticu.Location = new System.Drawing.Point(151, 68);
+            this.btnNapraviKarticu.Location = new System.Drawing.Point(151, 91);
             this.btnNapraviKarticu.Name = "btnNapraviKarticu";
             this.btnNapraviKarticu.Size = new System.Drawing.Size(111, 23);
             this.btnNapraviKarticu.TabIndex = 14;
@@ -75,7 +76,7 @@ namespace Soko.UI
             // btnZatvori
             // 
             this.btnZatvori.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnZatvori.Location = new System.Drawing.Point(281, 68);
+            this.btnZatvori.Location = new System.Drawing.Point(281, 91);
             this.btnZatvori.Name = "btnZatvori";
             this.btnZatvori.Size = new System.Drawing.Size(75, 23);
             this.btnZatvori.TabIndex = 1;
@@ -92,12 +93,24 @@ namespace Soko.UI
             this.ckbKartica.Text = "Ima karticu";
             this.ckbKartica.UseVisualStyleBackColor = true;
             // 
+            // ckbTestKartica
+            // 
+            this.ckbTestKartica.AutoSize = true;
+            this.ckbTestKartica.Location = new System.Drawing.Point(15, 97);
+            this.ckbTestKartica.Name = "ckbTestKartica";
+            this.ckbTestKartica.Size = new System.Drawing.Size(82, 17);
+            this.ckbTestKartica.TabIndex = 16;
+            this.ckbTestKartica.Text = "Test kartica";
+            this.ckbTestKartica.UseVisualStyleBackColor = true;
+            this.ckbTestKartica.CheckedChanged += new System.EventHandler(this.ckbTestKartica_CheckedChanged);
+            // 
             // PravljenjeKarticeForm
             // 
             this.AcceptButton = this.btnZatvori;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(378, 114);
+            this.ClientSize = new System.Drawing.Size(378, 138);
+            this.Controls.Add(this.ckbTestKartica);
             this.Controls.Add(this.ckbKartica);
             this.Controls.Add(this.cmbClan);
             this.Controls.Add(this.btnNapraviKarticu);
@@ -125,5 +138,6 @@ namespace Soko.UI
         private System.Windows.Forms.ComboBox cmbClan;
         private System.Windows.Forms.Button btnNapraviKarticu;
         private System.Windows.Forms.CheckBox ckbKartica;
+        private System.Windows.Forms.CheckBox ckbTestKartica;
     }
 }

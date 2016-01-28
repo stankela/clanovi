@@ -150,11 +150,19 @@ namespace Soko.UI
             }
         }
 
-        private bool napraviKarticuDlg(Clan c)
+        private bool napraviKarticuDlg(Clan c, bool testKartica)
         {
             string naslov = "Pravljenje kartice";
-            string pitanje = String.Format(
+            string pitanje;
+            if (testKartica)
+            {
+                pitanje = "Da li zelite da napravite TEST KARTICU?";
+            }
+            else
+            {
+                pitanje = String.Format(
                 "Da li zelite da napravite karticu za clana \"{0}\"?", c.BrojPrezimeImeDatumRodjenja);
+            }
             return MessageDialogs.queryConfirmation(pitanje, naslov);
         }
 
@@ -165,16 +173,18 @@ namespace Soko.UI
 
         private void btnNapraviKarticu_Click(object sender, EventArgs e)
         {
-            if (SelectedClan == null)
+            bool testKartica = ckbTestKartica.Checked;
+            if (SelectedClan == null && !testKartica)
             {
                 MessageBox.Show("Izaberite clana.", "Pravljenje kartice");
                 return;
             }
 
-            if (napraviKarticuDlg(SelectedClan))
+            if (napraviKarticuDlg(SelectedClan, testKartica))
             {
                 MessageBox.Show("Prislonite karticu na citac i kliknite OK.", "Pravljenje kartice");
-                clanId = SelectedClan.Id;
+                if (!testKartica)
+                    clanId = SelectedClan.Id;
                 PendingWrite = true;
             }
         }
@@ -186,6 +196,30 @@ namespace Soko.UI
                 PendingWrite = false;
                 try
                 {
+                    if (ckbTestKartica.Checked)
+                    {
+                        string sType = "";
+                        string sID1 = CitacKartica.TEST_KARTICA_BROJ.ToString();
+                        string sID2 = "";
+                        string sName = CitacKartica.NAME_FIELD;
+                        ulong retval = WriteDataCard(Options.Instance.COMPortWriter,
+                            sType, sID1, sID2, sName) & 0xFFFFFFFF;
+
+                        // TODO2: Prvo proveri da li je kartica vazeca, i prikazi upozorenje ako jeste.
+
+                        if (retval == 0)
+                        {
+                            string msg = "Neuspesno pravljenje TEST KARTICE. " +
+                                "Proverite da li je uredjaj prikljucen, i da li je podesen COM port.";
+                            throw new Exception(msg);
+                        }
+                        else
+                        {
+                            MessageBox.Show("TEST KARTICA je napravljena.", "Pravljenje kartice");
+                        }
+                        return;
+                    }
+
                     using (ISession session = NHibernateHelper.OpenSession())
                     using (session.BeginTransaction())
                     {
@@ -231,6 +265,16 @@ namespace Soko.UI
                     CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
                 }
             }
+        }
+
+        private void ckbTestKartica_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ckbTestKartica.Checked)
+            {
+                txtSifraClana.Text = String.Empty;
+            }
+            txtSifraClana.Enabled = !ckbTestKartica.Checked;
+            cmbClan.Enabled = !ckbTestKartica.Checked;
         }
     }
 }

@@ -53,7 +53,16 @@ namespace Soko.UI
                 { ListSortDirection.Ascending, ListSortDirection.Ascending};
 
             result.Sort(new SortComparer<Clan>(propDesc, direction));
+            result.Add(createTestClan());
 
+            return result;
+        }
+
+        private Clan createTestClan()
+        {
+            Clan result = new Clan();
+            result.Broj = CitacKartica.TEST_KARTICA_BROJ;
+            result.Prezime = CitacKartica.TEST_KARTICA_NAME;
             return result;
         }
 
@@ -129,6 +138,12 @@ namespace Soko.UI
 
         private void btnOk_Click(object sender, System.EventArgs e)
         {
+            if (SelectedClan != null && SelectedClan.Broj == CitacKartica.TEST_KARTICA_BROJ)
+            {
+                DialogResult = DialogResult.Cancel;
+                handleCancelClick();
+                return;
+            }
             handleOkClick();
         }
 
@@ -351,7 +366,7 @@ namespace Soko.UI
 
         private void updateGrupaFromUplate()
         {
-            if (SelectedClan == null)
+            if (SelectedClan == null || SelectedClan.Broj == CitacKartica.TEST_KARTICA_BROJ)
             {
                 txtSifraGrupe.Text = String.Empty;
                 return;

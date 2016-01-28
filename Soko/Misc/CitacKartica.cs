@@ -41,6 +41,8 @@ namespace Soko
         }
 
         public static readonly string NAME_FIELD = "SDV";
+        public static readonly int TEST_KARTICA_BROJ = 100000;
+        public static readonly string TEST_KARTICA_NAME = "TEST KARTICA";
 
         public bool readCard(int comPort, bool showErrorMessages, out int broj, out string name)
         {
@@ -90,6 +92,17 @@ namespace Soko
                 return false;
             //watch.Stop();
             //long elapsedMs = watch.ElapsedMilliseconds;
+
+            if (broj == TEST_KARTICA_BROJ)
+            {
+                string msg = FormatMessage(broj, TEST_KARTICA_NAME);
+                CitacKarticaForm form = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
+                if (form != null)
+                {
+                    form.PrikaziOcitavanje(msg, Color.Yellow);
+                }
+                return true;
+            }
 
             try
             {
