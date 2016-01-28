@@ -25,6 +25,7 @@ namespace Soko.UI
             Text = "Citac kartica";
             this.ControlBox = false;
             this.ShowInTaskbar = false;
+            this.StartPosition = FormStartPosition.Manual;
         }
 
         private void CitacKarticaForm_Load(object sender, EventArgs e)
@@ -35,7 +36,7 @@ namespace Soko.UI
 
         public void PodesiVelicinu()
         {
-            string msg = CitacKartica.getCitacKartica().FormatMessage(1234, maxGrupa);
+            string msg = CitacKartica.getCitacKartica().FormatMessage(12345, maxGrupa);
             Graphics g = this.CreateGraphics();
             Font font = new Font(FONT_NAME, Options.Instance.VelicinaSlovaZaCitacKartica, FontStyle.Bold);
             SizeF size = g.MeasureString(msg, font);
@@ -43,8 +44,15 @@ namespace Soko.UI
             g.Dispose();
 
             this.ClientSize = size.ToSize();
-            Rectangle screenRect = Screen.FromControl(this).Bounds;
-            this.Location = new Point(screenRect.Width - this.Width, 0);
+            Screen[] screens = Screen.AllScreens;
+            if (screens.Length == 1)
+            {
+                this.Location = new Point(screens[0].Bounds.Width - this.Width, 0);
+            }
+            else
+            {
+                this.Location = new Point(screens[0].Bounds.Width, 0);
+            }
         }
 
         private string getMaxGrupa()
