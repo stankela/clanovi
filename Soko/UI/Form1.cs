@@ -26,6 +26,7 @@ namespace Soko.UI
         const string COMPortWriterRegKey = "COMPortWriter";
         const string PoslednjiDanZaUplateRegKey = "PoslednjiDanZaUplate";
         const string VelicinaSlovaNaDisplejuRegKey = "VelicinaSlovaNaDispleju";
+        const string PrikaziBojeKodOcitavanjaRegKey = "PrikaziBojeKodOcitavanja";
 
         public Form1()
         {
@@ -72,6 +73,8 @@ namespace Soko.UI
                     Options.Instance.PoslednjiDanZaUplate = int.Parse((string)regkey.GetValue(PoslednjiDanZaUplateRegKey));
                 if (regkey.GetValue(VelicinaSlovaNaDisplejuRegKey) != null)
                     Options.Instance.VelicinaSlovaZaCitacKartica = int.Parse((string)regkey.GetValue(VelicinaSlovaNaDisplejuRegKey));
+                if (regkey.GetValue(PrikaziBojeKodOcitavanjaRegKey) != null)
+                    Options.Instance.PrikaziBojeKodOcitavanja = bool.Parse((string)regkey.GetValue(PrikaziBojeKodOcitavanjaRegKey));
                 regkey.Close();
             }
             Options.Instance.Font = new Font(Font.FontFamily, fontSize);
@@ -99,6 +102,7 @@ namespace Soko.UI
             regkey.SetValue(COMPortWriterRegKey, Options.Instance.COMPortWriter.ToString());
             regkey.SetValue(PoslednjiDanZaUplateRegKey, Options.Instance.PoslednjiDanZaUplate.ToString());
             regkey.SetValue(VelicinaSlovaNaDisplejuRegKey, Options.Instance.VelicinaSlovaZaCitacKartica.ToString());
+            regkey.SetValue(PrikaziBojeKodOcitavanjaRegKey, Options.Instance.PrikaziBojeKodOcitavanja.ToString());
       
             regkey.Close();
         }
@@ -996,7 +1000,7 @@ namespace Soko.UI
                     if (repaint)
                     {
                         Graphics g = SingleInstanceApplication.GlavniProzor.CitacKarticaForm.CreateGraphics();
-                        g.Clear(Color.Yellow);
+                        g.Clear(Options.Instance.PozadinaCitacaKartica);
                         g.Dispose();
                         repaint = false;
                     }

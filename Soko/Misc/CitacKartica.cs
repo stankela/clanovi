@@ -99,7 +99,7 @@ namespace Soko
                 CitacKarticaForm form = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
                 if (form != null)
                 {
-                    form.PrikaziOcitavanje(msg, Color.Yellow);
+                    form.PrikaziOcitavanje(msg, Options.Instance.PozadinaCitacaKartica);
                 }
                 return true;
             }
@@ -186,14 +186,17 @@ namespace Soko
                     CitacKarticaForm form = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
                     if (form != null)
                     {
-                        Color color;
-                        if (okForTrening)
+                        Color color = Options.Instance.PozadinaCitacaKartica;
+                        if (Options.Instance.PrikaziBojeKodOcitavanja)
                         {
-                            color = Color.SpringGreen;
-                        }
-                        else
-                        {
-                            color = Color.Red;
+                            if (okForTrening)
+                            {
+                                color = Color.SpringGreen;
+                            }
+                            else
+                            {
+                                color = Color.Red;
+                            }
                         }
                         form.PrikaziOcitavanje(msg, color);
                     }

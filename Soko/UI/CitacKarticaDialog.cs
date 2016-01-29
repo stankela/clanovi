@@ -35,6 +35,7 @@ namespace Soko.UI
             cmbCOMPortWriter.SelectedIndex = Options.Instance.COMPortWriter - 1;
             txtPoslednjiDanZaUplate.Text = Options.Instance.PoslednjiDanZaUplate.ToString();
             txtVelicinaSlova.Text = Options.Instance.VelicinaSlovaZaCitacKartica.ToString();
+            ckbPrikaziBoje.Checked = Options.Instance.PrikaziBojeKodOcitavanja;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -58,6 +59,7 @@ namespace Soko.UI
             Options.Instance.COMPortWriter = cmbCOMPortWriter.SelectedIndex + 1;
             Options.Instance.PoslednjiDanZaUplate = Int32.Parse(txtPoslednjiDanZaUplate.Text);
             Options.Instance.VelicinaSlovaZaCitacKartica = Int32.Parse(txtVelicinaSlova.Text);
+            Options.Instance.PrikaziBojeKodOcitavanja = ckbPrikaziBoje.Checked;
         }
 
         private void btnEnableCitacKartica_Click(object sender, EventArgs e)

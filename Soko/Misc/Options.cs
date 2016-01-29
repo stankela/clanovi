@@ -81,5 +81,19 @@ namespace Soko
             set { velicinaSlovaZaCitacKartica = value; }
         }
 
+        private Color pozadinaCitacaKartica = Color.Yellow;
+        public Color PozadinaCitacaKartica
+        {
+            get { return pozadinaCitacaKartica; }
+            set { pozadinaCitacaKartica = value; }
+        }
+
+        private bool prikaziBojeKodOcitavanja = true;
+        public bool PrikaziBojeKodOcitavanja
+        {
+            get { return prikaziBojeKodOcitavanja; }
+            set { prikaziBojeKodOcitavanja = value; }
+        }
+
     }
 }

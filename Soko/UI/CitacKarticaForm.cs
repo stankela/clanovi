@@ -88,7 +88,7 @@ namespace Soko.UI
 
         private void CitacKarticaForm_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.Clear(Color.Yellow);
+            e.Graphics.Clear(Options.Instance.PozadinaCitacaKartica);
         }
 
         public void PrikaziOcitavanje(string msg, Color color)

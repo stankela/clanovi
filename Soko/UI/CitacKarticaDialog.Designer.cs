@@ -39,6 +39,7 @@
             this.btnEnableCitacKartica = new System.Windows.Forms.Button();
             this.lblVelicinaSlova = new System.Windows.Forms.Label();
             this.txtVelicinaSlova = new System.Windows.Forms.TextBox();
+            this.ckbPrikaziBoje = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // cmbCOMPortReader
@@ -93,7 +94,7 @@
             // btnOK
             // 
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(90, 291);
+            this.btnOK.Location = new System.Drawing.Point(90, 331);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 2;
@@ -104,7 +105,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(180, 291);
+            this.btnCancel.Location = new System.Drawing.Point(180, 331);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 3;
@@ -202,13 +203,24 @@
             this.txtVelicinaSlova.Size = new System.Drawing.Size(45, 20);
             this.txtVelicinaSlova.TabIndex = 10;
             // 
+            // ckbPrikaziBoje
+            // 
+            this.ckbPrikaziBoje.AutoSize = true;
+            this.ckbPrikaziBoje.Location = new System.Drawing.Point(21, 280);
+            this.ckbPrikaziBoje.Name = "ckbPrikaziBoje";
+            this.ckbPrikaziBoje.Size = new System.Drawing.Size(237, 17);
+            this.ckbPrikaziBoje.TabIndex = 11;
+            this.ckbPrikaziBoje.Text = "Prikazi zeleno/crveno kod ocitavanja kartica";
+            this.ckbPrikaziBoje.UseVisualStyleBackColor = true;
+            // 
             // CitacKarticaDialog
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(274, 334);
+            this.ClientSize = new System.Drawing.Size(273, 374);
+            this.Controls.Add(this.ckbPrikaziBoje);
             this.Controls.Add(this.txtVelicinaSlova);
             this.Controls.Add(this.lblVelicinaSlova);
             this.Controls.Add(this.btnEnableCitacKartica);
@@ -245,5 +257,6 @@
         private System.Windows.Forms.Button btnEnableCitacKartica;
         private System.Windows.Forms.Label lblVelicinaSlova;
         private System.Windows.Forms.TextBox txtVelicinaSlova;
+        private System.Windows.Forms.CheckBox ckbPrikaziBoje;
     }
 }
