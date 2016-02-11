@@ -36,7 +36,7 @@ namespace Soko.UI
             this.persistEntity = persistEntity;
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
@@ -54,7 +54,7 @@ namespace Soko.UI
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
         }
 
@@ -112,7 +112,7 @@ namespace Soko.UI
         {
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
@@ -174,7 +174,7 @@ namespace Soko.UI
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
         }
 

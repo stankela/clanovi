@@ -54,7 +54,7 @@ namespace Soko.UI
             List<object> list;
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
@@ -63,7 +63,7 @@ namespace Soko.UI
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
 
             setEntities(list);
@@ -418,7 +418,7 @@ namespace Soko.UI
 
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
@@ -446,7 +446,7 @@ namespace Soko.UI
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
         }
 

@@ -16,7 +16,7 @@ namespace Soko.Data.NHibernate
 
         public NHibernateDataContext()
         {
-            session = NHibernateHelper.OpenSession();
+            session = NHibernateHelper.Instance.OpenSession();
         }
 
         #region IDataContext Members

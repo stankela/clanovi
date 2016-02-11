@@ -37,7 +37,7 @@ namespace Soko.UI
             InitializeComponent();
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
@@ -47,7 +47,7 @@ namespace Soko.UI
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
         }
 
@@ -220,7 +220,7 @@ namespace Soko.UI
                         return;
                     }
 
-                    using (ISession session = NHibernateHelper.OpenSession())
+                    using (ISession session = NHibernateHelper.Instance.OpenSession())
                     using (session.BeginTransaction())
                     {
                         CurrentSessionContext.Bind(session);
@@ -262,7 +262,7 @@ namespace Soko.UI
                 }
                 finally
                 {
-                    CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                    CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
                 }
             }
         }

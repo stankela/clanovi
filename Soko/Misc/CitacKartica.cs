@@ -106,7 +106,7 @@ namespace Soko
 
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
@@ -210,7 +210,7 @@ namespace Soko
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
         }
 

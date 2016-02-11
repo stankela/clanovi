@@ -116,6 +116,7 @@ namespace Soko.UI
         {
             aTimer.Enabled = false;
             saveOptions();
+            NHibernateHelper.Instance.SessionFactory.Close();
         }
 
         private void mnUplataClanarine_Click(object sender, EventArgs e)
@@ -149,7 +150,7 @@ namespace Soko.UI
 
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
@@ -167,7 +168,7 @@ namespace Soko.UI
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
         }
 
@@ -307,7 +308,7 @@ namespace Soko.UI
             List<Grupa> grupeBezKategorija;
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
@@ -327,7 +328,7 @@ namespace Soko.UI
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
 
             if (grupeBezKategorija.Count > 0)
@@ -341,7 +342,7 @@ namespace Soko.UI
             Cursor.Show();
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
@@ -360,7 +361,7 @@ namespace Soko.UI
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
                 Cursor.Hide();
                 Cursor.Current = Cursors.Arrow;
             }
@@ -392,7 +393,7 @@ namespace Soko.UI
             Cursor.Show();
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
@@ -412,7 +413,7 @@ namespace Soko.UI
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
                 Cursor.Hide();
                 Cursor.Current = Cursors.Arrow;
             }
@@ -444,7 +445,7 @@ namespace Soko.UI
             Cursor.Show();
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
@@ -464,7 +465,7 @@ namespace Soko.UI
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
                 Cursor.Hide();
                 Cursor.Current = Cursors.Arrow;
             }
@@ -496,7 +497,7 @@ namespace Soko.UI
             Cursor.Show();
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
@@ -516,7 +517,7 @@ namespace Soko.UI
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
                 Cursor.Hide();
                 Cursor.Current = Cursors.Arrow;
             }
@@ -548,7 +549,7 @@ namespace Soko.UI
             Cursor.Show();
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
@@ -568,7 +569,7 @@ namespace Soko.UI
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
                 Cursor.Hide();
                 Cursor.Current = Cursors.Arrow;
             }
@@ -600,7 +601,7 @@ namespace Soko.UI
             Cursor.Show();
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
@@ -620,7 +621,7 @@ namespace Soko.UI
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
                 Cursor.Hide();
                 Cursor.Current = Cursors.Arrow;
             }
@@ -632,7 +633,7 @@ namespace Soko.UI
             Cursor.Show();
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
@@ -651,7 +652,7 @@ namespace Soko.UI
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
                 Cursor.Hide();
                 Cursor.Current = Cursors.Arrow;
             }
@@ -688,7 +689,7 @@ namespace Soko.UI
             Cursor.Show();
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
@@ -707,7 +708,7 @@ namespace Soko.UI
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
                 Cursor.Hide();
                 Cursor.Current = Cursors.Arrow;
             }
@@ -758,7 +759,7 @@ namespace Soko.UI
             Cursor.Show();
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
@@ -778,7 +779,7 @@ namespace Soko.UI
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
                 Cursor.Hide();
                 Cursor.Current = Cursors.Arrow;
             }
@@ -810,7 +811,7 @@ namespace Soko.UI
             Cursor.Show();
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
@@ -830,7 +831,7 @@ namespace Soko.UI
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
                 Cursor.Hide();
                 Cursor.Current = Cursors.Arrow;
             }
@@ -1054,7 +1055,7 @@ namespace Soko.UI
             Cursor.Show();
             try
             {
-                using (ISession session = NHibernateHelper.OpenSession())
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
@@ -1074,7 +1075,7 @@ namespace Soko.UI
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.SessionFactory);
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
                 Cursor.Hide();
                 Cursor.Current = Cursors.Arrow;
             }
