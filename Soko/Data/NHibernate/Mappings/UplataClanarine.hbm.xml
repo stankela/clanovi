@@ -4,7 +4,7 @@
                    namespace="Soko.Domain">
 
   <class name="UplataClanarine" table="uplate" lazy="true">
-    <id name="Id" column="uplata_id">
+    <id name="Id" column="uplata_id" access="nosetter.camelcase">
       <generator class="identity" />
     </id>
     <property name="DatumVremeUplate" column="datum_vreme_uplate" />

@@ -4,7 +4,7 @@
                    namespace="Soko.Domain">
 
   <class name="Institucija" table="institucije" lazy="true">
-    <id name="Id" column="institucija_id">
+    <id name="Id" column="institucija_id" access="nosetter.camelcase">
       <generator class="identity" />
     </id>
     <property name="Naziv" column="naziv" type="String" length="50"/>

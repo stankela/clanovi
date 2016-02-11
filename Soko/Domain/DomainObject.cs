@@ -8,7 +8,6 @@ namespace Soko.Domain
         public virtual int Id
         {
             get { return id; }
-            set { id = value; }
         }
 
         /*private Key key;

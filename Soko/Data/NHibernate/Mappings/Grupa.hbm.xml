@@ -4,7 +4,7 @@
                    namespace="Soko.Domain">
 
   <class name="Grupa" table="grupe" lazy="true">
-    <id name="Id" column="grupa_id">
+    <id name="Id" column="grupa_id" access="nosetter.camelcase">
       <generator class="identity" />
     </id>
     <component name="Sifra" class="SifraGrupe">

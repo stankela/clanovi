@@ -4,7 +4,7 @@
                    namespace="Soko.Domain">
 
   <class name="MesecnaClanarina" table="clanarine" lazy="true">
-    <id name="Id" column="clanarina_id">
+    <id name="Id" column="clanarina_id" access="nosetter.camelcase">
       <generator class="identity" />
     </id>
     <property name="VaziOd" column="vazi_od" />

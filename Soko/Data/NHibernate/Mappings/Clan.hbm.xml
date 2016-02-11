@@ -4,7 +4,7 @@
                    namespace="Soko.Domain">
 
   <class name="Clan" table="clanovi" lazy="true">
-    <id name="Id" column="clan_id">
+    <id name="Id" column="clan_id" access="nosetter.camelcase">
       <generator class="identity" />
     </id>
     <property name="Broj" column="broj" />

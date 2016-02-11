@@ -4,7 +4,7 @@
                    namespace="Soko.Domain">
 
   <class name="DolazakNaTrening" table="dolazak_na_trening" lazy="true">
-    <id name="Id" column="dolazak_id">
+    <id name="Id" column="dolazak_id" access="nosetter.camelcase">
       <generator class="identity" />
     </id>
     <property name="DatumVremeDolaska" column="datum_vreme_dolaska" />
