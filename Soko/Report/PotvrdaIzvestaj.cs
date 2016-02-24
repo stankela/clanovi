@@ -17,7 +17,7 @@ namespace Soko.Report
 		string prezime;
 		string mesto;
 		DateTime datumUplate;
-		decimal iznos;
+		string iznos;
 		string sifraGrupe;
 		string nazivGrupe;
 		DateTime datumClanarine;
@@ -59,7 +59,7 @@ namespace Soko.Report
 				prezime = uplata.Clan.Prezime;
 			mesto = uplata.Clan.NazivMesta;
 			datumUplate = uplata.DatumUplate.Value;
-			iznos = uplata.Iznos.Value;
+            iznos = uplata.IznosDin;
 			sifraGrupe = uplata.Grupa.Sifra.Value;
 			nazivGrupe = uplata.Grupa.Naziv;
 			datumClanarine = uplata.VaziOd.Value;
@@ -180,7 +180,7 @@ namespace Soko.Report
 				y += dy;
 				g.DrawString(iznosOd, arial9Font, blackBrush, 
 					new PointF(x, y), f1);
-				g.DrawString(FormatIznos(iznos), arial9BoldFont, blackBrush, 
+				g.DrawString(iznos, arial9BoldFont, blackBrush, 
 					new PointF(x2, y), f2);
 				y += dy;
 				g.DrawString(clanZaGrupu, arial9Font, blackBrush, 
@@ -257,11 +257,6 @@ namespace Soko.Report
 			if (result != "")
 				result += " ";
 			return result + prezime;
-		}
-
-		private string FormatIznos(decimal iznos)
-		{
-			return iznos.ToString("F2") + " Din.";
 		}
 
 		private string FormatGrupa(string sifraGrupe, string nazivGrupe)

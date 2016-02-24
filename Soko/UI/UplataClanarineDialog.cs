@@ -84,11 +84,9 @@ namespace Soko.UI
 
             // NOTE: DateTimePicker controla izgleda ne reaguje na CurrentCulture
             // pa mora rucno da se podesi srpski format
-            this.dateTimePickerDatumClanarine.CustomFormat = "d.M.yyyy";
+            this.dateTimePickerDatumClanarine.CustomFormat = "MMMM yyyy";
             this.dateTimePickerDatumClanarine.Format = DateTimePickerFormat.Custom;
-
-            txtDatumUplate.ReadOnly = true;
-            txtDatumUplate.Text = DateTime.Today.ToShortDateString();
+            this.dateTimePickerDatumClanarine.ShowUpDown = true;
 
             DateTime firstDayInMonth = DateTime.Today.AddDays(-(DateTime.Today.Day - 1));
             dateTimePickerDatumClanarine.Value = firstDayInMonth;
@@ -99,6 +97,19 @@ namespace Soko.UI
             ckbKartica.Checked = false;
             cmbClan.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbGrupa.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            listViewPrethodneUplate.View = View.Details;
+            listViewPrethodneUplate.HeaderStyle = ColumnHeaderStyle.None;
+            listViewPrethodneUplate.Columns.Add("Mesec");
+            listViewPrethodneUplate.Columns.Add("Godina");
+            listViewPrethodneUplate.Columns.Add("Iznos");
+            listViewPrethodneUplate.Columns.Add("Datum uplate");
+            listViewPrethodneUplate.Columns[0].TextAlign = HorizontalAlignment.Right;
+            listViewPrethodneUplate.Columns[1].TextAlign = HorizontalAlignment.Right;
+            listViewPrethodneUplate.Columns[2].TextAlign = HorizontalAlignment.Right;
+            listViewPrethodneUplate.Columns[3].TextAlign = HorizontalAlignment.Right;
+
+            // TODO2: Proveri i prikazi da li clan ima uplate za sve mesece na kojima je bio na treningu.
 
             setClanovi(clanovi);
             SelectedClan = null;
@@ -202,10 +213,6 @@ namespace Soko.UI
                     cmbGrupa.Focus();
                     break;
 
-                case "DatumUplate":
-                    txtDatumUplate.Focus();
-                    break;
-
                 case "VaziOd":
                     dateTimePickerDatumClanarine.Focus();
                     break;
@@ -228,11 +235,10 @@ namespace Soko.UI
             UplataClanarine uc = (UplataClanarine)entity;
             uc.Clan = SelectedClan;
             uc.Grupa = SelectedGrupa;
-            DateTime datumUplate = DateTime.Parse(txtDatumUplate.Text);
-            TimeSpan vremeUplate = DateTime.Now.TimeOfDay;
+            DateTime vremeUplate = DateTime.Now;
             uc.DatumVremeUplate = new DateTime(
-                datumUplate.Year, datumUplate.Month, datumUplate.Day,
-                vremeUplate.Hours, vremeUplate.Minutes, vremeUplate.Seconds);
+                vremeUplate.Year, vremeUplate.Month, vremeUplate.Day,
+                vremeUplate.Hour, vremeUplate.Minute, vremeUplate.Second);
             uc.VaziOd = dateTimePickerDatumClanarine.Value.Date;
             uc.Iznos = decimal.Parse(txtIznos.Text);
             if (txtNapomena.Text.Trim() != String.Empty)
@@ -406,6 +412,44 @@ namespace Soko.UI
             if (txtSifraGrupe.Text == String.Empty)
             {
                 updateGrupaFromUplate();
+            }
+        }
+
+        private void listViewPrethodneUplate_MouseDown(object sender, MouseEventArgs e)
+        {
+            listViewPrethodneUplate.Items.Clear();
+            if (SelectedClan == null)
+                return;
+
+            try
+            {
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
+                using (session.BeginTransaction())
+                {
+                    CurrentSessionContext.Bind(session);
+
+                    UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
+                    List<UplataClanarine> uplate = new List<UplataClanarine>(uplataClanarineDAO.findUplate(SelectedClan));
+                    Util.sortByDatumVremeUplateDesc(uplate);
+
+                    for (int i = 0; i < uplate.Count; ++i)
+                    {
+                        UplataClanarine u = uplate[i];
+                        listViewPrethodneUplate.Items.Add(new ListViewItem(new string[] {
+                            u.VaziOd.Value.ToString("MMMM"), u.VaziOd.Value.ToString("yyyy"),
+                            u.IznosDin, u.DatumUplate.Value.ToString("dd.MM.yyyy") }));
+                    }
+                    listViewPrethodneUplate.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showMessage(ex.Message, "Citac kartica");
+                return;
+            }
+            finally
+            {
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
         }
     }

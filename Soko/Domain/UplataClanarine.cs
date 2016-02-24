@@ -108,6 +108,17 @@ namespace Soko.Domain
             }
         }
 
+        public virtual string IznosDin
+        {
+            get
+            {
+                if (Iznos != null)
+                    return Iznos.Value.ToString("F2") + " Din";
+                else
+                    return String.Empty;
+            }
+        }
+
         public override void validate(Notification notification)
 		{
 			if (Clan == null)

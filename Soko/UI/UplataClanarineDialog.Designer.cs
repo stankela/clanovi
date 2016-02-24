@@ -29,6 +29,9 @@ namespace Soko.UI
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lblPrethodneUplate = new System.Windows.Forms.Label();
+            this.listViewPrethodneUplate = new System.Windows.Forms.ListView();
+            this.ckbKartica = new System.Windows.Forms.CheckBox();
             this.ckbPristupnica = new System.Windows.Forms.CheckBox();
             this.txtNapomena = new System.Windows.Forms.TextBox();
             this.lblNapomena = new System.Windows.Forms.Label();
@@ -36,8 +39,6 @@ namespace Soko.UI
             this.lblIznos = new System.Windows.Forms.Label();
             this.dateTimePickerDatumClanarine = new System.Windows.Forms.DateTimePicker();
             this.lblDatumClanarine = new System.Windows.Forms.Label();
-            this.txtDatumUplate = new System.Windows.Forms.TextBox();
-            this.lblDatumUplate = new System.Windows.Forms.Label();
             this.cmbGrupa = new System.Windows.Forms.ComboBox();
             this.txtSifraGrupe = new System.Windows.Forms.TextBox();
             this.lblGrupa = new System.Windows.Forms.Label();
@@ -47,12 +48,13 @@ namespace Soko.UI
             this.btnOk = new System.Windows.Forms.Button();
             this.btnOdustani = new System.Windows.Forms.Button();
             this.btnOcitajKarticu = new System.Windows.Forms.Button();
-            this.ckbKartica = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lblPrethodneUplate);
+            this.groupBox1.Controls.Add(this.listViewPrethodneUplate);
             this.groupBox1.Controls.Add(this.ckbKartica);
             this.groupBox1.Controls.Add(this.ckbPristupnica);
             this.groupBox1.Controls.Add(this.txtNapomena);
@@ -61,8 +63,6 @@ namespace Soko.UI
             this.groupBox1.Controls.Add(this.lblIznos);
             this.groupBox1.Controls.Add(this.dateTimePickerDatumClanarine);
             this.groupBox1.Controls.Add(this.lblDatumClanarine);
-            this.groupBox1.Controls.Add(this.txtDatumUplate);
-            this.groupBox1.Controls.Add(this.lblDatumUplate);
             this.groupBox1.Controls.Add(this.cmbGrupa);
             this.groupBox1.Controls.Add(this.txtSifraGrupe);
             this.groupBox1.Controls.Add(this.lblGrupa);
@@ -71,14 +71,42 @@ namespace Soko.UI
             this.groupBox1.Controls.Add(this.lblClan);
             this.groupBox1.Location = new System.Drawing.Point(8, 8);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(416, 240);
+            this.groupBox1.Size = new System.Drawing.Size(513, 240);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            // 
+            // lblPrethodneUplate
+            // 
+            this.lblPrethodneUplate.AutoSize = true;
+            this.lblPrethodneUplate.Location = new System.Drawing.Point(227, 103);
+            this.lblPrethodneUplate.Name = "lblPrethodneUplate";
+            this.lblPrethodneUplate.Size = new System.Drawing.Size(88, 13);
+            this.lblPrethodneUplate.TabIndex = 16;
+            this.lblPrethodneUplate.Text = "Prethodne uplate";
+            // 
+            // listViewPrethodneUplate
+            // 
+            this.listViewPrethodneUplate.Location = new System.Drawing.Point(230, 119);
+            this.listViewPrethodneUplate.Name = "listViewPrethodneUplate";
+            this.listViewPrethodneUplate.Size = new System.Drawing.Size(269, 105);
+            this.listViewPrethodneUplate.TabIndex = 15;
+            this.listViewPrethodneUplate.UseCompatibleStateImageBehavior = false;
+            this.listViewPrethodneUplate.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listViewPrethodneUplate_MouseDown);
+            // 
+            // ckbKartica
+            // 
+            this.ckbKartica.AutoSize = true;
+            this.ckbKartica.Location = new System.Drawing.Point(406, 52);
+            this.ckbKartica.Name = "ckbKartica";
+            this.ckbKartica.Size = new System.Drawing.Size(59, 17);
+            this.ckbKartica.TabIndex = 14;
+            this.ckbKartica.Text = "Kartica";
+            this.ckbKartica.UseVisualStyleBackColor = true;
             // 
             // ckbPristupnica
             // 
             this.ckbPristupnica.AutoSize = true;
-            this.ckbPristupnica.Location = new System.Drawing.Point(322, 101);
+            this.ckbPristupnica.Location = new System.Drawing.Point(406, 20);
             this.ckbPristupnica.Name = "ckbPristupnica";
             this.ckbPristupnica.Size = new System.Drawing.Size(78, 17);
             this.ckbPristupnica.TabIndex = 13;
@@ -88,17 +116,17 @@ namespace Soko.UI
             // 
             // txtNapomena
             // 
-            this.txtNapomena.Location = new System.Drawing.Point(112, 176);
+            this.txtNapomena.Location = new System.Drawing.Point(19, 177);
             this.txtNapomena.Multiline = true;
             this.txtNapomena.Name = "txtNapomena";
             this.txtNapomena.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtNapomena.Size = new System.Drawing.Size(232, 48);
+            this.txtNapomena.Size = new System.Drawing.Size(180, 47);
             this.txtNapomena.TabIndex = 10;
             // 
             // lblNapomena
             // 
             this.lblNapomena.AutoSize = true;
-            this.lblNapomena.Location = new System.Drawing.Point(16, 176);
+            this.lblNapomena.Location = new System.Drawing.Point(16, 161);
             this.lblNapomena.Name = "lblNapomena";
             this.lblNapomena.Size = new System.Drawing.Size(59, 13);
             this.lblNapomena.TabIndex = 9;
@@ -106,15 +134,15 @@ namespace Soko.UI
             // 
             // txtIznos
             // 
-            this.txtIznos.Location = new System.Drawing.Point(112, 144);
+            this.txtIznos.Location = new System.Drawing.Point(85, 118);
             this.txtIznos.Name = "txtIznos";
-            this.txtIznos.Size = new System.Drawing.Size(100, 20);
+            this.txtIznos.Size = new System.Drawing.Size(114, 20);
             this.txtIznos.TabIndex = 2;
             // 
             // lblIznos
             // 
             this.lblIznos.AutoSize = true;
-            this.lblIznos.Location = new System.Drawing.Point(16, 144);
+            this.lblIznos.Location = new System.Drawing.Point(16, 118);
             this.lblIznos.Name = "lblIznos";
             this.lblIznos.Size = new System.Drawing.Size(32, 13);
             this.lblIznos.TabIndex = 7;
@@ -122,42 +150,27 @@ namespace Soko.UI
             // 
             // dateTimePickerDatumClanarine
             // 
-            this.dateTimePickerDatumClanarine.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePickerDatumClanarine.Location = new System.Drawing.Point(112, 112);
+            this.dateTimePickerDatumClanarine.CustomFormat = "MMMM yyy";
+            this.dateTimePickerDatumClanarine.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePickerDatumClanarine.Location = new System.Drawing.Point(85, 86);
             this.dateTimePickerDatumClanarine.Name = "dateTimePickerDatumClanarine";
-            this.dateTimePickerDatumClanarine.Size = new System.Drawing.Size(112, 20);
+            this.dateTimePickerDatumClanarine.ShowUpDown = true;
+            this.dateTimePickerDatumClanarine.Size = new System.Drawing.Size(114, 20);
             this.dateTimePickerDatumClanarine.TabIndex = 6;
             // 
             // lblDatumClanarine
             // 
             this.lblDatumClanarine.AutoSize = true;
-            this.lblDatumClanarine.Location = new System.Drawing.Point(16, 112);
+            this.lblDatumClanarine.Location = new System.Drawing.Point(16, 86);
             this.lblDatumClanarine.Name = "lblDatumClanarine";
-            this.lblDatumClanarine.Size = new System.Drawing.Size(84, 13);
+            this.lblDatumClanarine.Size = new System.Drawing.Size(54, 13);
             this.lblDatumClanarine.TabIndex = 4;
-            this.lblDatumClanarine.Text = "Datum clanarine";
-            // 
-            // txtDatumUplate
-            // 
-            this.txtDatumUplate.Location = new System.Drawing.Point(112, 80);
-            this.txtDatumUplate.Name = "txtDatumUplate";
-            this.txtDatumUplate.Size = new System.Drawing.Size(112, 20);
-            this.txtDatumUplate.TabIndex = 12;
-            this.txtDatumUplate.TabStop = false;
-            // 
-            // lblDatumUplate
-            // 
-            this.lblDatumUplate.AutoSize = true;
-            this.lblDatumUplate.Location = new System.Drawing.Point(16, 80);
-            this.lblDatumUplate.Name = "lblDatumUplate";
-            this.lblDatumUplate.Size = new System.Drawing.Size(70, 13);
-            this.lblDatumUplate.TabIndex = 11;
-            this.lblDatumUplate.Text = "Datum uplate";
+            this.lblDatumClanarine.Text = "Za mesec";
             // 
             // cmbGrupa
             // 
             this.cmbGrupa.FormattingEnabled = true;
-            this.cmbGrupa.Location = new System.Drawing.Point(168, 48);
+            this.cmbGrupa.Location = new System.Drawing.Point(141, 48);
             this.cmbGrupa.Name = "cmbGrupa";
             this.cmbGrupa.Size = new System.Drawing.Size(232, 21);
             this.cmbGrupa.TabIndex = 3;
@@ -165,7 +178,7 @@ namespace Soko.UI
             // 
             // txtSifraGrupe
             // 
-            this.txtSifraGrupe.Location = new System.Drawing.Point(112, 48);
+            this.txtSifraGrupe.Location = new System.Drawing.Point(85, 48);
             this.txtSifraGrupe.Name = "txtSifraGrupe";
             this.txtSifraGrupe.Size = new System.Drawing.Size(48, 20);
             this.txtSifraGrupe.TabIndex = 1;
@@ -184,7 +197,7 @@ namespace Soko.UI
             // cmbClan
             // 
             this.cmbClan.FormattingEnabled = true;
-            this.cmbClan.Location = new System.Drawing.Point(168, 16);
+            this.cmbClan.Location = new System.Drawing.Point(141, 16);
             this.cmbClan.Name = "cmbClan";
             this.cmbClan.Size = new System.Drawing.Size(232, 21);
             this.cmbClan.TabIndex = 2;
@@ -192,7 +205,7 @@ namespace Soko.UI
             // 
             // txtBrojClana
             // 
-            this.txtBrojClana.Location = new System.Drawing.Point(112, 16);
+            this.txtBrojClana.Location = new System.Drawing.Point(85, 16);
             this.txtBrojClana.Name = "txtBrojClana";
             this.txtBrojClana.Size = new System.Drawing.Size(48, 20);
             this.txtBrojClana.TabIndex = 0;
@@ -210,7 +223,7 @@ namespace Soko.UI
             // btnOk
             // 
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(256, 256);
+            this.btnOk.Location = new System.Drawing.Point(358, 256);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 1;
@@ -221,7 +234,7 @@ namespace Soko.UI
             // btnOdustani
             // 
             this.btnOdustani.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnOdustani.Location = new System.Drawing.Point(344, 256);
+            this.btnOdustani.Location = new System.Drawing.Point(446, 256);
             this.btnOdustani.Name = "btnOdustani";
             this.btnOdustani.Size = new System.Drawing.Size(75, 23);
             this.btnOdustani.TabIndex = 2;
@@ -239,23 +252,13 @@ namespace Soko.UI
             this.btnOcitajKarticu.UseVisualStyleBackColor = true;
             this.btnOcitajKarticu.Click += new System.EventHandler(this.btnOcitajKarticu_Click);
             // 
-            // ckbKartica
-            // 
-            this.ckbKartica.AutoSize = true;
-            this.ckbKartica.Location = new System.Drawing.Point(322, 124);
-            this.ckbKartica.Name = "ckbKartica";
-            this.ckbKartica.Size = new System.Drawing.Size(59, 17);
-            this.ckbKartica.TabIndex = 14;
-            this.ckbKartica.Text = "Kartica";
-            this.ckbKartica.UseVisualStyleBackColor = true;
-            // 
             // UplataClanarineDialog
             // 
             this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnOdustani;
-            this.ClientSize = new System.Drawing.Size(434, 288);
+            this.ClientSize = new System.Drawing.Size(533, 288);
             this.Controls.Add(this.btnOcitajKarticu);
             this.Controls.Add(this.btnOdustani);
             this.Controls.Add(this.btnOk);
@@ -285,8 +288,6 @@ namespace Soko.UI
         private System.Windows.Forms.Label lblGrupa;
         private System.Windows.Forms.TextBox txtSifraGrupe;
         private System.Windows.Forms.ComboBox cmbGrupa;
-        private System.Windows.Forms.Label lblDatumUplate;
-        private System.Windows.Forms.TextBox txtDatumUplate;
         private System.Windows.Forms.Label lblDatumClanarine;
         private System.Windows.Forms.DateTimePicker dateTimePickerDatumClanarine;
         private System.Windows.Forms.Label lblIznos;
@@ -296,5 +297,7 @@ namespace Soko.UI
         private System.Windows.Forms.CheckBox ckbPristupnica;
         private System.Windows.Forms.Button btnOcitajKarticu;
         private System.Windows.Forms.CheckBox ckbKartica;
+        private System.Windows.Forms.ListView listViewPrethodneUplate;
+        private System.Windows.Forms.Label lblPrethodneUplate;
     }
 }
