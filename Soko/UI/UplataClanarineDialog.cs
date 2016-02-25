@@ -362,23 +362,36 @@ namespace Soko.UI
                 string notUsed;
                 if (CitacKartica.getCitacKartica().readCard(Options.Instance.COMPortWriter, true, out broj, out notUsed))
                 {
-                    // SelectedClan is updated in txtBrojClana_TextChanged
+                    // SelectedClan will be updated in txtBrojClana_TextChanged
                     txtBrojClana.Text = broj.ToString();
                 }
                 else
                     txtBrojClana.Text = String.Empty;
 
-                updateGrupaFromUplate();
+                List<UplataClanarine> uplate = getUplate(SelectedClan);
+                updateGrupaFromUplate(uplate);
+                updatePrethodneUplate(uplate);
             }
         }
 
-        private void updateGrupaFromUplate()
+        private void updateGrupaFromUplate(List<UplataClanarine> uplate)
         {
-            if (SelectedClan == null || SelectedClan.Broj == CitacKartica.TEST_KARTICA_BROJ)
+            if (uplate != null && uplate.Count > 0)
+            {
+                txtSifraGrupe.Text = uplate[0].Grupa.Sifra.Value;
+            }
+            else
             {
                 txtSifraGrupe.Text = String.Empty;
-                return;
-            }
+            }            
+        }
+
+        private List<UplataClanarine> getUplate(Clan c)
+        {
+            if (c == null || c.Broj == CitacKartica.TEST_KARTICA_BROJ)
+                return null;
+
+            List<UplataClanarine> uplate = null;
             try
             {
                 using (ISession session = NHibernateHelper.Instance.OpenSession())
@@ -386,17 +399,7 @@ namespace Soko.UI
                 {
                     CurrentSessionContext.Bind(session);
                     UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
-                    List<UplataClanarine> uplate =
-                        new List<UplataClanarine>(uplataClanarineDAO.findUplate(SelectedClan));
-                    Util.sortByDatumVremeUplateDesc(uplate);
-                    if (uplate.Count > 0)
-                    {
-                        txtSifraGrupe.Text = uplate[0].Grupa.Sifra.Value;
-                    }
-                    else
-                    {
-                        txtSifraGrupe.Text = String.Empty;
-                    }
+                    uplate = new List<UplataClanarine>(uplataClanarineDAO.findUplate(c));
                 }
             }
             catch (Exception ex)
@@ -407,57 +410,46 @@ namespace Soko.UI
             {
                 CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
+
+            if (uplate != null)
+                Util.sortByDatumVremeUplateDesc(uplate);
+            return uplate;
         }
 
         private void txtSifraGrupe_Enter(object sender, EventArgs e)
         {
             if (txtSifraGrupe.Text == String.Empty)
             {
-                updateGrupaFromUplate();
+                List<UplataClanarine> uplate = getUplate(SelectedClan);
+                updateGrupaFromUplate(uplate);
+                updatePrethodneUplate(uplate);
             }
         }
 
         private void btnPrethodneUplate_Click(object sender, EventArgs e)
         {
-            if (SelectedClan == null)
+            updatePrethodneUplate(getUplate(SelectedClan));
+        }
+
+        private void updatePrethodneUplate(List<UplataClanarine> uplate)
+        {
+            if (uplate == null || uplate.Count == 0)
             {
                 listViewPrethodneUplate.Items.Clear();
                 return;
             }
-
-            try
+            
+            ListViewItem[] items = new ListViewItem[uplate.Count];
+            for (int i = 0; i < uplate.Count; ++i)
             {
-                using (ISession session = NHibernateHelper.Instance.OpenSession())
-                using (session.BeginTransaction())
-                {
-                    CurrentSessionContext.Bind(session);
-
-                    UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
-                    List<UplataClanarine> uplate = new List<UplataClanarine>(uplataClanarineDAO.findUplate(SelectedClan));
-                    Util.sortByDatumVremeUplateDesc(uplate);
-
-                    ListViewItem[] items = new ListViewItem[uplate.Count];
-                    for (int i = 0; i < uplate.Count; ++i)
-                    {
-                        UplataClanarine u = uplate[i];
-                        items[i] = new ListViewItem(new string[] {
+                UplataClanarine u = uplate[i];
+                items[i] = new ListViewItem(new string[] {
                             u.VaziOd.Value.ToString("MMM"), u.VaziOd.Value.ToString("yyyy"),
                             u.IznosDin, u.Grupa.Naziv });
-                    }
-                    listViewPrethodneUplate.Items.Clear();
-                    listViewPrethodneUplate.Items.AddRange(items);
-                    listViewPrethodneUplate.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                }
             }
-            catch (Exception ex)
-            {
-                MessageDialogs.showMessage(ex.Message, "Citac kartica");
-                return;
-            }
-            finally
-            {
-                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
-            }
+            listViewPrethodneUplate.Items.Clear();
+            listViewPrethodneUplate.Items.AddRange(items);
+            listViewPrethodneUplate.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
     }
 }
