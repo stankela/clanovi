@@ -103,11 +103,11 @@ namespace Soko.UI
             listViewPrethodneUplate.Columns.Add("Mesec");
             listViewPrethodneUplate.Columns.Add("Godina");
             listViewPrethodneUplate.Columns.Add("Iznos");
-            listViewPrethodneUplate.Columns.Add("Datum uplate");
+            listViewPrethodneUplate.Columns.Add("Grupa");
             listViewPrethodneUplate.Columns[0].TextAlign = HorizontalAlignment.Right;
             listViewPrethodneUplate.Columns[1].TextAlign = HorizontalAlignment.Right;
             listViewPrethodneUplate.Columns[2].TextAlign = HorizontalAlignment.Right;
-            listViewPrethodneUplate.Columns[3].TextAlign = HorizontalAlignment.Right;
+            listViewPrethodneUplate.Columns[3].TextAlign = HorizontalAlignment.Left;
 
             // TODO2: Proveri i prikazi da li clan ima uplate za sve mesece na kojima je bio na treningu.
 
@@ -261,6 +261,7 @@ namespace Soko.UI
 
         private void txtBrojClana_TextChanged(object sender, System.EventArgs e)
         {
+            listViewPrethodneUplate.Items.Clear();
             string text = txtBrojClana.Text;
             Clan clan = null;
             int broj;
@@ -316,8 +317,9 @@ namespace Soko.UI
             return null;
         }
 
-        private void cmbClan_SelectionChangeCommitted(object sender, System.EventArgs e)
+        private void cmbClan_SelectedIndexChanged(object sender, EventArgs e)
         {
+            listViewPrethodneUplate.Items.Clear();
             if (SelectedClan != null)
             {
                 txtBrojClana.Text = SelectedClan.Broj.ToString();
@@ -332,7 +334,7 @@ namespace Soko.UI
             }
         }
 
-        private void cmbGrupa_SelectionChangeCommitted(object sender, System.EventArgs e)
+        private void cmbGrupa_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (SelectedGrupa != null)
                 txtSifraGrupe.Text = SelectedGrupa.Sifra.Value;
@@ -415,11 +417,13 @@ namespace Soko.UI
             }
         }
 
-        private void listViewPrethodneUplate_MouseDown(object sender, MouseEventArgs e)
+        private void btnPrethodneUplate_Click(object sender, EventArgs e)
         {
-            listViewPrethodneUplate.Items.Clear();
             if (SelectedClan == null)
+            {
+                listViewPrethodneUplate.Items.Clear();
                 return;
+            }
 
             try
             {
@@ -432,13 +436,16 @@ namespace Soko.UI
                     List<UplataClanarine> uplate = new List<UplataClanarine>(uplataClanarineDAO.findUplate(SelectedClan));
                     Util.sortByDatumVremeUplateDesc(uplate);
 
+                    ListViewItem[] items = new ListViewItem[uplate.Count];
                     for (int i = 0; i < uplate.Count; ++i)
                     {
                         UplataClanarine u = uplate[i];
-                        listViewPrethodneUplate.Items.Add(new ListViewItem(new string[] {
-                            u.VaziOd.Value.ToString("MMMM"), u.VaziOd.Value.ToString("yyyy"),
-                            u.IznosDin, u.DatumUplate.Value.ToString("dd.MM.yyyy") }));
+                        items[i] = new ListViewItem(new string[] {
+                            u.VaziOd.Value.ToString("MMM"), u.VaziOd.Value.ToString("yyyy"),
+                            u.IznosDin, u.Grupa.Naziv });
                     }
+                    listViewPrethodneUplate.Items.Clear();
+                    listViewPrethodneUplate.Items.AddRange(items);
                     listViewPrethodneUplate.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                 }
             }
