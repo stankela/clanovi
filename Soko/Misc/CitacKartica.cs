@@ -145,31 +145,13 @@ namespace Soko
                     bool okForTrening = false;
                     if (poslednjaUplata != null)
                     {
-                        // Najpre proveri da li postoji uplata u ovom mesecu.
+                        // Najpre proveri da li postoji uplata za ovaj mesec.
                         okForTrening =
-                            poslednjaUplata.DatumVremeUplate.Value.Year == DateTime.Now.Year
-                            && poslednjaUplata.DatumVremeUplate.Value.Month == DateTime.Now.Month;
+                            poslednjaUplata.VaziOd.Value.Year == DateTime.Now.Year
+                            && poslednjaUplata.VaziOd.Value.Month == DateTime.Now.Month;
                         if (!okForTrening)
                         {
-                            if (DateTime.Now.Day > Options.Instance.PoslednjiDanZaUplate)
-                            {
-                                okForTrening = false;
-                            }
-                            else
-                            {
-                                // Proveri da li postoji uplata u prethodnom mesecu.
-                                /*DateTime prevMonth = DateTime.Today.AddMonths(-1);
-                                okForTrening =
-                                    poslednjaUplata.DatumVremeUplate.Value.Year == prevMonth.Year
-                                    && poslednjaUplata.DatumVremeUplate.Value.Month == prevMonth.Month;
-
-                                DateTime from = new DateTime(prevMonth.Year, prevMonth.Month, 1);
-                                DateTime to = DateTime.Now;
-                                okForTrening = poslednjaUplata.DatumVremeUplate >= from
-                                    && poslednjaUplata.DatumVremeUplate <= to;*/
-
-                                okForTrening = true;
-                            }
+                            okForTrening = DateTime.Now.Day <= Options.Instance.PoslednjiDanZaUplate;
                         }
                     }
 
