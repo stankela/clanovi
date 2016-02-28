@@ -194,7 +194,7 @@ namespace Soko.Report
 			columns.Clear();
 			addColumn(xClan, clanWidth);
 			addColumn(xVremeDolaska, vremeDolaskaWidth, vremeDolaskaFormat, "dd.MM.yyyy HH:mm:ss");
-            addColumn(xDatumUplate, datumUplateWidth, datumUplateFormat, "dd.MM.yyyy");
+            addColumn(xDatumUplate, datumUplateWidth, datumUplateFormat, "MMM yyyy");
 
 		}
 		

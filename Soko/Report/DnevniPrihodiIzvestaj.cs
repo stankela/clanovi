@@ -214,7 +214,7 @@ namespace Soko.Report
 
 			columns.Clear();
 			addColumn(xClan, clanWidth);
-			addColumn(xVaziOd, vaziOdWidth, vaziOdFormat, "d");
+			addColumn(xVaziOd, vaziOdWidth, vaziOdFormat, "MMM yyyy");
 			addColumn(xClanarina, clanarinaWidth, clanarinaFormat, "F2");
 
 		}

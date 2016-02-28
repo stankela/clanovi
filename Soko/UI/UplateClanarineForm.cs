@@ -107,7 +107,7 @@ namespace Soko.UI
             AddColumn("Datum uplate", DATUM_UPLATE, DataGridViewContentAlignment.MiddleRight);
             AddColumn("Vreme uplate", VREME_UPLATE, DataGridViewContentAlignment.MiddleCenter, "{0:t}");
             AddColumn("Grupa", GRUPA, 220);
-            AddColumn("Vazi od", VAZI_OD, DataGridViewContentAlignment.MiddleRight);
+            AddColumn("Za mesec", VAZI_OD, DataGridViewContentAlignment.MiddleRight, "{0:MMMM yyyy}");
             AddColumn("Napomena", NAPOMENA, 150, DataGridViewContentAlignment.MiddleCenter);
             AddColumn("Korisnik", KORISNIK, DataGridViewContentAlignment.MiddleCenter);
         }

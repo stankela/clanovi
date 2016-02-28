@@ -133,9 +133,6 @@
 	<data name="akt_clanovi_izvestaj_clan_title">
 		<value>Član</value>
 	</data>
-	<data name="potvrda_izvestaj_koja_vazi">
-		<value>koja važi od</value>
-	</data>
 	<data name="cenovnik_izvestaj_title">
 		<value>Cenovnik</value>
 	</data>

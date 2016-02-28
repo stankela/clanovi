@@ -167,8 +167,8 @@ namespace Soko.Report
 				string uplatioJe = "Uplatio-la je dana";
 				string iznosOd = "iznos od";
 				string clanZaGrupu = resourceManager.GetString("potvrda_izvestaj_clan_za_grupu");
-				string kojaVazi = resourceManager.GetString("potvrda_izvestaj_koja_vazi");
-				SizeF clanZaGrupuSize = g.MeasureString(clanZaGrupu + " ", arial9Font);
+                string zaMesec = "za mesec";
+                SizeF clanZaGrupuSize = g.MeasureString(clanZaGrupu + " ", arial9Font);
 				x = contentBounds.X + clanZaGrupuSize.Width;
 				x2 = x + conv(0.5f);
 				y = contentBounds.Y + conv(45);
@@ -227,9 +227,9 @@ namespace Soko.Report
                         new PointF(contentBounds.X + contentBounds.Width, y), f1);
                 }
 				y += dy;*/
-				g.DrawString(kojaVazi, arial9Font, blackBrush, 
+				g.DrawString(zaMesec, arial9Font, blackBrush, 
 					new PointF(x, y), f1);
-				g.DrawString(datumClanarine.ToShortDateString(), 
+				g.DrawString(datumClanarine.ToString("MMMM yyyy"), 
 					arial9BoldFont, blackBrush, 
 					new PointF(x2, y), f2);
 

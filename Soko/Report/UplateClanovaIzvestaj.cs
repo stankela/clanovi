@@ -185,8 +185,8 @@ namespace Soko.Report
 			String grupaTitle = "Grupa";
 			System.Resources.ResourceManager resourceManager = new 
 				System.Resources.ResourceManager("Soko.Resources.PreviewResursi", this.GetType().Assembly);
-			String vaziOdTitle = resourceManager.GetString("uplate_clanova_izvestaj_vazi_od_title");
-			String iznosTitle = "Iznos";
+			String vaziOdTitle = "Za mesec";
+            String iznosTitle = "Iznos";
 			String napomenaTitle = "Napomena";
 			String blagajnikTitle = "Blagajnik";
 
@@ -197,7 +197,7 @@ namespace Soko.Report
 			addColumn(xVremeUplate, vremeUplateWidth, vremeUplateFormat, 
 				vremeUplateTitle, vremeUplateHeaderFormat);
 			addColumn(xGrupa, grupaWidth, grupaFormat, grupaTitle, grupaHeaderFormat);
-			addColumn(xVaziOd, vaziOdWidth, "dd.MM.yyyy", vaziOdFormat, 
+			addColumn(xVaziOd, vaziOdWidth, "MMM yyyy", vaziOdFormat, 
 				vaziOdTitle, vaziOdHeaderFormat);
 			addColumn(xIznos, iznosWidth, "F2", iznosFormat, 
 				iznosTitle, iznosHeaderFormat);

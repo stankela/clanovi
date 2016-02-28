@@ -464,13 +464,19 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Data\NHibernate\Mappings\Mesto.hbm.xml" />
+    <EmbeddedResource Include="Data\NHibernate\Mappings\Mesto.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Data\NHibernate\Mappings\Institucija.hbm.xml" />
-    <EmbeddedResource Include="Data\NHibernate\Mappings\Clan.hbm.xml" />
+    <EmbeddedResource Include="Data\NHibernate\Mappings\Clan.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Data\NHibernate\Mappings\Kategorija.hbm.xml" />
     <EmbeddedResource Include="Data\NHibernate\Mappings\Grupa.hbm.xml" />
     <EmbeddedResource Include="Data\NHibernate\Mappings\MesecnaClanarina.hbm.xml" />
-    <EmbeddedResource Include="Data\NHibernate\Mappings\UplataClanarine.hbm.xml" />
+    <EmbeddedResource Include="Data\NHibernate\Mappings\UplataClanarine.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\CitacKarticaDialog.resx">
       <DependentUpon>CitacKarticaDialog.cs</DependentUpon>
     </EmbeddedResource>

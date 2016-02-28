@@ -9,10 +9,10 @@ namespace Soko.Misc
 {
     class Util
     {
-        public static void sortByDatumVremeUplateDesc(List<UplataClanarine> uplate)
+        public static void sortByVaziOdDesc(List<UplataClanarine> uplate)
         {
             PropertyDescriptor propDesc =
-                TypeDescriptor.GetProperties(typeof(UplataClanarine))["DatumVremeUplate"];
+                TypeDescriptor.GetProperties(typeof(UplataClanarine))["VaziOd"];
             uplate.Sort(new SortComparer<UplataClanarine>(propDesc, ListSortDirection.Descending));
         }
 

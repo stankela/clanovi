@@ -121,8 +121,19 @@ namespace Soko
                     UplataClanarine poslednjaUplata = null;
                     if (uplate.Count > 0)
                     {
-                        Util.sortByDatumVremeUplateDesc(uplate);
-                        poslednjaUplata = uplate[0];
+                        Util.sortByVaziOdDesc(uplate);
+                        DateTime now = DateTime.Now;
+                        for (int i = 0; i < uplate.Count; ++i)
+                        {
+                            UplataClanarine u = uplate[i];
+                            if (u.VaziOd.Value.Year == now.Year && u.VaziOd.Value.Month == now.Month)
+                            {
+                                poslednjaUplata = u;
+                                break;
+                            }
+                        }
+                        if (poslednjaUplata == null)
+                            poslednjaUplata = uplate[0];
                     }
 
                     DolazakNaTrening dolazak = new DolazakNaTrening();
@@ -131,7 +142,7 @@ namespace Soko
                     if (poslednjaUplata != null)
                     {
                         dolazak.Grupa = poslednjaUplata.Grupa;
-                        dolazak.DatumPoslednjeUplate = poslednjaUplata.DatumVremeUplate;
+                        dolazak.DatumPoslednjeUplate = poslednjaUplata.VaziOd;
                     }
                     else
                     {

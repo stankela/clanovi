@@ -412,7 +412,7 @@ namespace Soko.UI
             }
 
             if (uplate != null)
-                Util.sortByDatumVremeUplateDesc(uplate);
+                Util.sortByVaziOdDesc(uplate);
             return uplate;
         }
 
