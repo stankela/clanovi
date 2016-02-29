@@ -175,7 +175,7 @@ namespace Soko.UI
             this.cmbGrupa.Name = "cmbGrupa";
             this.cmbGrupa.Size = new System.Drawing.Size(232, 21);
             this.cmbGrupa.TabIndex = 3;
-            this.cmbGrupa.SelectedIndexChanged += new System.EventHandler(this.cmbGrupa_SelectedIndexChanged);
+            this.cmbGrupa.SelectionChangeCommitted += new System.EventHandler(this.cmbGrupa_SelectionChangeCommitted);
             // 
             // txtSifraGrupe
             // 
@@ -202,7 +202,7 @@ namespace Soko.UI
             this.cmbClan.Name = "cmbClan";
             this.cmbClan.Size = new System.Drawing.Size(232, 21);
             this.cmbClan.TabIndex = 2;
-            this.cmbClan.SelectedIndexChanged += new System.EventHandler(this.cmbClan_SelectedIndexChanged);
+            this.cmbClan.SelectionChangeCommitted += new System.EventHandler(this.cmbClan_SelectionChangeCommitted);
             // 
             // txtBrojClana
             // 

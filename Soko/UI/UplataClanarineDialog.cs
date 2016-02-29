@@ -317,7 +317,7 @@ namespace Soko.UI
             return null;
         }
 
-        private void cmbClan_SelectedIndexChanged(object sender, EventArgs e)
+        private void cmbClan_SelectionChangeCommitted(object sender, EventArgs e)
         {
             listViewPrethodneUplate.Items.Clear();
             if (SelectedClan != null)
@@ -333,15 +333,15 @@ namespace Soko.UI
                 ckbKartica.Checked = false;
             }
         }
-
-        private void cmbGrupa_SelectedIndexChanged(object sender, EventArgs e)
+        
+        private void cmbGrupa_SelectionChangeCommitted(object sender, EventArgs e)
         {
             if (SelectedGrupa != null)
                 txtSifraGrupe.Text = SelectedGrupa.Sifra.Value;
             else
                 txtSifraGrupe.Text = String.Empty;
         }
-
+        
         private void btnOdustani_Click(object sender, System.EventArgs e)
         {
             handleCancelClick();
