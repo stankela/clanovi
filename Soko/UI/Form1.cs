@@ -1080,5 +1080,22 @@ namespace Soko.UI
                 Cursor.Current = Cursors.Arrow;
             }
         }
+
+        private void mnPretrazivanjeClanova_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ClanDialog dlg = new ClanDialog(null, true);
+                dlg.ShowDialog();
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+        }
     }
 }

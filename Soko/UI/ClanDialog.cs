@@ -14,12 +14,14 @@ namespace Soko.UI
     {
         private List<Mesto> mesta;
         private List<Institucija> institucije;
+        private List<Clan> clanovi;
+        private bool pretraga;
 
-        public ClanDialog(Nullable<int> entityId)
+        public ClanDialog(Nullable<int> entityId, bool pretraga)
         {
             InitializeComponent();
+            this.pretraga = pretraga;
             initialize(entityId, true);
-
         }
 
         protected override DomainObject createNewEntity()
@@ -36,6 +38,8 @@ namespace Soko.UI
         {
             mesta = loadMesta();
             institucije = loadInstitucije();
+            if (pretraga)
+                clanovi = loadClanovi();
         }
 
         private List<Mesto> loadMesta()
@@ -58,14 +62,48 @@ namespace Soko.UI
             return result;
         }
 
+        private List<Clan> loadClanovi()
+        {
+            List<Clan> result = new List<Clan>(DAOFactoryFactory.DAOFactory.GetClanDAO().FindAll());
+
+            PropertyDescriptor propDescPrez = TypeDescriptor.GetProperties(typeof(Clan))["Prezime"];
+            PropertyDescriptor propDescIme = TypeDescriptor.GetProperties(typeof(Clan))["Ime"];
+            PropertyDescriptor[] propDesc = new PropertyDescriptor[2] { propDescPrez, propDescIme };
+            ListSortDirection[] direction = new ListSortDirection[2] { ListSortDirection.Ascending, ListSortDirection.Ascending };
+
+            result.Sort(new SortComparer<Clan>(propDesc, direction));
+
+            return result;
+        }
+
         protected override void initUI()
         {
             base.initUI();
             this.Text = "Clan";
 
+            if (!pretraga)
+            {
+                txtPretraga.Visible = false;
+                txtPretraga.Enabled = false;
+            }
+            else
+            {
+                Point lblBrojLoc = lblBroj.Location;
+                Point txtBrojLoc = txtBroj.Location;
+                Point pretragaLoc = txtPretraga.Location;
+                txtPretraga.Location = lblBrojLoc;
+                txtBroj.Location = pretragaLoc;
+                lblBroj.Location = new Point(lblBroj.Location.X + (pretragaLoc.X - txtBrojLoc.X), lblBroj.Location.Y);
+            }
+
+            txtBroj.Text = String.Empty;
             txtBroj.ReadOnly = true;
+            txtBroj.BackColor = SystemColors.Window;
             if (!editMode)
-                txtBroj.Text = getNewBroj().ToString();
+            {
+                if (!pretraga)
+                    txtBroj.Text = getNewBroj().ToString();
+            }
             txtIme.Text = String.Empty;
             txtPrezime.Text = String.Empty;
             txtDatumRodjenja.Text = String.Empty;
@@ -75,6 +113,29 @@ namespace Soko.UI
             txtTelefon2.Text = String.Empty;
             txtNapomena.Text = String.Empty;
             ckbPristupnica.Checked = false;
+
+            if (pretraga)
+            {
+                txtIme.ReadOnly = true;
+                txtPrezime.ReadOnly = true;
+                txtDatumRodjenja.ReadOnly = true;
+                txtAdresa.ReadOnly = true;
+                txtNazivMesta.ReadOnly = true;
+                txtTelefon1.ReadOnly = true;
+                txtTelefon2.ReadOnly = true;
+                txtNapomena.ReadOnly = true;
+                cmbMesto.Enabled = false;
+                cmbInstitucija.Enabled = false;
+
+                txtIme.BackColor = SystemColors.Window;
+                txtPrezime.BackColor = SystemColors.Window;
+                txtDatumRodjenja.BackColor = SystemColors.Window;
+                txtAdresa.BackColor = SystemColors.Window;
+                txtNazivMesta.BackColor = SystemColors.Window;
+                txtTelefon1.BackColor = SystemColors.Window;
+                txtTelefon2.BackColor = SystemColors.Window;
+                txtNapomena.BackColor = SystemColors.Window;
+            }
 
             setMesta(mesta);
             SelectedMesto = null;
@@ -160,7 +221,14 @@ namespace Soko.UI
 
         private void ClanDialog_Shown(object sender, EventArgs e)
         {
-            btnOdustani.Focus();
+            if (pretraga)
+            {
+                txtPretraga.Focus();
+            }
+            else
+            {
+                btnOdustani.Focus();
+            }
         }
 
         private int getNewBroj()
@@ -170,7 +238,15 @@ namespace Soko.UI
 
         private void btnOk_Click(object sender, System.EventArgs e)
         {
-            handleOkClick();
+            if (pretraga)
+            {
+                this.DialogResult = DialogResult.Cancel;
+                handleCancelClick();
+            }
+            else
+            {
+                handleOkClick();
+            }
         }
 
         protected override void requiredFieldsAndFormatValidation(Notification notification)
@@ -338,5 +414,47 @@ namespace Soko.UI
         {
             handleCancelClick();
         }
+
+        private void txtPretraga_TextChanged(object sender, EventArgs e)
+        {
+            if (!pretraga)
+                return;
+
+            string text = txtPretraga.Text;
+            Clan clan = null;
+            int broj;
+            if (int.TryParse(text, out broj))
+            {
+                clan = findClan(broj);
+            }
+            else if (text != String.Empty)
+            {
+                clan = searchForClan(text);
+            }
+            if (clan == null)
+                clan = new Clan();
+            updateUIFromEntity(clan);
+        }
+
+        private Clan findClan(int broj)
+        {
+            foreach (Clan c in clanovi)
+            {
+                if (c.Broj == broj)
+                    return c;
+            }
+            return null;
+        }
+
+        private Clan searchForClan(string text)
+        {
+            foreach (Clan c in clanovi)
+            {
+                if (c.PrezimeIme.StartsWith(text, StringComparison.OrdinalIgnoreCase))
+                    return c;
+            }
+            return null;
+        }
+
     }
 }
