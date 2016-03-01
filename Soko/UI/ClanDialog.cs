@@ -85,6 +85,8 @@ namespace Soko.UI
             {
                 txtPretraga.Visible = false;
                 txtPretraga.Enabled = false;
+                ckbKartica.Visible = false;
+                ckbKartica.Enabled = false;
             }
             else
             {
@@ -113,6 +115,7 @@ namespace Soko.UI
             txtTelefon2.Text = String.Empty;
             txtNapomena.Text = String.Empty;
             ckbPristupnica.Checked = false;
+            ckbKartica.Checked = false;
 
             if (pretraga)
             {
@@ -217,6 +220,7 @@ namespace Soko.UI
             SelectedInstitucija = c.Institucija;
             txtNapomena.Text = c.Napomena;
             ckbPristupnica.Checked = c.ImaPristupnicu;
+            ckbKartica.Checked = c.ImaKarticu;
         }
 
         private void ClanDialog_Shown(object sender, EventArgs e)

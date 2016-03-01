@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using Soko.Domain;
 
+// TODO2: Izbaci Bilten svugde gde se pojavljuje
+
 namespace Bilten.Dao
 {
     /// <summary>

@@ -29,6 +29,7 @@ namespace Soko.UI
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtPretraga = new System.Windows.Forms.TextBox();
             this.ckbPristupnica = new System.Windows.Forms.CheckBox();
             this.txtNapomena = new System.Windows.Forms.TextBox();
             this.lblNapomena = new System.Windows.Forms.Label();
@@ -53,12 +54,13 @@ namespace Soko.UI
             this.lblBroj = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnOdustani = new System.Windows.Forms.Button();
-            this.txtPretraga = new System.Windows.Forms.TextBox();
+            this.ckbKartica = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.ckbKartica);
             this.groupBox1.Controls.Add(this.txtPretraga);
             this.groupBox1.Controls.Add(this.ckbPristupnica);
             this.groupBox1.Controls.Add(this.txtNapomena);
@@ -88,10 +90,18 @@ namespace Soko.UI
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
+            // txtPretraga
+            // 
+            this.txtPretraga.Location = new System.Drawing.Point(166, 16);
+            this.txtPretraga.Name = "txtPretraga";
+            this.txtPretraga.Size = new System.Drawing.Size(80, 20);
+            this.txtPretraga.TabIndex = 24;
+            this.txtPretraga.TextChanged += new System.EventHandler(this.txtPretraga_TextChanged);
+            // 
             // ckbPristupnica
             // 
             this.ckbPristupnica.AutoSize = true;
-            this.ckbPristupnica.Location = new System.Drawing.Point(286, 82);
+            this.ckbPristupnica.Location = new System.Drawing.Point(340, 80);
             this.ckbPristupnica.Name = "ckbPristupnica";
             this.ckbPristupnica.Size = new System.Drawing.Size(78, 17);
             this.ckbPristupnica.TabIndex = 23;
@@ -293,13 +303,15 @@ namespace Soko.UI
             this.btnOdustani.UseVisualStyleBackColor = true;
             this.btnOdustani.Click += new System.EventHandler(this.btnOdustani_Click);
             // 
-            // txtPretraga
+            // ckbKartica
             // 
-            this.txtPretraga.Location = new System.Drawing.Point(166, 16);
-            this.txtPretraga.Name = "txtPretraga";
-            this.txtPretraga.Size = new System.Drawing.Size(80, 20);
-            this.txtPretraga.TabIndex = 24;
-            this.txtPretraga.TextChanged += new System.EventHandler(this.txtPretraga_TextChanged);
+            this.ckbKartica.AutoSize = true;
+            this.ckbKartica.Location = new System.Drawing.Point(340, 103);
+            this.ckbKartica.Name = "ckbKartica";
+            this.ckbKartica.Size = new System.Drawing.Size(59, 17);
+            this.ckbKartica.TabIndex = 25;
+            this.ckbKartica.Text = "Kartica";
+            this.ckbKartica.UseVisualStyleBackColor = true;
             // 
             // ClanDialog
             // 
@@ -354,5 +366,6 @@ namespace Soko.UI
         private System.Windows.Forms.Button btnOdustani;
         private System.Windows.Forms.CheckBox ckbPristupnica;
         private System.Windows.Forms.TextBox txtPretraga;
+        private System.Windows.Forms.CheckBox ckbKartica;
     }
 }
