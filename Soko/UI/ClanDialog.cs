@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using Soko.Domain;
 using Bilten.Dao;
+using Soko.Exceptions;
 
 namespace Soko.UI
 {
@@ -16,6 +17,9 @@ namespace Soko.UI
         private List<Institucija> institucije;
         private List<Clan> clanovi;
         private bool pretraga;
+        private string oldIme;
+        private string oldPrezime;
+        private Nullable<DateTime> oldDatumRodjenja;
 
         public ClanDialog(Nullable<int> entityId, bool pretraga)
         {
@@ -32,6 +36,14 @@ namespace Soko.UI
         protected override DomainObject getEntityById(int id)
         {
             return DAOFactoryFactory.DAOFactory.GetClanDAO().FindById(id);
+        }
+
+        protected override void saveOriginalData(DomainObject entity)
+        {
+            Clan clan = (Clan)entity;
+            oldIme = clan.Ime;
+            oldPrezime = clan.Prezime;
+            oldDatumRodjenja = clan.DatumRodjenja;
         }
 
         protected override void loadData()
@@ -231,7 +243,10 @@ namespace Soko.UI
             }
             else
             {
-                btnOdustani.Focus();
+                if (!editMode)
+                    txtIme.Focus();
+                else
+                    btnOdustani.Focus();
             }
         }
 
@@ -379,6 +394,58 @@ namespace Soko.UI
                 c.Napomena = null;
 
             c.ImaPristupnicu = ckbPristupnica.Checked;
+        }
+
+        protected override void checkBusinessRulesOnAdd(DomainObject entity)
+        {
+            Clan clan = (Clan)entity;
+            Notification notification = new Notification();
+
+            ClanDAO clanDAO = DAOFactoryFactory.DAOFactory.GetClanDAO();
+            if (clanDAO.existsClanImePrezimeDatumRodjenja(clan))
+            {
+                notification.RegisterMessage("Ime",
+                    "Clan sa datim imenom, prezimenom i datumom rodjenja vec postoji.");
+                throw new BusinessException(notification);
+            }
+        }
+
+        protected override void checkBusinessRulesOnUpdate(DomainObject entity)
+        {
+            Clan clan = (Clan)entity;
+            Notification notification = new Notification();
+
+            ClanDAO clanDAO = DAOFactoryFactory.DAOFactory.GetClanDAO();
+            if (hasImePrezimeDatumRodjenjaChanged(clan)
+            && clanDAO.existsClanImePrezimeDatumRodjenja(clan))
+            {
+                notification.RegisterMessage("Ime",
+                    "Clan sa datim imenom, prezimenom i datumom rodjenja vec postoji.");
+                throw new BusinessException(notification);
+            }
+        }
+
+        private bool hasImePrezimeDatumRodjenjaChanged(Clan c)
+        {
+            bool equals = string.IsNullOrEmpty(c.Ime) && string.IsNullOrEmpty(oldIme)
+                            || (!string.IsNullOrEmpty(c.Ime)
+                                && !string.IsNullOrEmpty(oldIme)
+                                && c.Ime.ToUpper() == oldIme.ToUpper());
+            if (!equals)
+                return true;
+
+            equals = string.IsNullOrEmpty(c.Prezime) && string.IsNullOrEmpty(oldPrezime)
+                            || (!string.IsNullOrEmpty(c.Prezime)
+                                && !string.IsNullOrEmpty(oldPrezime)
+                                && c.Prezime.ToUpper() == oldPrezime.ToUpper());
+            if (!equals)
+                return true;
+
+            equals = c.DatumRodjenja == null && oldDatumRodjenja == null
+                            || (c.DatumRodjenja != null
+                                && oldDatumRodjenja != null
+                                && c.DatumRodjenja.Value == oldDatumRodjenja.Value);
+            return !equals;
         }
 
         protected override void insertEntity(DomainObject entity)

@@ -4,6 +4,7 @@ using NHibernate;
 using Soko.Exceptions;
 using Soko.Domain;
 using Soko;
+using NHibernate.Criterion;
 
 namespace Bilten.Dao.NHibernate
 {
@@ -18,7 +19,6 @@ namespace Bilten.Dao.NHibernate
         {
             try
             {
-
                 IQuery q = Session.CreateQuery("select count(*) from Clan c where c.Mesto = :mesto");
                 q.SetEntity("mesto", m);
                 return (long)q.UniqueResult() > 0;
@@ -35,10 +35,36 @@ namespace Bilten.Dao.NHibernate
         {
             try
             {
-
                 IQuery q = Session.CreateQuery("select count(*) from Clan c where c.Institucija = :inst");
                 q.SetEntity("inst", i);
                 return (long)q.UniqueResult() > 0;
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
+        public virtual bool existsClanImePrezimeDatumRodjenja(Clan c)
+        {
+            try
+            {
+                ICriteria crit = Session.CreateCriteria(typeof(Clan));
+                if (string.IsNullOrEmpty(c.Ime))
+                    crit.Add(Expression.IsNull("Ime"));
+                else
+                    crit.Add(Expression.Eq("Ime", c.Ime));
+                if (string.IsNullOrEmpty(c.Prezime))
+                    crit.Add(Expression.IsNull("Prezime"));
+                else
+                    crit.Add(Expression.Eq("Prezime", c.Prezime));
+                if (c.DatumRodjenja == null)
+                    crit.Add(Expression.IsNull("DatumRodjenja"));
+                else
+                    crit.Add(Expression.Eq("DatumRodjenja", c.DatumRodjenja.Value));
+                return crit.List().Count > 0;
             }
             catch (HibernateException ex)
             {
@@ -52,7 +78,6 @@ namespace Bilten.Dao.NHibernate
         {
             try
             {
-
                 IQuery q = Session.CreateQuery("select max(c.Broj) from Clan c");
                 return (int)q.UniqueResult();
             }
@@ -68,7 +93,6 @@ namespace Bilten.Dao.NHibernate
         {
             try
             {
-
                 IQuery q = Session.CreateQuery("select max(c.BrojKartice) from Clan c");
                 return (int)q.UniqueResult();
             }
