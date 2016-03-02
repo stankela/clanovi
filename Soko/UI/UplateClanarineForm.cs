@@ -57,7 +57,7 @@ namespace Soko.UI
 
         private void setClanovi(List<Clan> clanovi)
         {
-            cmbClan.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbClan.DropDownStyle = ComboBoxStyle.DropDown;
             cmbClan.DataSource = clanovi;
             cmbClan.DisplayMember = "BrojPrezimeImeDatumRodjenja";
         }
