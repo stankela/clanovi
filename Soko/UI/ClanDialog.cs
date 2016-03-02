@@ -92,22 +92,26 @@ namespace Soko.UI
         {
             base.initUI();
             this.Text = "Clan";
+            cmbClan.DropDownStyle = ComboBoxStyle.DropDownList;
 
             if (!pretraga)
             {
                 txtPretraga.Visible = false;
                 txtPretraga.Enabled = false;
+                cmbClan.Visible = false;
+                cmbClan.Enabled = false;
                 ckbKartica.Visible = false;
                 ckbKartica.Enabled = false;
             }
             else
             {
-                Point lblBrojLoc = lblBroj.Location;
-                Point txtBrojLoc = txtBroj.Location;
+                lblBroj.Visible = false;
+                txtBroj.Visible = false;
+                txtBroj.Enabled = false;
+
                 Point pretragaLoc = txtPretraga.Location;
-                txtPretraga.Location = lblBrojLoc;
-                txtBroj.Location = pretragaLoc;
-                lblBroj.Location = new Point(lblBroj.Location.X + (pretragaLoc.X - txtBrojLoc.X), lblBroj.Location.Y);
+                txtPretraga.Location = new Point(txtIme.Location.X, txtPretraga.Location.Y);
+                cmbClan.Location = new Point(cmbClan.Location.X - (pretragaLoc.X - txtPretraga.Location.X), cmbClan.Location.Y);
             }
 
             txtBroj.Text = String.Empty;
@@ -157,6 +161,24 @@ namespace Soko.UI
 
             setInstitucije(institucije);
             SelectedInstitucija = null;
+
+            if (pretraga)
+            {
+                setClanovi(clanovi);
+                SelectedClan = null;
+            }
+        }
+
+        private void setClanovi(List<Clan> clanovi)
+        {
+            cmbClan.DataSource = clanovi;
+            cmbClan.DisplayMember = "BrojPrezimeImeDatumRodjenja";
+        }
+
+        private Clan SelectedClan
+        {
+            get { return cmbClan.SelectedItem as Clan; }
+            set { cmbClan.SelectedItem = value; }
         }
 
         private void setMesta(List<Mesto> mesta)
@@ -217,6 +239,9 @@ namespace Soko.UI
         protected override void updateUIFromEntity(DomainObject entity)
         {
             Clan c = (Clan)entity;
+            if (c == null)
+              c = new Clan();
+
             txtBroj.Text = c.Broj.ToString();
             txtIme.Text = c.Ime;
             txtPrezime.Text = c.Prezime;
@@ -502,9 +527,8 @@ namespace Soko.UI
             {
                 clan = searchForClan(text);
             }
-            if (clan == null)
-                clan = new Clan();
-            updateUIFromEntity(clan);
+            SelectedClan = clan;
+            updateUIFromEntity(SelectedClan);
         }
 
         private Clan findClan(int broj)
@@ -525,6 +549,19 @@ namespace Soko.UI
                     return c;
             }
             return null;
+        }
+
+        private void cmbClan_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            updateUIFromEntity(SelectedClan);
+            if (SelectedClan != null)
+            {
+                txtPretraga.Text = SelectedClan.Broj.ToString();
+            }
+            else
+            {
+                txtPretraga.Text = String.Empty;
+            }
         }
 
     }

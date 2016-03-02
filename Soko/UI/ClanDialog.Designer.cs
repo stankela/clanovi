@@ -28,7 +28,11 @@ namespace Soko.UI
         /// </summary>
         private void InitializeComponent()
         {
+            this.btnOk = new System.Windows.Forms.Button();
+            this.btnOdustani = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cmbClan = new System.Windows.Forms.ComboBox();
+            this.ckbKartica = new System.Windows.Forms.CheckBox();
             this.txtPretraga = new System.Windows.Forms.TextBox();
             this.ckbPristupnica = new System.Windows.Forms.CheckBox();
             this.txtNapomena = new System.Windows.Forms.TextBox();
@@ -52,14 +56,34 @@ namespace Soko.UI
             this.lblIme = new System.Windows.Forms.Label();
             this.txtBroj = new System.Windows.Forms.TextBox();
             this.lblBroj = new System.Windows.Forms.Label();
-            this.btnOk = new System.Windows.Forms.Button();
-            this.btnOdustani = new System.Windows.Forms.Button();
-            this.ckbKartica = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
+            // btnOk
+            // 
+            this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOk.Location = new System.Drawing.Point(256, 304);
+            this.btnOk.Name = "btnOk";
+            this.btnOk.Size = new System.Drawing.Size(75, 23);
+            this.btnOk.TabIndex = 1;
+            this.btnOk.Text = "OK";
+            this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+            // 
+            // btnOdustani
+            // 
+            this.btnOdustani.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnOdustani.Location = new System.Drawing.Point(352, 304);
+            this.btnOdustani.Name = "btnOdustani";
+            this.btnOdustani.Size = new System.Drawing.Size(75, 23);
+            this.btnOdustani.TabIndex = 2;
+            this.btnOdustani.Text = "Odustani";
+            this.btnOdustani.UseVisualStyleBackColor = true;
+            this.btnOdustani.Click += new System.EventHandler(this.btnOdustani_Click);
+            // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cmbClan);
             this.groupBox1.Controls.Add(this.ckbKartica);
             this.groupBox1.Controls.Add(this.txtPretraga);
             this.groupBox1.Controls.Add(this.ckbPristupnica);
@@ -90,11 +114,30 @@ namespace Soko.UI
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
+            // cmbClan
+            // 
+            this.cmbClan.FormattingEnabled = true;
+            this.cmbClan.Location = new System.Drawing.Point(179, 16);
+            this.cmbClan.Name = "cmbClan";
+            this.cmbClan.Size = new System.Drawing.Size(229, 21);
+            this.cmbClan.TabIndex = 26;
+            this.cmbClan.SelectionChangeCommitted += new System.EventHandler(this.cmbClan_SelectionChangeCommitted);
+            // 
+            // ckbKartica
+            // 
+            this.ckbKartica.AutoSize = true;
+            this.ckbKartica.Location = new System.Drawing.Point(340, 103);
+            this.ckbKartica.Name = "ckbKartica";
+            this.ckbKartica.Size = new System.Drawing.Size(59, 17);
+            this.ckbKartica.TabIndex = 25;
+            this.ckbKartica.Text = "Kartica";
+            this.ckbKartica.UseVisualStyleBackColor = true;
+            // 
             // txtPretraga
             // 
-            this.txtPretraga.Location = new System.Drawing.Point(166, 16);
+            this.txtPretraga.Location = new System.Drawing.Point(114, 16);
             this.txtPretraga.Name = "txtPretraga";
-            this.txtPretraga.Size = new System.Drawing.Size(80, 20);
+            this.txtPretraga.Size = new System.Drawing.Size(56, 20);
             this.txtPretraga.TabIndex = 24;
             this.txtPretraga.TextChanged += new System.EventHandler(this.txtPretraga_TextChanged);
             // 
@@ -281,38 +324,6 @@ namespace Soko.UI
             this.lblBroj.TabIndex = 0;
             this.lblBroj.Text = "Broj";
             // 
-            // btnOk
-            // 
-            this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(256, 304);
-            this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(75, 23);
-            this.btnOk.TabIndex = 1;
-            this.btnOk.Text = "OK";
-            this.btnOk.UseVisualStyleBackColor = true;
-            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
-            // 
-            // btnOdustani
-            // 
-            this.btnOdustani.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnOdustani.Location = new System.Drawing.Point(352, 304);
-            this.btnOdustani.Name = "btnOdustani";
-            this.btnOdustani.Size = new System.Drawing.Size(75, 23);
-            this.btnOdustani.TabIndex = 2;
-            this.btnOdustani.Text = "Odustani";
-            this.btnOdustani.UseVisualStyleBackColor = true;
-            this.btnOdustani.Click += new System.EventHandler(this.btnOdustani_Click);
-            // 
-            // ckbKartica
-            // 
-            this.ckbKartica.AutoSize = true;
-            this.ckbKartica.Location = new System.Drawing.Point(340, 103);
-            this.ckbKartica.Name = "ckbKartica";
-            this.ckbKartica.Size = new System.Drawing.Size(59, 17);
-            this.ckbKartica.TabIndex = 25;
-            this.ckbKartica.Text = "Kartica";
-            this.ckbKartica.UseVisualStyleBackColor = true;
-            // 
             // ClanDialog
             // 
             this.AcceptButton = this.btnOk;
@@ -367,5 +378,6 @@ namespace Soko.UI
         private System.Windows.Forms.CheckBox ckbPristupnica;
         private System.Windows.Forms.TextBox txtPretraga;
         private System.Windows.Forms.CheckBox ckbKartica;
+        private System.Windows.Forms.ComboBox cmbClan;
     }
 }
