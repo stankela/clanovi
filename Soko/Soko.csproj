@@ -173,6 +173,18 @@
     <Compile Include="UI\CitacKarticaForm.Designer.cs">
       <DependentUpon>CitacKarticaForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\DuplikatiClanovaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\DuplikatiClanovaForm.Designer.cs">
+      <DependentUpon>DuplikatiClanovaForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\MergeClanoviForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\MergeClanoviForm.Designer.cs">
+      <DependentUpon>MergeClanoviForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\MesecnaClanarinaDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -235,6 +247,12 @@
     <EmbeddedResource Include="UI\BiracIntervala.resx">
       <SubType>Designer</SubType>
       <DependentUpon>BiracIntervala.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DuplikatiClanovaForm.resx">
+      <DependentUpon>DuplikatiClanovaForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\MergeClanoviForm.resx">
+      <DependentUpon>MergeClanoviForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MesecnaClanarinaDialog.resx">
       <SubType>Designer</SubType>

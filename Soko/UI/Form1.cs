@@ -1097,5 +1097,22 @@ namespace Soko.UI
                 MessageDialogs.showError(ex.Message, this.Text);
             }
         }
+
+        private void mnDuplikatiClanova_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DuplikatiClanovaForm f = new DuplikatiClanovaForm();
+                f.ShowDialog();
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+        }
     }
 }
