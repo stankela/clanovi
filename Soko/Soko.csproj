@@ -340,6 +340,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>PotvrdaDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\UplataDialogAdmin.resx">
+      <DependentUpon>UplataDialogAdmin.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\UplateClanarineForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>UplateClanarineForm.cs</DependentUpon>
@@ -455,6 +458,12 @@
     </Compile>
     <Compile Include="UI\PravljenjeKarticeForm.Designer.cs">
       <DependentUpon>PravljenjeKarticeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UplataDialogAdmin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\UplataDialogAdmin.Designer.cs">
+      <DependentUpon>UplataDialogAdmin.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\UplateClanarineForm.cs">
       <SubType>Form</SubType>

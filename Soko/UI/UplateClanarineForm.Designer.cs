@@ -39,6 +39,7 @@ namespace Soko.UI
             this.btnStampaj = new System.Windows.Forms.Button();
             this.btnZatvori = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.btnPromeni = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -148,18 +149,30 @@ namespace Soko.UI
             // 
             // dataGridView1
             // 
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(8, 128);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(650, 192);
             this.dataGridView1.TabIndex = 6;
             // 
-            // PotvrdaUplateForm
+            // btnPromeni
+            // 
+            this.btnPromeni.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPromeni.Location = new System.Drawing.Point(579, 328);
+            this.btnPromeni.Name = "btnPromeni";
+            this.btnPromeni.Size = new System.Drawing.Size(75, 23);
+            this.btnPromeni.TabIndex = 7;
+            this.btnPromeni.Text = "Promeni";
+            this.btnPromeni.UseVisualStyleBackColor = true;
+            this.btnPromeni.Click += new System.EventHandler(this.btnPromeni_Click);
+            // 
+            // UplateClanarineForm
             // 
             this.ClientSize = new System.Drawing.Size(666, 360);
+            this.Controls.Add(this.btnPromeni);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnZatvori);
             this.Controls.Add(this.btnStampaj);
@@ -167,7 +180,7 @@ namespace Soko.UI
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "PotvrdaUplateForm";
+            this.Name = "UplateClanarineForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Shown += new System.EventHandler(this.PotvrdaUplateForm_Shown);
@@ -191,5 +204,6 @@ namespace Soko.UI
         private System.Windows.Forms.Button btnStampaj;
         private System.Windows.Forms.Button btnZatvori;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button btnPromeni;
     }
 }

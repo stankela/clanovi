@@ -300,5 +300,16 @@ namespace Soko.UI
         {
             btnZatvori.Focus();
         }
+
+        private void btnPromeni_Click(object sender, EventArgs e)
+        {
+            editCommand();
+        }
+        
+        protected override EntityDetailForm createEntityDetailForm(Nullable<int> entityId)
+        {
+            return new UplataDialogAdmin(entityId);
+        }
+
     }
 }
