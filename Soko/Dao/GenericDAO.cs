@@ -18,6 +18,7 @@ namespace Bilten.Dao
     public interface GenericDAO<T, ID>
     {
         T FindById(ID id);
+        T GetById(ID id);
 
         T FindByIdAndLock(ID id);
 

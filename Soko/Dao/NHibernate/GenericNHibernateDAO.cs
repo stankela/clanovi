@@ -52,6 +52,20 @@ namespace Bilten.Dao.NHibernate
             }
         }
 
+        public T GetById(ID id)
+        {
+            try
+            {
+                return Session.Get<T>(id);
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
         public T FindByIdAndLock(ID id)
         {
             try
