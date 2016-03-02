@@ -33,6 +33,7 @@ namespace Soko.UI
             this.btnBrisi = new System.Windows.Forms.Button();
             this.btnZatvori = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.lblBrojClanova = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -82,18 +83,29 @@ namespace Soko.UI
             // 
             // dataGridView1
             // 
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(8, 8);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(688, 312);
             this.dataGridView1.TabIndex = 5;
             // 
+            // lblBrojClanova
+            // 
+            this.lblBrojClanova.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblBrojClanova.AutoSize = true;
+            this.lblBrojClanova.Location = new System.Drawing.Point(528, 334);
+            this.lblBrojClanova.Name = "lblBrojClanova";
+            this.lblBrojClanova.Size = new System.Drawing.Size(66, 13);
+            this.lblBrojClanova.TabIndex = 6;
+            this.lblBrojClanova.Text = "Broj clanova";
+            // 
             // ClanoviForm
             // 
             this.ClientSize = new System.Drawing.Size(706, 360);
+            this.Controls.Add(this.lblBrojClanova);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnZatvori);
             this.Controls.Add(this.btnBrisi);
@@ -107,6 +119,7 @@ namespace Soko.UI
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -117,5 +130,6 @@ namespace Soko.UI
         private System.Windows.Forms.Button btnBrisi;
         private System.Windows.Forms.Button btnZatvori;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Label lblBrojClanova;
     }
 }

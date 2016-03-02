@@ -24,6 +24,12 @@ namespace Soko.UI
             InitializeComponent();
             initialize(typeof(Clan));
             sortByPrezimeIme();
+            updateBrojClanovaLabel();
+        }
+
+        private void updateBrojClanovaLabel()
+        {
+            lblBrojClanova.Text = entities.Count.ToString() + " clanova";
         }
 
         private void sortByPrezimeIme()
@@ -77,6 +83,7 @@ namespace Soko.UI
         private void btnDodaj_Click(object sender, System.EventArgs e)
         {
             addCommand();
+            updateBrojClanovaLabel();
         }
 
         private void btnPromeni_Click(object sender, System.EventArgs e)
@@ -87,6 +94,7 @@ namespace Soko.UI
         private void btnBrisi_Click(object sender, System.EventArgs e)
         {
             deleteCommand();
+            updateBrojClanovaLabel();
         }
 
         protected override string deleteConfirmationMessage(DomainObject entity)
