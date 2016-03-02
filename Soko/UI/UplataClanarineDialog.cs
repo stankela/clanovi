@@ -418,7 +418,7 @@ namespace Soko.UI
 
         private void txtSifraGrupe_Enter(object sender, EventArgs e)
         {
-            if (txtSifraGrupe.Text == String.Empty)
+            if (txtSifraGrupe.Text == String.Empty || SelectedGrupa == null)
             {
                 List<UplataClanarine> uplate = getUplate(SelectedClan);
                 updateGrupaFromUplate(uplate);
@@ -428,7 +428,12 @@ namespace Soko.UI
 
         private void btnPrethodneUplate_Click(object sender, EventArgs e)
         {
-            updatePrethodneUplate(getUplate(SelectedClan));
+            List<UplataClanarine> uplate = getUplate(SelectedClan);
+            updatePrethodneUplate(uplate);
+            if (txtSifraGrupe.Text == String.Empty || SelectedGrupa == null)
+            {
+                updateGrupaFromUplate(uplate);
+            }
         }
 
         private void updatePrethodneUplate(List<UplataClanarine> uplate)
