@@ -273,7 +273,9 @@ namespace Soko.UI
                 {
                     CurrentSessionContext.Bind(session);
                     PreviewDialog p = new PreviewDialog();
-                    p.setIzvestaj(new PotvrdaIzvestaj(uplata.Id));
+                    List<int> idList = new List<int>();
+                    idList.Add(uplata.Id);
+                    p.setIzvestaj(new PotvrdaIzvestaj(idList));
                     p.ShowDialog();
                 }
             }

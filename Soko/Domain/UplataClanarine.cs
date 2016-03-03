@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Soko.Domain
 {
@@ -86,6 +87,12 @@ namespace Soko.Domain
 			set { korisnik = value; }
 		}
 
+        private List<UplataClanarine> uplate = new List<UplataClanarine>();
+        public virtual List<UplataClanarine> Uplate
+        {
+            get { return uplate; }
+        }
+
         public virtual string PrezimeImeBrojDatumRodj
         {
             get
@@ -121,59 +128,71 @@ namespace Soko.Domain
 
         public override void validate(Notification notification)
 		{
-			if (Clan == null)
-			{
-				notification.RegisterMessage("Clan", "Clan je obavezan.");
-			}
-
-			if (Grupa == null)
-			{
-				notification.RegisterMessage("Grupa", "Grupa je obavezna.");
-			}
-
-			if (DatumUplate == null)
-			{
-				notification.RegisterMessage(
-					"DatumUplate", "Datum uplate clanarine je obavezan.");
-			}
-
-			if (VremeUplate == null)
-			{
-				notification.RegisterMessage(
-					"VremeUplate", "Vreme uplate clanarine je obavezno.");
-			}
-
-			if (VaziOd == null)
-			{
-				notification.RegisterMessage(
-					"VaziOd", "Datum vazenja clanarine je obavezan.");
-			}
-
-			if (Iznos == null)
-			{
-				notification.RegisterMessage(
-					"Iznos", "Iznos uplate je obavezan.");
-			}
-			else if (Iznos <= 0)
-			{
-				notification.RegisterMessage(
-					"Iznos", "Iznos uplate mora da bude pozitivan.");
-			}
-
-			if (Napomena != null && Napomena.Length > NAPOMENA_MAX_LENGTH)
-			{
-				notification.RegisterMessage(
-					"Napomena", "Napomena moze da sadrzi maksimalno "
-					+ NAPOMENA_MAX_LENGTH + " znakova.");
-			}
-
-			if (Korisnik != null && Korisnik.Length > KORISNIK_MAX_LENGTH)
-			{
-				notification.RegisterMessage(
-					"Korisnik", "Naziv korisnika moze da sadrzi maksimalno "
-					+ KORISNIK_MAX_LENGTH + " znakova.");
-			}
+            if (Uplate.Count == 0)
+                validate(notification, this);
+            else
+            {
+                foreach (UplataClanarine u in Uplate)
+                {
+                    validate(notification, u);
+                }
+            }
 		}
 
-	}
+        private void validate(Notification notification, UplataClanarine u)
+        {
+            if (u.Clan == null)
+            {
+                notification.RegisterMessage("Clan", "Clan je obavezan.");
+            }
+
+            if (u.Grupa == null)
+            {
+                notification.RegisterMessage("Grupa", "Grupa je obavezna.");
+            }
+
+            if (u.DatumUplate == null)
+            {
+                notification.RegisterMessage(
+                    "DatumUplate", "Datum uplate clanarine je obavezan.");
+            }
+
+            if (u.VremeUplate == null)
+            {
+                notification.RegisterMessage(
+                    "VremeUplate", "Vreme uplate clanarine je obavezno.");
+            }
+
+            if (u.VaziOd == null)
+            {
+                notification.RegisterMessage(
+                    "VaziOd", "Datum vazenja clanarine je obavezan.");
+            }
+
+            if (u.Iznos == null)
+            {
+                notification.RegisterMessage(
+                    "Iznos", "Iznos uplate je obavezan.");
+            }
+            else if (u.Iznos < 0)
+            {
+                notification.RegisterMessage(
+                    "Iznos", "Iznos uplate mora da bude pozitivan.");
+            }
+
+            if (u.Napomena != null && u.Napomena.Length > NAPOMENA_MAX_LENGTH)
+            {
+                notification.RegisterMessage(
+                    "Napomena", "Napomena moze da sadrzi maksimalno "
+                    + NAPOMENA_MAX_LENGTH + " znakova.");
+            }
+
+            if (u.Korisnik != null && u.Korisnik.Length > KORISNIK_MAX_LENGTH)
+            {
+                notification.RegisterMessage(
+                    "Korisnik", "Naziv korisnika moze da sadrzi maksimalno "
+                    + KORISNIK_MAX_LENGTH + " znakova.");
+            }
+        }
+    }
 }

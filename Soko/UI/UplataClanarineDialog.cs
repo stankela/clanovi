@@ -19,7 +19,7 @@ namespace Soko.UI
     {
         private List<Clan> clanovi;
         private List<Grupa> grupe;
-
+        DateTime currentDatumClanarine;
         public bool PendingRead = false;
         
         public UplataClanarineDialog(Nullable<int> entityId)
@@ -88,8 +88,10 @@ namespace Soko.UI
             this.dateTimePickerDatumClanarine.Format = DateTimePickerFormat.Custom;
             this.dateTimePickerDatumClanarine.ShowUpDown = true;
 
-            DateTime firstDayInMonth = DateTime.Today.AddDays(-(DateTime.Today.Day - 1));
+            DateTime firstDayInMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0);
             dateTimePickerDatumClanarine.Value = firstDayInMonth;
+            currentDatumClanarine = dateTimePickerDatumClanarine.Value;
+            dateTimePickerDatumClanarine.ValueChanged += new System.EventHandler(dateTimePickerDatumClanarine_ValueChanged);
 
             txtIznos.Text = String.Empty;
             txtNapomena.Text = String.Empty;
@@ -100,6 +102,7 @@ namespace Soko.UI
 
             listViewPrethodneUplate.View = View.Details;
             listViewPrethodneUplate.HeaderStyle = ColumnHeaderStyle.None;
+            listViewPrethodneUplate.FullRowSelect = true;
             listViewPrethodneUplate.Columns.Add("Mesec");
             listViewPrethodneUplate.Columns.Add("Godina");
             listViewPrethodneUplate.Columns.Add("Iznos");
@@ -109,6 +112,16 @@ namespace Soko.UI
             listViewPrethodneUplate.Columns[2].TextAlign = HorizontalAlignment.Right;
             listViewPrethodneUplate.Columns[3].TextAlign = HorizontalAlignment.Left;
 
+            listViewNoveUplate.View = View.Details;
+            listViewNoveUplate.HeaderStyle = ColumnHeaderStyle.None;
+            listViewNoveUplate.FullRowSelect = true;
+            listViewNoveUplate.Columns.Add("Mesec");
+            listViewNoveUplate.Columns.Add("Godina");
+            listViewNoveUplate.Columns.Add("Iznos");
+            listViewNoveUplate.Columns[0].TextAlign = HorizontalAlignment.Right;
+            listViewNoveUplate.Columns[1].TextAlign = HorizontalAlignment.Right;
+            listViewNoveUplate.Columns[2].TextAlign = HorizontalAlignment.Right;
+
             // TODO2: Proveri i prikazi da li clan ima uplate za sve mesece na kojima je bio na treningu.
 
             setClanovi(clanovi);
@@ -116,6 +129,8 @@ namespace Soko.UI
 
             setGrupe(grupe);
             SelectedGrupa = null;
+
+            updateUkupnoIznos();
         }
 
         private void setClanovi(List<Clan> clanovi)
@@ -171,8 +186,6 @@ namespace Soko.UI
 
         protected override void requiredFieldsAndFormatValidation(Notification notification)
         {
-            double dummy;
-
             if (SelectedClan == null)
             {
                 notification.RegisterMessage("Clan", "Clan je obavezan.");
@@ -183,22 +196,10 @@ namespace Soko.UI
                 notification.RegisterMessage("Grupa", "Grupa je obavezna.");
             }
 
-            bool correctIznos = true;
-            if (txtIznos.Text.Trim() == String.Empty)
+            if (listViewNoveUplate.Items.Count == 0)
             {
-                correctIznos = false;
-                notification.RegisterMessage(
-                    "Iznos", "Iznos uplate je obavezan.");
+                notification.RegisterMessage("Iznos", "Unesite uplatu.");            
             }
-            else if (!double.TryParse(txtIznos.Text, NumberStyles.Float, null, out dummy))
-            {
-                correctIznos = false;
-                notification.RegisterMessage(
-                    "Iznos", "Neispravan format za iznos uplate.");
-            }
-
-            if (correctIznos)
-                txtIznos.Text = double.Parse(txtIznos.Text).ToString("F2");
         }
 
         protected override void setFocus(string propertyName)
@@ -232,26 +233,44 @@ namespace Soko.UI
 
         protected override void updateEntityFromUI(DomainObject entity)
         {
-            UplataClanarine uc = (UplataClanarine)entity;
-            uc.Clan = SelectedClan;
-            uc.Grupa = SelectedGrupa;
+            List<UplataItem> uplateItems = getUplataItems();
+            UplataClanarine uplata = (UplataClanarine)entity;
+            uplata.Uplate.Clear();
+
             DateTime vremeUplate = DateTime.Now;
-            uc.DatumVremeUplate = new DateTime(
-                vremeUplate.Year, vremeUplate.Month, vremeUplate.Day,
-                vremeUplate.Hour, vremeUplate.Minute, vremeUplate.Second);
-            uc.VaziOd = dateTimePickerDatumClanarine.Value.Date;
-            uc.Iznos = decimal.Parse(txtIznos.Text);
-            if (txtNapomena.Text.Trim() != String.Empty)
-                uc.Napomena = txtNapomena.Text.Trim();
-            else
-                uc.Napomena = null; // u Access bazi je specifikovano da ne prihvata
-            // stringove duzine nula za Napomenu
-            uc.Korisnik = "Admin";
+            for (int i = 0; i < uplateItems.Count; ++i)
+            {
+                UplataClanarine u = new UplataClanarine();
+                u.Clan = SelectedClan;
+                u.Grupa = SelectedGrupa;
+                u.DatumVremeUplate = new DateTime(
+                    vremeUplate.Year, vremeUplate.Month, vremeUplate.Day,
+                    vremeUplate.Hour, vremeUplate.Minute, vremeUplate.Second);
+
+                UplataItem uplataItem = uplateItems[i];
+                u.VaziOd = uplataItem.VaziOd;
+                u.Iznos = uplataItem.Iznos;
+
+                if (txtNapomena.Text.Trim() != String.Empty)
+                    u.Napomena = txtNapomena.Text.Trim();
+                else
+                    u.Napomena = null; // u Access bazi je specifikovano da ne prihvata
+                // stringove duzine nula za Napomenu
+                u.Korisnik = "Admin";
+
+                uplata.Uplate.Add(u);
+                vremeUplate = vremeUplate.AddSeconds(1);
+            }
         }
 
         protected override void insertEntity(DomainObject entity)
         {
-            DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO().MakePersistent((UplataClanarine)entity);
+            UplataClanarine uplata = (UplataClanarine)entity;
+            foreach (UplataClanarine u in uplata.Uplate)
+            {
+                DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO().MakePersistent(u);
+            }
+
             if (SelectedClan.ImaPristupnicu != ckbPristupnica.Checked)
             {
                 SelectedClan.ImaPristupnicu = ckbPristupnica.Checked;
@@ -455,6 +474,140 @@ namespace Soko.UI
             listViewPrethodneUplate.Items.Clear();
             listViewPrethodneUplate.Items.AddRange(items);
             listViewPrethodneUplate.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+        }
+
+        private void btnUnesiUplatu_Click(object sender, EventArgs e)
+        {
+            if (unesiUplatu())
+            {
+                txtIznos.Text = String.Empty;
+                dateTimePickerDatumClanarine.Value = dateTimePickerDatumClanarine.Value.AddMonths(1);
+                txtIznos.Focus();
+            }
+        }
+
+        private bool unesiUplatu()
+        {
+            Notification notification = new Notification();
+            validateUplata(notification);
+            if (!notification.IsValid())
+            {
+                NotificationMessage msg = notification.FirstMessage;
+                MessageDialogs.showMessage(msg.Message, this.Text);
+                setFocus(msg.FieldName);
+                return false;
+            }
+
+            DateTime vaziOd = dateTimePickerDatumClanarine.Value.Date;
+            string iznos = decimal.Parse(txtIznos.Text).ToString("F2");
+            listViewNoveUplate.Items.Add(new ListViewItem(new string[] {
+                            iznos, vaziOd.ToString("MMM"), vaziOd.ToString("yyyy") }));
+            listViewNoveUplate.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+
+            updateUkupnoIznos();
+            return true;
+        }
+
+        private void validateUplata(Notification notification)
+        {
+            double dummy;
+            if (txtIznos.Text.Trim() == String.Empty)
+            {
+                notification.RegisterMessage("Iznos", "Unesite iznos uplate.");
+            }
+            else if (!double.TryParse(txtIznos.Text, NumberStyles.Float, null, out dummy))
+            {
+                notification.RegisterMessage("Iznos", "Neispravan format za iznos uplate.");
+            }
+            else if (double.Parse(txtIznos.Text, NumberStyles.Float) < 0.0)
+            {
+                notification.RegisterMessage("Iznos", "Neispravan vrednost za iznos uplate.");
+            }
+
+            foreach (UplataItem i in getUplataItems())
+            {
+                if (dateTimePickerDatumClanarine.Value.Date == i.VaziOd.Date)
+                {
+                    notification.RegisterMessage("VaziOd", "Vec ste uneli uplatu za dati mesec.");
+                    break;
+                }
+            }
+        }
+
+        private List<UplataItem> getUplataItems()
+        {
+            List<UplataItem> result = new List<UplataItem>();
+            for (int i = 0; i < listViewNoveUplate.Items.Count; ++i)
+            {
+                ListViewItem item = listViewNoveUplate.Items[i];
+                UplataItem uplataItem = new UplataItem();
+                uplataItem.Iznos = decimal.Parse(item.SubItems[0].Text);
+
+                string mesec = item.SubItems[1].Text;
+                string godina = item.SubItems[2].Text;
+                uplataItem.VaziOd = DateTime.Parse(mesec + " " + godina);
+
+                result.Add(uplataItem);
+            }
+            return result;
+        }
+
+        private void updateUkupnoIznos()
+        {
+            decimal total = 0;
+            foreach (UplataItem item in getUplataItems())
+            {
+                total += item.Iznos;
+            }
+            lblUkupnoIznos.Text = total.ToString("F2") + " Din";
+        }
+
+        private void txtIznos_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (unesiUplatu())
+                {
+                    txtIznos.Text = String.Empty;
+                    dateTimePickerDatumClanarine.Value = dateTimePickerDatumClanarine.Value.AddMonths(1);
+                    txtIznos.Focus();
+                }
+            }
+        }
+
+        private void btnBrisiUplatu_Click(object sender, EventArgs e)
+        {
+            for (int i = listViewNoveUplate.Items.Count - 1; i >= 0; --i)
+            {
+                ListViewItem item = listViewNoveUplate.Items[i];
+                if (item.Selected)
+                {
+                    listViewNoveUplate.Items.Remove(item);
+                }
+            }
+            listViewNoveUplate.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+
+            updateUkupnoIznos();
+        }
+
+        private void dateTimePickerDatumClanarine_ValueChanged(object sender, EventArgs e)
+        {
+            if (currentDatumClanarine.Month == 12 && dateTimePickerDatumClanarine.Value.Month == 1
+                && currentDatumClanarine.Year == dateTimePickerDatumClanarine.Value.Year)
+            {
+                dateTimePickerDatumClanarine.ValueChanged -= new System.EventHandler(dateTimePickerDatumClanarine_ValueChanged);
+                dateTimePickerDatumClanarine.Value = dateTimePickerDatumClanarine.Value.AddYears(1);
+                dateTimePickerDatumClanarine.ValueChanged += new System.EventHandler(dateTimePickerDatumClanarine_ValueChanged);
+
+            }
+            else if (currentDatumClanarine.Month == 1 && dateTimePickerDatumClanarine.Value.Month == 12
+                && currentDatumClanarine.Year == dateTimePickerDatumClanarine.Value.Year)
+            {
+                dateTimePickerDatumClanarine.ValueChanged -= new System.EventHandler(dateTimePickerDatumClanarine_ValueChanged);
+                dateTimePickerDatumClanarine.Value = dateTimePickerDatumClanarine.Value.AddYears(-1);
+                dateTimePickerDatumClanarine.ValueChanged += new System.EventHandler(dateTimePickerDatumClanarine_ValueChanged);
+            }
+            currentDatumClanarine = dateTimePickerDatumClanarine.Value;
         }
     }
 }

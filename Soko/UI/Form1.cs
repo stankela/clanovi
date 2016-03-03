@@ -141,7 +141,6 @@ namespace Soko.UI
             if (dlg.DialogResult != DialogResult.OK)
                 return;
 
-            int idStavke = dlg.Entity.Id;
             string naslov = "Uplata clanarine";
             string pitanje = "Da li zelite da stampate potvrdu o uplati?";
             PotvrdaDialog dlg2 = new PotvrdaDialog(naslov, pitanje);
@@ -155,7 +154,15 @@ namespace Soko.UI
                 {
                     CurrentSessionContext.Bind(session);
                     PreviewDialog p = new PreviewDialog();
-                    p.printWithoutPreview(new PotvrdaIzvestaj(idStavke));
+
+                    List<int> idList = new List<int>();
+                    UplataClanarine uplata = (UplataClanarine)dlg.Entity;
+                    foreach (UplataClanarine u in uplata.Uplate)
+                    {
+                        idList.Add(u.Id);
+                    }
+
+                    p.printWithoutPreview(new PotvrdaIzvestaj(idList));
                 }
             }
             catch (InfrastructureException ex)

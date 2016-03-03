@@ -11,7 +11,7 @@ namespace Soko.Report
 	/// </summary>
 	public class PotvrdaIzvestaj : Izvestaj
 	{
-		int idStavke;
+		List<int> idList;
 		int broj;
 		string ime;
 		string prezime;
@@ -20,7 +20,7 @@ namespace Soko.Report
 		string iznos;
 		string sifraGrupe;
 		string nazivGrupe;
-		DateTime datumClanarine;
+		string datumClanarine;
 
 		Font arial8Font;
 		Font arial9Font;
@@ -28,9 +28,9 @@ namespace Soko.Report
 		Font arial10Font;
 		Font arial14BoldFont;
 
-		public PotvrdaIzvestaj(int id)
+		public PotvrdaIzvestaj(List<int> idList)
 		{
-			idStavke = id;
+			this.idList = idList;
 			DocumentName = "Potvrda";
 			createFonts();
 
@@ -49,7 +49,8 @@ namespace Soko.Report
 
 		private void getData()
 		{
-            UplataClanarine uplata = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO().FindById(idStavke);
+            List<UplataClanarine> uplate = getUplate(idList);
+            UplataClanarine uplata = uplate[0];
 			broj = uplata.Clan.Broj.Value;
 			ime = String.Empty;
 			if (uplata.Clan.Ime != null)
@@ -59,11 +60,32 @@ namespace Soko.Report
 				prezime = uplata.Clan.Prezime;
 			mesto = uplata.Clan.NazivMesta;
 			datumUplate = uplata.DatumUplate.Value;
-            iznos = uplata.IznosDin;
 			sifraGrupe = uplata.Grupa.Sifra.Value;
 			nazivGrupe = uplata.Grupa.Naziv;
-			datumClanarine = uplata.VaziOd.Value;
-		}
+
+            decimal ukupanIznos = 0;
+            datumClanarine = String.Empty;
+            string zarez = String.Empty;
+            foreach (UplataClanarine u in uplate)
+            {
+                ukupanIznos += u.Iznos.Value;
+                // TODO2: Ovde bi verovatno trebalo stampati ceo mesec (MMMM), ali za to bi trebalo
+                // implementirati text wrap.
+                datumClanarine += zarez + u.VaziOd.Value.ToString("MMM yyyy");
+                zarez = ", ";
+            }
+            iznos = ukupanIznos.ToString("F2") + " Din";
+        }
+
+        private List<UplataClanarine> getUplate(List<int> idList)
+        {
+            List<UplataClanarine> result = new List<UplataClanarine>();
+            foreach (int id in idList)
+            {
+                result.Add(DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO().FindById(id));
+            }
+            return result;
+        }
 
 		protected override void doSetupContent(Graphics g)
 		{
@@ -229,7 +251,7 @@ namespace Soko.Report
 				y += dy;*/
 				g.DrawString(zaMesec, arial9Font, blackBrush, 
 					new PointF(x, y), f1);
-				g.DrawString(datumClanarine.ToString("MMMM yyyy"), 
+				g.DrawString(datumClanarine, 
 					arial9BoldFont, blackBrush, 
 					new PointF(x2, y), f2);
 

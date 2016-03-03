@@ -132,6 +132,7 @@
     <Compile Include="Domain\Mesto.cs" />
     <Compile Include="Domain\SifraGrupe.cs" />
     <Compile Include="Domain\UplataClanarine.cs" />
+    <Compile Include="Domain\UplataItem.cs" />
     <Compile Include="Exceptions\BusinessException.cs" />
     <Compile Include="Exceptions\InfrastructureException.cs" />
     <Compile Include="Exceptions\InvalidPropertyException.cs" />
