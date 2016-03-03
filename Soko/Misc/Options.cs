@@ -95,5 +95,12 @@ namespace Soko
             set { prikaziBojeKodOcitavanja = value; }
         }
 
+        private bool adminMode = false;
+        public bool AdminMode
+        {
+            get { return adminMode; }
+            set { adminMode = value; }
+        }
+
     }
 }

@@ -79,6 +79,9 @@ namespace Soko.UI
 
             rbtInterval.Checked = true;
             cmbClan.Enabled = false;
+
+            btnPromeni.Visible = Options.Instance.AdminMode;
+            btnPromeni.Enabled = Options.Instance.AdminMode;
         }
 
         private void sortByDatumVreme()

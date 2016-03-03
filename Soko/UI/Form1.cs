@@ -33,6 +33,9 @@ namespace Soko.UI
             InitializeComponent();
             this.Text = "Uplata clanarine";
 
+            mnDuplikatiClanova.Visible = Options.Instance.AdminMode;
+            mnDuplikatiClanova.Enabled = Options.Instance.AdminMode;
+
             //LocalizeUI();
 
             loadOptions();
@@ -1118,6 +1121,20 @@ namespace Soko.UI
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
+            }
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.Shift && e.KeyCode == Keys.S)
+            {
+                LozinkaForm f = new LozinkaForm();
+                if (f.ShowDialog() == DialogResult.OK && f.Lozinka == "Lozinka")
+                {
+                    Options.Instance.AdminMode = true;
+                    mnDuplikatiClanova.Visible = Options.Instance.AdminMode;
+                    mnDuplikatiClanova.Enabled = Options.Instance.AdminMode;
+                }
             }
         }
     }

@@ -42,6 +42,7 @@ namespace Soko.UI
             this.mnMesta = new System.Windows.Forms.ToolStripMenuItem();
             this.mnInstitucije = new System.Windows.Forms.ToolStripMenuItem();
             this.mnUplate = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnDuplikatiClanova = new System.Windows.Forms.ToolStripMenuItem();
             this.mnIzvestaji = new System.Windows.Forms.ToolStripMenuItem();
             this.mnPrihodiDnevniKategorije = new System.Windows.Forms.ToolStripMenuItem();
             this.mnPrihodiDnevniGrupe = new System.Windows.Forms.ToolStripMenuItem();
@@ -58,7 +59,6 @@ namespace Soko.UI
             this.mnFont = new System.Windows.Forms.ToolStripMenuItem();
             this.mnStampaci = new System.Windows.Forms.ToolStripMenuItem();
             this.mnCitacKartica = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnDuplikatiClanova = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -177,6 +177,13 @@ namespace Soko.UI
             this.mnUplate.Size = new System.Drawing.Size(185, 22);
             this.mnUplate.Text = "Uplate";
             this.mnUplate.Click += new System.EventHandler(this.mnUplate_Click);
+            // 
+            // mnDuplikatiClanova
+            // 
+            this.mnDuplikatiClanova.Name = "mnDuplikatiClanova";
+            this.mnDuplikatiClanova.Size = new System.Drawing.Size(185, 22);
+            this.mnDuplikatiClanova.Text = "Duplikati clanova";
+            this.mnDuplikatiClanova.Click += new System.EventHandler(this.mnDuplikatiClanova_Click);
             // 
             // mnIzvestaji
             // 
@@ -304,13 +311,6 @@ namespace Soko.UI
             this.mnCitacKartica.Text = "Citac kartica";
             this.mnCitacKartica.Click += new System.EventHandler(this.mnCitacKartica_Click);
             // 
-            // mnDuplikatiClanova
-            // 
-            this.mnDuplikatiClanova.Name = "mnDuplikatiClanova";
-            this.mnDuplikatiClanova.Size = new System.Drawing.Size(185, 22);
-            this.mnDuplikatiClanova.Text = "Duplikati clanova";
-            this.mnDuplikatiClanova.Click += new System.EventHandler(this.mnDuplikatiClanova_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -322,6 +322,7 @@ namespace Soko.UI
             this.Text = "Form1";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
