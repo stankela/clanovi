@@ -12,6 +12,7 @@ using Soko.Exceptions;
 using NHibernate;
 using Soko.Data;
 using NHibernate.Context;
+using Soko.Misc;
 
 namespace Soko.UI
 {
@@ -43,15 +44,7 @@ namespace Soko.UI
         private List<Clan> loadClanovi()
         {
             List<Clan> result = new List<Clan>(DAOFactoryFactory.DAOFactory.GetClanDAO().FindAll());
-
-            PropertyDescriptor propDescPrez = TypeDescriptor.GetProperties(typeof(Clan))["Prezime"];
-            PropertyDescriptor propDescIme = TypeDescriptor.GetProperties(typeof(Clan))["Ime"];
-            PropertyDescriptor[] propDesc = new PropertyDescriptor[2] { propDescPrez, propDescIme };
-            ListSortDirection[] direction = new ListSortDirection[2] 
-                { ListSortDirection.Ascending, ListSortDirection.Ascending};
-
-            result.Sort(new SortComparer<Clan>(propDesc, direction));
-
+            Util.sortByPrezimeImeDatumRodjenja(result);
             return result;
         }
 

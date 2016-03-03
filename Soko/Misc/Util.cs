@@ -16,6 +16,18 @@ namespace Soko.Misc
             uplate.Sort(new SortComparer<UplataClanarine>(propDesc, ListSortDirection.Descending));
         }
 
+        public static void sortByPrezimeImeDatumRodjenja(List<Clan> clanovi)
+        {
+            PropertyDescriptor propDescPrez = TypeDescriptor.GetProperties(typeof(Clan))["Prezime"];
+            PropertyDescriptor propDescIme = TypeDescriptor.GetProperties(typeof(Clan))["Ime"];
+            PropertyDescriptor propDescDatumRodj = TypeDescriptor.GetProperties(typeof(Clan))["DatumRodjenja"];
+            PropertyDescriptor[] propDesc = new PropertyDescriptor[3] { propDescPrez, propDescIme, propDescDatumRodj };
+            ListSortDirection[] direction = new ListSortDirection[3] { 
+                ListSortDirection.Ascending, ListSortDirection.Ascending, ListSortDirection.Ascending };
+
+            clanovi.Sort(new SortComparer<Clan>(propDesc, direction));
+        }
+
         public static string getGrupeFilter(List<Grupa> grupe, string table, string grupaColumn)
         {
             string result;

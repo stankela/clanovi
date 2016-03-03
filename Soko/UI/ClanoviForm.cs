@@ -36,9 +36,10 @@ namespace Soko.UI
         {
             PropertyDescriptor propDescPrez = TypeDescriptor.GetProperties(typeof(Clan))["Prezime"];
             PropertyDescriptor propDescIme = TypeDescriptor.GetProperties(typeof(Clan))["Ime"];
-            PropertyDescriptor[] propDesc = new PropertyDescriptor[2] { propDescPrez, propDescIme };
-            ListSortDirection[] direction = new ListSortDirection[2] 
-                { ListSortDirection.Ascending, ListSortDirection.Ascending};
+            PropertyDescriptor propDescDatumRodj = TypeDescriptor.GetProperties(typeof(Clan))["DatumRodjenja"];
+            PropertyDescriptor[] propDesc = new PropertyDescriptor[3] { propDescPrez, propDescIme, propDescDatumRodj };
+            ListSortDirection[] direction = new ListSortDirection[3] { ListSortDirection.Ascending,
+                ListSortDirection.Ascending, ListSortDirection.Ascending };
 			
             entities.Sort(new SortComparer<object>(propDesc, direction));
         }
