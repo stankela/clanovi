@@ -12,6 +12,7 @@ using NHibernate;
 using Soko.Data;
 using NHibernate.Context;
 using Soko.Misc;
+using Soko.Exceptions;
 
 namespace Soko.UI
 {
@@ -19,8 +20,14 @@ namespace Soko.UI
     {
         private List<Clan> clanovi;
         private List<Grupa> grupe;
-        DateTime currentDatumClanarine;
+        private DateTime currentDatumClanarine;
         public bool PendingRead = false;
+
+        private List<UplataClanarine> uplateList = new List<UplataClanarine>();
+        public List<UplataClanarine> Uplate
+        {
+            get { return uplateList; }
+        }
         
         public UplataClanarineDialog(Nullable<int> entityId)
         {
@@ -33,7 +40,8 @@ namespace Soko.UI
 
         protected override DomainObject createNewEntity()
         {
-            return new UplataClanarine();
+            // koristi se uplateList
+            return null;
         }
 
         protected override void loadData()
@@ -234,8 +242,7 @@ namespace Soko.UI
         protected override void updateEntityFromUI(DomainObject entity)
         {
             List<UplataItem> uplateItems = getUplataItems();
-            UplataClanarine uplata = (UplataClanarine)entity;
-            uplata.Uplate.Clear();
+            uplateList.Clear();
 
             DateTime vremeUplate = DateTime.Now;
             for (int i = 0; i < uplateItems.Count; ++i)
@@ -258,15 +265,25 @@ namespace Soko.UI
                 // stringove duzine nula za Napomenu
                 u.Korisnik = "Admin";
 
-                uplata.Uplate.Add(u);
+                uplateList.Add(u);
                 vremeUplate = vremeUplate.AddSeconds(1);
             }
         }
 
+        protected override void validateEntity(DomainObject entity)
+        {
+            Notification notification = new Notification();
+            foreach (UplataClanarine u in uplateList)
+            {
+                u.validate(notification);
+            }
+            if (!notification.IsValid())
+                throw new BusinessException(notification);
+        }
+
         protected override void insertEntity(DomainObject entity)
         {
-            UplataClanarine uplata = (UplataClanarine)entity;
-            foreach (UplataClanarine u in uplata.Uplate)
+            foreach (UplataClanarine u in uplateList)
             {
                 DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO().MakePersistent(u);
             }

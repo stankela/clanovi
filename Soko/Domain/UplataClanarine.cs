@@ -87,12 +87,6 @@ namespace Soko.Domain
 			set { korisnik = value; }
 		}
 
-        private List<UplataClanarine> uplate = new List<UplataClanarine>();
-        public virtual List<UplataClanarine> Uplate
-        {
-            get { return uplate; }
-        }
-
         public virtual string PrezimeImeBrojDatumRodj
         {
             get
@@ -128,66 +122,53 @@ namespace Soko.Domain
 
         public override void validate(Notification notification)
 		{
-            if (Uplate.Count == 0)
-                validate(notification, this);
-            else
-            {
-                foreach (UplataClanarine u in Uplate)
-                {
-                    validate(notification, u);
-                }
-            }
-		}
-
-        private void validate(Notification notification, UplataClanarine u)
-        {
-            if (u.Clan == null)
+            if (Clan == null)
             {
                 notification.RegisterMessage("Clan", "Clan je obavezan.");
             }
 
-            if (u.Grupa == null)
+            if (Grupa == null)
             {
                 notification.RegisterMessage("Grupa", "Grupa je obavezna.");
             }
 
-            if (u.DatumUplate == null)
+            if (DatumUplate == null)
             {
                 notification.RegisterMessage(
                     "DatumUplate", "Datum uplate clanarine je obavezan.");
             }
 
-            if (u.VremeUplate == null)
+            if (VremeUplate == null)
             {
                 notification.RegisterMessage(
                     "VremeUplate", "Vreme uplate clanarine je obavezno.");
             }
 
-            if (u.VaziOd == null)
+            if (VaziOd == null)
             {
                 notification.RegisterMessage(
                     "VaziOd", "Datum vazenja clanarine je obavezan.");
             }
 
-            if (u.Iznos == null)
+            if (Iznos == null)
             {
                 notification.RegisterMessage(
                     "Iznos", "Iznos uplate je obavezan.");
             }
-            else if (u.Iznos < 0)
+            else if (Iznos < 0)
             {
                 notification.RegisterMessage(
                     "Iznos", "Iznos uplate mora da bude pozitivan.");
             }
 
-            if (u.Napomena != null && u.Napomena.Length > NAPOMENA_MAX_LENGTH)
+            if (Napomena != null && Napomena.Length > NAPOMENA_MAX_LENGTH)
             {
                 notification.RegisterMessage(
                     "Napomena", "Napomena moze da sadrzi maksimalno "
                     + NAPOMENA_MAX_LENGTH + " znakova.");
             }
 
-            if (u.Korisnik != null && u.Korisnik.Length > KORISNIK_MAX_LENGTH)
+            if (Korisnik != null && Korisnik.Length > KORISNIK_MAX_LENGTH)
             {
                 notification.RegisterMessage(
                     "Korisnik", "Naziv korisnika moze da sadrzi maksimalno "

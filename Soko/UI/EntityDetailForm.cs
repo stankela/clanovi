@@ -202,7 +202,7 @@ namespace Soko.UI
             throw new Exception("Derived class should implement this method.");
         }
 
-        private void validateEntity(DomainObject entity)
+        protected virtual void validateEntity(DomainObject entity)
         {
             Notification notification = new Notification();
             entity.validate(notification);

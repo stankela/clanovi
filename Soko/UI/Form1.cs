@@ -156,8 +156,7 @@ namespace Soko.UI
                     PreviewDialog p = new PreviewDialog();
 
                     List<int> idList = new List<int>();
-                    UplataClanarine uplata = (UplataClanarine)dlg.Entity;
-                    foreach (UplataClanarine u in uplata.Uplate)
+                    foreach (UplataClanarine u in dlg.Uplate)
                     {
                         idList.Add(u.Id);
                     }

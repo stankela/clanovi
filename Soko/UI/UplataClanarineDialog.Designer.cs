@@ -28,9 +28,9 @@ namespace Soko.UI
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnOk = new System.Windows.Forms.Button();
             this.btnOdustani = new System.Windows.Forms.Button();
             this.btnOcitajKarticu = new System.Windows.Forms.Button();
+            this.btnOk = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblUkupnoIznos = new System.Windows.Forms.Label();
             this.lblUkupno = new System.Windows.Forms.Label();
@@ -56,17 +56,6 @@ namespace Soko.UI
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btnOk
-            // 
-            this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(447, 299);
-            this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(75, 23);
-            this.btnOk.TabIndex = 1;
-            this.btnOk.Text = "OK";
-            this.btnOk.UseVisualStyleBackColor = true;
-            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
-            // 
             // btnOdustani
             // 
             this.btnOdustani.DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -87,6 +76,17 @@ namespace Soko.UI
             this.btnOcitajKarticu.Text = "Ocitaj karticu";
             this.btnOcitajKarticu.UseVisualStyleBackColor = true;
             this.btnOcitajKarticu.Click += new System.EventHandler(this.btnOcitajKarticu_Click);
+            // 
+            // btnOk
+            // 
+            this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOk.Location = new System.Drawing.Point(447, 299);
+            this.btnOk.Name = "btnOk";
+            this.btnOk.Size = new System.Drawing.Size(75, 23);
+            this.btnOk.TabIndex = 1;
+            this.btnOk.Text = "OK";
+            this.btnOk.UseVisualStyleBackColor = true;
+            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
             // 
             // groupBox1
             // 
@@ -120,20 +120,20 @@ namespace Soko.UI
             // lblUkupnoIznos
             // 
             this.lblUkupnoIznos.AutoSize = true;
-            this.lblUkupnoIznos.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUkupnoIznos.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUkupnoIznos.Location = new System.Drawing.Point(84, 249);
             this.lblUkupnoIznos.Name = "lblUkupnoIznos";
-            this.lblUkupnoIznos.Size = new System.Drawing.Size(46, 17);
+            this.lblUkupnoIznos.Size = new System.Drawing.Size(44, 16);
             this.lblUkupnoIznos.TabIndex = 22;
             this.lblUkupnoIznos.Text = "Iznos";
             // 
             // lblUkupno
             // 
             this.lblUkupno.AutoSize = true;
-            this.lblUkupno.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUkupno.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUkupno.Location = new System.Drawing.Point(20, 249);
             this.lblUkupno.Name = "lblUkupno";
-            this.lblUkupno.Size = new System.Drawing.Size(63, 17);
+            this.lblUkupno.Size = new System.Drawing.Size(61, 16);
             this.lblUkupno.TabIndex = 21;
             this.lblUkupno.Text = "Ukupno";
             // 
