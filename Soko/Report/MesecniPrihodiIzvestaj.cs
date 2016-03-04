@@ -23,9 +23,9 @@ namespace Soko.Report
 
 		public MesecniPrihodiIzvestaj(DateTime from, DateTime to)
 		{
-			fromDate = from.Date;
-			toDate = to.Date;
-			convertDatesToMonthBoundaries();
+            fromDate = new DateTime(from.Year, from.Month, 1, 0, 0, 0);
+            toDate = to.AddMonths(1);
+            toDate = new DateTime(toDate.Year, toDate.Month, 1, 0, 0, 0).AddSeconds(-1);
 
 			System.Resources.ResourceManager resourceManager = new 
 				System.Resources.ResourceManager("Soko.Resources.PreviewResursi", this.GetType().Assembly);
@@ -42,14 +42,6 @@ namespace Soko.Report
 			Font groupTitleFont = new Font("Courier New", 10, FontStyle.Bold);
 			lista = new MesecniPrihodiLista(fromDate, toDate, this, 1, 0f, 
 				itemFont, itemsHeaderFont, groupTitleFont);
-		}
-
-		private void convertDatesToMonthBoundaries()
-		{
-			fromDate = new DateTime(fromDate.Year, fromDate.Month, 1).Date;
-			toDate = toDate.AddMonths(1);
-			toDate = new DateTime(toDate.Year, toDate.Month, 1);
-			toDate = toDate.AddDays(-1);
 		}
 
 		protected override void doSetupContent(Graphics g)

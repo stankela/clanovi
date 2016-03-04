@@ -20,6 +20,8 @@ namespace Soko.UI
         private List<Grupa> sveGrupe;
         private List<Clan> clanovi;
         private bool izborClana;
+        private DateTime currentDatumOd;
+        private DateTime currentDatumDo;
 
         public DateTimePicker DateTimePickerFrom
         {
@@ -34,15 +36,30 @@ namespace Soko.UI
         // TODO2: Biranje clana se pojavljuje na vise mesta u programu. Probaj da napravis kontrolu
         // koja to radi, i koja moze da se stavlja na form.
 
-        public BiracIntervala(string naslov, bool izborGrupa, bool izborClana)
+        public BiracIntervala(string naslov, bool izborGrupa, bool izborClana, bool months)
         {
             InitializeComponent();
 
             this.Text = naslov;
-            this.dtpOd.CustomFormat = "d.M.yyyy";
+            string format;
+            if (months)
+            {
+                format = "MMMM yyyy";
+                dtpOd.ShowUpDown = true;
+                dtpDo.ShowUpDown = true;
+            }
+            else
+                format = "dd.MM.yyyy";
+            this.dtpOd.CustomFormat = format;
             this.dtpOd.Format = DateTimePickerFormat.Custom;
-            this.dtpDo.CustomFormat = "d.M.yyyy";
+            this.dtpDo.CustomFormat = format;
             this.dtpDo.Format = DateTimePickerFormat.Custom;
+
+            currentDatumOd = dtpOd.Value;
+            currentDatumDo = dtpDo.Value;
+            dtpOd.ValueChanged += new System.EventHandler(dtpDatum_ValueChanged);
+            dtpDo.ValueChanged += new System.EventHandler(dtpDatum_ValueChanged);
+
             this.izborClana = izborClana;
 
             cmbClan.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -315,5 +332,38 @@ namespace Soko.UI
             }
         }
 
+        private void dtpDatum_ValueChanged(object sender, EventArgs e)
+        {
+            // Handle wrapping
+
+            DateTimePicker dateTimePicker = sender as DateTimePicker;
+            bool od = object.ReferenceEquals(dateTimePicker, dtpOd);
+            DateTime currentDatum = od ? currentDatumOd : currentDatumDo;
+
+            int add = 0;
+            if (currentDatum.Month == 12 && dateTimePicker.Value.Month == 1
+                && currentDatum.Year == dateTimePicker.Value.Year)
+            {
+                add = 1;
+
+            }
+            else if (currentDatum.Month == 1 && dateTimePicker.Value.Month == 12
+                && currentDatum.Year == dateTimePicker.Value.Year)
+            {
+                add = -1;
+            }
+
+            if (add != 0)
+            {
+                dateTimePicker.ValueChanged -= new System.EventHandler(dtpDatum_ValueChanged);
+                dateTimePicker.Value = dateTimePicker.Value.AddYears(add);
+                dateTimePicker.ValueChanged += new System.EventHandler(dtpDatum_ValueChanged);
+            }
+
+            if (od)
+                currentDatumOd = dateTimePicker.Value;
+            else
+                currentDatumDo = dateTimePicker.Value;
+        }
     }
 }

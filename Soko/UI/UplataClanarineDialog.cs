@@ -615,22 +615,28 @@ namespace Soko.UI
 
         private void dateTimePickerDatumClanarine_ValueChanged(object sender, EventArgs e)
         {
-            if (currentDatumClanarine.Month == 12 && dateTimePickerDatumClanarine.Value.Month == 1
-                && currentDatumClanarine.Year == dateTimePickerDatumClanarine.Value.Year)
+            // Handle wrapping
+            DateTimePicker dateTimePicker = sender as DateTimePicker;
+            int add = 0;
+            if (currentDatumClanarine.Month == 12 && dateTimePicker.Value.Month == 1
+                && currentDatumClanarine.Year == dateTimePicker.Value.Year)
             {
-                dateTimePickerDatumClanarine.ValueChanged -= new System.EventHandler(dateTimePickerDatumClanarine_ValueChanged);
-                dateTimePickerDatumClanarine.Value = dateTimePickerDatumClanarine.Value.AddYears(1);
-                dateTimePickerDatumClanarine.ValueChanged += new System.EventHandler(dateTimePickerDatumClanarine_ValueChanged);
+                add = 1;
 
             }
-            else if (currentDatumClanarine.Month == 1 && dateTimePickerDatumClanarine.Value.Month == 12
-                && currentDatumClanarine.Year == dateTimePickerDatumClanarine.Value.Year)
+            else if (currentDatumClanarine.Month == 1 && dateTimePicker.Value.Month == 12
+                && currentDatumClanarine.Year == dateTimePicker.Value.Year)
             {
-                dateTimePickerDatumClanarine.ValueChanged -= new System.EventHandler(dateTimePickerDatumClanarine_ValueChanged);
-                dateTimePickerDatumClanarine.Value = dateTimePickerDatumClanarine.Value.AddYears(-1);
-                dateTimePickerDatumClanarine.ValueChanged += new System.EventHandler(dateTimePickerDatumClanarine_ValueChanged);
+                add = -1;
             }
-            currentDatumClanarine = dateTimePickerDatumClanarine.Value;
+
+            if (add != 0)
+            {
+                dateTimePicker.ValueChanged -= new System.EventHandler(dateTimePickerDatumClanarine_ValueChanged);
+                dateTimePicker.Value = dateTimePicker.Value.AddYears(add);
+                dateTimePicker.ValueChanged += new System.EventHandler(dateTimePickerDatumClanarine_ValueChanged);
+            }
+            currentDatumClanarine = dateTimePicker.Value;
         }
     }
 }
