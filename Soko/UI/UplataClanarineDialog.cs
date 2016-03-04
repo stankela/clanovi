@@ -110,6 +110,8 @@ namespace Soko.UI
             listViewPrethodneUplate.Columns.Add("Mesec");
             listViewPrethodneUplate.Columns.Add("Godina");
             listViewPrethodneUplate.Columns.Add("Iznos");
+            // TODO2: Kolona Napomena je verovatno privremena i trebala bi da se ukloni nakon sto
+            // se uhoda nov sistem unosa clanarine koji omogucava da se unosi po mesecima.
             listViewPrethodneUplate.Columns.Add("Napomena");
             listViewPrethodneUplate.Columns.Add("Grupa");
             listViewPrethodneUplate.Columns[0].TextAlign = HorizontalAlignment.Right;
@@ -592,6 +594,12 @@ namespace Soko.UI
 
         private void btnBrisiUplatu_Click(object sender, EventArgs e)
         {
+            if (listViewNoveUplate.SelectedItems.Count == 0)
+            {
+                MessageDialogs.showMessage("Izaberite uplatu koju zelite da izbrisete.", "Uplata clanarine");
+                return;
+            }
+
             for (int i = listViewNoveUplate.Items.Count - 1; i >= 0; --i)
             {
                 ListViewItem item = listViewNoveUplate.Items[i];
