@@ -85,7 +85,7 @@ namespace Soko
         public bool Read()
         {
             int broj;
-            string name;
+            string name;  // not used
 
             //Stopwatch watch = Stopwatch.StartNew();
             if (!readCard(Options.Instance.COMPortReader, false, out broj, out name))
@@ -93,6 +93,11 @@ namespace Soko
             //watch.Stop();
             //long elapsedMs = watch.ElapsedMilliseconds;
 
+            return handleOcitanaKartica(broj, DateTime.Now);
+        }
+
+        private bool handleOcitanaKartica(int broj, DateTime vremeOcitavanja)
+        {
             if (broj == TEST_KARTICA_BROJ)
             {
                 string msg = FormatMessage(broj, TEST_KARTICA_NAME);
@@ -122,11 +127,10 @@ namespace Soko
                     if (uplate.Count > 0)
                     {
                         Util.sortByVaziOdDesc(uplate);
-                        DateTime now = DateTime.Now;
                         for (int i = 0; i < uplate.Count; ++i)
                         {
                             UplataClanarine u = uplate[i];
-                            if (u.VaziOd.Value.Year == now.Year && u.VaziOd.Value.Month == now.Month)
+                            if (u.VaziOd.Value.Year == vremeOcitavanja.Year && u.VaziOd.Value.Month == vremeOcitavanja.Month)
                             {
                                 poslednjaUplata = u;
                                 break;
@@ -138,7 +142,7 @@ namespace Soko
 
                     DolazakNaTrening dolazak = new DolazakNaTrening();
                     dolazak.Clan = clan;
-                    dolazak.DatumVremeDolaska = DateTime.Now;
+                    dolazak.DatumVremeDolaska = vremeOcitavanja;
                     if (poslednjaUplata != null)
                     {
                         dolazak.Grupa = poslednjaUplata.Grupa;
@@ -158,11 +162,11 @@ namespace Soko
                     {
                         // Najpre proveri da li postoji uplata za ovaj mesec.
                         okForTrening =
-                            poslednjaUplata.VaziOd.Value.Year == DateTime.Now.Year
-                            && poslednjaUplata.VaziOd.Value.Month == DateTime.Now.Month;
+                            poslednjaUplata.VaziOd.Value.Year == vremeOcitavanja.Year
+                            && poslednjaUplata.VaziOd.Value.Month == vremeOcitavanja.Month;
                         if (!okForTrening)
                         {
-                            okForTrening = DateTime.Now.Day <= Options.Instance.PoslednjiDanZaUplate;
+                            okForTrening = vremeOcitavanja.Day <= Options.Instance.PoslednjiDanZaUplate;
                         }
                     }
 
