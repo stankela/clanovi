@@ -110,18 +110,20 @@ namespace Soko.UI
             listViewPrethodneUplate.Columns.Add("Mesec");
             listViewPrethodneUplate.Columns.Add("Godina");
             listViewPrethodneUplate.Columns.Add("Iznos");
+            listViewPrethodneUplate.Columns.Add("Napomena");
             listViewPrethodneUplate.Columns.Add("Grupa");
             listViewPrethodneUplate.Columns[0].TextAlign = HorizontalAlignment.Right;
             listViewPrethodneUplate.Columns[1].TextAlign = HorizontalAlignment.Right;
             listViewPrethodneUplate.Columns[2].TextAlign = HorizontalAlignment.Right;
             listViewPrethodneUplate.Columns[3].TextAlign = HorizontalAlignment.Left;
+            listViewPrethodneUplate.Columns[4].TextAlign = HorizontalAlignment.Left;
 
             listViewNoveUplate.View = View.Details;
             listViewNoveUplate.HeaderStyle = ColumnHeaderStyle.None;
             listViewNoveUplate.FullRowSelect = true;
+            listViewNoveUplate.Columns.Add("Iznos");
             listViewNoveUplate.Columns.Add("Mesec");
             listViewNoveUplate.Columns.Add("Godina");
-            listViewNoveUplate.Columns.Add("Iznos");
             listViewNoveUplate.Columns[0].TextAlign = HorizontalAlignment.Right;
             listViewNoveUplate.Columns[1].TextAlign = HorizontalAlignment.Right;
             listViewNoveUplate.Columns[2].TextAlign = HorizontalAlignment.Right;
@@ -482,7 +484,7 @@ namespace Soko.UI
                 UplataClanarine u = uplate[i];
                 items[i] = new ListViewItem(new string[] {
                             u.VaziOd.Value.ToString("MMM"), u.VaziOd.Value.ToString("yyyy"),
-                            u.IznosDin, u.Grupa.Naziv });
+                            u.IznosDin, u.Napomena, u.Grupa.Naziv });
             }
             listViewPrethodneUplate.Items.Clear();
             listViewPrethodneUplate.Items.AddRange(items);
