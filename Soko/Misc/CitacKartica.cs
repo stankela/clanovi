@@ -109,6 +109,17 @@ namespace Soko
                 return true;
             }
 
+            UplataClanarine poslednjaUplata;
+            if (!unesiOcitavanje(broj, vremeOcitavanja, out poslednjaUplata))
+                return false;
+
+            prikaziOcitavanje(broj, vremeOcitavanja, poslednjaUplata);
+            return true;
+        }
+
+        private bool unesiOcitavanje(int broj, DateTime vremeOcitavanja, out UplataClanarine poslednjaUplata)
+        {
+            poslednjaUplata = null;
             try
             {
                 using (ISession session = NHibernateHelper.Instance.OpenSession())
@@ -123,7 +134,6 @@ namespace Soko
                     UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
                     List<UplataClanarine> uplate = new List<UplataClanarine>(uplataClanarineDAO.findUplate(clan));
 
-                    UplataClanarine poslednjaUplata = null;
                     if (uplate.Count > 0)
                     {
                         Util.sortByVaziOdDesc(uplate);
@@ -156,47 +166,6 @@ namespace Soko
 
                     DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO().MakePersistent(dolazak);
                     session.Transaction.Commit();
-
-                    bool okForTrening = false;
-                    if (poslednjaUplata != null)
-                    {
-                        // Najpre proveri da li postoji uplata za ovaj mesec.
-                        okForTrening =
-                            poslednjaUplata.VaziOd.Value.Year == vremeOcitavanja.Year
-                            && poslednjaUplata.VaziOd.Value.Month == vremeOcitavanja.Month;
-                        if (!okForTrening)
-                        {
-                            okForTrening = vremeOcitavanja.Day <= Options.Instance.PoslednjiDanZaUplate;
-                        }
-                    }
-
-                    string grupa = null;
-                    if (poslednjaUplata != null)
-                    {
-                        grupa = poslednjaUplata.Grupa.Naziv;
-                    }
-                    string msg = FormatMessage(broj, grupa);
-
-                    // Posto ocitavanje kartice traje relativno dugo (oko 374 ms), moguce je da je prozor
-                    // zatvoren bas u trenutku dok se kartica ocitava. Korisnik je u tom slucaju cuo zvuk
-                    // da je kartica ocitana ali se na displeju ne prikazuje da je kartica ocitana.
-                    CitacKarticaForm form = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
-                    if (form != null)
-                    {
-                        Color color = Options.Instance.PozadinaCitacaKartica;
-                        if (Options.Instance.PrikaziBojeKodOcitavanja)
-                        {
-                            if (okForTrening)
-                            {
-                                color = Color.SpringGreen;
-                            }
-                            else
-                            {
-                                color = Color.Red;
-                            }
-                        }
-                        form.PrikaziOcitavanje(msg, color);
-                    }
                     return true;
                 }
             }
@@ -208,6 +177,50 @@ namespace Soko
             finally
             {
                 CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
+            }
+        }
+
+        private void prikaziOcitavanje(int broj, DateTime vremeOcitavanja, UplataClanarine poslednjaUplata)
+        {
+            bool okForTrening = false;
+            if (poslednjaUplata != null)
+            {
+                // Najpre proveri da li postoji uplata za ovaj mesec.
+                okForTrening =
+                    poslednjaUplata.VaziOd.Value.Year == vremeOcitavanja.Year
+                    && poslednjaUplata.VaziOd.Value.Month == vremeOcitavanja.Month;
+                if (!okForTrening)
+                {
+                    okForTrening = vremeOcitavanja.Day <= Options.Instance.PoslednjiDanZaUplate;
+                }
+            }
+
+            string grupa = null;
+            if (poslednjaUplata != null)
+            {
+                grupa = poslednjaUplata.Grupa.Naziv;
+            }
+            string msg = FormatMessage(broj, grupa);
+
+            // Posto ocitavanje kartice traje relativno dugo (oko 374 ms), moguce je da je prozor
+            // zatvoren bas u trenutku dok se kartica ocitava. Korisnik je u tom slucaju cuo zvuk
+            // da je kartica ocitana ali se na displeju ne prikazuje da je kartica ocitana.
+            CitacKarticaForm form = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
+            if (form != null)
+            {
+                Color color = Options.Instance.PozadinaCitacaKartica;
+                if (Options.Instance.PrikaziBojeKodOcitavanja)
+                {
+                    if (okForTrening)
+                    {
+                        color = Color.SpringGreen;
+                    }
+                    else
+                    {
+                        color = Color.Red;
+                    }
+                }
+                form.PrikaziOcitavanje(msg, color);
             }
         }
 
