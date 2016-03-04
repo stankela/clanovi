@@ -33,12 +33,17 @@ namespace Soko.UI
             InitializeComponent();
             this.Text = "Uplata clanarine";
 
-            mnDuplikatiClanova.Visible = Options.Instance.AdminMode;
-            mnDuplikatiClanova.Enabled = Options.Instance.AdminMode;
+            refreshAdminModeUI(Options.Instance.AdminMode);
 
             //LocalizeUI();
 
             loadOptions();
+        }
+
+        private void refreshAdminModeUI(bool adminMode)
+        {
+            mnAdmin.Visible = adminMode;
+            mnAdmin.Enabled = adminMode;
         }
 
         private void LocalizeUI()
@@ -1132,10 +1137,15 @@ namespace Soko.UI
                 if (f.ShowDialog() == DialogResult.OK && f.Lozinka == "Lozinka")
                 {
                     Options.Instance.AdminMode = true;
-                    mnDuplikatiClanova.Visible = Options.Instance.AdminMode;
-                    mnDuplikatiClanova.Enabled = Options.Instance.AdminMode;
+                    refreshAdminModeUI(Options.Instance.AdminMode);
                 }
             }
+        }
+
+        private void mnSimulatorCitacaKartica_Click(object sender, EventArgs e)
+        {
+            SimulatorCitacaKarticaForm f = new SimulatorCitacaKarticaForm();
+            f.ShowDialog();
         }
     }
 }

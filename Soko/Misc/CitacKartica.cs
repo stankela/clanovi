@@ -96,7 +96,7 @@ namespace Soko
             return handleOcitanaKartica(broj, DateTime.Now);
         }
 
-        private bool handleOcitanaKartica(int broj, DateTime vremeOcitavanja)
+        public bool handleOcitanaKartica(int broj, DateTime vremeOcitavanja)
         {
             if (broj == TEST_KARTICA_BROJ)
             {

@@ -350,6 +350,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>PotvrdaDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\SimulatorCitacaKarticaForm.resx">
+      <DependentUpon>SimulatorCitacaKarticaForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\UplataDialogAdmin.resx">
       <DependentUpon>UplataDialogAdmin.cs</DependentUpon>
     </EmbeddedResource>
@@ -469,6 +472,12 @@
     <Compile Include="UI\PravljenjeKarticeForm.Designer.cs">
       <DependentUpon>PravljenjeKarticeForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\SimulatorCitacaKarticaForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\SimulatorCitacaKarticaForm.Designer.cs">
+      <DependentUpon>SimulatorCitacaKarticaForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\UplataDialogAdmin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -501,6 +510,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TODO.txt" />
     <EmbeddedResource Include="Data\NHibernate\Mappings\Mesto.hbm.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
