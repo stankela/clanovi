@@ -14,6 +14,7 @@ namespace Soko.UI
         public CitacKarticaDialog()
         {
             InitializeComponent();
+            Font = Options.Instance.Font;
             updateCitacKarticaButtonText();
         }
 

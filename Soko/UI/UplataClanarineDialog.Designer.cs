@@ -120,20 +120,18 @@ namespace Soko.UI
             // lblUkupnoIznos
             // 
             this.lblUkupnoIznos.AutoSize = true;
-            this.lblUkupnoIznos.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUkupnoIznos.Location = new System.Drawing.Point(84, 249);
             this.lblUkupnoIznos.Name = "lblUkupnoIznos";
-            this.lblUkupnoIznos.Size = new System.Drawing.Size(44, 16);
+            this.lblUkupnoIznos.Size = new System.Drawing.Size(32, 13);
             this.lblUkupnoIznos.TabIndex = 22;
             this.lblUkupnoIznos.Text = "Iznos";
             // 
             // lblUkupno
             // 
             this.lblUkupno.AutoSize = true;
-            this.lblUkupno.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUkupno.Location = new System.Drawing.Point(20, 249);
             this.lblUkupno.Name = "lblUkupno";
-            this.lblUkupno.Size = new System.Drawing.Size(61, 16);
+            this.lblUkupno.Size = new System.Drawing.Size(45, 13);
             this.lblUkupno.TabIndex = 21;
             this.lblUkupno.Text = "Ukupno";
             // 

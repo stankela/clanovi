@@ -68,6 +68,8 @@ namespace Soko.UI
         {
             this.Text = "Pravljenje kartice";
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            Font = Options.Instance.Font;
+
             ckbKartica.Checked = false;
             cmbClan.DropDownStyle = ComboBoxStyle.DropDownList;
 

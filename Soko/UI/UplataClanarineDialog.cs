@@ -82,6 +82,10 @@ namespace Soko.UI
             this.Text = "Unos Clanarine";
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
 
+            // Font podesavam ovde da bi se uzeo u obzir skalirani font (koji se podesava u base.initUI).
+            lblUkupnoIznos.Font = new Font(Font.FontFamily.Name, Font.Size, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            lblUkupno.Font = new Font(Font.FontFamily.Name, Font.Size, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+
             // NOTE: DateTimePicker controla izgleda ne reaguje na CurrentCulture
             // pa mora rucno da se podesi srpski format
             this.dateTimePickerDatumClanarine.CustomFormat = "MMMM yyyy";
