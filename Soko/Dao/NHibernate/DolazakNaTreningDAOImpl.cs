@@ -7,6 +7,7 @@ using Soko;
 using System.Collections;
 using Soko.Report;
 using Soko.Misc;
+using Iesi.Collections;
 
 namespace Bilten.Dao.NHibernate
 {
@@ -176,5 +177,114 @@ ORDER BY
             }
         }
 
+        class ClanGodinaMesec
+        {
+            private int clan_id;
+            private int godina;
+            private int mesec;
+
+            public ClanGodinaMesec(int clan_id, int godina, int mesec)
+            {
+                this.clan_id = clan_id;
+                this.godina = godina;
+                this.mesec = mesec;
+            }
+
+            public override bool Equals(object other)
+            {
+                if (object.ReferenceEquals(this, other))
+                    return true;
+                if (!(other is ClanGodinaMesec))
+                    return false;
+                ClanGodinaMesec that = (ClanGodinaMesec)other;
+                return this.clan_id == that.clan_id && this.godina == that.godina && this.mesec == that.mesec;
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    int result = clan_id;
+                    result = 29 * result + godina.GetHashCode() + mesec.GetHashCode();
+                    return result;
+                }
+            }
+        }
+
+        public virtual List<object[]> getNedostajuceUplateReportItems(DateTime from, DateTime to)
+        {
+            try
+            {
+                string dolasciQuery = @"
+SELECT DISTINCT
+    datepart(year, d.datum_vreme_dolaska) god,
+    datepart(month, d.datum_vreme_dolaska) mes,
+    c.clan_id, c.broj, c.ime, c.prezime, c.datum_rodjenja,
+    g.naziv
+FROM clanovi c INNER JOIN (dolazak_na_trening d LEFT OUTER JOIN grupe g
+	ON d.grupa_id = g.grupa_id)
+	ON c.clan_id = d.clan_id
+WHERE (d.datum_vreme_dolaska BETWEEN '{0}' AND '{1}')
+ORDER BY god ASC, mes ASC, c.prezime, c.ime, c.datum_rodjenja";
+
+                dolasciQuery = String.Format(dolasciQuery, from.ToString("yyyy-MM-dd HH:mm:ss"),
+                    to.ToString("yyyy-MM-dd HH:mm:ss"));
+                IList<object[]> dolasci = Session.CreateSQLQuery(dolasciQuery).List<object[]>();
+
+                string uplateQuery = @"
+SELECT DISTINCT
+    datepart(year, u.vazi_od) god,
+    datepart(month, u.vazi_od) mes,
+    u.clan_id
+FROM uplate u
+WHERE (u.datum_vreme_uplate BETWEEN '{0}' AND '{1}')
+ORDER BY god ASC, mes ASC";
+                uplateQuery = String.Format(uplateQuery, from.ToString("yyyy-MM-dd HH:mm:ss"),
+                    to.ToString("yyyy-MM-dd HH:mm:ss"));
+                IList<object[]> uplate = Session.CreateSQLQuery(uplateQuery).List<object[]>();
+
+                ISet uplateSet = new HashedSet();
+                foreach (object[] row in uplate)
+                {
+                    int god = (int)row[0];
+                    int mes = (int)row[1];
+                    int id = (int)row[2];
+                    uplateSet.Add(new ClanGodinaMesec(id, god, mes));
+                }
+
+                List<object[]> result = new List<object[]>();
+                foreach (object[] row in dolasci)
+                {
+                    int god = (int)row[0];
+                    int mes = (int)row[1];
+                    int id = (int)row[2];
+                    if (uplateSet.Contains(new ClanGodinaMesec(id, god, mes)))
+                        continue;
+
+                    int broj = (int)row[3];
+                    string ime = (string)row[4];
+                    string prezime = (string)row[5];
+
+                    Nullable<DateTime> datumRodjenja = null;
+                    if (row[6] != null)
+                        datumRodjenja = (DateTime)row[6];
+
+                    string nazivGrupe = String.Empty;
+                    if (row[7] != null)
+                        nazivGrupe = (string)row[7];
+
+                    string clan = Clan.formatPrezimeImeBrojDatumRodjAdresaMesto(
+                        prezime, ime, broj, datumRodjenja, String.Empty, String.Empty);
+                    result.Add(new object[] { clan, nazivGrupe, god, mes });
+                }
+                return result;
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
     }
 }

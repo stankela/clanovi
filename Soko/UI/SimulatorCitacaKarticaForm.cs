@@ -23,7 +23,7 @@ namespace Soko.UI
         {
             InitializeComponent();
             dtpVremeOcitavanja.Format = DateTimePickerFormat.Custom;
-            dtpVremeOcitavanja.CustomFormat = "dd.MM.yyyy hh:mm:ss";
+            dtpVremeOcitavanja.CustomFormat = "dd.MM.yyyy HH:mm:ss";
 
             try
             {

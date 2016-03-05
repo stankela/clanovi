@@ -620,8 +620,7 @@ namespace Soko.UI
                 {
                     CurrentSessionContext.Bind(session);
                     PreviewDialog p = new PreviewDialog();
-                    p.setIzvestaj(new MesecniPrihodiIzvestaj(dlg.OdDatum.Date,
-                        dlg.DoDatum.Date));
+                    p.setIzvestaj(new MesecniPrihodiIzvestaj(dlg.OdDatum, dlg.DoDatum));
                     p.ShowDialog();
                 }
             }
@@ -1146,6 +1145,57 @@ namespace Soko.UI
         {
             SimulatorCitacaKarticaForm f = new SimulatorCitacaKarticaForm();
             f.ShowDialog();
+        }
+
+        private void mnNedostajuceUplate_Click(object sender, EventArgs e)
+        {
+            BiracIntervala dlg;
+            try
+            {
+                dlg = new BiracIntervala("Nedostajuce uplate", false, false, true);
+                dlg.ShowDialog();
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+
+            if (dlg.DialogResult != DialogResult.OK)
+                return;
+
+            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Show();
+            try
+            {
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
+                using (session.BeginTransaction())
+                {
+                    CurrentSessionContext.Bind(session);
+                    PreviewDialog p = new PreviewDialog();
+                    p.setIzvestaj(new NedostajuceUplateIzvestaj(dlg.OdDatum, dlg.DoDatum));
+                    p.ShowDialog();
+                }
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            finally
+            {
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
+                Cursor.Hide();
+                Cursor.Current = Cursors.Arrow;
+            }
         }
     }
 }

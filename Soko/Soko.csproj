@@ -144,6 +144,7 @@
     <Compile Include="Report\AktivniClanoviGrupeIzvestaj.cs" />
     <Compile Include="Report\AktivniClanoviIzvestaj.cs" />
     <Compile Include="Report\EvidencijaTreningaIzvestaj.cs" />
+    <Compile Include="Report\NedostajuceUplateIzvestaj.cs" />
     <Compile Include="UI\BiracClana.cs">
       <SubType>Form</SubType>
     </Compile>

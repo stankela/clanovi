@@ -54,6 +54,7 @@ namespace Soko.UI
             this.mnAktivniClanovi = new System.Windows.Forms.ToolStripMenuItem();
             this.mnAktivniClanoviGrupe = new System.Windows.Forms.ToolStripMenuItem();
             this.mnEvidencijaPrisustvaNaTreningu = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnNedostajuceUplate = new System.Windows.Forms.ToolStripMenuItem();
             this.mnPodesavanja = new System.Windows.Forms.ToolStripMenuItem();
             this.mnFont = new System.Windows.Forms.ToolStripMenuItem();
             this.mnStampaci = new System.Windows.Forms.ToolStripMenuItem();
@@ -193,7 +194,8 @@ namespace Soko.UI
             this.mnUplateClanova,
             this.mnAktivniClanovi,
             this.mnAktivniClanoviGrupe,
-            this.mnEvidencijaPrisustvaNaTreningu});
+            this.mnEvidencijaPrisustvaNaTreningu,
+            this.mnNedostajuceUplate});
             this.mnIzvestaji.Name = "mnIzvestaji";
             this.mnIzvestaji.Size = new System.Drawing.Size(60, 20);
             this.mnIzvestaji.Text = "Izvestaji";
@@ -201,79 +203,86 @@ namespace Soko.UI
             // mnPrihodiDnevniKategorije
             // 
             this.mnPrihodiDnevniKategorije.Name = "mnPrihodiDnevniKategorije";
-            this.mnPrihodiDnevniKategorije.Size = new System.Drawing.Size(241, 22);
+            this.mnPrihodiDnevniKategorije.Size = new System.Drawing.Size(194, 22);
             this.mnPrihodiDnevniKategorije.Text = "Dnevni - kategorije";
             this.mnPrihodiDnevniKategorije.Click += new System.EventHandler(this.mnPrihodiDnevniKategorije_Click);
             // 
             // mnPrihodiDnevniGrupe
             // 
             this.mnPrihodiDnevniGrupe.Name = "mnPrihodiDnevniGrupe";
-            this.mnPrihodiDnevniGrupe.Size = new System.Drawing.Size(241, 22);
+            this.mnPrihodiDnevniGrupe.Size = new System.Drawing.Size(194, 22);
             this.mnPrihodiDnevniGrupe.Text = "Dnevni - grupe";
             this.mnPrihodiDnevniGrupe.Click += new System.EventHandler(this.mnPrihodiDnevniGrupe_Click);
             // 
             // mnPrihodiDnevniClanovi
             // 
             this.mnPrihodiDnevniClanovi.Name = "mnPrihodiDnevniClanovi";
-            this.mnPrihodiDnevniClanovi.Size = new System.Drawing.Size(241, 22);
+            this.mnPrihodiDnevniClanovi.Size = new System.Drawing.Size(194, 22);
             this.mnPrihodiDnevniClanovi.Text = "Dnevni - clanovi";
             this.mnPrihodiDnevniClanovi.Click += new System.EventHandler(this.mnPrihodiDnevniClanovi_Click);
             // 
             // mnPrihodiPeriodicni
             // 
             this.mnPrihodiPeriodicni.Name = "mnPrihodiPeriodicni";
-            this.mnPrihodiPeriodicni.Size = new System.Drawing.Size(241, 22);
+            this.mnPrihodiPeriodicni.Size = new System.Drawing.Size(194, 22);
             this.mnPrihodiPeriodicni.Text = "Periodicni - uplate";
             this.mnPrihodiPeriodicni.Click += new System.EventHandler(this.mnPrihodiPeriodicni_Click);
             // 
             // mnPrihodiPeriodicniClanovi
             // 
             this.mnPrihodiPeriodicniClanovi.Name = "mnPrihodiPeriodicniClanovi";
-            this.mnPrihodiPeriodicniClanovi.Size = new System.Drawing.Size(241, 22);
+            this.mnPrihodiPeriodicniClanovi.Size = new System.Drawing.Size(194, 22);
             this.mnPrihodiPeriodicniClanovi.Text = "Periodicni - clanovi";
             this.mnPrihodiPeriodicniClanovi.Click += new System.EventHandler(this.mnPrihodiPeriodicniClanovi_Click);
             // 
             // mnPrihodiMesecni
             // 
             this.mnPrihodiMesecni.Name = "mnPrihodiMesecni";
-            this.mnPrihodiMesecni.Size = new System.Drawing.Size(241, 22);
+            this.mnPrihodiMesecni.Size = new System.Drawing.Size(194, 22);
             this.mnPrihodiMesecni.Text = "Mesecni";
             this.mnPrihodiMesecni.Click += new System.EventHandler(this.mnPrihodiMesecni_Click);
             // 
             // mnIzvestajiCenovnik
             // 
             this.mnIzvestajiCenovnik.Name = "mnIzvestajiCenovnik";
-            this.mnIzvestajiCenovnik.Size = new System.Drawing.Size(241, 22);
+            this.mnIzvestajiCenovnik.Size = new System.Drawing.Size(194, 22);
             this.mnIzvestajiCenovnik.Text = "Cenovnik";
             this.mnIzvestajiCenovnik.Click += new System.EventHandler(this.mnIzvestajiCenovnik_Click);
             // 
             // mnUplateClanova
             // 
             this.mnUplateClanova.Name = "mnUplateClanova";
-            this.mnUplateClanova.Size = new System.Drawing.Size(241, 22);
+            this.mnUplateClanova.Size = new System.Drawing.Size(194, 22);
             this.mnUplateClanova.Text = "Uplate clanova";
             this.mnUplateClanova.Click += new System.EventHandler(this.mnUplateClanova_Click);
             // 
             // mnAktivniClanovi
             // 
             this.mnAktivniClanovi.Name = "mnAktivniClanovi";
-            this.mnAktivniClanovi.Size = new System.Drawing.Size(241, 22);
+            this.mnAktivniClanovi.Size = new System.Drawing.Size(194, 22);
             this.mnAktivniClanovi.Text = "Aktivni clanovi";
             this.mnAktivniClanovi.Click += new System.EventHandler(this.mnAktivniClanovi_Click);
             // 
             // mnAktivniClanoviGrupe
             // 
             this.mnAktivniClanoviGrupe.Name = "mnAktivniClanoviGrupe";
-            this.mnAktivniClanoviGrupe.Size = new System.Drawing.Size(241, 22);
+            this.mnAktivniClanoviGrupe.Size = new System.Drawing.Size(194, 22);
             this.mnAktivniClanoviGrupe.Text = "Aktivni clanovi - grupe";
             this.mnAktivniClanoviGrupe.Click += new System.EventHandler(this.mnAktivniClanoviGrupe_Click);
             // 
             // mnEvidencijaPrisustvaNaTreningu
             // 
             this.mnEvidencijaPrisustvaNaTreningu.Name = "mnEvidencijaPrisustvaNaTreningu";
-            this.mnEvidencijaPrisustvaNaTreningu.Size = new System.Drawing.Size(241, 22);
-            this.mnEvidencijaPrisustvaNaTreningu.Text = "Evidencija prisustva na treningu";
+            this.mnEvidencijaPrisustvaNaTreningu.Size = new System.Drawing.Size(194, 22);
+            this.mnEvidencijaPrisustvaNaTreningu.Text = "Dolasci na trening";
             this.mnEvidencijaPrisustvaNaTreningu.Click += new System.EventHandler(this.mnEvidencijaPrisustvaNaTreningu_Click);
+            // 
+            // mnNedostajuceUplate
+            // 
+            this.mnNedostajuceUplate.Name = "mnNedostajuceUplate";
+            this.mnNedostajuceUplate.Size = new System.Drawing.Size(194, 22);
+            this.mnNedostajuceUplate.Text = "Nedostajuce uplate";
+            this.mnNedostajuceUplate.Click += new System.EventHandler(this.mnNedostajuceUplate_Click);
             // 
             // mnPodesavanja
             // 
@@ -383,6 +392,7 @@ namespace Soko.UI
         private System.Windows.Forms.ToolStripMenuItem mnAdmin;
         private System.Windows.Forms.ToolStripMenuItem mnDuplikatiClanova;
         private System.Windows.Forms.ToolStripMenuItem mnSimulatorCitacaKartica;
+        private System.Windows.Forms.ToolStripMenuItem mnNedostajuceUplate;
     }
 }
 

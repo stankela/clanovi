@@ -22,6 +22,7 @@ namespace Soko.UI
         private bool izborClana;
         private DateTime currentDatumOd;
         private DateTime currentDatumDo;
+        private bool months;
 
         public DateTimePicker DateTimePickerFrom
         {
@@ -39,8 +40,9 @@ namespace Soko.UI
         public BiracIntervala(string naslov, bool izborGrupa, bool izborClana, bool months)
         {
             InitializeComponent();
-
             this.Text = naslov;
+            this.months = months;
+
             string format;
             if (months)
             {
@@ -49,7 +51,7 @@ namespace Soko.UI
                 dtpDo.ShowUpDown = true;
             }
             else
-                format = "dd.MM.yyyy";
+                format = "d.M.yyyy";
             this.dtpOd.CustomFormat = format;
             this.dtpOd.Format = DateTimePickerFormat.Custom;
             this.dtpDo.CustomFormat = format;
@@ -138,12 +140,31 @@ namespace Soko.UI
 
         public DateTime OdDatum
         {
-            get { return dtpOd.Value.Date; }
+            get
+            {                
+                DateTime result = dtpOd.Value.Date;
+                if (months)
+                {
+                    // return first datetime in month
+                    result = new DateTime(result.Year, result.Month, 1, 0, 0, 0);
+                }
+                return result;
+            }
         }
 
         public DateTime DoDatum
         {
-            get { return dtpDo.Value.Date; }
+            get
+            {               
+                DateTime result = dtpDo.Value.Date;
+                if (months)
+                {
+                    // return last datetime in month
+                    result = result.AddMonths(1);
+                    result = new DateTime(result.Year, result.Month, 1, 0, 0, 0).AddSeconds(-1);
+                }
+                return result;
+            }
         }
 
         DateTime truncateSeconds(DateTime d)

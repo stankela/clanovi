@@ -23,9 +23,8 @@ namespace Soko.Report
 
 		public MesecniPrihodiIzvestaj(DateTime from, DateTime to)
 		{
-            fromDate = new DateTime(from.Year, from.Month, 1, 0, 0, 0);
-            toDate = to.AddMonths(1);
-            toDate = new DateTime(toDate.Year, toDate.Month, 1, 0, 0, 0).AddSeconds(-1);
+            fromDate = from;
+            toDate = to;
 
 			System.Resources.ResourceManager resourceManager = new 
 				System.Resources.ResourceManager("Soko.Resources.PreviewResursi", this.GetType().Assembly);
