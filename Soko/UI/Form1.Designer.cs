@@ -274,7 +274,7 @@ namespace Soko.UI
             // 
             this.mnEvidencijaPrisustvaNaTreningu.Name = "mnEvidencijaPrisustvaNaTreningu";
             this.mnEvidencijaPrisustvaNaTreningu.Size = new System.Drawing.Size(194, 22);
-            this.mnEvidencijaPrisustvaNaTreningu.Text = "Dolasci na trening";
+            this.mnEvidencijaPrisustvaNaTreningu.Text = "Dolazak na trening";
             this.mnEvidencijaPrisustvaNaTreningu.Click += new System.EventHandler(this.mnEvidencijaPrisustvaNaTreningu_Click);
             // 
             // mnNedostajuceUplate

@@ -24,7 +24,7 @@ namespace Bilten.Dao.NHibernate
                 string query = @"
 SELECT
     c.broj, c.ime, c.prezime, c.datum_rodjenja,
-    d.datum_vreme_dolaska, d.datum_poslednje_uplate
+    d.datum_vreme_dolaska
 FROM clanovi c INNER JOIN (dolazak_na_trening d LEFT OUTER JOIN grupe g
 	ON d.grupa_id = g.grupa_id)
 	ON c.clan_id = d.clan_id
@@ -41,10 +41,9 @@ ORDER BY
                 query = String.Format(query, from.ToString("yyyy-MM-dd HH:mm:ss"),
                     to.ToString("yyyy-MM-dd HH:mm:ss"), filter);
 
-                ISQLQuery q = Session.CreateSQLQuery(query);
-                IList<object[]> result = q.List<object[]>();
-                List<object[]> result2 = new List<object[]>();
-                foreach (object[] row in result)
+                IList<object[]> dolasci = Session.CreateSQLQuery(query).List<object[]>();
+                List<object[]> result = new List<object[]>();
+                foreach (object[] row in dolasci)
                 {
                     int broj = (int)row[0];
                     string ime = (string)row[1];
@@ -56,15 +55,11 @@ ORDER BY
 
                     DateTime datumVremeDolaska = (DateTime)row[4];
 
-                    Nullable<DateTime> datumPoslednjeUplate = null;
-                    if (row[5] != null)
-                        datumPoslednjeUplate = (DateTime)row[5];
-
                     string clan = Clan.formatPrezimeImeBrojDatumRodjAdresaMesto(
                             prezime, ime, broj, datumRodjenja, String.Empty, String.Empty);
-                    result2.Add(new object[] { clan, datumVremeDolaska, datumPoslednjeUplate });
+                    result.Add(new object[] { clan, datumVremeDolaska });
                 }
-                return result2;
+                return result;
             }
             catch (HibernateException ex)
             {
@@ -133,7 +128,7 @@ ORDER BY g.broj_grupe, g.podgrupa
             {
                 string query = @"
 SELECT
-    g.naziv, d.datum_vreme_dolaska, d.datum_poslednje_uplate
+    g.naziv, d.datum_vreme_dolaska
 FROM dolazak_na_trening d LEFT OUTER JOIN grupe g
 	ON d.grupa_id = g.grupa_id
 WHERE
@@ -150,10 +145,9 @@ ORDER BY
                 query = String.Format(query, clanId, from.ToString("yyyy-MM-dd HH:mm:ss"),
                     to.ToString("yyyy-MM-dd HH:mm:ss"), filter);
 
-                ISQLQuery q = Session.CreateSQLQuery(query);
-                IList<object[]> result = q.List<object[]>();
-                List<object[]> result2 = new List<object[]>();
-                foreach (object[] row in result)
+                IList<object[]> dolasci = Session.CreateSQLQuery(query).List<object[]>();
+                List<object[]> result = new List<object[]>();
+                foreach (object[] row in dolasci)
                 {
                     string nazivGrupe = String.Empty;
                     if (row[0] != null)
@@ -161,13 +155,9 @@ ORDER BY
 
                     DateTime datumVremeDolaska = (DateTime)row[1];
 
-                    Nullable<DateTime> datumPoslednjeUplate = null;
-                    if (row[2] != null)
-                        datumPoslednjeUplate = (DateTime)row[2];
-
-                    result2.Add(new object[] { nazivGrupe, datumVremeDolaska, datumPoslednjeUplate });
+                    result.Add(new object[] { nazivGrupe, datumVremeDolaska });
                 }
-                return result2;
+                return result;
             }
             catch (HibernateException ex)
             {

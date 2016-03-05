@@ -21,7 +21,7 @@ namespace Soko.Report
         public EvidencijaTreningaIzvestaj(Nullable<int> clanId, DateTime from, DateTime to, List<Grupa> grupe)
 		{
             this.clanId = clanId;
-			Title = "Evidencija prisustva na treningu";
+			Title = "Dolazak na trening";
             string subtitle;
             if (from.Date == to.Date)
             {
@@ -94,13 +94,10 @@ namespace Soko.Report
 	public class EvidencijaTreningaLista : ReportLista
 	{
         private Nullable<int> clanId;
-        private DateTime from;
-		private DateTime to;
         private List<Grupa> grupe;
 
 		private float relClan = 0.0f;
-		private float relVremeDolaska = 9.0f;
-		private float relDatumUplate = 14f;
+		private float relVremeDolaska = 12f;
 		
 		private Font groupTitleFont;
 		private float groupTitleHeight;
@@ -111,15 +108,13 @@ namespace Soko.Report
 			: base(izvestaj, pageNum, y, itemFont, itemsHeaderFont)
 		{
             this.clanId = clanId;
-			this.from = from;
-			this.to = to;
 			this.grupe = grupe;
 			this.groupTitleFont = groupTitleFont;
 
-			fetchItems();
+			fetchItems(from, to);
 		}
 
-		private void fetchItems()
+		private void fetchItems(DateTime from, DateTime to)
 		{
             if (clanId != null)
             {
@@ -180,22 +175,15 @@ namespace Soko.Report
 			float relWidth = Izvestaj.relWidth;
 			float xClan = contentBounds.X + relClan / relWidth * contentBounds.Width;
 			float xVremeDolaska = contentBounds.X + relVremeDolaska / relWidth * contentBounds.Width;
-			float xDatumUplate = contentBounds.X + relDatumUplate / relWidth * contentBounds.Width;
-			float clanWidth = xVremeDolaska - xClan;
-			float vremeDolaskaWidth = xDatumUplate - xVremeDolaska;
-			float datumUplateWidth = contentBounds.Right - xDatumUplate;
+            float clanWidth = xVremeDolaska - xClan;
+			float vremeDolaskaWidth = contentBounds.Right - xVremeDolaska;
 
 			StringFormat vremeDolaskaFormat = new StringFormat();
 			vremeDolaskaFormat.Alignment = StringAlignment.Far;
-
-			StringFormat datumUplateFormat = new StringFormat();
-			datumUplateFormat.Alignment = StringAlignment.Far;
 			
 			columns.Clear();
 			addColumn(xClan, clanWidth);
-			addColumn(xVremeDolaska, vremeDolaskaWidth, vremeDolaskaFormat, "dd.MM.yyyy HH:mm:ss");
-            addColumn(xDatumUplate, datumUplateWidth, datumUplateFormat, "MMM yyyy");
-
+            addColumn(xVremeDolaska, vremeDolaskaWidth, vremeDolaskaFormat, "dd.MM.yyyy HH:mm:ss");
 		}
 		
 		protected override void drawGroupHeader(Graphics g, int groupId, RectangleF groupHeaderRect)
@@ -223,11 +211,6 @@ namespace Soko.Report
                 groupHeaderRect.Height);
             StringFormat dolazakFormat = columns[1].ItemRectFormat;
             g.DrawString("Vreme dolaska", itemFont, blackBrush, dolazakHeaderRect, dolazakFormat);
-
-            RectangleF uplataHeaderRect = new RectangleF(columns[2].X, groupHeaderRect.Y, columns[2].Width,
-                groupHeaderRect.Height);
-            StringFormat uplataFormat = columns[2].ItemRectFormat;
-            g.DrawString("Uplata", itemFont, blackBrush, uplataHeaderRect, uplataFormat);
 			
 			float y = groupHeaderRect.Y + groupTitleFont.GetHeight(g);
 			using(Pen pen = new Pen(Color.Black, 1/72f * 0.25f))
