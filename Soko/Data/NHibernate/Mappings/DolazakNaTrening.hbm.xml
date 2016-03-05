@@ -8,7 +8,6 @@
       <generator class="identity" />
     </id>
     <property name="DatumVremeDolaska" column="datum_vreme_dolaska" />
-    <property name="DatumPoslednjeUplate" column="datum_poslednje_uplate" />
     <many-to-one name="Clan" class="Clan" column="clan_id" />
     <many-to-one name="Grupa" class="Grupa" column="grupa_id" />
   </class>

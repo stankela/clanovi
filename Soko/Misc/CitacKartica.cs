@@ -156,12 +156,10 @@ namespace Soko
                     if (poslednjaUplata != null)
                     {
                         dolazak.Grupa = poslednjaUplata.Grupa;
-                        dolazak.DatumPoslednjeUplate = poslednjaUplata.VaziOd;
                     }
                     else
                     {
                         dolazak.Grupa = null;
-                        dolazak.DatumPoslednjeUplate = null;
                     }
 
                     DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO().MakePersistent(dolazak);

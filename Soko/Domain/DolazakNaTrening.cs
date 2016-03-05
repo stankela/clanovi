@@ -52,13 +52,6 @@ namespace Soko.Domain
             set { datumVremeDolaska = value; }
         }
 
-        private Nullable<DateTime> datumPoslednjeUplate;
-        public virtual Nullable<DateTime> DatumPoslednjeUplate
-        {
-            get { return datumPoslednjeUplate; }
-            set { datumPoslednjeUplate = value; }
-        }
-
         public virtual string PrezimeImeBrojDatumRodj
         {
             get
@@ -103,12 +96,6 @@ namespace Soko.Domain
             {
                 notification.RegisterMessage(
                     "VremeDolaska", "Vreme dolaska je obavezno.");
-            }
-
-            if (DatumPoslednjeUplate == null)
-            {
-                notification.RegisterMessage(
-                    "DatumPoslednjeUplate", "Datum poslednje uplate je obavezan.");
             }
         }
 

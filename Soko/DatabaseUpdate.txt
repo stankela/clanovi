@@ -12,3 +12,7 @@ create table dolazak_na_trening (
     clan_id int references clanovi(clan_id),
     grupa_id int references grupe(grupa_id)
 );
+
+06-Mar-2016
+
+ALTER TABLE dolazak_na_trening DROP COLUMN datum_poslednje_uplate;
