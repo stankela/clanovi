@@ -1018,7 +1018,7 @@ namespace Soko.UI
                         repaint = false;
                     }
                     long elapsedMs;
-                    lastRead = CitacKartica.getCitacKartica().Read(out elapsedMs);
+                    lastRead = CitacKartica.getCitacKartica().TryReadDolazakNaTrening(out elapsedMs);
                 }
             }
             else
@@ -1027,14 +1027,38 @@ namespace Soko.UI
                 PravljenjeKarticeForm pkf = PravljenjeKarticeForm;
                 if (pkf != null && pkf.PendingWrite)
                 {
-                    pkf.Write();
+                    try
+                    {
+                        string okMsg;
+                        pkf.Write(out okMsg);
+                        MessageBox.Show(okMsg, "Pravljenje kartice");
+                    }
+                    catch (WriteCardException ex)
+                    {
+                        MessageDialogs.showMessage(ex.Message, "Pravljenje kartice");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageDialogs.showMessage(ex.Message, "Pravljenje kartice");
+                    }
                 }
                 else
                 {
                     UplataClanarineDialog dlg = UplataClanarineDialog;
                     if (dlg != null && dlg.PendingRead)
                     {
-                        dlg.Read(true);
+                        try
+                        {
+                            dlg.Read();
+                        }
+                        catch (ReadCardException ex)
+                        {
+                            MessageDialogs.showMessage(ex.Message, "Ocitavanje kartice");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageDialogs.showMessage(ex.Message, "Ocitavanje kartice");
+                        }
                     }
                 }
             }

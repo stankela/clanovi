@@ -389,24 +389,21 @@ namespace Soko.UI
             btnOk.Focus();
         }
 
-        public bool Read(bool showErrorMessage)
+        public void Read()
         {
             if (!PendingRead)
-                return false;
+                return;
             PendingRead = false;
 
             int broj;
             string notUsed;
-            bool result = CitacKartica.getCitacKartica().readCard(Options.Instance.COMPortWriter, showErrorMessage, out broj, out notUsed);
-            if (!result)
-                return false;
+            CitacKartica.getCitacKartica().readCard(Options.Instance.COMPortWriter, out broj, out notUsed);
 
             // SelectedClan will be updated in txtBrojClana_TextChanged
             txtBrojClana.Text = broj.ToString();
             List<UplataClanarine> uplate = getUplate(SelectedClan);
             updateGrupaFromUplate(uplate);
             updatePrethodneUplate(uplate);
-            return true;
         }
 
         private void updateGrupaFromUplate(List<UplataClanarine> uplate)

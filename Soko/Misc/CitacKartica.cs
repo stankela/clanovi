@@ -14,6 +14,7 @@ using Soko.Domain;
 using Soko.UI;
 using Soko.Misc;
 using System.Diagnostics;
+using Soko.Exceptions;
 
 namespace Soko
 {
@@ -44,7 +45,7 @@ namespace Soko
         public static readonly int TEST_KARTICA_BROJ = 100000;
         public static readonly string TEST_KARTICA_NAME = "TEST KARTICA";
 
-        public bool readCard(int comPort, bool showErrorMessages, out int broj, out string name)
+        public void readCard(int comPort, out int broj, out string name)
         {
             string sType = " ";
             string sID1 = "          ";
@@ -55,51 +56,62 @@ namespace Soko
             ulong retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
             if (retval == 1)
             {
-                if (Int32.TryParse(sID1, out broj) && broj > 0 && name == NAME_FIELD)
+                if (!Int32.TryParse(sID1, out broj) || broj <= 0 || name != NAME_FIELD)
                 {
-                    return true;
-                }
-                else
-                {
-                    if (showErrorMessages)
-                    {
-                  
-                        string msg = "Lose formatirana kartica.";
-                        MessageBox.Show(msg, "Ocitavanje kartice");
-                    }
-                    return false;
+                    throw new ReadCardException("Lose formatirana kartica.");
                 }
             }
             else
             {
-                if (showErrorMessages)
-                {
-                    string msg = "Neuspesno citanje kartice. " +
-                        "Proverite da li je uredjaj prikljucen, i da li je podesen COM port.";
-                    MessageBox.Show(msg, "Ocitavanje kartice");
-                }
-                return false;
+                string msg = "Neuspesno citanje kartice. " +
+                    "Proverite da li je uredjaj prikljucen, i da li je podesen COM port.";
+                throw new ReadCardException(msg);
             }
         }
 
-        public bool Read(out long elapsedMs)
+        public bool tryReadCard(int comPort, out int broj, out string name)
+        {
+            string sType = " ";
+            string sID1 = "          ";
+            string sID2 = "          ";
+            name = "                                ";
+            broj = -1;
+
+            ulong retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+            return retval == 1 && Int32.TryParse(sID1, out broj) && broj > 0 && name == NAME_FIELD;
+        }
+
+        public void writeCard(int comPort, string sID1, string errorMsg)
+        {
+            string sType = "";
+            string sID2 = "";
+            string sName = CitacKartica.NAME_FIELD;
+            
+            ulong retval = WriteDataCard(Options.Instance.COMPortWriter, sType, sID1, sID2, sName) & 0xFFFFFFFF;
+            if (retval == 0)
+            {
+                throw new WriteCardException(errorMsg);
+            }
+        }
+
+        public bool TryReadDolazakNaTrening(out long elapsedMs)
         {
             int broj;
             string name;  // not used
 
             elapsedMs = 0;
             Stopwatch watch = Stopwatch.StartNew();
-            bool result = readCard(Options.Instance.COMPortReader, false, out broj, out name);
+            bool result = tryReadCard(Options.Instance.COMPortReader, out broj, out name);
             watch.Stop();
             elapsedMs = watch.ElapsedMilliseconds;
 
             if (!result)
                 return false;
 
-            return handleOcitanaKartica(broj, DateTime.Now);
+            return handleDolazakNaTrening(broj, DateTime.Now);
         }
 
-        public bool handleOcitanaKartica(int broj, DateTime vremeOcitavanja)
+        public bool handleDolazakNaTrening(int broj, DateTime vremeOcitavanja)
         {
             if (broj == TEST_KARTICA_BROJ)
             {

@@ -19,21 +19,19 @@ namespace Soko.UI
 {
     public partial class PravljenjeKarticeForm : Form
     {
-        [DllImport("PanReaderIf.dll")]
-        private static extern ulong ReadDataCard(int comport, ref string sType, ref string sID1, ref string sID2, ref string sName);
-        [DllImport("PanReaderIf.dll")]
-        private static extern ulong WriteDataCard(int comport, string sType, string sID1, string sID2, string sName);
-        [DllImport("PanReaderIf.dll")]
-        private static extern ulong WaitDataCard(int comport, int nSecs);
-        [DllImport("PanReaderIf.dll")]
-        private static extern ulong WaitAndReadDataCard(int comport, int nSecs, ref string sType, ref string sID1, ref string sID2, ref string sName);
-
         public bool PendingWrite = false;    
         private List<Clan> clanovi;
 
         private bool testKartica;
         private int clanId;
         private int brojKartice;
+
+        private const string OK_MSG_WRITE_TEST = "TEST KARTICA je napravljena.";
+        private const string OK_MSG_WRITE = "Kartica je napravljena.\n\nBroj kartice:   {0}\nClan:   {1}";
+        private const string ERROR_MSG_WRITE_TEST = "Neuspesno pravljenje TEST KARTICE. " +
+            "Proverite da li je uredjaj prikljucen, i da li je podesen COM port.";
+        private const string ERROR_MSG_WRITE = "Neuspesno pravljenje kartice. " +
+            "Proverite da li je uredjaj prikljucen, i da li je podesen COM port.";
 
         public PravljenjeKarticeForm()
         {
@@ -184,75 +182,44 @@ namespace Soko.UI
             }
         }
 
-        public void Write()
+        public void Write(out string okMsg)
         {
-            if (PendingWrite)
+            okMsg = String.Empty;
+            if (!PendingWrite)
+                return;
+            PendingWrite = false;
+
+            if (testKartica)
             {
-                PendingWrite = false;
-                try
+                // TODO2: Prvo proveri da li je kartica vazeca, i prikazi upozorenje ako jeste (isto i dole).
+                CitacKartica.getCitacKartica().writeCard(Options.Instance.COMPortWriter,
+                    CitacKartica.TEST_KARTICA_BROJ.ToString(), ERROR_MSG_WRITE_TEST);
+                okMsg = OK_MSG_WRITE_TEST;
+                return;
+            }
+
+            CitacKartica.getCitacKartica().writeCard(Options.Instance.COMPortWriter,
+                brojKartice.ToString(), ERROR_MSG_WRITE);
+
+            try
+            {
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
+                using (session.BeginTransaction())
                 {
-                    string sType = "";
-                    string sID1;
-                    string sID2 = "";
-                    string sName = CitacKartica.NAME_FIELD;
-                    ulong retval;
+                    CurrentSessionContext.Bind(session);
+                    Clan clan = session.Load<Clan>(clanId);
+                    clan.BrojKartice = brojKartice;
+                    DAOFactoryFactory.DAOFactory.GetClanDAO().MakePersistent(clan);
+                    session.Transaction.Commit();
+                    ckbKartica.Checked = true;
 
-                    if (testKartica)
-                    {
-                        sID1 = CitacKartica.TEST_KARTICA_BROJ.ToString();
-                        retval = WriteDataCard(Options.Instance.COMPortWriter,
-                            sType, sID1, sID2, sName) & 0xFFFFFFFF;
-
-                        // TODO2: Prvo proveri da li je kartica vazeca, i prikazi upozorenje ako jeste (isto i dole).
-                        if (retval == 0)
-                        {
-                            string msg = "Neuspesno pravljenje TEST KARTICE. " +
-                                "Proverite da li je uredjaj prikljucen, i da li je podesen COM port.";
-                            throw new Exception(msg);
-                        }
-                        else
-                        {
-                            MessageBox.Show("TEST KARTICA je napravljena.", "Pravljenje kartice");
-                        }
-                        return;
-                    }
-
-                    sID1 = brojKartice.ToString();
-                    retval = WriteDataCard(Options.Instance.COMPortWriter,
-                        sType, sID1, sID2, sName) & 0xFFFFFFFF;
-
-                    if (retval == 0)
-                    {
-                        string msg = "Neuspesno pravljenje kartice. " +
-                            "Proverite da li je uredjaj prikljucen, i da li je podesen COM port.";
-                        throw new Exception(msg);
-                    }
-                    else
-                    {
-                        using (ISession session = NHibernateHelper.Instance.OpenSession())
-                        using (session.BeginTransaction())
-                        {
-                            CurrentSessionContext.Bind(session);
-                            Clan clan = session.Load<Clan>(clanId);
-                            clan.BrojKartice = brojKartice;
-                            DAOFactoryFactory.DAOFactory.GetClanDAO().MakePersistent(clan);
-                            session.Transaction.Commit();
-
-                            MessageBox.Show(String.Format("Kartica je napravljena.\n\nBroj kartice:   {0}\nClan:   {1}",
-                                sID1, clan.BrojPrezimeImeDatumRodjenja), "Pravljenje kartice");
-                            ckbKartica.Checked = true;
-                        }
-                    }                    
+                    okMsg = String.Format(OK_MSG_WRITE, brojKartice.ToString(), clan.BrojPrezimeImeDatumRodjenja);
+                    return;
                 }
-                catch (Exception ex)
-                {
-                    //discardChanges();
-                    MessageDialogs.showMessage(ex.Message, "Pravljenje kartice");
-                }
-                finally
-                {
-                    CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
-                }
+            }
+            finally
+            {
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
         }
 
