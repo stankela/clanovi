@@ -82,16 +82,19 @@ namespace Soko
             }
         }
 
-        public bool Read()
+        public bool Read(out long elapsedMs)
         {
             int broj;
             string name;  // not used
 
-            //Stopwatch watch = Stopwatch.StartNew();
-            if (!readCard(Options.Instance.COMPortReader, false, out broj, out name))
+            elapsedMs = 0;
+            Stopwatch watch = Stopwatch.StartNew();
+            bool result = readCard(Options.Instance.COMPortReader, false, out broj, out name);
+            watch.Stop();
+            elapsedMs = watch.ElapsedMilliseconds;
+
+            if (!result)
                 return false;
-            //watch.Stop();
-            //long elapsedMs = watch.ElapsedMilliseconds;
 
             return handleOcitanaKartica(broj, DateTime.Now);
         }

@@ -1018,7 +1018,8 @@ namespace Soko.UI
                         g.Dispose();
                         repaint = false;
                     }
-                    lastRead = CitacKartica.getCitacKartica().Read();
+                    long elapsedMs;
+                    lastRead = CitacKartica.getCitacKartica().Read(out elapsedMs);
                 }
             }
             else
