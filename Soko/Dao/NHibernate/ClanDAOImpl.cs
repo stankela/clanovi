@@ -89,21 +89,6 @@ namespace Bilten.Dao.NHibernate
             }
         }
 
-        public virtual int getMaxBrojKartice()
-        {
-            try
-            {
-                IQuery q = Session.CreateQuery("select max(c.BrojKartice) from Clan c");
-                return (int)q.UniqueResult();
-            }
-            catch (HibernateException ex)
-            {
-                string message = String.Format(
-                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
-                throw new InfrastructureException(message, ex);
-            }
-        }
-
         public virtual Clan findForBrojKartice(int brojKartice)
         {
             try

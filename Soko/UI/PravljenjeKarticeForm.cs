@@ -161,11 +161,6 @@ namespace Soko.UI
             return MessageDialogs.queryConfirmation(pitanje, naslov);
         }
 
-        private int getNewBrojKartice()
-        {
-            return DAOFactoryFactory.DAOFactory.GetClanDAO().getMaxBrojKartice() + 1;
-        }
-
         private void btnNapraviKarticu_Click(object sender, EventArgs e)
         {
             bool testKartica = ckbTestKartica.Checked;
