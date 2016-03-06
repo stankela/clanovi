@@ -102,5 +102,11 @@ namespace Soko
             set { adminMode = value; }
         }
 
+        private int citacKarticaTimerInterval = 500;
+        public int CitacKarticaTimerInterval
+        {
+            get { return citacKarticaTimerInterval; }
+            set { citacKarticaTimerInterval = value; }
+        }
     }
 }

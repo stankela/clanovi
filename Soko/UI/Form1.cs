@@ -983,8 +983,8 @@ namespace Soko.UI
             // Hook up the Elapsed event for the timer.
             aTimer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimedEvent);
 
-            // Set the Interval to 0.5 seconds (500 milliseconds).
-            aTimer.Interval = 500;
+            // Set the Interval (in milliseconds).
+            aTimer.Interval = Options.Instance.CitacKarticaTimerInterval;
             aTimer.Enabled = true;
 
             // If the timer is declared in a long-running method, use 
