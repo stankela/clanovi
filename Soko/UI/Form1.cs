@@ -122,7 +122,7 @@ namespace Soko.UI
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            aTimer.Enabled = false;
+            karticaTimer.Enabled = false;
             saveOptions();
             NHibernateHelper.Instance.SessionFactory.Close();
         }
@@ -950,7 +950,7 @@ namespace Soko.UI
             }
         }
 
-        private System.Timers.Timer aTimer;
+        private System.Timers.Timer karticaTimer;
         private int numTimerEvents = 0;
         private bool lastRead = false;
         private bool repaint = true;
@@ -977,15 +977,9 @@ namespace Soko.UI
             // the GC.KeepAlive(aTimer) at the end of the method. 
             //System.Timers.Timer aTimer; 
 
-            // Create a timer with a ten second interval.
-            aTimer = new System.Timers.Timer();
-
-            // Hook up the Elapsed event for the timer.
-            aTimer.Elapsed += new System.Timers.ElapsedEventHandler(OnTimedEvent);
-
-            // Set the Interval (in milliseconds).
-            aTimer.Interval = Options.Instance.CitacKarticaTimerInterval;
-            aTimer.Enabled = true;
+            karticaTimer = new System.Timers.Timer();
+            karticaTimer.Elapsed += new System.Timers.ElapsedEventHandler(karticaTimer_Elapsed);
+            initKarticaTimer();
 
             // If the timer is declared in a long-running method, use 
             // KeepAlive to prevent garbage collection from occurring 
@@ -993,9 +987,14 @@ namespace Soko.UI
             //GC.KeepAlive(aTimer);        
         }
 
-        // Specify what you want to happen when the Elapsed event is  
-        // raised. 
-        private void OnTimedEvent(object source, System.Timers.ElapsedEventArgs e)
+        public void initKarticaTimer()
+        {
+            // Set the Interval (in milliseconds).
+            karticaTimer.Interval = Options.Instance.CitacKarticaTimerInterval;
+            karticaTimer.Enabled = true;
+        }
+
+        private void karticaTimer_Elapsed(object source, System.Timers.ElapsedEventArgs e)
         {
             ++numTimerEvents;
             if (numTimerEvents % 2 == 0)
