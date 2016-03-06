@@ -78,7 +78,7 @@ namespace Soko.UI
 
         protected override EntityDetailForm createEntityDetailForm(Nullable<int> entityId)
         {
-            return new ClanDialog(entityId, false);
+            return new ClanDialog(entityId);
         }
 
         private void btnDodaj_Click(object sender, System.EventArgs e)

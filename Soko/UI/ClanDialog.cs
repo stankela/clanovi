@@ -16,16 +16,13 @@ namespace Soko.UI
     {
         private List<Mesto> mesta;
         private List<Institucija> institucije;
-        private List<Clan> clanovi;
-        private bool pretraga;
         private string oldIme;
         private string oldPrezime;
         private Nullable<DateTime> oldDatumRodjenja;
 
-        public ClanDialog(Nullable<int> entityId, bool pretraga)
+        public ClanDialog(Nullable<int> entityId)
         {
             InitializeComponent();
-            this.pretraga = pretraga;
             initialize(entityId, true);
         }
 
@@ -51,8 +48,6 @@ namespace Soko.UI
         {
             mesta = loadMesta();
             institucije = loadInstitucije();
-            if (pretraga)
-                clanovi = loadClanovi();
         }
 
         private List<Mesto> loadMesta()
@@ -75,37 +70,15 @@ namespace Soko.UI
             return result;
         }
 
-        private List<Clan> loadClanovi()
-        {
-            List<Clan> result = new List<Clan>(DAOFactoryFactory.DAOFactory.GetClanDAO().FindAll());
-            Util.sortByPrezimeImeDatumRodjenja(result);
-            return result;
-        }
-
         protected override void initUI()
         {
             base.initUI();
             this.Text = "Clan";
-            cmbClan.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            if (!pretraga)
+            if (!editMode)
             {
-                txtPretraga.Visible = false;
-                txtPretraga.Enabled = false;
-                cmbClan.Visible = false;
-                cmbClan.Enabled = false;
                 ckbKartica.Visible = false;
                 ckbKartica.Enabled = false;
-            }
-            else
-            {
-                lblBroj.Visible = false;
-                txtBroj.Visible = false;
-                txtBroj.Enabled = false;
-
-                Point pretragaLoc = txtPretraga.Location;
-                txtPretraga.Location = new Point(txtIme.Location.X, txtPretraga.Location.Y);
-                cmbClan.Location = new Point(cmbClan.Location.X - (pretragaLoc.X - txtPretraga.Location.X), cmbClan.Location.Y);
             }
 
             txtBroj.Text = String.Empty;
@@ -113,8 +86,7 @@ namespace Soko.UI
             txtBroj.BackColor = SystemColors.Window;
             if (!editMode)
             {
-                if (!pretraga)
-                    txtBroj.Text = getNewBroj().ToString();
+                txtBroj.Text = getNewBroj().ToString();
             }
             txtIme.Text = String.Empty;
             txtPrezime.Text = String.Empty;
@@ -127,52 +99,11 @@ namespace Soko.UI
             ckbPristupnica.Checked = false;
             ckbKartica.Checked = false;
 
-            if (pretraga)
-            {
-                txtIme.ReadOnly = true;
-                txtPrezime.ReadOnly = true;
-                txtDatumRodjenja.ReadOnly = true;
-                txtAdresa.ReadOnly = true;
-                txtNazivMesta.ReadOnly = true;
-                txtTelefon1.ReadOnly = true;
-                txtTelefon2.ReadOnly = true;
-                txtNapomena.ReadOnly = true;
-                cmbMesto.Enabled = false;
-                cmbInstitucija.Enabled = false;
-
-                txtIme.BackColor = SystemColors.Window;
-                txtPrezime.BackColor = SystemColors.Window;
-                txtDatumRodjenja.BackColor = SystemColors.Window;
-                txtAdresa.BackColor = SystemColors.Window;
-                txtNazivMesta.BackColor = SystemColors.Window;
-                txtTelefon1.BackColor = SystemColors.Window;
-                txtTelefon2.BackColor = SystemColors.Window;
-                txtNapomena.BackColor = SystemColors.Window;
-            }
-
             setMesta(mesta);
             SelectedMesto = null;
 
             setInstitucije(institucije);
             SelectedInstitucija = null;
-
-            if (pretraga)
-            {
-                setClanovi(clanovi);
-                SelectedClan = null;
-            }
-        }
-
-        private void setClanovi(List<Clan> clanovi)
-        {
-            cmbClan.DataSource = clanovi;
-            cmbClan.DisplayMember = "BrojPrezimeImeDatumRodjenja";
-        }
-
-        private Clan SelectedClan
-        {
-            get { return cmbClan.SelectedItem as Clan; }
-            set { cmbClan.SelectedItem = value; }
         }
 
         private void setMesta(List<Mesto> mesta)
@@ -256,17 +187,10 @@ namespace Soko.UI
 
         private void ClanDialog_Shown(object sender, EventArgs e)
         {
-            if (pretraga)
-            {
-                txtPretraga.Focus();
-            }
+            if (!editMode)
+                txtIme.Focus();
             else
-            {
-                if (!editMode)
-                    txtIme.Focus();
-                else
-                    btnOdustani.Focus();
-            }
+                btnOdustani.Focus();
         }
 
         private int getNewBroj()
@@ -276,15 +200,7 @@ namespace Soko.UI
 
         private void btnOk_Click(object sender, System.EventArgs e)
         {
-            if (pretraga)
-            {
-                this.DialogResult = DialogResult.Cancel;
-                handleCancelClick();
-            }
-            else
-            {
-                handleOkClick();
-            }
+            handleOkClick();
         }
 
         protected override void requiredFieldsAndFormatValidation(Notification notification)
@@ -504,59 +420,5 @@ namespace Soko.UI
         {
             handleCancelClick();
         }
-
-        private void txtPretraga_TextChanged(object sender, EventArgs e)
-        {
-            if (!pretraga)
-                return;
-
-            string text = txtPretraga.Text;
-            Clan clan = null;
-            int broj;
-            if (int.TryParse(text, out broj))
-            {
-                clan = findClan(broj);
-            }
-            else if (text != String.Empty)
-            {
-                clan = searchForClan(text);
-            }
-            SelectedClan = clan;
-            updateUIFromEntity(SelectedClan);
-        }
-
-        private Clan findClan(int broj)
-        {
-            foreach (Clan c in clanovi)
-            {
-                if (c.Broj == broj)
-                    return c;
-            }
-            return null;
-        }
-
-        private Clan searchForClan(string text)
-        {
-            foreach (Clan c in clanovi)
-            {
-                if (c.PrezimeIme.StartsWith(text, StringComparison.OrdinalIgnoreCase))
-                    return c;
-            }
-            return null;
-        }
-
-        private void cmbClan_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            updateUIFromEntity(SelectedClan);
-            if (SelectedClan != null)
-            {
-                txtPretraga.Text = SelectedClan.Broj.ToString();
-            }
-            else
-            {
-                txtPretraga.Text = String.Empty;
-            }
-        }
-
     }
 }

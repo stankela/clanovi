@@ -31,9 +31,7 @@ namespace Soko.UI
             this.btnOk = new System.Windows.Forms.Button();
             this.btnOdustani = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.cmbClan = new System.Windows.Forms.ComboBox();
             this.ckbKartica = new System.Windows.Forms.CheckBox();
-            this.txtPretraga = new System.Windows.Forms.TextBox();
             this.ckbPristupnica = new System.Windows.Forms.CheckBox();
             this.txtNapomena = new System.Windows.Forms.TextBox();
             this.lblNapomena = new System.Windows.Forms.Label();
@@ -83,9 +81,7 @@ namespace Soko.UI
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.cmbClan);
             this.groupBox1.Controls.Add(this.ckbKartica);
-            this.groupBox1.Controls.Add(this.txtPretraga);
             this.groupBox1.Controls.Add(this.ckbPristupnica);
             this.groupBox1.Controls.Add(this.txtNapomena);
             this.groupBox1.Controls.Add(this.lblNapomena);
@@ -114,15 +110,6 @@ namespace Soko.UI
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
-            // cmbClan
-            // 
-            this.cmbClan.FormattingEnabled = true;
-            this.cmbClan.Location = new System.Drawing.Point(179, 16);
-            this.cmbClan.Name = "cmbClan";
-            this.cmbClan.Size = new System.Drawing.Size(229, 21);
-            this.cmbClan.TabIndex = 26;
-            this.cmbClan.SelectionChangeCommitted += new System.EventHandler(this.cmbClan_SelectionChangeCommitted);
-            // 
             // ckbKartica
             // 
             this.ckbKartica.AutoSize = true;
@@ -132,14 +119,6 @@ namespace Soko.UI
             this.ckbKartica.TabIndex = 25;
             this.ckbKartica.Text = "Kartica";
             this.ckbKartica.UseVisualStyleBackColor = true;
-            // 
-            // txtPretraga
-            // 
-            this.txtPretraga.Location = new System.Drawing.Point(114, 16);
-            this.txtPretraga.Name = "txtPretraga";
-            this.txtPretraga.Size = new System.Drawing.Size(56, 20);
-            this.txtPretraga.TabIndex = 24;
-            this.txtPretraga.TextChanged += new System.EventHandler(this.txtPretraga_TextChanged);
             // 
             // ckbPristupnica
             // 
@@ -376,8 +355,6 @@ namespace Soko.UI
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnOdustani;
         private System.Windows.Forms.CheckBox ckbPristupnica;
-        private System.Windows.Forms.TextBox txtPretraga;
         private System.Windows.Forms.CheckBox ckbKartica;
-        private System.Windows.Forms.ComboBox cmbClan;
     }
 }
