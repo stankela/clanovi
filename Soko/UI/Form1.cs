@@ -1034,7 +1034,7 @@ namespace Soko.UI
                     UplataClanarineDialog dlg = UplataClanarineDialog;
                     if (dlg != null && dlg.PendingRead)
                     {
-                        dlg.Read();
+                        dlg.Read(true);
                     }
                 }
             }
