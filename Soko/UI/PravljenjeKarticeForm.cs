@@ -31,6 +31,10 @@ namespace Soko.UI
         public bool PendingWrite = false;    
         private List<Clan> clanovi;
 
+        private bool testKartica;
+        private int clanId;
+        private int brojKartice;
+
         public PravljenjeKarticeForm()
         {
             InitializeComponent();
@@ -161,8 +165,8 @@ namespace Soko.UI
 
         private void btnNapraviKarticu_Click(object sender, EventArgs e)
         {
-            bool testKartica = ckbTestKartica.Checked;
-            if (SelectedClan == null && !testKartica)
+            testKartica = ckbTestKartica.Checked;
+            if (!testKartica && SelectedClan == null)
             {
                 MessageBox.Show("Izaberite clana.", "Pravljenje kartice");
                 return;
@@ -171,6 +175,11 @@ namespace Soko.UI
             if (napraviKarticuDlg(SelectedClan, testKartica))
             {
                 MessageBox.Show("Prislonite karticu na citac i kliknite OK.", "Pravljenje kartice");
+                if (!testKartica)
+                {
+                    clanId = SelectedClan.Id;
+                    brojKartice = SelectedClan.Broj.Value;
+                }
                 PendingWrite = true;
             }
         }
@@ -188,7 +197,7 @@ namespace Soko.UI
                     string sName = CitacKartica.NAME_FIELD;
                     ulong retval;
 
-                    if (ckbTestKartica.Checked)
+                    if (testKartica)
                     {
                         sID1 = CitacKartica.TEST_KARTICA_BROJ.ToString();
                         retval = WriteDataCard(Options.Instance.COMPortWriter,
@@ -208,7 +217,6 @@ namespace Soko.UI
                         return;
                     }
 
-                    int brojKartice = SelectedClan.Broj.Value;
                     sID1 = brojKartice.ToString();
                     retval = WriteDataCard(Options.Instance.COMPortWriter,
                         sType, sID1, sID2, sName) & 0xFFFFFFFF;
@@ -225,7 +233,7 @@ namespace Soko.UI
                         using (session.BeginTransaction())
                         {
                             CurrentSessionContext.Bind(session);
-                            Clan clan = session.Load<Clan>(SelectedClan.Id);
+                            Clan clan = session.Load<Clan>(clanId);
                             clan.BrojKartice = brojKartice;
                             DAOFactoryFactory.DAOFactory.GetClanDAO().MakePersistent(clan);
                             session.Transaction.Commit();
