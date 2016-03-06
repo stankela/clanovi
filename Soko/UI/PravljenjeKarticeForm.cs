@@ -28,9 +28,7 @@ namespace Soko.UI
         [DllImport("PanReaderIf.dll")]
         private static extern ulong WaitAndReadDataCard(int comport, int nSecs, ref string sType, ref string sID1, ref string sID2, ref string sName);
 
-        private int clanId;
-        public bool PendingWrite = false;
-    
+        public bool PendingWrite = false;    
         private List<Clan> clanovi;
 
         public PravljenjeKarticeForm()
@@ -173,8 +171,6 @@ namespace Soko.UI
             if (napraviKarticuDlg(SelectedClan, testKartica))
             {
                 MessageBox.Show("Prislonite karticu na citac i kliknite OK.", "Pravljenje kartice");
-                if (!testKartica)
-                    clanId = SelectedClan.Id;
                 PendingWrite = true;
             }
         }
@@ -186,17 +182,19 @@ namespace Soko.UI
                 PendingWrite = false;
                 try
                 {
+                    string sType = "";
+                    string sID1;
+                    string sID2 = "";
+                    string sName = CitacKartica.NAME_FIELD;
+                    ulong retval;
+
                     if (ckbTestKartica.Checked)
                     {
-                        string sType = "";
-                        string sID1 = CitacKartica.TEST_KARTICA_BROJ.ToString();
-                        string sID2 = "";
-                        string sName = CitacKartica.NAME_FIELD;
-                        ulong retval = WriteDataCard(Options.Instance.COMPortWriter,
+                        sID1 = CitacKartica.TEST_KARTICA_BROJ.ToString();
+                        retval = WriteDataCard(Options.Instance.COMPortWriter,
                             sType, sID1, sID2, sName) & 0xFFFFFFFF;
 
-                        // TODO2: Prvo proveri da li je kartica vazeca, i prikazi upozorenje ako jeste.
-
+                        // TODO2: Prvo proveri da li je kartica vazeca, i prikazi upozorenje ako jeste (isto i dole).
                         if (retval == 0)
                         {
                             string msg = "Neuspesno pravljenje TEST KARTICE. " +
@@ -210,40 +208,33 @@ namespace Soko.UI
                         return;
                     }
 
-                    using (ISession session = NHibernateHelper.Instance.OpenSession())
-                    using (session.BeginTransaction())
+                    int brojKartice = SelectedClan.Broj.Value;
+                    sID1 = brojKartice.ToString();
+                    retval = WriteDataCard(Options.Instance.COMPortWriter,
+                        sType, sID1, sID2, sName) & 0xFFFFFFFF;
+
+                    if (retval == 0)
                     {
-                        CurrentSessionContext.Bind(session);
-                        Clan selectedClan = session.Load<Clan>(clanId);
-
-                        //selectedClan.BrojKartice = getNewBrojKartice();
-                        selectedClan.BrojKartice = selectedClan.Broj;
-                        DAOFactoryFactory.DAOFactory.GetClanDAO().MakePersistent(selectedClan);
-
-                        string sType = "";
-                        string sID1 = selectedClan.BrojKartice.ToString();
-                        string sID2 = "";
-                        string sName = CitacKartica.NAME_FIELD;
-                        ulong retval = WriteDataCard(Options.Instance.COMPortWriter,
-                            sType, sID1, sID2, sName) & 0xFFFFFFFF; 
-
-                        // TODO2: Prvo proveri da li je kartica vazeca, i prikazi upozorenje ako jeste.
-
-                        if (retval == 0)
+                        string msg = "Neuspesno pravljenje kartice. " +
+                            "Proverite da li je uredjaj prikljucen, i da li je podesen COM port.";
+                        throw new Exception(msg);
+                    }
+                    else
+                    {
+                        using (ISession session = NHibernateHelper.Instance.OpenSession())
+                        using (session.BeginTransaction())
                         {
-                            string msg = "Neuspesno pravljenje kartice. " +
-                                "Proverite da li je uredjaj prikljucen, i da li je podesen COM port.";
-                            throw new Exception(msg);
-                        }
-                        else
-                        {
+                            CurrentSessionContext.Bind(session);
+                            Clan clan = session.Load<Clan>(SelectedClan.Id);
+                            clan.BrojKartice = brojKartice;
+                            DAOFactoryFactory.DAOFactory.GetClanDAO().MakePersistent(clan);
                             session.Transaction.Commit();
+
                             MessageBox.Show(String.Format("Kartica je napravljena.\n\nBroj kartice:   {0}\nClan:   {1}",
-                                sID1, selectedClan.BrojPrezimeImeDatumRodjenja), "Pravljenje kartice");
+                                sID1, clan.BrojPrezimeImeDatumRodjenja), "Pravljenje kartice");
                             ckbKartica.Checked = true;
                         }
-
-                    }
+                    }                    
                 }
                 catch (Exception ex)
                 {
