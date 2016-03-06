@@ -375,5 +375,58 @@ namespace Soko.Domain
 					+ NAPOMENA_MAX_LENGTH + " znakova.");
 			}
 		}
+
+        public override bool Equals(object other)
+        {
+            if (object.ReferenceEquals(this, other)) return true;
+            if (!(other is Clan)) return false;
+
+            Clan that = (Clan)other;
+
+            string thisIme = this.Ime;
+            string thatIme = that.Ime;
+            string thisPrezime = this.Prezime;
+            string thatPrezime = that.Prezime;
+
+            if (thisIme == null)
+                thisIme = String.Empty;
+            if (thatIme == null)
+                thatIme = String.Empty;
+            if (thisPrezime == null)
+                thisPrezime = String.Empty;
+            if (thatPrezime == null)
+                thatPrezime = String.Empty;
+
+            bool result = thisIme.ToUpper() == thatIme.ToUpper()
+                && thisPrezime.ToUpper() == thatPrezime.ToUpper();
+            if (result)
+            {
+                result = (this.DatumRodjenja == null && that.DatumRodjenja == null)
+                || (this.DatumRodjenja != null && that.DatumRodjenja != null
+                    && this.DatumRodjenja == that.DatumRodjenja);
+            }
+            return result;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                string i = this.Ime;
+                string p = this.Prezime;
+                if (i == null)
+                    i = String.Empty;
+                if (p == null)
+                    p = String.Empty;
+
+                int result = 14;
+                result = 29 * result + i.GetHashCode();
+                result = 29 * result + p.GetHashCode();
+                if (DatumRodjenja != null)
+                    result = 29 * result + DatumRodjenja.GetHashCode();
+                return result;
+            }
+        }
+
 	}
 }

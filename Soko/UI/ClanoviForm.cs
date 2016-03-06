@@ -132,5 +132,55 @@ namespace Soko.UI
         {
             this.Close();
         }
+
+        private void txtClan_TextChanged(object sender, EventArgs e)
+        {
+            string text = txtClan.Text;
+            Clan clan = null;
+            int broj;
+            if (int.TryParse(text, out broj))
+            {
+                clan = findClan(broj);
+            }
+            else if (text != String.Empty)
+            {
+                clan = searchForClan(text);
+            }
+            setSelectedClan(clan);
+        }
+
+        private void setSelectedClan(Clan clan)
+        {
+            // NOTE: Da bi radilo ispravno, Clan mora da implementira Equals i GetHashCode
+            List<object> items = (List<object>)dataGridView1.DataSource;
+            int index = items.IndexOf(clan);
+            if (index >= 0)
+                getCurrencyManager().Position = index;
+        }
+
+        private Clan findClan(int broj)
+        {
+            foreach (Clan c in entities)
+            {
+                if (c.Broj == broj)
+                    return c;
+            }
+            return null;
+        }
+
+        private Clan searchForClan(string text)
+        {
+            foreach (Clan c in entities)
+            {
+                if (c.PrezimeIme.StartsWith(text, StringComparison.OrdinalIgnoreCase))
+                    return c;
+            }
+            return null;
+        }
+
+        private void ClanoviForm_Shown(object sender, EventArgs e)
+        {
+            txtClan.Focus();
+        }
     }
 }
