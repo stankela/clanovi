@@ -136,7 +136,9 @@
     <Compile Include="Exceptions\BusinessException.cs" />
     <Compile Include="Exceptions\InfrastructureException.cs" />
     <Compile Include="Exceptions\InvalidPropertyException.cs" />
+    <Compile Include="Exceptions\ReadCardException.cs" />
     <Compile Include="Exceptions\SmallPageSizeException.cs" />
+    <Compile Include="Exceptions\WriteCardException.cs" />
     <Compile Include="Misc\CitacKartica.cs" />
     <Compile Include="Misc\SqlCeUtilities.cs" />
     <Compile Include="Misc\SingleInstanceApplication.cs" />
