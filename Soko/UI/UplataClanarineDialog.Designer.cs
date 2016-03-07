@@ -141,6 +141,7 @@ namespace Soko.UI
             this.listViewNoveUplate.Name = "listViewNoveUplate";
             this.listViewNoveUplate.Size = new System.Drawing.Size(156, 81);
             this.listViewNoveUplate.TabIndex = 20;
+            this.listViewNoveUplate.TabStop = false;
             this.listViewNoveUplate.UseCompatibleStateImageBehavior = false;
             // 
             // btnBrisiUplatu
@@ -150,6 +151,7 @@ namespace Soko.UI
             this.btnBrisiUplatu.Name = "btnBrisiUplatu";
             this.btnBrisiUplatu.Size = new System.Drawing.Size(75, 23);
             this.btnBrisiUplatu.TabIndex = 19;
+            this.btnBrisiUplatu.TabStop = false;
             this.btnBrisiUplatu.Text = "Brisi uplatu";
             this.btnBrisiUplatu.UseVisualStyleBackColor = true;
             this.btnBrisiUplatu.Click += new System.EventHandler(this.btnBrisiUplatu_Click);
@@ -161,6 +163,7 @@ namespace Soko.UI
             this.btnUnesiUplatu.Name = "btnUnesiUplatu";
             this.btnUnesiUplatu.Size = new System.Drawing.Size(75, 23);
             this.btnUnesiUplatu.TabIndex = 18;
+            this.btnUnesiUplatu.TabStop = false;
             this.btnUnesiUplatu.Text = "Unesi uplatu";
             this.btnUnesiUplatu.UseVisualStyleBackColor = true;
             this.btnUnesiUplatu.Click += new System.EventHandler(this.btnUnesiUplatu_Click);
@@ -179,6 +182,7 @@ namespace Soko.UI
             this.btnPrethodneUplate.Name = "btnPrethodneUplate";
             this.btnPrethodneUplate.Size = new System.Drawing.Size(100, 23);
             this.btnPrethodneUplate.TabIndex = 16;
+            this.btnPrethodneUplate.TabStop = false;
             this.btnPrethodneUplate.Text = "Prethodne uplate";
             this.btnPrethodneUplate.UseVisualStyleBackColor = true;
             this.btnPrethodneUplate.Click += new System.EventHandler(this.btnPrethodneUplate_Click);
@@ -189,6 +193,7 @@ namespace Soko.UI
             this.listViewPrethodneUplate.Name = "listViewPrethodneUplate";
             this.listViewPrethodneUplate.Size = new System.Drawing.Size(375, 105);
             this.listViewPrethodneUplate.TabIndex = 15;
+            this.listViewPrethodneUplate.TabStop = false;
             this.listViewPrethodneUplate.UseCompatibleStateImageBehavior = false;
             // 
             // ckbKartica
@@ -198,6 +203,7 @@ namespace Soko.UI
             this.ckbKartica.Name = "ckbKartica";
             this.ckbKartica.Size = new System.Drawing.Size(59, 17);
             this.ckbKartica.TabIndex = 14;
+            this.ckbKartica.TabStop = false;
             this.ckbKartica.Text = "Kartica";
             this.ckbKartica.UseVisualStyleBackColor = true;
             // 
@@ -265,6 +271,7 @@ namespace Soko.UI
             this.cmbGrupa.Name = "cmbGrupa";
             this.cmbGrupa.Size = new System.Drawing.Size(232, 21);
             this.cmbGrupa.TabIndex = 7;
+            this.cmbGrupa.TabStop = false;
             this.cmbGrupa.SelectionChangeCommitted += new System.EventHandler(this.cmbGrupa_SelectionChangeCommitted);
             // 
             // txtSifraGrupe
@@ -292,6 +299,7 @@ namespace Soko.UI
             this.cmbClan.Name = "cmbClan";
             this.cmbClan.Size = new System.Drawing.Size(232, 21);
             this.cmbClan.TabIndex = 6;
+            this.cmbClan.TabStop = false;
             this.cmbClan.SelectionChangeCommitted += new System.EventHandler(this.cmbClan_SelectionChangeCommitted);
             // 
             // txtBrojClana

@@ -386,7 +386,7 @@ namespace Soko.UI
         private void btnOcitajKarticu_Click(object sender, EventArgs e)
         {
             PendingRead = true;
-            btnOk.Focus();
+            txtIznos.Focus();
         }
 
         public void ReadKartica()
