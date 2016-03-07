@@ -53,7 +53,16 @@ namespace Soko
             name = "                                ";
             broj = -1;
 
+            Stopwatch watch = Stopwatch.StartNew();
             ulong retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+            watch.Stop();
+
+            AdminForm af = SingleInstanceApplication.GlavniProzor.AdminForm;
+            if (af != null)
+            {
+                af.newCitanjeKartice(retval, watch.ElapsedMilliseconds);
+            }
+
             if (retval == 1)
             {
                 if (!Int32.TryParse(sID1, out broj) || broj <= 0 || name != NAME_FIELD)
@@ -86,8 +95,17 @@ namespace Soko
             string sType = "";
             string sID2 = "";
             string sName = CitacKartica.NAME_FIELD;
-            
+
+            Stopwatch watch = Stopwatch.StartNew();
             ulong retval = WriteDataCard(Options.Instance.COMPortWriter, sType, sID1, sID2, sName) & 0xFFFFFFFF;
+            watch.Stop();
+            
+            AdminForm af = SingleInstanceApplication.GlavniProzor.AdminForm;
+            if (af != null)
+            {
+                af.newPisanjeKartice(retval, watch.ElapsedMilliseconds);
+            }
+
             if (retval == 0)
             {
                 throw new WriteCardException(errorMsg);

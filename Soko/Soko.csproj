@@ -147,6 +147,12 @@
     <Compile Include="Report\AktivniClanoviIzvestaj.cs" />
     <Compile Include="Report\EvidencijaTreningaIzvestaj.cs" />
     <Compile Include="Report\NedostajuceUplateIzvestaj.cs" />
+    <Compile Include="UI\AdminForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\AdminForm.Designer.cs">
+      <DependentUpon>AdminForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\BiracClana.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -246,6 +252,9 @@
     <Compile Include="Misc\UplataDTO.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="UI\AdminForm.resx">
+      <DependentUpon>AdminForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\BiracClana.resx">
       <SubType>Designer</SubType>
       <DependentUpon>BiracClana.cs</DependentUpon>

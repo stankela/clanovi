@@ -119,7 +119,7 @@ namespace Soko.UI
         {
             if (SelectedClan != null)
             {
-                CitacKartica.getCitacKartica().handleOcitanaKartica(SelectedClan.Broj.Value, dtpVremeOcitavanja.Value);
+                CitacKartica.getCitacKartica().handleDolazakNaTrening(SelectedClan.Broj.Value, dtpVremeOcitavanja.Value);
             }
         }
 

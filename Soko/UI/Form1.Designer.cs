@@ -61,6 +61,7 @@ namespace Soko.UI
             this.mnAdmin = new System.Windows.Forms.ToolStripMenuItem();
             this.mnDuplikatiClanova = new System.Windows.Forms.ToolStripMenuItem();
             this.mnSimulatorCitacaKartica = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnAdminOpcije = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -310,7 +311,8 @@ namespace Soko.UI
             // 
             this.mnAdmin.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnDuplikatiClanova,
-            this.mnSimulatorCitacaKartica});
+            this.mnSimulatorCitacaKartica,
+            this.mnAdminOpcije});
             this.mnAdmin.Name = "mnAdmin";
             this.mnAdmin.Size = new System.Drawing.Size(55, 20);
             this.mnAdmin.Text = "Admin";
@@ -328,6 +330,13 @@ namespace Soko.UI
             this.mnSimulatorCitacaKartica.Size = new System.Drawing.Size(197, 22);
             this.mnSimulatorCitacaKartica.Text = "Simulator citaca kartica";
             this.mnSimulatorCitacaKartica.Click += new System.EventHandler(this.mnSimulatorCitacaKartica_Click);
+            // 
+            // mnAdminOpcije
+            // 
+            this.mnAdminOpcije.Name = "mnAdminOpcije";
+            this.mnAdminOpcije.Size = new System.Drawing.Size(197, 22);
+            this.mnAdminOpcije.Text = "Opcije";
+            this.mnAdminOpcije.Click += new System.EventHandler(this.mnAdminOpcije_Click);
             // 
             // Form1
             // 
@@ -383,6 +392,7 @@ namespace Soko.UI
         private System.Windows.Forms.ToolStripMenuItem mnDuplikatiClanova;
         private System.Windows.Forms.ToolStripMenuItem mnSimulatorCitacaKartica;
         private System.Windows.Forms.ToolStripMenuItem mnNedostajuceUplate;
+        private System.Windows.Forms.ToolStripMenuItem mnAdminOpcije;
     }
 }
 

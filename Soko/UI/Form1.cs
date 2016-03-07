@@ -918,6 +918,22 @@ namespace Soko.UI
             }
         }
 
+        public AdminForm AdminForm
+        {
+            get
+            {
+                foreach (Form f in Application.OpenForms)
+                {
+                    AdminForm form = f as AdminForm;
+                    if (form != null)
+                    {
+                        return form;
+                    }
+                }
+                return null;
+            }
+        }
+
         public void PokreniCitacKartica()
         {
             if (!CitacKarticaEnabled)
@@ -1026,6 +1042,12 @@ namespace Soko.UI
                     }
                     long elapsedMs;
                     lastRead = CitacKartica.getCitacKartica().TryReadDolazakNaTrening(out elapsedMs);
+
+                    AdminForm af = AdminForm;
+                    if (af != null)
+                    {
+                        af.newOcitavanje(elapsedMs);
+                    }
                 }
             }
             else
@@ -1256,6 +1278,12 @@ namespace Soko.UI
                 Cursor.Hide();
                 Cursor.Current = Cursors.Arrow;
             }
+        }
+
+        private void mnAdminOpcije_Click(object sender, EventArgs e)
+        {
+            AdminForm f = new AdminForm();
+            f.Show();
         }
     }
 }
