@@ -962,6 +962,13 @@ namespace Soko.UI
             set { citacKarticaEnabled = value; }
         }
 
+        private bool pisacKarticaEnabled = true;
+        public bool PisacKarticaEnabled
+        {
+            get { return pisacKarticaEnabled; }
+            set { pisacKarticaEnabled = value; }
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
             PokreniCitacKartica();
@@ -1024,10 +1031,14 @@ namespace Soko.UI
             else
             {
                 // pisac kartica
+                if (!PisacKarticaEnabled)
+                    return;
+
                 PravljenjeKarticeForm pkf = PravljenjeKarticeForm;
                 if (pkf != null && pkf.PendingWrite)
                 {
                     CitacKarticaEnabled = false;
+                    PisacKarticaEnabled = false;
                     string msg = String.Empty;
                     int brojPokusaja = Options.Instance.BrojPokusajaCitacKartica;
                     while (brojPokusaja > 0)
@@ -1059,6 +1070,7 @@ namespace Soko.UI
                     }
                     CitacKarticaEnabled = true;
                     MessageDialogs.showMessage(msg, "Pravljenje kartice");
+                    PisacKarticaEnabled = true;
                 }
                 else
                 {
@@ -1066,6 +1078,7 @@ namespace Soko.UI
                     if (dlg != null && dlg.PendingRead)
                     {
                         CitacKarticaEnabled = false;
+                        PisacKarticaEnabled = false;
                         string msg = String.Empty;
                         int brojPokusaja = Options.Instance.BrojPokusajaCitacKartica;
                         while (brojPokusaja > 0)
@@ -1098,6 +1111,7 @@ namespace Soko.UI
                         {
                             MessageDialogs.showMessage(msg, "Ocitavanje kartice");
                         }
+                        PisacKarticaEnabled = true;
                     }
                 }
             }
