@@ -607,6 +607,7 @@ namespace Soko.UI
             listViewNoveUplate.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
 
             updateUkupnoIznos();
+            txtIznos.Focus();
         }
 
         private void dateTimePickerDatumClanarine_ValueChanged(object sender, EventArgs e)
@@ -633,6 +634,19 @@ namespace Soko.UI
                 dateTimePicker.ValueChanged += new System.EventHandler(dateTimePickerDatumClanarine_ValueChanged);
             }
             currentDatumClanarine = dateTimePicker.Value;
+        }
+
+        private void dateTimePickerDatumClanarine_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (unesiUplatu())
+                {
+                    txtIznos.Text = String.Empty;
+                    dateTimePickerDatumClanarine.Value = dateTimePickerDatumClanarine.Value.AddMonths(1);
+                    txtIznos.Focus();
+                }
+            }
         }
     }
 }

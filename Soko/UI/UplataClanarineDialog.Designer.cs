@@ -170,7 +170,7 @@ namespace Soko.UI
             this.txtNapomena.Location = new System.Drawing.Point(273, 240);
             this.txtNapomena.Name = "txtNapomena";
             this.txtNapomena.Size = new System.Drawing.Size(313, 20);
-            this.txtNapomena.TabIndex = 17;
+            this.txtNapomena.TabIndex = 4;
             // 
             // btnPrethodneUplate
             // 
@@ -246,7 +246,8 @@ namespace Soko.UI
             this.dateTimePickerDatumClanarine.Name = "dateTimePickerDatumClanarine";
             this.dateTimePickerDatumClanarine.ShowUpDown = true;
             this.dateTimePickerDatumClanarine.Size = new System.Drawing.Size(106, 20);
-            this.dateTimePickerDatumClanarine.TabIndex = 6;
+            this.dateTimePickerDatumClanarine.TabIndex = 3;
+            this.dateTimePickerDatumClanarine.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dateTimePickerDatumClanarine_KeyDown);
             // 
             // lblDatumClanarine
             // 
@@ -263,7 +264,7 @@ namespace Soko.UI
             this.cmbGrupa.Location = new System.Drawing.Point(118, 48);
             this.cmbGrupa.Name = "cmbGrupa";
             this.cmbGrupa.Size = new System.Drawing.Size(232, 21);
-            this.cmbGrupa.TabIndex = 3;
+            this.cmbGrupa.TabIndex = 7;
             this.cmbGrupa.SelectionChangeCommitted += new System.EventHandler(this.cmbGrupa_SelectionChangeCommitted);
             // 
             // txtSifraGrupe
@@ -290,7 +291,7 @@ namespace Soko.UI
             this.cmbClan.Location = new System.Drawing.Point(118, 16);
             this.cmbClan.Name = "cmbClan";
             this.cmbClan.Size = new System.Drawing.Size(232, 21);
-            this.cmbClan.TabIndex = 2;
+            this.cmbClan.TabIndex = 6;
             this.cmbClan.SelectionChangeCommitted += new System.EventHandler(this.cmbClan_SelectionChangeCommitted);
             // 
             // txtBrojClana
