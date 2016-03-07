@@ -166,13 +166,13 @@ namespace Soko.UI
             testKartica = ckbTestKartica.Checked;
             if (!testKartica && SelectedClan == null)
             {
-                MessageBox.Show("Izaberite clana.", "Pravljenje kartice");
+                MessageDialogs.showMessage("Izaberite clana.", "Pravljenje kartice");
                 return;
             }
 
             if (napraviKarticuDlg(SelectedClan, testKartica))
             {
-                MessageBox.Show("Prislonite karticu na citac i kliknite OK.", "Pravljenje kartice");
+                MessageDialogs.showMessage("Prislonite karticu na citac i kliknite OK.", "Pravljenje kartice");
                 if (!testKartica)
                 {
                     clanId = SelectedClan.Id;
