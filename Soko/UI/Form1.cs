@@ -1027,37 +1027,76 @@ namespace Soko.UI
                 PravljenjeKarticeForm pkf = PravljenjeKarticeForm;
                 if (pkf != null && pkf.PendingWrite)
                 {
-                    try
+                    CitacKarticaEnabled = false;
+                    string msg = String.Empty;
+                    int brojPokusaja = Options.Instance.BrojPokusajaCitacKartica;
+                    while (brojPokusaja > 0)
                     {
-                        string okMsg;
-                        pkf.Write(out okMsg);
-                        MessageBox.Show(okMsg, "Pravljenje kartice");
+                        try
+                        {
+                            string okMsg;
+                            pkf.WriteKartica(out okMsg);
+                            brojPokusaja = 0;
+                            msg = okMsg;
+                        }
+                        catch (WriteCardException ex)
+                        {
+                            --brojPokusaja;
+                            if (brojPokusaja > 0)
+                            {
+                                pkf.PendingWrite = true;
+                            }
+                            else
+                            {
+                                msg = ex.Message;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            brojPokusaja = 0;
+                            msg = ex.Message;
+                        }
                     }
-                    catch (WriteCardException ex)
-                    {
-                        MessageDialogs.showMessage(ex.Message, "Pravljenje kartice");
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageDialogs.showMessage(ex.Message, "Pravljenje kartice");
-                    }
+                    CitacKarticaEnabled = true;
+                    MessageDialogs.showMessage(msg, "Pravljenje kartice");
                 }
                 else
                 {
                     UplataClanarineDialog dlg = UplataClanarineDialog;
                     if (dlg != null && dlg.PendingRead)
                     {
-                        try
+                        CitacKarticaEnabled = false;
+                        string msg = String.Empty;
+                        int brojPokusaja = Options.Instance.BrojPokusajaCitacKartica;
+                        while (brojPokusaja > 0)
                         {
-                            dlg.Read();
+                            try
+                            {
+                                dlg.ReadKartica();
+                                brojPokusaja = 0;
+                            }
+                            catch (ReadCardException ex)
+                            {
+                                --brojPokusaja;
+                                if (brojPokusaja > 0)
+                                {
+                                    dlg.PendingRead = true;
+                                }
+                                else
+                                {
+                                    msg = ex.Message;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                brojPokusaja = 0;
+                                msg = ex.Message;
+                            }
                         }
-                        catch (ReadCardException ex)
+                        CitacKarticaEnabled = true;
+                        if (msg != String.Empty)
                         {
-                            MessageDialogs.showMessage(ex.Message, "Ocitavanje kartice");
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageDialogs.showMessage(ex.Message, "Ocitavanje kartice");
+                            MessageDialogs.showMessage(msg, "Ocitavanje kartice");
                         }
                     }
                 }

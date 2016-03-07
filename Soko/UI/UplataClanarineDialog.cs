@@ -389,7 +389,7 @@ namespace Soko.UI
             btnOk.Focus();
         }
 
-        public void Read()
+        public void ReadKartica()
         {
             if (!PendingRead)
                 return;

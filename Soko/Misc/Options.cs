@@ -108,5 +108,12 @@ namespace Soko
             get { return citacKarticaTimerInterval; }
             set { citacKarticaTimerInterval = value; }
         }
+
+        private int brojPokusajaCitacKartica = 2;
+        public int BrojPokusajaCitacKartica
+        {
+            get { return brojPokusajaCitacKartica; }
+            set { brojPokusajaCitacKartica = value; }
+        }
     }
 }

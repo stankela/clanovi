@@ -182,7 +182,7 @@ namespace Soko.UI
             }
         }
 
-        public void Write(out string okMsg)
+        public void WriteKartica(out string okMsg)
         {
             okMsg = String.Empty;
             if (!PendingWrite)
