@@ -67,9 +67,12 @@ namespace Soko.Report
 	{
 		private float relClan = 0.0f;
 		private float relGrupa = 9.0f;
+        private float relImaUplatu = 16.5f;
 		
 		private Font groupTitleFont;
 		private float groupTitleHeight;
+
+        private bool samoNedostajuceUplate;
 
         public DolazakNaTreningMesecniLista(DateTime from, DateTime to,
 			Izvestaj izvestaj, int pageNum, float y,
@@ -77,6 +80,7 @@ namespace Soko.Report
 			: base(izvestaj, pageNum, y, itemFont, itemsHeaderFont)
 		{
 			this.groupTitleFont = groupTitleFont;
+            this.samoNedostajuceUplate = samoNedostajuceUplate;
 			fetchItems(from, to, samoNedostajuceUplate);
 		}
 
@@ -100,8 +104,8 @@ namespace Soko.Report
                 object[] itemsRow = items[i];
                 int year, currYear;
                 int month, currMonth;
-                year = currYear = (int)itemsRow[2];
-                month = currMonth = (int)itemsRow[3];
+                year = currYear = (int)itemsRow[3];
+                month = currMonth = (int)itemsRow[4];
                 int numGroupItems = 0;
                 while (currMonth == month && currYear == year)
                 {
@@ -109,8 +113,8 @@ namespace Soko.Report
                     if (++i < items.Count)
                     {
                         itemsRow = items[i];
-                        currYear = (int)itemsRow[2];
-                        currMonth = (int)itemsRow[3];
+                        currYear = (int)itemsRow[3];
+                        currMonth = (int)itemsRow[4];
                     }
                     else
                         break;
@@ -154,13 +158,25 @@ namespace Soko.Report
 			float relWidth = Izvestaj.relWidth;
 			float xClan = contentBounds.X + relClan / relWidth * contentBounds.Width;
 			float xGrupa = contentBounds.X + relGrupa / relWidth * contentBounds.Width;
-			float clanWidth = xGrupa - xClan;
-            float grupaWidth = contentBounds.Right - xGrupa;
+            float xImaUplatu = contentBounds.X + relImaUplatu / relWidth * contentBounds.Width;
+
+            float clanWidth = xGrupa - xClan;
+            float grupaWidth;
+            float imaUplatuWidth = 0.0f;
+            if (samoNedostajuceUplate)
+                grupaWidth = contentBounds.Right - xGrupa;
+            else
+            {
+                grupaWidth = xImaUplatu - xGrupa;
+                imaUplatuWidth = contentBounds.Right - xImaUplatu;
+            }
 
 			columns.Clear();
 			addColumn(xClan, clanWidth);
 			addColumn(xGrupa, grupaWidth);
-		}
+            if (!samoNedostajuceUplate)
+                addColumn(xImaUplatu, imaUplatuWidth);
+        }
 		
 		protected override void drawGroupHeader(Graphics g, int groupId, RectangleF groupHeaderRect)
 		{
@@ -169,6 +185,13 @@ namespace Soko.Report
             int mesec = (int)gr.Data[1];
             string godMes = new DateTime(godina, mesec, 1).ToString("MMMM yyyy");
             g.DrawString(godMes, groupTitleFont, blackBrush, groupHeaderRect);
+
+            if (!samoNedostajuceUplate)
+            {
+                StringFormat fmt = new StringFormat();
+                fmt.Alignment = StringAlignment.Far;
+                g.DrawString("Uplata", itemFont, blackBrush, groupHeaderRect, fmt);
+            }
 
             float xClan = columns[0].X;
 			float y = groupHeaderRect.Y + groupTitleFont.GetHeight(g);

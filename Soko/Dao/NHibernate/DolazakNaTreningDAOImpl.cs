@@ -222,65 +222,62 @@ ORDER BY god, mes, g.naziv, c.prezime, c.ime, c.datum_rodjenja";
                     to.ToString("yyyy-MM-dd HH:mm:ss"));
                 IList<object[]> dolasci = Session.CreateSQLQuery(dolasciQuery).List<object[]>();
 
-                ISet uplateSet = new HashedSet();
-                ISet godisnjeUplateSet = new HashedSet();
-                if (samoNedostajuceUplate)
-                {
-                    string uplateQuery = @"
+                string uplateQuery = @"
 SELECT DISTINCT
     datepart(year, u.vazi_od) god,
     datepart(month, u.vazi_od) mes,
     u.clan_id
 FROM uplate u
 WHERE (u.vazi_od BETWEEN '{0}' AND '{1}')";
-                    uplateQuery = String.Format(uplateQuery, from.ToString("yyyy-MM-dd HH:mm:ss"),
-                        to.ToString("yyyy-MM-dd HH:mm:ss"));
-                    IList<object[]> uplate = Session.CreateSQLQuery(uplateQuery).List<object[]>();
+                uplateQuery = String.Format(uplateQuery, from.ToString("yyyy-MM-dd HH:mm:ss"),
+                    to.ToString("yyyy-MM-dd HH:mm:ss"));
+                IList<object[]> uplate = Session.CreateSQLQuery(uplateQuery).List<object[]>();
 
-                    foreach (object[] row in uplate)
-                    {
-                        int god = (int)row[0];
-                        int mes = (int)row[1];
-                        int id = (int)row[2];
-                        uplateSet.Add(new ClanGodinaMesec(id, god, mes));
-                    }
-                    
-                    DateTime firstDateTimeInYear = new DateTime(from.Year, 1, 1, 0, 0, 0);
-                    DateTime lastDateTimeInYear = new DateTime(to.AddYears(1).Year, 1, 1, 0, 0, 0).AddSeconds(-1);
+                ISet uplateSet = new HashedSet();
+                foreach (object[] row in uplate)
+                {
+                    int god = (int)row[0];
+                    int mes = (int)row[1];
+                    int id = (int)row[2];
+                    uplateSet.Add(new ClanGodinaMesec(id, god, mes));
+                }
 
-                    int godisnjaClanarinaId = -1;
-                    GrupaDAO grupaDAO = DAOFactoryFactory.DAOFactory.GetGrupaDAO();
-                    IList<Grupa> grupe = grupaDAO.FindAll();
-                    foreach (Grupa g in grupe)
-                    {
-                        if (Util.isGodisnjaClanarina(g.Naziv))
-                        {
-                            godisnjaClanarinaId = g.Id;
-                            break;
-                        }
-                    }
-                    if (godisnjaClanarinaId == -1)
-                    {
-                        MessageDialogs.showMessage("Ne mogu da pronadjem grupu za godisnju clanarinu", "Greska");
-                    }
+                DateTime firstDateTimeInYear = new DateTime(from.Year, 1, 1, 0, 0, 0);
+                DateTime lastDateTimeInYear = new DateTime(to.AddYears(1).Year, 1, 1, 0, 0, 0).AddSeconds(-1);
 
-                    string uplateGodisnjaClanarinaQuery = @"
+                int godisnjaClanarinaId = -1;
+                GrupaDAO grupaDAO = DAOFactoryFactory.DAOFactory.GetGrupaDAO();
+                IList<Grupa> grupe = grupaDAO.FindAll();
+                foreach (Grupa g in grupe)
+                {
+                    if (Util.isGodisnjaClanarina(g.Naziv))
+                    {
+                        godisnjaClanarinaId = g.Id;
+                        break;
+                    }
+                }
+                if (godisnjaClanarinaId == -1)
+                {
+                    MessageDialogs.showMessage("Ne mogu da pronadjem grupu za godisnju clanarinu", "Greska");
+                }
+
+                string uplateGodisnjaClanarinaQuery = @"
 SELECT DISTINCT
     datepart(year, u.vazi_od) god,
     u.clan_id
 FROM uplate u
 WHERE (u.grupa_id = {0}) AND (u.vazi_od BETWEEN '{1}' AND '{2}')";
-                    uplateGodisnjaClanarinaQuery = String.Format(uplateGodisnjaClanarinaQuery, godisnjaClanarinaId.ToString(),
-                        firstDateTimeInYear.ToString("yyyy-MM-dd HH:mm:ss"),
-                        lastDateTimeInYear.ToString("yyyy-MM-dd HH:mm:ss"));
-                    IList<object[]> uplateGodisnjaClanarina = Session.CreateSQLQuery(uplateGodisnjaClanarinaQuery).List<object[]>();
+                uplateGodisnjaClanarinaQuery = String.Format(uplateGodisnjaClanarinaQuery, godisnjaClanarinaId.ToString(),
+                    firstDateTimeInYear.ToString("yyyy-MM-dd HH:mm:ss"),
+                    lastDateTimeInYear.ToString("yyyy-MM-dd HH:mm:ss"));
+                IList<object[]> uplateGodisnjaClanarina = Session.CreateSQLQuery(uplateGodisnjaClanarinaQuery).List<object[]>();
 
-                    foreach (object[] row in uplateGodisnjaClanarina)
-                    {
-                        int god = (int)row[0];
-                        int id = (int)row[1];
-                        godisnjeUplateSet.Add(new ClanGodinaMesec(id, god, 1));
-                    }
+                ISet godisnjeUplateSet = new HashedSet();
+                foreach (object[] row in uplateGodisnjaClanarina)
+                {
+                    int god = (int)row[0];
+                    int id = (int)row[1];
+                    godisnjeUplateSet.Add(new ClanGodinaMesec(id, god, 1));
                 }
 
                 List<object[]> result = new List<object[]>();
@@ -289,12 +286,14 @@ WHERE (u.grupa_id = {0}) AND (u.vazi_od BETWEEN '{1}' AND '{2}')";
                     int god = (int)row[0];
                     int mes = (int)row[1];
                     int id = (int)row[2];
-                    if (samoNedostajuceUplate)
+
+                    bool imaUplatu = uplateSet.Contains(new ClanGodinaMesec(id, god, mes));
+                    if (!imaUplatu)
+                        imaUplatu = godisnjeUplateSet.Contains(new ClanGodinaMesec(id, god, 1));
+
+                    if (samoNedostajuceUplate && imaUplatu)
                     {
-                        if (uplateSet.Contains(new ClanGodinaMesec(id, god, mes)))
-                            continue;
-                        if (godisnjeUplateSet.Contains(new ClanGodinaMesec(id, god, 1)))
-                            continue;
+                        continue;
                     }
 
                     int broj = (int)row[3];
@@ -309,9 +308,13 @@ WHERE (u.grupa_id = {0}) AND (u.vazi_od BETWEEN '{1}' AND '{2}')";
                     if (row[7] != null)
                         nazivGrupe = (string)row[7];
 
+                    string imaUplatuStr = "NE";
+                    if (imaUplatu)
+                        imaUplatuStr = "DA";
+
                     string clan = Clan.formatPrezimeImeBrojDatumRodjAdresaMesto(
                         prezime, ime, broj, datumRodjenja, String.Empty, String.Empty);
-                    result.Add(new object[] { clan, nazivGrupe, god, mes });
+                    result.Add(new object[] { clan, nazivGrupe, imaUplatuStr, god, mes });
                 }
                 return result;
             }
