@@ -19,9 +19,9 @@ namespace Soko.Report
         public DolazakNaTreningMesecniIzvestaj(DateTime from, DateTime to, bool samoNedostajuceUplate)
 		{
             if (samoNedostajuceUplate)
-                Title = "Nedostajuce uplate";
+                Title = "Nedostaju\u0107e uplate";
             else
-                Title = "Dolazak na trening - mesecni";
+                Title = "Dolazak na trening i uplate - mese\u010Dni";
             string subtitle;
             string format = "MMMM yyyy";
             if (from.Year == to.Year && from .Month == to.Month)
