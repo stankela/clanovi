@@ -8,15 +8,15 @@ using Bilten.Dao;
 namespace Soko.Report
 {
 	/// <summary>
-	/// Summary description for NedostajuceUplateIzvestaj.
+    /// Summary description for DolazakNaTreningMesecniIzvestaj.
 	/// </summary>
-	public class NedostajuceUplateIzvestaj : Izvestaj
+	public class DolazakNaTreningMesecniIzvestaj : Izvestaj
 	{
-        private NedostajuceUplateLista lista;
+        private DolazakNaTreningMesecniLista lista;
         private Font itemFont;
         private Font clanFont;
 
-        public NedostajuceUplateIzvestaj(DateTime from, DateTime to, bool samoNedostajuceUplate)
+        public DolazakNaTreningMesecniIzvestaj(DateTime from, DateTime to, bool samoNedostajuceUplate)
 		{
             if (samoNedostajuceUplate)
                 Title = "Nedostajuce uplate";
@@ -39,7 +39,7 @@ namespace Soko.Report
             itemFont = new Font("Courier New", 9);
 			Font itemsHeaderFont = null;
 			Font groupTitleFont = new Font("Courier New", 10, FontStyle.Bold);
-            lista = new NedostajuceUplateLista(from, to, this, 1, 0f, 
+            lista = new DolazakNaTreningMesecniLista(from, to, this, 1, 0f, 
 				itemFont, itemsHeaderFont, groupTitleFont, samoNedostajuceUplate);
 		}
 
@@ -63,7 +63,7 @@ namespace Soko.Report
 		}
 	}
 
-	public class NedostajuceUplateLista : ReportLista
+	public class DolazakNaTreningMesecniLista : ReportLista
 	{
 		private float relClan = 0.0f;
 		private float relGrupa = 9.0f;
@@ -71,7 +71,7 @@ namespace Soko.Report
 		private Font groupTitleFont;
 		private float groupTitleHeight;
 
-        public NedostajuceUplateLista(DateTime from, DateTime to,
+        public DolazakNaTreningMesecniLista(DateTime from, DateTime to,
 			Izvestaj izvestaj, int pageNum, float y,
 			Font itemFont, Font itemsHeaderFont, Font groupTitleFont, bool samoNedostajuceUplate) 
 			: base(izvestaj, pageNum, y, itemFont, itemsHeaderFont)

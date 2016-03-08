@@ -1260,7 +1260,7 @@ namespace Soko.UI
                 {
                     CurrentSessionContext.Bind(session);
                     PreviewDialog p = new PreviewDialog();
-                    p.setIzvestaj(new NedostajuceUplateIzvestaj(dlg.OdDatum, dlg.DoDatum, true));
+                    p.setIzvestaj(new DolazakNaTreningMesecniIzvestaj(dlg.OdDatum, dlg.DoDatum, true));
                     p.ShowDialog();
                 }
             }
@@ -1317,7 +1317,7 @@ namespace Soko.UI
                 {
                     CurrentSessionContext.Bind(session);
                     PreviewDialog p = new PreviewDialog();
-                    p.setIzvestaj(new NedostajuceUplateIzvestaj(dlg.OdDatum, dlg.DoDatum, false));
+                    p.setIzvestaj(new DolazakNaTreningMesecniIzvestaj(dlg.OdDatum, dlg.DoDatum, false));
                     p.ShowDialog();
                 }
             }
