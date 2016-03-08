@@ -46,5 +46,11 @@ namespace Soko.Misc
             result += ")) ";
             return result;
         }
+
+        public static bool isGodisnjaClanarina(string naziv)
+        {
+            naziv = naziv.Trim().ToUpper();
+            return naziv == "GODI\u0160NJA \u010CLANARINA" || naziv == "GODISNJA CLANARINA";
+        }
     }
 }

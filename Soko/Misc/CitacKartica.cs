@@ -170,14 +170,10 @@ namespace Soko
                     if (uplate.Count > 0)
                     {
                         Util.sortByVaziOdDesc(uplate);
-                        for (int i = 0; i < uplate.Count; ++i)
+                        poslednjaUplata = findByGodisnjaClanarina(uplate, vremeOcitavanja.Year);
+                        if (poslednjaUplata == null)
                         {
-                            UplataClanarine u = uplate[i];
-                            if (u.VaziOd.Value.Year == vremeOcitavanja.Year && u.VaziOd.Value.Month == vremeOcitavanja.Month)
-                            {
-                                poslednjaUplata = u;
-                                break;
-                            }
+                            poslednjaUplata = findByMonth(uplate, vremeOcitavanja.Year, vremeOcitavanja.Month);
                         }
                         if (poslednjaUplata == null)
                             poslednjaUplata = uplate[0];
@@ -211,15 +207,53 @@ namespace Soko
             }
         }
 
+        private UplataClanarine findByGodisnjaClanarina(List<UplataClanarine> uplate, int year)
+        {
+            UplataClanarine result = null;
+            for (int i = 0; i < uplate.Count; ++i)
+            {
+                UplataClanarine u = uplate[i];
+                if (Util.isGodisnjaClanarina(u.Grupa.Naziv) && u.VaziOd.Value.Year == year)
+                {
+                    result = u;
+                    break;
+                }
+            }
+            return result;
+        }
+
+        private UplataClanarine findByMonth(List<UplataClanarine> uplate, int year, int month)
+        {
+            UplataClanarine result = null;
+            for (int i = 0; i < uplate.Count; ++i)
+            {
+                UplataClanarine u = uplate[i];
+                if (u.VaziOd.Value.Year == year && u.VaziOd.Value.Month == month)
+                {
+                    result = u;
+                    break;
+                }
+            }
+            return result;
+        }
+
         private void prikaziOcitavanje(int broj, DateTime vremeOcitavanja, UplataClanarine poslednjaUplata)
         {
             bool okForTrening = false;
             if (poslednjaUplata != null)
             {
-                // Najpre proveri da li postoji uplata za ovaj mesec.
-                okForTrening =
-                    poslednjaUplata.VaziOd.Value.Year == vremeOcitavanja.Year
-                    && poslednjaUplata.VaziOd.Value.Month == vremeOcitavanja.Month;
+                // Najpre proveri godisnju clanarinu.
+                okForTrening = Util.isGodisnjaClanarina(poslednjaUplata.Grupa.Naziv);
+
+                // Proveri da li postoji uplata za ovaj mesec.
+                if (!okForTrening)
+                {
+                    okForTrening =
+                        poslednjaUplata.VaziOd.Value.Year == vremeOcitavanja.Year
+                        && poslednjaUplata.VaziOd.Value.Month == vremeOcitavanja.Month;
+                }
+
+                // Tolerisi do odredjenog dana u mesecu.
                 if (!okForTrening)
                 {
                     okForTrening = vremeOcitavanja.Day <= Options.Instance.PoslednjiDanZaUplate;

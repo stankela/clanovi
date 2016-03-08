@@ -8,6 +8,7 @@ using System.Collections;
 using Soko.Report;
 using Soko.Misc;
 using Iesi.Collections;
+using Soko.UI;
 
 namespace Bilten.Dao.NHibernate
 {
@@ -203,6 +204,25 @@ ORDER BY
 
         public virtual List<object[]> getNedostajuceUplateReportItems(DateTime from, DateTime to)
         {
+            DateTime firstDateTimeInYear = new DateTime(from.Year, 1, 1, 0, 0, 0);
+            DateTime lastDateTimeInYear = new DateTime(to.AddYears(1).Year, 1, 1, 0, 0, 0).AddSeconds(-1);
+
+            int godisnjaClanarinaId = -1;
+            GrupaDAO grupaDAO = DAOFactoryFactory.DAOFactory.GetGrupaDAO();
+            IList<Grupa> grupe = grupaDAO.FindAll();
+            foreach (Grupa g in grupe)
+            {
+                if (Util.isGodisnjaClanarina(g.Naziv))
+                {
+                    godisnjaClanarinaId = g.Id;
+                    break;
+                }
+            }
+            if (godisnjaClanarinaId == -1)
+            {
+                MessageDialogs.showMessage("Ne mogu da pronadjem grupu za godisnju clanarinu", "Greska");
+            }
+
             try
             {
                 string dolasciQuery = @"
@@ -215,7 +235,7 @@ FROM clanovi c INNER JOIN (dolazak_na_trening d LEFT OUTER JOIN grupe g
 	ON d.grupa_id = g.grupa_id)
 	ON c.clan_id = d.clan_id
 WHERE (d.datum_vreme_dolaska BETWEEN '{0}' AND '{1}')
-ORDER BY god ASC, mes ASC, c.prezime, c.ime, c.datum_rodjenja";
+ORDER BY god, mes, g.naziv, c.prezime, c.ime, c.datum_rodjenja";
 
                 dolasciQuery = String.Format(dolasciQuery, from.ToString("yyyy-MM-dd HH:mm:ss"),
                     to.ToString("yyyy-MM-dd HH:mm:ss"));
@@ -227,11 +247,21 @@ SELECT DISTINCT
     datepart(month, u.vazi_od) mes,
     u.clan_id
 FROM uplate u
-WHERE (u.datum_vreme_uplate BETWEEN '{0}' AND '{1}')
-ORDER BY god ASC, mes ASC";
+WHERE (u.vazi_od BETWEEN '{0}' AND '{1}')";
                 uplateQuery = String.Format(uplateQuery, from.ToString("yyyy-MM-dd HH:mm:ss"),
                     to.ToString("yyyy-MM-dd HH:mm:ss"));
                 IList<object[]> uplate = Session.CreateSQLQuery(uplateQuery).List<object[]>();
+
+                string uplateGodisnjaClanarinaQuery = @"
+SELECT DISTINCT
+    datepart(year, u.vazi_od) god,
+    u.clan_id
+FROM uplate u
+WHERE (u.grupa_id = {0}) AND (u.vazi_od BETWEEN '{1}' AND '{2}')";
+                uplateGodisnjaClanarinaQuery = String.Format(uplateGodisnjaClanarinaQuery, godisnjaClanarinaId.ToString(),
+                    firstDateTimeInYear.ToString("yyyy-MM-dd HH:mm:ss"),
+                    lastDateTimeInYear.ToString("yyyy-MM-dd HH:mm:ss"));
+                IList<object[]> uplateGodisnjaClanarina = Session.CreateSQLQuery(uplateGodisnjaClanarinaQuery).List<object[]>();
 
                 ISet uplateSet = new HashedSet();
                 foreach (object[] row in uplate)
@@ -242,6 +272,14 @@ ORDER BY god ASC, mes ASC";
                     uplateSet.Add(new ClanGodinaMesec(id, god, mes));
                 }
 
+                ISet godisnjeUplateSet = new HashedSet();
+                foreach (object[] row in uplateGodisnjaClanarina)
+                {
+                    int god = (int)row[0];
+                    int id = (int)row[1];
+                    godisnjeUplateSet.Add(new ClanGodinaMesec(id, god, 1));
+                }
+
                 List<object[]> result = new List<object[]>();
                 foreach (object[] row in dolasci)
                 {
@@ -249,6 +287,8 @@ ORDER BY god ASC, mes ASC";
                     int mes = (int)row[1];
                     int id = (int)row[2];
                     if (uplateSet.Contains(new ClanGodinaMesec(id, god, mes)))
+                        continue;
+                    if (godisnjeUplateSet.Contains(new ClanGodinaMesec(id, god, 1)))
                         continue;
 
                     int broj = (int)row[3];
