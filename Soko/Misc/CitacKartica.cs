@@ -106,7 +106,7 @@ namespace Soko
                 af.newPisanjeKartice(retval, watch.ElapsedMilliseconds);
             }
 
-            if (retval == 0)
+            if (retval != 1)
             {
                 throw new WriteCardException(errorMsg);
             }
