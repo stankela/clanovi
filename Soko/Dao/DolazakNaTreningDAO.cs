@@ -14,6 +14,6 @@ namespace Bilten.Dao
         List<object[]> getEvidencijaTreningaReportItems(DateTime from, DateTime to, List<Grupa> grupe);
         List<ReportGrupa> getEvidencijaTreningaReportGrupe(DateTime from, DateTime to, List<Grupa> grupe);
         List<object[]> getEvidencijaTreningaReportItems(int clanId, DateTime from, DateTime to, List<Grupa> grupe);
-        List<object[]> getNedostajuceUplateReportItems(DateTime from, DateTime to);
+        List<object[]> getDolazakNaTreningMesecniReportItems(DateTime from, DateTime to, bool samoNedostajuceUplate);
   }
 }

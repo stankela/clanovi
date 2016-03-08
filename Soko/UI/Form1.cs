@@ -1144,7 +1144,7 @@ namespace Soko.UI
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Evidencija prisustva na treningu", true, true, false);
+                dlg = new BiracIntervala("Dolazak na trening", true, true, false);
                 dlg.DateTimePickerFrom.CustomFormat = "dd.MM.yyyy HH:mm";
                 dlg.DateTimePickerTo.CustomFormat = "dd.MM.yyyy HH:mm";
                 dlg.ShowDialog();
@@ -1260,7 +1260,7 @@ namespace Soko.UI
                 {
                     CurrentSessionContext.Bind(session);
                     PreviewDialog p = new PreviewDialog();
-                    p.setIzvestaj(new NedostajuceUplateIzvestaj(dlg.OdDatum, dlg.DoDatum));
+                    p.setIzvestaj(new NedostajuceUplateIzvestaj(dlg.OdDatum, dlg.DoDatum, true));
                     p.ShowDialog();
                 }
             }
@@ -1284,6 +1284,57 @@ namespace Soko.UI
         {
             AdminForm f = new AdminForm();
             f.Show();
+        }
+
+        private void mnDolazakNaTreningMesecni_Click(object sender, EventArgs e)
+        {
+            BiracIntervala dlg;
+            try
+            {
+                dlg = new BiracIntervala("Dolazak na trening - mesecni", false, false, true);
+                dlg.ShowDialog();
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+
+            if (dlg.DialogResult != DialogResult.OK)
+                return;
+
+            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Show();
+            try
+            {
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
+                using (session.BeginTransaction())
+                {
+                    CurrentSessionContext.Bind(session);
+                    PreviewDialog p = new PreviewDialog();
+                    p.setIzvestaj(new NedostajuceUplateIzvestaj(dlg.OdDatum, dlg.DoDatum, false));
+                    p.ShowDialog();
+                }
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            finally
+            {
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
+                Cursor.Hide();
+                Cursor.Current = Cursors.Arrow;
+            }
         }
     }
 }

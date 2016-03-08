@@ -16,9 +16,12 @@ namespace Soko.Report
         private Font itemFont;
         private Font clanFont;
 
-        public NedostajuceUplateIzvestaj(DateTime from, DateTime to)
+        public NedostajuceUplateIzvestaj(DateTime from, DateTime to, bool samoNedostajuceUplate)
 		{
-			Title = "Nedostajuce uplate";
+            if (samoNedostajuceUplate)
+                Title = "Nedostajuce uplate";
+            else
+                Title = "Dolazak na trening - mesecni";
             string subtitle;
             string format = "MMMM yyyy";
             if (from.Year == to.Year && from .Month == to.Month)
@@ -37,7 +40,7 @@ namespace Soko.Report
 			Font itemsHeaderFont = null;
 			Font groupTitleFont = new Font("Courier New", 10, FontStyle.Bold);
             lista = new NedostajuceUplateLista(from, to, this, 1, 0f, 
-				itemFont, itemsHeaderFont, groupTitleFont);
+				itemFont, itemsHeaderFont, groupTitleFont, samoNedostajuceUplate);
 		}
 
 		protected override void doSetupContent(Graphics g)
@@ -70,17 +73,17 @@ namespace Soko.Report
 
         public NedostajuceUplateLista(DateTime from, DateTime to,
 			Izvestaj izvestaj, int pageNum, float y,
-			Font itemFont, Font itemsHeaderFont, Font groupTitleFont) 
+			Font itemFont, Font itemsHeaderFont, Font groupTitleFont, bool samoNedostajuceUplate) 
 			: base(izvestaj, pageNum, y, itemFont, itemsHeaderFont)
 		{
 			this.groupTitleFont = groupTitleFont;
-			fetchItems(from, to);
+			fetchItems(from, to, samoNedostajuceUplate);
 		}
 
-        private void fetchItems(DateTime from, DateTime to)
+        private void fetchItems(DateTime from, DateTime to, bool samoNedostajuceUplate)
 		{
             items = DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO()
-                .getNedostajuceUplateReportItems(from, to);
+                .getDolazakNaTreningMesecniReportItems(from, to, samoNedostajuceUplate);
             createGroups();
 	
 			addRedBrojClana();
