@@ -66,12 +66,13 @@ namespace Soko.Report
             decimal ukupanIznos = 0;
             datumClanarine = String.Empty;
             string zarez = String.Empty;
+            string format = uplate.Count <= 6 ? "MMMM yyyy" : "MMM yyyy";
             foreach (UplataClanarine u in uplate)
             {
                 ukupanIznos += u.Iznos.Value;
                 // TODO2: Ovde bi verovatno trebalo stampati ceo mesec (MMMM), ali za to bi trebalo
                 // implementirati text wrap.
-                datumClanarine += zarez + u.VaziOd.Value.ToString("MMM yyyy");
+                datumClanarine += zarez + u.VaziOd.Value.ToString(format);
                 zarez = ", ";
             }
             iznos = ukupanIznos.ToString("F2") + " Din";
@@ -186,8 +187,9 @@ namespace Soko.Report
 					new PointF(x2, y), f2);
 				
 				// druga grupa
+                // TODO2: Dodaj pol clana kao obavezan podatak, i izmeni ovaj natpis (da bude ili Uplatio ili Uplatila)
 				string uplatioJe = "Uplatio-la je dana";
-				string iznosOd = "iznos od";
+				string iznosOd = "iznos";
 				string clanZaGrupu = resourceManager.GetString("potvrda_izvestaj_clan_za_grupu");
                 string zaMesec = "za mesec";
                 SizeF clanZaGrupuSize = g.MeasureString(clanZaGrupu + " ", arial9Font);
@@ -251,9 +253,9 @@ namespace Soko.Report
 				y += dy;*/
 				g.DrawString(zaMesec, arial9Font, blackBrush, 
 					new PointF(x, y), f1);
-				g.DrawString(datumClanarine, 
-					arial9BoldFont, blackBrush, 
-					new PointF(x2, y), f2);
+                g.DrawString(datumClanarine, 
+					arial9BoldFont, blackBrush,
+                    new RectangleF(x2, y, contentBounds.Right - x2, contentBounds.Bottom - conv(10) - y), f2);
 
 				// mp
 				x = contentBounds.X + conv(18f);
