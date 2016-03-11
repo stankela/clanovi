@@ -310,7 +310,7 @@ WHERE (u.grupa_id = {0}) AND (u.vazi_od BETWEEN '{1}' AND '{2}')";
 
                     string imaUplatuStr = "NE";
                     if (imaUplatu)
-                        imaUplatuStr = "DA";
+                        imaUplatuStr = "";
 
                     string clan = Clan.formatPrezimeImeBrojDatumRodjAdresaMesto(
                         prezime, ime, broj, datumRodjenja, String.Empty, String.Empty);
