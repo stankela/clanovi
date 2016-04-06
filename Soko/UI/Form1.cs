@@ -1235,8 +1235,8 @@ namespace Soko.UI
         {
             if (e.Control && e.Shift && e.KeyCode == Keys.S)
             {
-                LozinkaForm f = new LozinkaForm();
-                if (f.ShowDialog() == DialogResult.OK && f.Lozinka == "Lozinka")
+                LozinkaForm f = new LozinkaForm("Lozinka", false);
+                if (f.ShowDialog() == DialogResult.OK)
                 {
                     Options.Instance.AdminMode = true;
                     refreshAdminModeUI(Options.Instance.AdminMode);
@@ -1355,6 +1355,34 @@ namespace Soko.UI
                 CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
                 Cursor.Hide();
                 Cursor.Current = Cursors.Arrow;
+            }
+        }
+
+        private FormWindowState lastWindowState = FormWindowState.Minimized;
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            // Check if window state changes
+            if (WindowState != lastWindowState)
+            {
+                if (lastWindowState == FormWindowState.Minimized && WindowState == FormWindowState.Normal)
+                {
+                    // Restored!
+                    LozinkaForm f = new LozinkaForm("sdv158", true);
+                    if (f.ShowDialog() != DialogResult.OK)
+                    {
+                        this.WindowState = FormWindowState.Minimized;
+                    }
+                }
+                lastWindowState = WindowState;
+            }
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                e.Cancel = true;
             }
         }
     }

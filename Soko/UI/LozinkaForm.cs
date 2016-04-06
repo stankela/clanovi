@@ -11,14 +11,28 @@ namespace Soko.UI
 {
     public partial class LozinkaForm : Form
     {
-        public string Lozinka
-        {
-            get { return txtLozinka.Text; }
-        }
+        private string lozinka;
 
-        public LozinkaForm()
+        public LozinkaForm(string lozinka, bool usePasswordChar)
         {
             InitializeComponent();
+            this.lozinka = lozinka;
+            if (usePasswordChar)
+            {
+                txtLozinka.PasswordChar = '*';
+                txtLozinka.UseSystemPasswordChar = true;
+            }
+        }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+            if (txtLozinka.Text != lozinka)
+            {
+                MessageDialogs.showMessage("Neispravna lozinka", this.Text);
+                txtLozinka.Clear();
+                this.DialogResult = DialogResult.None;
+                return;
+            }
         }
     }
 }
