@@ -1385,5 +1385,22 @@ namespace Soko.UI
                 e.Cancel = true;
             }
         }
+
+        private void mnClanoviKojiNePlacajuClanarinu_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ClanoviKojiNePlacajuForm f = new ClanoviKojiNePlacajuForm();
+                f.ShowDialog();
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+        }
     }
 }

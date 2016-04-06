@@ -107,6 +107,13 @@ namespace Soko.Domain
 			set { napomena = value; }
 		}
 
+        private bool neplacaClanarinu;
+        public virtual bool NeplacaClanarinu
+        {
+            get { return neplacaClanarinu; }
+            set { neplacaClanarinu = value; }
+        }
+
         public virtual string PrezimeIme
         {
             get

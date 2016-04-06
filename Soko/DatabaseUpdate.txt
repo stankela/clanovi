@@ -16,3 +16,8 @@ create table dolazak_na_trening (
 06-Mar-2016
 
 ALTER TABLE dolazak_na_trening DROP COLUMN datum_poslednje_uplate;
+
+06-Apr-2016
+
+ALTER TABLE clanovi ADD COLUMN ne_placa_clanarinu bit;
+UPDATE clanovi SET ne_placa_clanarinu = 0;

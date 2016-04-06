@@ -24,6 +24,7 @@ create table clanovi (
     telefon1 nvarchar(20),
     telefon2 nvarchar(20),
     ima_pristupnicu bit,
+	ne_placa_clanarinu bit,
     institucija_id int references institucije(institucija_id),
     napomena nvarchar(255),
     mesto_id int references mesta(mesto_id)

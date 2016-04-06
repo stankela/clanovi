@@ -109,6 +109,22 @@ namespace Bilten.Dao.NHibernate
             }
         }
 
+        public virtual IList<Clan> findKojiNePlacajuClanarinu()
+        {
+            try
+            {
+                IQuery q = Session.CreateQuery(@"from Clan c left join fetch c.Mesto
+                                                 where c.NeplacaClanarinu = true");
+                return q.List<Clan>();
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
         #endregion
 
         public override IList<Clan> FindAll()

@@ -17,5 +17,6 @@ namespace Bilten.Dao
         bool existsClanImePrezimeDatumRodjenja(Clan g);
         int getMaxBroj();
         Clan findForBrojKartice(int brojKartice);
+        IList<Clan> findKojiNePlacajuClanarinu();
     }
 }

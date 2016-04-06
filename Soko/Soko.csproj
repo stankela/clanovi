@@ -159,6 +159,12 @@
     <Compile Include="UI\BiracClana.Designer.cs">
       <DependentUpon>BiracClana.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\BiracClanaDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\BiracClanaDialog.Designer.cs">
+      <DependentUpon>BiracClanaDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\BiracDana.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -182,6 +188,12 @@
     </Compile>
     <Compile Include="UI\CitacKarticaForm.Designer.cs">
       <DependentUpon>CitacKarticaForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ClanoviKojiNePlacajuForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ClanoviKojiNePlacajuForm.Designer.cs">
+      <DependentUpon>ClanoviKojiNePlacajuForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\DuplikatiClanovaForm.cs">
       <SubType>Form</SubType>
@@ -259,6 +271,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>BiracClana.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\BiracClanaDialog.resx">
+      <DependentUpon>BiracClanaDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\BiracDana.resx">
       <SubType>Designer</SubType>
       <DependentUpon>BiracDana.cs</DependentUpon>
@@ -266,6 +281,9 @@
     <EmbeddedResource Include="UI\BiracIntervala.resx">
       <SubType>Designer</SubType>
       <DependentUpon>BiracIntervala.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ClanoviKojiNePlacajuForm.resx">
+      <DependentUpon>ClanoviKojiNePlacajuForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DuplikatiClanovaForm.resx">
       <DependentUpon>DuplikatiClanovaForm.cs</DependentUpon>
