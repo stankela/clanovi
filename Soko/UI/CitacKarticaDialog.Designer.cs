@@ -36,7 +36,6 @@
             this.lblCOMPortWriter = new System.Windows.Forms.Label();
             this.lblPoslednjiDanZaUplate = new System.Windows.Forms.Label();
             this.txtPoslednjiDanZaUplate = new System.Windows.Forms.TextBox();
-            this.btnEnableCitacKartica = new System.Windows.Forms.Button();
             this.lblVelicinaSlova = new System.Windows.Forms.Label();
             this.txtVelicinaSlova = new System.Windows.Forms.TextBox();
             this.ckbPrikaziBoje = new System.Windows.Forms.CheckBox();
@@ -100,7 +99,7 @@
             // btnOK
             // 
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(90, 451);
+            this.btnOK.Location = new System.Drawing.Point(90, 400);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 2;
@@ -111,7 +110,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(180, 451);
+            this.btnCancel.Location = new System.Drawing.Point(180, 400);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 3;
@@ -183,16 +182,6 @@
             this.txtPoslednjiDanZaUplate.Size = new System.Drawing.Size(45, 20);
             this.txtPoslednjiDanZaUplate.TabIndex = 7;
             // 
-            // btnEnableCitacKartica
-            // 
-            this.btnEnableCitacKartica.Location = new System.Drawing.Point(21, 227);
-            this.btnEnableCitacKartica.Name = "btnEnableCitacKartica";
-            this.btnEnableCitacKartica.Size = new System.Drawing.Size(132, 23);
-            this.btnEnableCitacKartica.TabIndex = 8;
-            this.btnEnableCitacKartica.Text = "button1";
-            this.btnEnableCitacKartica.UseVisualStyleBackColor = true;
-            this.btnEnableCitacKartica.Click += new System.EventHandler(this.btnEnableCitacKartica_Click);
-            // 
             // lblVelicinaSlova
             // 
             this.lblVelicinaSlova.AutoSize = true;
@@ -212,7 +201,7 @@
             // ckbPrikaziBoje
             // 
             this.ckbPrikaziBoje.AutoSize = true;
-            this.ckbPrikaziBoje.Location = new System.Drawing.Point(21, 280);
+            this.ckbPrikaziBoje.Location = new System.Drawing.Point(21, 229);
             this.ckbPrikaziBoje.Name = "ckbPrikaziBoje";
             this.ckbPrikaziBoje.Size = new System.Drawing.Size(237, 17);
             this.ckbPrikaziBoje.TabIndex = 11;
@@ -222,7 +211,7 @@
             // ckbPrikaziImeClana
             // 
             this.ckbPrikaziImeClana.AutoSize = true;
-            this.ckbPrikaziImeClana.Location = new System.Drawing.Point(21, 313);
+            this.ckbPrikaziImeClana.Location = new System.Drawing.Point(21, 262);
             this.ckbPrikaziImeClana.Name = "ckbPrikaziImeClana";
             this.ckbPrikaziImeClana.Size = new System.Drawing.Size(105, 17);
             this.ckbPrikaziImeClana.TabIndex = 12;
@@ -232,7 +221,7 @@
             // ckbPrikaziDisplejPrekoCelogEkrana
             // 
             this.ckbPrikaziDisplejPrekoCelogEkrana.AutoSize = true;
-            this.ckbPrikaziDisplejPrekoCelogEkrana.Location = new System.Drawing.Point(21, 352);
+            this.ckbPrikaziDisplejPrekoCelogEkrana.Location = new System.Drawing.Point(21, 301);
             this.ckbPrikaziDisplejPrekoCelogEkrana.Name = "ckbPrikaziDisplejPrekoCelogEkrana";
             this.ckbPrikaziDisplejPrekoCelogEkrana.Size = new System.Drawing.Size(184, 17);
             this.ckbPrikaziDisplejPrekoCelogEkrana.TabIndex = 13;
@@ -243,7 +232,7 @@
             // lblSirinaDispleja
             // 
             this.lblSirinaDispleja.AutoSize = true;
-            this.lblSirinaDispleja.Location = new System.Drawing.Point(55, 376);
+            this.lblSirinaDispleja.Location = new System.Drawing.Point(55, 325);
             this.lblSirinaDispleja.Name = "lblSirinaDispleja";
             this.lblSirinaDispleja.Size = new System.Drawing.Size(71, 13);
             this.lblSirinaDispleja.TabIndex = 14;
@@ -252,7 +241,7 @@
             // lblVisinaDispleja
             // 
             this.lblVisinaDispleja.AutoSize = true;
-            this.lblVisinaDispleja.Location = new System.Drawing.Point(55, 402);
+            this.lblVisinaDispleja.Location = new System.Drawing.Point(55, 351);
             this.lblVisinaDispleja.Name = "lblVisinaDispleja";
             this.lblVisinaDispleja.Size = new System.Drawing.Size(73, 13);
             this.lblVisinaDispleja.TabIndex = 15;
@@ -260,14 +249,14 @@
             // 
             // txtSirinaDispleja
             // 
-            this.txtSirinaDispleja.Location = new System.Drawing.Point(141, 373);
+            this.txtSirinaDispleja.Location = new System.Drawing.Point(141, 322);
             this.txtSirinaDispleja.Name = "txtSirinaDispleja";
             this.txtSirinaDispleja.Size = new System.Drawing.Size(42, 20);
             this.txtSirinaDispleja.TabIndex = 16;
             // 
             // txtVisinaDispleja
             // 
-            this.txtVisinaDispleja.Location = new System.Drawing.Point(141, 399);
+            this.txtVisinaDispleja.Location = new System.Drawing.Point(141, 348);
             this.txtVisinaDispleja.Name = "txtVisinaDispleja";
             this.txtVisinaDispleja.Size = new System.Drawing.Size(42, 20);
             this.txtVisinaDispleja.TabIndex = 17;
@@ -278,7 +267,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(273, 491);
+            this.ClientSize = new System.Drawing.Size(273, 441);
             this.Controls.Add(this.txtVisinaDispleja);
             this.Controls.Add(this.txtSirinaDispleja);
             this.Controls.Add(this.lblVisinaDispleja);
@@ -288,7 +277,6 @@
             this.Controls.Add(this.ckbPrikaziBoje);
             this.Controls.Add(this.txtVelicinaSlova);
             this.Controls.Add(this.lblVelicinaSlova);
-            this.Controls.Add(this.btnEnableCitacKartica);
             this.Controls.Add(this.txtPoslednjiDanZaUplate);
             this.Controls.Add(this.lblPoslednjiDanZaUplate);
             this.Controls.Add(this.lblCOMPortWriter);
@@ -318,7 +306,6 @@
         private System.Windows.Forms.Label lblCOMPortWriter;
         private System.Windows.Forms.Label lblPoslednjiDanZaUplate;
         private System.Windows.Forms.TextBox txtPoslednjiDanZaUplate;
-        private System.Windows.Forms.Button btnEnableCitacKartica;
         private System.Windows.Forms.Label lblVelicinaSlova;
         private System.Windows.Forms.TextBox txtVelicinaSlova;
         private System.Windows.Forms.CheckBox ckbPrikaziBoje;

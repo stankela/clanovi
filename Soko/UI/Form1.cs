@@ -950,25 +950,6 @@ namespace Soko.UI
             }
         }
 
-        public void PokreniCitacKartica()
-        {
-            if (!CitacKarticaEnabled)
-            {
-                CitacKarticaForm citacKarticaForm = new CitacKarticaForm();
-                citacKarticaForm.Show();
-                CitacKarticaEnabled = true;
-            }
-        }
-
-        public void ZaustaviCitacKartica()
-        {
-            if (CitacKarticaEnabled)
-            {
-                CitacKarticaEnabled = false;
-                SingleInstanceApplication.GlavniProzor.CitacKarticaForm.Close();
-            }
-        }
-
         private void mnCitacKartica_Click(object sender, EventArgs e)
         {
             CitacKarticaDialog form = new CitacKarticaDialog();
@@ -1024,7 +1005,10 @@ namespace Soko.UI
             // Dogadjaj kada se ekran otkljuca/zakljuca.
             Microsoft.Win32.SystemEvents.SessionSwitch += new Microsoft.Win32.SessionSwitchEventHandler(SystemEvents_SessionSwitch);
             
-            PokreniCitacKartica();
+            // Pokreni citac kartica
+            CitacKarticaForm citacKarticaForm = new CitacKarticaForm();
+            citacKarticaForm.Show();
+            CitacKarticaEnabled = true;
 
             // Normally, the timer is declared at the class level, 
             // so that it stays in scope as long as it is needed. 
