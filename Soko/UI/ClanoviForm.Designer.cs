@@ -126,7 +126,7 @@ namespace Soko.UI
             this.MinimizeBox = false;
             this.Name = "ClanoviForm";
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Load += new System.EventHandler(this.ClanoviForm_Load);
             this.Shown += new System.EventHandler(this.ClanoviForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);

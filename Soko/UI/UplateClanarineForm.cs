@@ -309,5 +309,13 @@ namespace Soko.UI
             return new UplataDialogAdmin(entityId);
         }
 
+        private void UplateClanarineForm_Load(object sender, EventArgs e)
+        {
+            // TODO2: Proveri da li postavljanje prozora na sredinu ekrana kada su prikljucena dva monitora
+            // mogu da se urade centralizovano na jednom mestu.
+            Screen screen = Screen.AllScreens[0];
+            this.Location = new Point((screen.Bounds.Width - this.Width) / 2, (screen.Bounds.Height - this.Height) / 2);
+        }
+
     }
 }

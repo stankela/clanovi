@@ -112,8 +112,8 @@
             this.Controls.Add(this.cmbClan);
             this.Controls.Add(this.txtClan);
             this.Name = "SimulatorCitacaKarticaForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SimulatorCitacaKarticaForm";
+            this.Load += new System.EventHandler(this.SimulatorCitacaKarticaForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

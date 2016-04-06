@@ -100,8 +100,8 @@ namespace Soko.UI
             this.MinimizeBox = false;
             this.Name = "FontChooserDialog";
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Font";
+            this.Load += new System.EventHandler(this.FontChooserDialog_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

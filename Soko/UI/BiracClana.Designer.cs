@@ -116,8 +116,8 @@ namespace Soko.UI
             this.MinimizeBox = false;
             this.Name = "BiracClana";
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BiracClana";
+            this.Load += new System.EventHandler(this.BiracClana_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

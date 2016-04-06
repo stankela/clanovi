@@ -39,6 +39,9 @@ namespace Soko.UI
 
         private void PrinterSelectionForm_Load(object sender, EventArgs e)
         {
+            Screen screen = Screen.AllScreens[0];
+            this.Location = new Point((screen.Bounds.Width - this.Width) / 2, (screen.Bounds.Height - this.Height) / 2);
+
             if (PrinterSettings.InstalledPrinters.Count == 0)
             {
                 MessageDialogs.showMessage(NO_PRINTERS_MSG, this.Text);

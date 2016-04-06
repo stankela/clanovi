@@ -310,5 +310,11 @@ namespace Soko.UI
         {
             this.Close();
         }
+
+        private void MesecneClanarineForm_Load(object sender, EventArgs e)
+        {
+            Screen screen = Screen.AllScreens[0];
+            this.Location = new Point((screen.Bounds.Width - this.Width) / 2, (screen.Bounds.Height - this.Height) / 2);
+        }
     }
 }

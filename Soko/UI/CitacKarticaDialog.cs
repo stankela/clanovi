@@ -37,6 +37,9 @@ namespace Soko.UI
             txtPoslednjiDanZaUplate.Text = Options.Instance.PoslednjiDanZaUplate.ToString();
             txtVelicinaSlova.Text = Options.Instance.VelicinaSlovaZaCitacKartica.ToString();
             ckbPrikaziBoje.Checked = Options.Instance.PrikaziBojeKodOcitavanja;
+
+            Screen screen = Screen.AllScreens[0];
+            this.Location = new Point((screen.Bounds.Width - this.Width) / 2, (screen.Bounds.Height - this.Height) / 2);
         }
 
         private void btnOK_Click(object sender, EventArgs e)
