@@ -36,22 +36,22 @@ namespace Soko.UI
 
         public void PodesiVelicinu()
         {
-            string msg = CitacKartica.getCitacKartica().FormatMessage(12345, maxGrupa);
-            Graphics g = this.CreateGraphics();
-            Font font = new Font(FONT_NAME, Options.Instance.VelicinaSlovaZaCitacKartica, FontStyle.Bold);
-            SizeF size = g.MeasureString(msg, font);
-            font.Dispose();
-            g.Dispose();
-
-            this.ClientSize = size.ToSize();
             Screen[] screens = Screen.AllScreens;
             if (screens.Length == 1)
             {
+                string msg = CitacKartica.getCitacKartica().FormatMessage(12345, maxGrupa);
+                Graphics g = this.CreateGraphics();
+                Font font = new Font(FONT_NAME, 28, FontStyle.Bold);
+                SizeF size = g.MeasureString(msg, font);
+                this.ClientSize = size.ToSize();
                 this.Location = new Point(screens[0].Bounds.Width - this.Width, 0);
+                font.Dispose();
+                g.Dispose();
             }
             else
             {
                 this.Location = new Point(screens[0].Bounds.Width, 0);
+                this.Size = new Size(screens[1].Bounds.Width, screens[1].Bounds.Height);
             }
         }
 
