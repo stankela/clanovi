@@ -126,7 +126,7 @@ namespace Soko.UI
             this.btnOdustani.UseVisualStyleBackColor = true;
             this.btnOdustani.Click += new System.EventHandler(this.btnOdustani_Click);
             // 
-            // MesecnaClanarinaDialog
+            // CenaDialog
             // 
             this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -139,10 +139,10 @@ namespace Soko.UI
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "MesecnaClanarinaDialog";
+            this.Name = "CenaDialog";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Clanarina";
-            this.Load += new System.EventHandler(this.MesecnaClanarinaDialog_Load);
             this.Shown += new System.EventHandler(this.CenaDialog_Shown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

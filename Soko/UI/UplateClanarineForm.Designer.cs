@@ -182,7 +182,7 @@ namespace Soko.UI
             this.MinimizeBox = false;
             this.Name = "UplateClanarineForm";
             this.ShowInTaskbar = false;
-            this.Load += new System.EventHandler(this.UplateClanarineForm_Load);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Shown += new System.EventHandler(this.PotvrdaUplateForm_Shown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

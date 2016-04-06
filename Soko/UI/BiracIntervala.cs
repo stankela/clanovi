@@ -386,11 +386,5 @@ namespace Soko.UI
             else
                 currentDatumDo = dateTimePicker.Value;
         }
-
-        private void BiracIntervala_Load(object sender, EventArgs e)
-        {
-            Screen screen = Screen.AllScreens[0];
-            this.Location = new Point((screen.Bounds.Width - this.Width) / 2, (screen.Bounds.Height - this.Height) / 2);
-        }
     }
 }

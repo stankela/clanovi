@@ -198,6 +198,7 @@ namespace Soko.UI
             this.Controls.Add(this.panel1);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Name = "PreviewDialog";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Print Preview";
             this.Load += new System.EventHandler(this.PreviewDialog_Load);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.PreviewDialog_FormClosed);

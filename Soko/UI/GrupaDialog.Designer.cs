@@ -140,8 +140,8 @@ namespace Soko.UI
             this.MinimizeBox = false;
             this.Name = "GrupaDialog";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Grupa";
-            this.Load += new System.EventHandler(this.GrupaDialog_Load);
             this.Shown += new System.EventHandler(this.GrupaDialog_Shown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

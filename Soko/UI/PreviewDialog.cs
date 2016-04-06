@@ -155,9 +155,6 @@ namespace Soko.UI
 
         private void PreviewDialog_Load(object sender, System.EventArgs e)
         {
-            Screen screen = Screen.AllScreens[0];
-            this.Location = new Point((screen.Bounds.Width - this.Width) / 2, (screen.Bounds.Height - this.Height) / 2);
-
             if (rezimRada == RezimRada.PageSizeTooSmall)
             {
                 MessageDialogs.showMessage(SMALL_PAPER_SIZE_MSG, this.Text);

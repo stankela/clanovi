@@ -27,9 +27,6 @@ namespace Soko.UI
             ckbPrikaziImeClana.Checked = Options.Instance.PrikaziImeClanaKodOcitavanjaKartice;
             ckbPrikaziDisplejPrekoCelogEkrana.Checked = Options.Instance.PrikaziDisplejPrekoCelogEkrana;
             updatePrikaziDisplejPrekoCelogEkrana();
-
-            Screen screen = Screen.AllScreens[0];
-            this.Location = new Point((screen.Bounds.Width - this.Width) / 2, (screen.Bounds.Height - this.Height) / 2);
         }
 
         private void btnOK_Click(object sender, EventArgs e)

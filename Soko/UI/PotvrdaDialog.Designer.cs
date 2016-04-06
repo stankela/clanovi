@@ -73,8 +73,8 @@ namespace Soko.UI
             this.MinimizeBox = false;
             this.Name = "PotvrdaDialog";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PotvrdaDialog";
-            this.Load += new System.EventHandler(this.PotvrdaDialog_Load);
             this.Shown += new System.EventHandler(this.PotvrdaDialog_Shown);
             this.ResumeLayout(false);
 

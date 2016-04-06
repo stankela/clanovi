@@ -262,10 +262,10 @@ namespace Soko.UI
             this.MinimizeBox = false;
             this.Name = "BiracIntervala";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BiracIntervala";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.BiracIntervala_FormClosed);
-            this.Load += new System.EventHandler(this.BiracIntervala_Load);
             this.Shown += new System.EventHandler(this.BiracIntervala_Shown);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.BiracIntervala_FormClosed);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

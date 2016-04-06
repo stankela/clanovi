@@ -120,8 +120,8 @@ namespace Soko.UI
             this.MinimizeBox = false;
             this.Name = "MestoDialog";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Mesto";
-            this.Load += new System.EventHandler(this.MestoDialog_Load);
             this.Shown += new System.EventHandler(this.MestoDialog_Shown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

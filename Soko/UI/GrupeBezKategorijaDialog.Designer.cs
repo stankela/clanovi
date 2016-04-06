@@ -40,7 +40,7 @@ namespace Soko.UI
             this.label1.Size = new System.Drawing.Size(264, 30);
             this.label1.TabIndex = 1;
             this.label1.Text = "Da biste mogli da stampate ovaj izvestaj, potrebno je da odredite kategorije za s" +
-    "ledece grupe:";
+                "ledece grupe:";
             // 
             // listBox1
             // 
@@ -74,8 +74,8 @@ namespace Soko.UI
             this.MinimizeBox = false;
             this.Name = "GrupeBezKategorijaDialog";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "GrupeBezKategorijaDialog";
-            this.Load += new System.EventHandler(this.GrupeBezKategorijaDialog_Load);
             this.ResumeLayout(false);
 
         }

@@ -140,8 +140,8 @@ namespace Soko.UI
             this.MinimizeBox = false;
             this.Name = "InstitucijaDialog";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Institucija";
-            this.Load += new System.EventHandler(this.InstitucijaDialog_Load);
             this.Shown += new System.EventHandler(this.InstitucijaDialog_Shown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

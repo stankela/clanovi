@@ -109,6 +109,7 @@ namespace Soko.UI
             this.MinimizeBox = false;
             this.Name = "PrinterSelectionForm";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PrinterSelectionForm";
             this.Load += new System.EventHandler(this.PrinterSelectionForm_Load);
             this.Shown += new System.EventHandler(this.PrinterSelectionForm_Shown);

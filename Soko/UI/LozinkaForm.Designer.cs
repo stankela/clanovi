@@ -71,8 +71,8 @@
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.txtLozinka);
             this.Name = "LozinkaForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Lozinka";
-            this.Load += new System.EventHandler(this.LozinkaForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

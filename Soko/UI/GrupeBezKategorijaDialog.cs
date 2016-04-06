@@ -25,11 +25,5 @@ namespace Soko.UI
                 listBox1.Items.Add(g.SifraCrtaNaziv);
             }
         }
-
-        private void GrupeBezKategorijaDialog_Load(object sender, EventArgs e)
-        {
-            Screen screen = Screen.AllScreens[0];
-            this.Location = new Point((screen.Bounds.Width - this.Width) / 2, (screen.Bounds.Height - this.Height) / 2);
-        }
     }
 }

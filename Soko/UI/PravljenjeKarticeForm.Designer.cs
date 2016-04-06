@@ -122,8 +122,8 @@ namespace Soko.UI
             this.MinimizeBox = false;
             this.Name = "PravljenjeKarticeForm";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Unos Clanarine";
-            this.Load += new System.EventHandler(this.PravljenjeKarticeForm_Load);
             this.Shown += new System.EventHandler(this.PravljenjeKarticeForm_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();

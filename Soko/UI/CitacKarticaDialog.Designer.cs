@@ -289,6 +289,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "CitacKarticaDialog";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Citac kartica";
             this.Load += new System.EventHandler(this.CitacKarticaDialog_Load);
             this.ResumeLayout(false);
