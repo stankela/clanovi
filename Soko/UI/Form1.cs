@@ -985,8 +985,29 @@ namespace Soko.UI
             set { pisacKarticaEnabled = value; }
         }
 
+        void SystemEvents_SessionSwitch(object sender, Microsoft.Win32.SessionSwitchEventArgs e)
+        {
+            if (e.Reason == SessionSwitchReason.SessionLock)
+            {
+                // Kada se zakljuca ekran
+            }
+            else if (e.Reason == SessionSwitchReason.SessionUnlock)
+            {
+                // Kada se otkljca ekran
+                CitacKarticaForm f = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
+                if (f != null)
+                {
+                    f.Show();
+                    f.BringToFront();
+                }
+            }
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
+            // Dogadjaj kada se ekran otkljuca/zakljuca.
+            Microsoft.Win32.SystemEvents.SessionSwitch += new Microsoft.Win32.SessionSwitchEventHandler(SystemEvents_SessionSwitch);
+            
             PokreniCitacKartica();
 
             // Normally, the timer is declared at the class level, 
