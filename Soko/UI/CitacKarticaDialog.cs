@@ -37,6 +37,7 @@ namespace Soko.UI
             txtPoslednjiDanZaUplate.Text = Options.Instance.PoslednjiDanZaUplate.ToString();
             txtVelicinaSlova.Text = Options.Instance.VelicinaSlovaZaCitacKartica.ToString();
             ckbPrikaziBoje.Checked = Options.Instance.PrikaziBojeKodOcitavanja;
+            ckbPrikaziImeClana.Checked = Options.Instance.PrikaziImeClanaKodOcitavanjaKartice;
 
             Screen screen = Screen.AllScreens[0];
             this.Location = new Point((screen.Bounds.Width - this.Width) / 2, (screen.Bounds.Height - this.Height) / 2);
@@ -64,6 +65,7 @@ namespace Soko.UI
             Options.Instance.PoslednjiDanZaUplate = Int32.Parse(txtPoslednjiDanZaUplate.Text);
             Options.Instance.VelicinaSlovaZaCitacKartica = Int32.Parse(txtVelicinaSlova.Text);
             Options.Instance.PrikaziBojeKodOcitavanja = ckbPrikaziBoje.Checked;
+            Options.Instance.PrikaziImeClanaKodOcitavanjaKartice = ckbPrikaziImeClana.Checked;
         }
 
         private void btnEnableCitacKartica_Click(object sender, EventArgs e)

@@ -133,7 +133,7 @@ namespace Soko
         {
             if (broj == TEST_KARTICA_BROJ)
             {
-                string msg = FormatMessage(broj, TEST_KARTICA_NAME);
+                string msg = FormatMessage(broj, null, TEST_KARTICA_NAME);
                 CitacKarticaForm form = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
                 if (form != null)
                 {
@@ -142,16 +142,18 @@ namespace Soko
                 return true;
             }
 
+            Clan clan;
             UplataClanarine poslednjaUplata;
-            if (!unesiOcitavanje(broj, vremeOcitavanja, out poslednjaUplata))
+            if (!unesiOcitavanje(broj, vremeOcitavanja, out clan, out poslednjaUplata))
                 return false;
 
-            prikaziOcitavanje(broj, vremeOcitavanja, poslednjaUplata);
+            prikaziOcitavanje(broj, vremeOcitavanja, clan, poslednjaUplata);
             return true;
         }
 
-        private bool unesiOcitavanje(int broj, DateTime vremeOcitavanja, out UplataClanarine poslednjaUplata)
+        private bool unesiOcitavanje(int broj, DateTime vremeOcitavanja, out Clan clan, out UplataClanarine poslednjaUplata)
         {
+            clan = null;
             poslednjaUplata = null;
             try
             {
@@ -160,7 +162,7 @@ namespace Soko
                 {
                     CurrentSessionContext.Bind(session);
 
-                    Clan clan = DAOFactoryFactory.DAOFactory.GetClanDAO().findForBrojKartice(broj);
+                    clan = DAOFactoryFactory.DAOFactory.GetClanDAO().findForBrojKartice(broj);
                     if (clan == null)
                         return false;
 
@@ -237,7 +239,7 @@ namespace Soko
             return result;
         }
 
-        private void prikaziOcitavanje(int broj, DateTime vremeOcitavanja, UplataClanarine poslednjaUplata)
+        private void prikaziOcitavanje(int broj, DateTime vremeOcitavanja, Clan clan, UplataClanarine poslednjaUplata)
         {
             bool okForTrening = false;
             if (poslednjaUplata != null)
@@ -265,7 +267,7 @@ namespace Soko
             {
                 grupa = poslednjaUplata.Grupa.Naziv;
             }
-            string msg = FormatMessage(broj, grupa);
+            string msg = FormatMessage(broj, clan, grupa);
 
             // Posto ocitavanje kartice traje relativno dugo (oko 374 ms), moguce je da je prozor
             // zatvoren bas u trenutku dok se kartica ocitava. Korisnik je u tom slucaju cuo zvuk
@@ -289,15 +291,23 @@ namespace Soko
             }
         }
 
-        public string FormatMessage(int broj, string grupa)
+        public string FormatMessage(int broj, Clan clan, string grupa)
         {
             string result = String.Empty;
             if (Options.Instance.PrikaziBrojClanaKodOcitavanjaKartice)
             {
-                result = broj.ToString() + "\n";
+                result = broj.ToString();
+            }
+            if (clan != null && Options.Instance.PrikaziImeClanaKodOcitavanjaKartice)
+            {
+                if (result != String.Empty)
+                    result += "   ";
+                result += clan.PrezimeIme;
             }
             if (grupa != null)
             {
+                if (result != String.Empty)
+                    result += "\n";
                 result += grupa;
             }
             return result;

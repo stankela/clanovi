@@ -74,6 +74,13 @@ namespace Soko
 
         }
 
+        private bool prikaziImeClanaKodOcitavanjaKartice = false;
+        public bool PrikaziImeClanaKodOcitavanjaKartice
+        {
+            get { return prikaziImeClanaKodOcitavanjaKartice; }
+            set { prikaziImeClanaKodOcitavanjaKartice = value; }
+        }
+
         private int velicinaSlovaZaCitacKartica = 28;
         public int VelicinaSlovaZaCitacKartica
         {
