@@ -38,6 +38,8 @@ namespace Soko.UI
             txtVelicinaSlova.Text = Options.Instance.VelicinaSlovaZaCitacKartica.ToString();
             ckbPrikaziBoje.Checked = Options.Instance.PrikaziBojeKodOcitavanja;
             ckbPrikaziImeClana.Checked = Options.Instance.PrikaziImeClanaKodOcitavanjaKartice;
+            ckbPrikaziDisplejPrekoCelogEkrana.Checked = Options.Instance.PrikaziDisplejPrekoCelogEkrana;
+            updatePrikaziDisplejPrekoCelogEkrana();
 
             Screen screen = Screen.AllScreens[0];
             this.Location = new Point((screen.Bounds.Width - this.Width) / 2, (screen.Bounds.Height - this.Height) / 2);
@@ -60,12 +62,35 @@ namespace Soko.UI
                 this.DialogResult = DialogResult.None;
                 return;
             }
+            if (!ckbPrikaziDisplejPrekoCelogEkrana.Checked)
+            {
+                if (!Int32.TryParse(txtSirinaDispleja.Text, out i) || i < 1)
+                {
+                    MessageDialogs.showMessage("Neispravna vrednost za sirinu displeja.", this.Text);
+                    this.DialogResult = DialogResult.None;
+                    return;
+                }
+                if (!Int32.TryParse(txtVisinaDispleja.Text, out i) || i < 1)
+                {
+                    MessageDialogs.showMessage("Neispravna vrednost za visinu displeja.", this.Text);
+                    this.DialogResult = DialogResult.None;
+                    return;
+                }
+            }
+
+            
             Options.Instance.COMPortReader = cmbCOMPortReader.SelectedIndex + 1;
             Options.Instance.COMPortWriter = cmbCOMPortWriter.SelectedIndex + 1;
             Options.Instance.PoslednjiDanZaUplate = Int32.Parse(txtPoslednjiDanZaUplate.Text);
             Options.Instance.VelicinaSlovaZaCitacKartica = Int32.Parse(txtVelicinaSlova.Text);
             Options.Instance.PrikaziBojeKodOcitavanja = ckbPrikaziBoje.Checked;
             Options.Instance.PrikaziImeClanaKodOcitavanjaKartice = ckbPrikaziImeClana.Checked;
+            Options.Instance.PrikaziDisplejPrekoCelogEkrana = ckbPrikaziDisplejPrekoCelogEkrana.Checked;
+            if (!ckbPrikaziDisplejPrekoCelogEkrana.Checked)
+            {
+                Options.Instance.SirinaDispleja = int.Parse(txtSirinaDispleja.Text);
+                Options.Instance.VisinaDispleja = int.Parse(txtVisinaDispleja.Text);
+            }
         }
 
         private void btnEnableCitacKartica_Click(object sender, EventArgs e)
@@ -79,6 +104,36 @@ namespace Soko.UI
                 SingleInstanceApplication.GlavniProzor.PokreniCitacKartica();
             }
             updateCitacKarticaButtonText();
+        }
+
+        private void ckbPrikaziDisplejPrekoCelogEkrana_CheckedChanged(object sender, EventArgs e)
+        {
+            updatePrikaziDisplejPrekoCelogEkrana();
+        }
+
+        private void updatePrikaziDisplejPrekoCelogEkrana()
+        {
+            if (!ckbPrikaziDisplejPrekoCelogEkrana.Checked)
+            {
+                txtSirinaDispleja.Enabled = true;
+                txtVisinaDispleja.Enabled = true;
+                CitacKarticaForm f = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
+                if (f != null)
+                {
+                    txtSirinaDispleja.Text = f.ClientSize.Width.ToString();
+                    txtVisinaDispleja.Text = f.ClientSize.Height.ToString();
+                }
+                else
+                {
+                    txtSirinaDispleja.Text = Options.Instance.SirinaDispleja.ToString();
+                    txtVisinaDispleja.Text = Options.Instance.VisinaDispleja.ToString();
+                }
+            }
+            else
+            {
+                txtSirinaDispleja.Enabled = false;
+                txtVisinaDispleja.Enabled = false;
+            }
         }
     }
 }

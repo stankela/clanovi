@@ -102,6 +102,27 @@ namespace Soko
             set { prikaziBojeKodOcitavanja = value; }
         }
 
+        private bool prikaziDisplejPrekoCelogEkrana = true;
+        public bool PrikaziDisplejPrekoCelogEkrana
+        {
+            get { return prikaziDisplejPrekoCelogEkrana; }
+            set { prikaziDisplejPrekoCelogEkrana = value; }
+        }
+
+        private int sirinaDispleja;
+        public int SirinaDispleja
+        {
+            get { return sirinaDispleja; }
+            set { sirinaDispleja = value; }
+        }
+
+        private int visinaDispleja;
+        public int VisinaDispleja
+        {
+            get { return visinaDispleja; }
+            set { visinaDispleja = value; }
+        }
+
         private bool adminMode = false;
         public bool AdminMode
         {

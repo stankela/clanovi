@@ -51,7 +51,14 @@ namespace Soko.UI
             else
             {
                 this.Location = new Point(screens[0].Bounds.Width, 0);
-                this.Size = new Size(screens[1].Bounds.Width, screens[1].Bounds.Height);
+                if (Options.Instance.PrikaziDisplejPrekoCelogEkrana)
+                {
+                    this.Size = new Size(screens[1].Bounds.Width, screens[1].Bounds.Height);
+                }
+                else
+                {
+                    this.ClientSize = new Size(Options.Instance.SirinaDispleja, Options.Instance.VisinaDispleja);                
+                }
             }
         }
 

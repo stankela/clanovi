@@ -41,6 +41,11 @@
             this.txtVelicinaSlova = new System.Windows.Forms.TextBox();
             this.ckbPrikaziBoje = new System.Windows.Forms.CheckBox();
             this.ckbPrikaziImeClana = new System.Windows.Forms.CheckBox();
+            this.ckbPrikaziDisplejPrekoCelogEkrana = new System.Windows.Forms.CheckBox();
+            this.lblSirinaDispleja = new System.Windows.Forms.Label();
+            this.lblVisinaDispleja = new System.Windows.Forms.Label();
+            this.txtSirinaDispleja = new System.Windows.Forms.TextBox();
+            this.txtVisinaDispleja = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // cmbCOMPortReader
@@ -95,7 +100,7 @@
             // btnOK
             // 
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(90, 386);
+            this.btnOK.Location = new System.Drawing.Point(90, 451);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 2;
@@ -106,7 +111,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(180, 386);
+            this.btnCancel.Location = new System.Drawing.Point(180, 451);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 3;
@@ -224,13 +229,61 @@
             this.ckbPrikaziImeClana.Text = "Prikazi ime clana";
             this.ckbPrikaziImeClana.UseVisualStyleBackColor = true;
             // 
+            // ckbPrikaziDisplejPrekoCelogEkrana
+            // 
+            this.ckbPrikaziDisplejPrekoCelogEkrana.AutoSize = true;
+            this.ckbPrikaziDisplejPrekoCelogEkrana.Location = new System.Drawing.Point(21, 352);
+            this.ckbPrikaziDisplejPrekoCelogEkrana.Name = "ckbPrikaziDisplejPrekoCelogEkrana";
+            this.ckbPrikaziDisplejPrekoCelogEkrana.Size = new System.Drawing.Size(184, 17);
+            this.ckbPrikaziDisplejPrekoCelogEkrana.TabIndex = 13;
+            this.ckbPrikaziDisplejPrekoCelogEkrana.Text = "Prikazi displej preko celog ekrana";
+            this.ckbPrikaziDisplejPrekoCelogEkrana.UseVisualStyleBackColor = true;
+            this.ckbPrikaziDisplejPrekoCelogEkrana.CheckedChanged += new System.EventHandler(this.ckbPrikaziDisplejPrekoCelogEkrana_CheckedChanged);
+            // 
+            // lblSirinaDispleja
+            // 
+            this.lblSirinaDispleja.AutoSize = true;
+            this.lblSirinaDispleja.Location = new System.Drawing.Point(55, 376);
+            this.lblSirinaDispleja.Name = "lblSirinaDispleja";
+            this.lblSirinaDispleja.Size = new System.Drawing.Size(71, 13);
+            this.lblSirinaDispleja.TabIndex = 14;
+            this.lblSirinaDispleja.Text = "Sirina displeja";
+            // 
+            // lblVisinaDispleja
+            // 
+            this.lblVisinaDispleja.AutoSize = true;
+            this.lblVisinaDispleja.Location = new System.Drawing.Point(55, 402);
+            this.lblVisinaDispleja.Name = "lblVisinaDispleja";
+            this.lblVisinaDispleja.Size = new System.Drawing.Size(73, 13);
+            this.lblVisinaDispleja.TabIndex = 15;
+            this.lblVisinaDispleja.Text = "Visina displeja";
+            // 
+            // txtSirinaDispleja
+            // 
+            this.txtSirinaDispleja.Location = new System.Drawing.Point(141, 373);
+            this.txtSirinaDispleja.Name = "txtSirinaDispleja";
+            this.txtSirinaDispleja.Size = new System.Drawing.Size(42, 20);
+            this.txtSirinaDispleja.TabIndex = 16;
+            // 
+            // txtVisinaDispleja
+            // 
+            this.txtVisinaDispleja.Location = new System.Drawing.Point(141, 399);
+            this.txtVisinaDispleja.Name = "txtVisinaDispleja";
+            this.txtVisinaDispleja.Size = new System.Drawing.Size(42, 20);
+            this.txtVisinaDispleja.TabIndex = 17;
+            // 
             // CitacKarticaDialog
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(273, 426);
+            this.ClientSize = new System.Drawing.Size(273, 491);
+            this.Controls.Add(this.txtVisinaDispleja);
+            this.Controls.Add(this.txtSirinaDispleja);
+            this.Controls.Add(this.lblVisinaDispleja);
+            this.Controls.Add(this.lblSirinaDispleja);
+            this.Controls.Add(this.ckbPrikaziDisplejPrekoCelogEkrana);
             this.Controls.Add(this.ckbPrikaziImeClana);
             this.Controls.Add(this.ckbPrikaziBoje);
             this.Controls.Add(this.txtVelicinaSlova);
@@ -270,5 +323,10 @@
         private System.Windows.Forms.TextBox txtVelicinaSlova;
         private System.Windows.Forms.CheckBox ckbPrikaziBoje;
         private System.Windows.Forms.CheckBox ckbPrikaziImeClana;
+        private System.Windows.Forms.CheckBox ckbPrikaziDisplejPrekoCelogEkrana;
+        private System.Windows.Forms.Label lblSirinaDispleja;
+        private System.Windows.Forms.Label lblVisinaDispleja;
+        private System.Windows.Forms.TextBox txtSirinaDispleja;
+        private System.Windows.Forms.TextBox txtVisinaDispleja;
     }
 }

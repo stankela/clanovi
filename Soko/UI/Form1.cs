@@ -28,6 +28,9 @@ namespace Soko.UI
         const string VelicinaSlovaNaDisplejuRegKey = "VelicinaSlovaNaDispleju";
         const string PrikaziBojeKodOcitavanjaRegKey = "PrikaziBojeKodOcitavanja";
         const string PrikaziImeClanaKodOcitavanjaRegKey = "PrikaziImeClanaKodOcitavanja";
+        const string PrikaziDisplejPrekoCelogEkranaRegKey = "PrikaziDisplejPrekoCelogEkrana";
+        const string SirinaDisplejaRegKey = "SirinaDispleja";
+        const string VisinaDisplejaRegKey = "VisinaDispleja";
 
         public Form1()
         {
@@ -86,6 +89,12 @@ namespace Soko.UI
                     Options.Instance.PrikaziBojeKodOcitavanja = bool.Parse((string)regkey.GetValue(PrikaziBojeKodOcitavanjaRegKey));
                 if (regkey.GetValue(PrikaziImeClanaKodOcitavanjaRegKey) != null)
                     Options.Instance.PrikaziImeClanaKodOcitavanjaKartice = bool.Parse((string)regkey.GetValue(PrikaziImeClanaKodOcitavanjaRegKey));
+                if (regkey.GetValue(PrikaziDisplejPrekoCelogEkranaRegKey) != null)
+                    Options.Instance.PrikaziDisplejPrekoCelogEkrana = bool.Parse((string)regkey.GetValue(PrikaziDisplejPrekoCelogEkranaRegKey));
+                if (regkey.GetValue(SirinaDisplejaRegKey) != null)
+                    Options.Instance.SirinaDispleja = int.Parse((string)regkey.GetValue(SirinaDisplejaRegKey));
+                if (regkey.GetValue(VisinaDisplejaRegKey) != null)
+                    Options.Instance.VisinaDispleja = int.Parse((string)regkey.GetValue(VisinaDisplejaRegKey));
                 regkey.Close();
             }
             Options.Instance.Font = new Font(Font.FontFamily, fontSize);
@@ -115,6 +124,9 @@ namespace Soko.UI
             regkey.SetValue(VelicinaSlovaNaDisplejuRegKey, Options.Instance.VelicinaSlovaZaCitacKartica.ToString());
             regkey.SetValue(PrikaziBojeKodOcitavanjaRegKey, Options.Instance.PrikaziBojeKodOcitavanja.ToString());
             regkey.SetValue(PrikaziImeClanaKodOcitavanjaRegKey, Options.Instance.PrikaziImeClanaKodOcitavanjaKartice.ToString());
+            regkey.SetValue(PrikaziDisplejPrekoCelogEkranaRegKey, Options.Instance.PrikaziDisplejPrekoCelogEkrana.ToString());
+            regkey.SetValue(SirinaDisplejaRegKey, Options.Instance.SirinaDispleja.ToString());
+            regkey.SetValue(VisinaDisplejaRegKey, Options.Instance.VisinaDispleja.ToString());
       
             regkey.Close();
         }
