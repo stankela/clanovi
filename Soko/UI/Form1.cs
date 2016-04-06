@@ -27,6 +27,7 @@ namespace Soko.UI
         const string PoslednjiDanZaUplateRegKey = "PoslednjiDanZaUplate";
         const string VelicinaSlovaNaDisplejuRegKey = "VelicinaSlovaNaDispleju";
         const string PrikaziBojeKodOcitavanjaRegKey = "PrikaziBojeKodOcitavanja";
+        const string PrikaziImeClanaKodOcitavanjaRegKey = "PrikaziImeClanaKodOcitavanja";
 
         public Form1()
         {
@@ -83,6 +84,8 @@ namespace Soko.UI
                     Options.Instance.VelicinaSlovaZaCitacKartica = int.Parse((string)regkey.GetValue(VelicinaSlovaNaDisplejuRegKey));
                 if (regkey.GetValue(PrikaziBojeKodOcitavanjaRegKey) != null)
                     Options.Instance.PrikaziBojeKodOcitavanja = bool.Parse((string)regkey.GetValue(PrikaziBojeKodOcitavanjaRegKey));
+                if (regkey.GetValue(PrikaziImeClanaKodOcitavanjaRegKey) != null)
+                    Options.Instance.PrikaziImeClanaKodOcitavanjaKartice = bool.Parse((string)regkey.GetValue(PrikaziImeClanaKodOcitavanjaRegKey));
                 regkey.Close();
             }
             Options.Instance.Font = new Font(Font.FontFamily, fontSize);
@@ -111,6 +114,7 @@ namespace Soko.UI
             regkey.SetValue(PoslednjiDanZaUplateRegKey, Options.Instance.PoslednjiDanZaUplate.ToString());
             regkey.SetValue(VelicinaSlovaNaDisplejuRegKey, Options.Instance.VelicinaSlovaZaCitacKartica.ToString());
             regkey.SetValue(PrikaziBojeKodOcitavanjaRegKey, Options.Instance.PrikaziBojeKodOcitavanja.ToString());
+            regkey.SetValue(PrikaziImeClanaKodOcitavanjaRegKey, Options.Instance.PrikaziImeClanaKodOcitavanjaKartice.ToString());
       
             regkey.Close();
         }
