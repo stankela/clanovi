@@ -41,6 +41,7 @@ namespace Soko.UI
             this.mnMesta = new System.Windows.Forms.ToolStripMenuItem();
             this.mnInstitucije = new System.Windows.Forms.ToolStripMenuItem();
             this.mnUplate = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnClanoviKojiNePlacajuClanarinu = new System.Windows.Forms.ToolStripMenuItem();
             this.mnIzvestaji = new System.Windows.Forms.ToolStripMenuItem();
             this.mnPrihodiDnevniKategorije = new System.Windows.Forms.ToolStripMenuItem();
             this.mnPrihodiDnevniGrupe = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,7 +64,7 @@ namespace Soko.UI
             this.mnDuplikatiClanova = new System.Windows.Forms.ToolStripMenuItem();
             this.mnSimulatorCitacaKartica = new System.Windows.Forms.ToolStripMenuItem();
             this.mnAdminOpcije = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnClanoviKojiNePlacajuClanarinu = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnLozinka = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -116,65 +117,72 @@ namespace Soko.UI
             // mnUplataClanarine
             // 
             this.mnUplataClanarine.Name = "mnUplataClanarine";
-            this.mnUplataClanarine.Size = new System.Drawing.Size(245, 22);
+            this.mnUplataClanarine.Size = new System.Drawing.Size(193, 22);
             this.mnUplataClanarine.Text = "Uplata clanarine";
             this.mnUplataClanarine.Click += new System.EventHandler(this.mnUplataClanarine_Click);
             // 
             // mnClanoviClanovi
             // 
             this.mnClanoviClanovi.Name = "mnClanoviClanovi";
-            this.mnClanoviClanovi.Size = new System.Drawing.Size(245, 22);
+            this.mnClanoviClanovi.Size = new System.Drawing.Size(193, 22);
             this.mnClanoviClanovi.Text = "Clanovi";
             this.mnClanoviClanovi.Click += new System.EventHandler(this.mnClanoviClanovi_Click);
             // 
             // mnPravljenjeKartice
             // 
             this.mnPravljenjeKartice.Name = "mnPravljenjeKartice";
-            this.mnPravljenjeKartice.Size = new System.Drawing.Size(245, 22);
+            this.mnPravljenjeKartice.Size = new System.Drawing.Size(193, 22);
             this.mnPravljenjeKartice.Text = "Pravljenje kartice";
             this.mnPravljenjeKartice.Click += new System.EventHandler(this.mnPravljenjeKartice_Click);
             // 
             // mnCenovnik
             // 
             this.mnCenovnik.Name = "mnCenovnik";
-            this.mnCenovnik.Size = new System.Drawing.Size(245, 22);
+            this.mnCenovnik.Size = new System.Drawing.Size(193, 22);
             this.mnCenovnik.Text = "Cenovnik";
             this.mnCenovnik.Click += new System.EventHandler(this.mnCenovnik_Click);
             // 
             // mnGrupe
             // 
             this.mnGrupe.Name = "mnGrupe";
-            this.mnGrupe.Size = new System.Drawing.Size(245, 22);
+            this.mnGrupe.Size = new System.Drawing.Size(193, 22);
             this.mnGrupe.Text = "Grupe";
             this.mnGrupe.Click += new System.EventHandler(this.mnGrupe_Click);
             // 
             // mnKategorije
             // 
             this.mnKategorije.Name = "mnKategorije";
-            this.mnKategorije.Size = new System.Drawing.Size(245, 22);
+            this.mnKategorije.Size = new System.Drawing.Size(193, 22);
             this.mnKategorije.Text = "Kategorije";
             this.mnKategorije.Click += new System.EventHandler(this.mnKategorije_Click);
             // 
             // mnMesta
             // 
             this.mnMesta.Name = "mnMesta";
-            this.mnMesta.Size = new System.Drawing.Size(245, 22);
+            this.mnMesta.Size = new System.Drawing.Size(193, 22);
             this.mnMesta.Text = "Mesta";
             this.mnMesta.Click += new System.EventHandler(this.mnMesta_Click);
             // 
             // mnInstitucije
             // 
             this.mnInstitucije.Name = "mnInstitucije";
-            this.mnInstitucije.Size = new System.Drawing.Size(245, 22);
+            this.mnInstitucije.Size = new System.Drawing.Size(193, 22);
             this.mnInstitucije.Text = "Institucije";
             this.mnInstitucije.Click += new System.EventHandler(this.mnInstitucije_Click);
             // 
             // mnUplate
             // 
             this.mnUplate.Name = "mnUplate";
-            this.mnUplate.Size = new System.Drawing.Size(245, 22);
+            this.mnUplate.Size = new System.Drawing.Size(193, 22);
             this.mnUplate.Text = "Uplate";
             this.mnUplate.Click += new System.EventHandler(this.mnUplate_Click);
+            // 
+            // mnClanoviKojiNePlacajuClanarinu
+            // 
+            this.mnClanoviKojiNePlacajuClanarinu.Name = "mnClanoviKojiNePlacajuClanarinu";
+            this.mnClanoviKojiNePlacajuClanarinu.Size = new System.Drawing.Size(193, 22);
+            this.mnClanoviKojiNePlacajuClanarinu.Text = "Clanovi koji ne placaju";
+            this.mnClanoviKojiNePlacajuClanarinu.Click += new System.EventHandler(this.mnClanoviKojiNePlacajuClanarinu_Click);
             // 
             // mnIzvestaji
             // 
@@ -292,6 +300,7 @@ namespace Soko.UI
             this.mnPodesavanja.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnFont,
             this.mnStampaci,
+            this.mnLozinka,
             this.mnCitacKartica});
             this.mnPodesavanja.Name = "mnPodesavanja";
             this.mnPodesavanja.Size = new System.Drawing.Size(85, 20);
@@ -300,21 +309,21 @@ namespace Soko.UI
             // mnFont
             // 
             this.mnFont.Name = "mnFont";
-            this.mnFont.Size = new System.Drawing.Size(139, 22);
+            this.mnFont.Size = new System.Drawing.Size(152, 22);
             this.mnFont.Text = "Font";
             this.mnFont.Click += new System.EventHandler(this.mnFont_Click);
             // 
             // mnStampaci
             // 
             this.mnStampaci.Name = "mnStampaci";
-            this.mnStampaci.Size = new System.Drawing.Size(139, 22);
+            this.mnStampaci.Size = new System.Drawing.Size(152, 22);
             this.mnStampaci.Text = "Stampaci";
             this.mnStampaci.Click += new System.EventHandler(this.mnStampaci_Click);
             // 
             // mnCitacKartica
             // 
             this.mnCitacKartica.Name = "mnCitacKartica";
-            this.mnCitacKartica.Size = new System.Drawing.Size(139, 22);
+            this.mnCitacKartica.Size = new System.Drawing.Size(152, 22);
             this.mnCitacKartica.Text = "Citac kartica";
             this.mnCitacKartica.Click += new System.EventHandler(this.mnCitacKartica_Click);
             // 
@@ -349,12 +358,12 @@ namespace Soko.UI
             this.mnAdminOpcije.Text = "Opcije";
             this.mnAdminOpcije.Click += new System.EventHandler(this.mnAdminOpcije_Click);
             // 
-            // mnClanoviKojiNePlacajuClanarinu
+            // mnLozinka
             // 
-            this.mnClanoviKojiNePlacajuClanarinu.Name = "mnClanoviKojiNePlacajuClanarinu";
-            this.mnClanoviKojiNePlacajuClanarinu.Size = new System.Drawing.Size(193, 22);
-            this.mnClanoviKojiNePlacajuClanarinu.Text = "Clanovi koji ne placaju";
-            this.mnClanoviKojiNePlacajuClanarinu.Click += new System.EventHandler(this.mnClanoviKojiNePlacajuClanarinu_Click);
+            this.mnLozinka.Name = "mnLozinka";
+            this.mnLozinka.Size = new System.Drawing.Size(152, 22);
+            this.mnLozinka.Text = "Lozinka";
+            this.mnLozinka.Click += new System.EventHandler(this.mnLozinka_Click);
             // 
             // Form1
             // 
@@ -415,6 +424,7 @@ namespace Soko.UI
         private System.Windows.Forms.ToolStripMenuItem mnAdminOpcije;
         private System.Windows.Forms.ToolStripMenuItem mnDolazakNaTreningMesecni;
         private System.Windows.Forms.ToolStripMenuItem mnClanoviKojiNePlacajuClanarinu;
+        private System.Windows.Forms.ToolStripMenuItem mnLozinka;
     }
 }
 

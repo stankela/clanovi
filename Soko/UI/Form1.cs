@@ -31,6 +31,8 @@ namespace Soko.UI
         const string PrikaziDisplejPrekoCelogEkranaRegKey = "PrikaziDisplejPrekoCelogEkrana";
         const string SirinaDisplejaRegKey = "SirinaDispleja";
         const string VisinaDisplejaRegKey = "VisinaDispleja";
+        const string UvekPitajZaLozinkuRegKey = "UvekPitajZaLozinku";
+        const string LozinkaTimerMinutiRegKey = "LozinkaTimerMinuti";
 
         public Form1()
         {
@@ -95,6 +97,10 @@ namespace Soko.UI
                     Options.Instance.SirinaDispleja = int.Parse((string)regkey.GetValue(SirinaDisplejaRegKey));
                 if (regkey.GetValue(VisinaDisplejaRegKey) != null)
                     Options.Instance.VisinaDispleja = int.Parse((string)regkey.GetValue(VisinaDisplejaRegKey));
+                if (regkey.GetValue(UvekPitajZaLozinkuRegKey) != null)
+                    Options.Instance.UvekPitajZaLozinku = bool.Parse((string)regkey.GetValue(UvekPitajZaLozinkuRegKey));
+                if (regkey.GetValue(LozinkaTimerMinutiRegKey) != null)
+                    Options.Instance.LozinkaTimerMinuti = int.Parse((string)regkey.GetValue(LozinkaTimerMinutiRegKey));
                 regkey.Close();
             }
             Options.Instance.Font = new Font(Font.FontFamily, fontSize);
@@ -127,6 +133,8 @@ namespace Soko.UI
             regkey.SetValue(PrikaziDisplejPrekoCelogEkranaRegKey, Options.Instance.PrikaziDisplejPrekoCelogEkrana.ToString());
             regkey.SetValue(SirinaDisplejaRegKey, Options.Instance.SirinaDispleja.ToString());
             regkey.SetValue(VisinaDisplejaRegKey, Options.Instance.VisinaDispleja.ToString());
+            regkey.SetValue(UvekPitajZaLozinkuRegKey, Options.Instance.UvekPitajZaLozinku.ToString());
+            regkey.SetValue(LozinkaTimerMinutiRegKey, Options.Instance.LozinkaTimerMinuti.ToString());
       
             regkey.Close();
         }
@@ -139,6 +147,7 @@ namespace Soko.UI
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             karticaTimer.Enabled = false;
+            lozinkaTimer.Enabled = false;
             saveOptions();
             NHibernateHelper.Instance.SessionFactory.Close();
         }
@@ -1029,6 +1038,11 @@ namespace Soko.UI
             // KeepAlive to prevent garbage collection from occurring 
             // before the method ends. 
             //GC.KeepAlive(aTimer);        
+
+            lozinkaTimer = new System.Timers.Timer();
+            lozinkaTimer.Elapsed += lozinkaTimer_Elapsed;
+            lozinkaTimer.Interval = Options.Instance.LozinkaTimerMinuti * 60 * 1000;
+            lozinkaTimer.Enabled = false;
         }
 
         public void initKarticaTimer()
@@ -1358,20 +1372,47 @@ namespace Soko.UI
             }
         }
 
-        private FormWindowState lastWindowState = FormWindowState.Minimized;
+        private FormWindowState lastWindowState = FormWindowState.Normal;
+        private System.Timers.Timer lozinkaTimer;
+        bool askForPassword = false;
+
+        void lozinkaTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            askForPassword = true;
+            lozinkaTimer.Enabled = false;
+        }
 
         private void Form1_Resize(object sender, EventArgs e)
         {
             // Check if window state changes
             if (WindowState != lastWindowState)
             {
-                if (lastWindowState == FormWindowState.Minimized && WindowState == FormWindowState.Normal)
+                if (WindowState == FormWindowState.Minimized)
                 {
-                    // Restored!
-                    LozinkaForm f = new LozinkaForm("sdv158", true);
-                    if (f.ShowDialog() != DialogResult.OK)
+                    if (Options.Instance.UvekPitajZaLozinku)
                     {
-                        this.WindowState = FormWindowState.Minimized;
+                        askForPassword = true;
+                    }
+                    else
+                    {
+                        askForPassword = false;
+                        lozinkaTimer.Enabled = true;
+                    }
+                }
+                else if (WindowState == FormWindowState.Normal && lastWindowState == FormWindowState.Minimized)
+                {
+                    // Restored
+                    if (askForPassword)
+                    {
+                        LozinkaForm f = new LozinkaForm("sdv158", true);
+                        if (f.ShowDialog() != DialogResult.OK)
+                        {
+                            this.WindowState = FormWindowState.Minimized;
+                        }
+                    }
+                    else
+                    {
+                        lozinkaTimer.Enabled = false;
                     }
                 }
                 lastWindowState = WindowState;
@@ -1400,6 +1441,18 @@ namespace Soko.UI
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
+            }
+        }
+
+        private void mnLozinka_Click(object sender, EventArgs e)
+        {
+            LozinkaOptionsForm form = new LozinkaOptionsForm();
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                if (!Options.Instance.UvekPitajZaLozinku)
+                {
+                    lozinkaTimer.Interval = Options.Instance.LozinkaTimerMinuti * 60 * 1000;
+                }
             }
         }
     }

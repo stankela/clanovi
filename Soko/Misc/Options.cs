@@ -143,5 +143,19 @@ namespace Soko
             get { return brojPokusajaCitacKartica; }
             set { brojPokusajaCitacKartica = value; }
         }
+
+        private bool uvekPitajZaLozinku = true;
+        public bool UvekPitajZaLozinku
+        {
+            get { return uvekPitajZaLozinku; }
+            set { uvekPitajZaLozinku = value; }
+        }
+
+        private int lozinkaTimerMinuti = 5;
+        public int LozinkaTimerMinuti
+        {
+            get { return lozinkaTimerMinuti; }
+            set { lozinkaTimerMinuti = value; }
+        }
     }
 }

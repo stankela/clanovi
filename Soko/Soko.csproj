@@ -207,6 +207,12 @@
     <Compile Include="UI\LozinkaForm.Designer.cs">
       <DependentUpon>LozinkaForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\LozinkaOptionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\LozinkaOptionsForm.Designer.cs">
+      <DependentUpon>LozinkaOptionsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\MergeClanoviForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -290,6 +296,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\LozinkaForm.resx">
       <DependentUpon>LozinkaForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\LozinkaOptionsForm.resx">
+      <DependentUpon>LozinkaOptionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MergeClanoviForm.resx">
       <DependentUpon>MergeClanoviForm.cs</DependentUpon>
