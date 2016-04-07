@@ -261,6 +261,10 @@ namespace Soko
                     okForTrening = vremeOcitavanja.Day <= Options.Instance.PoslednjiDanZaUplate;
                 }
             }
+            else
+            {
+                okForTrening = clan.NeplacaClanarinu;
+            }
 
             string grupa = null;
             if (poslednjaUplata != null)

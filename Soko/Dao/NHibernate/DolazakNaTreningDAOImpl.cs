@@ -210,7 +210,7 @@ ORDER BY
 SELECT DISTINCT
     datepart(year, d.datum_vreme_dolaska) god,
     datepart(month, d.datum_vreme_dolaska) mes,
-    c.clan_id, c.broj, c.ime, c.prezime, c.datum_rodjenja,
+    c.clan_id, c.broj, c.ime, c.prezime, c.datum_rodjenja, c.ne_placa_clanarinu,
     g.naziv
 FROM clanovi c INNER JOIN (dolazak_na_trening d LEFT OUTER JOIN grupe g
 	ON d.grupa_id = g.grupa_id)
@@ -286,10 +286,13 @@ WHERE (u.grupa_id = {0}) AND (u.vazi_od BETWEEN '{1}' AND '{2}')";
                     int god = (int)row[0];
                     int mes = (int)row[1];
                     int id = (int)row[2];
+                    bool neplacaClanarinu = (bool)row[7];
 
                     bool imaUplatu = uplateSet.Contains(new ClanGodinaMesec(id, god, mes));
                     if (!imaUplatu)
                         imaUplatu = godisnjeUplateSet.Contains(new ClanGodinaMesec(id, god, 1));
+                    if (!imaUplatu)
+                        imaUplatu = neplacaClanarinu;
 
                     if (samoNedostajuceUplate && imaUplatu)
                     {
@@ -305,8 +308,8 @@ WHERE (u.grupa_id = {0}) AND (u.vazi_od BETWEEN '{1}' AND '{2}')";
                         datumRodjenja = (DateTime)row[6];
 
                     string nazivGrupe = String.Empty;
-                    if (row[7] != null)
-                        nazivGrupe = (string)row[7];
+                    if (row[8] != null)
+                        nazivGrupe = (string)row[8];
 
                     string imaUplatuStr = "NE";
                     if (imaUplatu)

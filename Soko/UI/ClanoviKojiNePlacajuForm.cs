@@ -107,6 +107,18 @@ namespace Soko.UI
             if (form.ShowDialog() != DialogResult.OK)
                 return;
 
+            Clan clan = form.Clan;
+            for (int i = 0; i < entities.Count; ++i)
+            {
+                Clan c = (Clan)entities[i];
+                if (c.Broj == clan.Broj)
+                {
+                    string msg = String.Format("Clan \"{0}\" vec postoji na listi.", clan.BrojPrezimeImeDatumRodjenja);
+                    MessageDialogs.showMessage(msg, this.Text);
+                    return;
+                }
+            }
+
             try
             {
                 using (ISession session = NHibernateHelper.Instance.OpenSession())
@@ -114,7 +126,6 @@ namespace Soko.UI
                 {
                     CurrentSessionContext.Bind(session);
 
-                    Clan clan = form.Clan;
                     clan.NeplacaClanarinu = true;
                     DAOFactoryFactory.DAOFactory.GetClanDAO().MakePersistent(clan);
                     session.Transaction.Commit();
