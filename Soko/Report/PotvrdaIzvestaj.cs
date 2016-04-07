@@ -211,7 +211,7 @@ namespace Soko.Report
 					new PointF(x, y), f1);
                 string nazivGrupeCeo = FormatGrupa(sifraGrupe, nazivGrupe);
 
-                List<string> splittedNazivList = new List<string>();
+                /*List<string> splittedNazivList = new List<string>();
                 foreach (string s in nazivGrupeCeo.Split(' '))
                 {
                     splittedNazivList.Add(s);
@@ -235,8 +235,11 @@ namespace Soko.Report
                     g.DrawString(s, arial9BoldFont, blackBrush,
                         new PointF(x2, y), f2);
                     y += dy;
-                }
+                }*/
 
+                g.DrawString(nazivGrupeCeo, arial9BoldFont, blackBrush,
+                    new PointF(x2, y), f2);
+                y += dy;
 
                 /*SizeF clanZaGrupuSize2 = g.MeasureString(nazivGrupeCeo, arial9BoldFont);
                 if (clanZaGrupuSize.Width + clanZaGrupuSize2.Width <= contentBounds.Width)
