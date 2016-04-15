@@ -84,7 +84,7 @@ namespace Soko
             }
         }
 
-        public bool tryReadCard(int comPort, out int broj, out string name)
+        public bool tryReadCard(int comPort, out int broj, out string name, out ulong retval)
         {
             string sType = " ";
             string sID1 = "          ";
@@ -92,7 +92,7 @@ namespace Soko
             name = "                                ";
             broj = -1;
 
-            ulong retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+            retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
             return retval == 1 && Int32.TryParse(sID1, out broj) && broj > 0 && name == NAME_FIELD;
         }
 
@@ -124,7 +124,7 @@ namespace Soko
             }
         }
 
-        public bool TryReadDolazakNaTrening()
+        public bool TryReadDolazakNaTrening(out ulong retval)
         {
             int broj;
             string name;  // not used
@@ -136,13 +136,13 @@ namespace Soko
             if (measureTime)
             {
                 Stopwatch watch = Stopwatch.StartNew();
-                result = tryReadCard(Options.Instance.COMPortReader, out broj, out name);
+                result = tryReadCard(Options.Instance.COMPortReader, out broj, out name, out retval);
                 watch.Stop();
                 af.newOcitavanje(watch.ElapsedMilliseconds);
             }
             else
             {
-                result = tryReadCard(Options.Instance.COMPortReader, out broj, out name);
+                result = tryReadCard(Options.Instance.COMPortReader, out broj, out name, out retval);
             }
 
             if (!result)

@@ -1080,6 +1080,8 @@ namespace Soko.UI
 
         private void handleCitacKartica()
         {
+            Log("CITAC KARTICA   handleCitacKartica entered");
+
             if (!CitacKarticaEnabled)
                 return;
 
@@ -1097,9 +1099,10 @@ namespace Soko.UI
                     g.Dispose();
                     repaint = false;
                 }
-                lastRead = CitacKartica.getCitacKartica().TryReadDolazakNaTrening();
+                ulong retval;
+                lastRead = CitacKartica.getCitacKartica().TryReadDolazakNaTrening(out retval);
 
-                Log("Proba");
+                Log("CITAC KARTICA   retval: " + retval.ToString());
             }
         }
 
@@ -1194,9 +1197,8 @@ namespace Soko.UI
         {
             if (logStreamWriter != null)
             {
-                logStreamWriter.WriteLine("{0}", DateTime.Now.ToString("HH:mm:ss dd.MM.yyyy"));
-                logStreamWriter.WriteLine("{0}", logMessage);
-                logStreamWriter.WriteLine("-------------------------------");
+                string msg = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "   " + logMessage;
+                logStreamWriter.WriteLine(msg);
             }
         }
         
