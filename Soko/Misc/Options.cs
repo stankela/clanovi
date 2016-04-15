@@ -157,5 +157,12 @@ namespace Soko
             get { return lozinkaTimerMinuti; }
             set { lozinkaTimerMinuti = value; }
         }
+
+        private bool logToFile = false;
+        public bool LogToFile
+        {
+            get { return logToFile; }
+            set { logToFile = value; }
+        }
     }
 }

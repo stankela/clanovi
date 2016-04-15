@@ -13,6 +13,7 @@ using Soko.Data;
 using NHibernate;
 using NHibernate.Context;
 using Bilten.Dao;
+using System.IO;
 
 namespace Soko.UI
 {
@@ -33,6 +34,9 @@ namespace Soko.UI
         const string VisinaDisplejaRegKey = "VisinaDispleja";
         const string UvekPitajZaLozinkuRegKey = "UvekPitajZaLozinku";
         const string LozinkaTimerMinutiRegKey = "LozinkaTimerMinuti";
+        const string LogToFileRegKey = "LogToFile";
+
+        private StreamWriter logStreamWriter;
 
         public Form1()
         {
@@ -44,6 +48,11 @@ namespace Soko.UI
             //LocalizeUI();
 
             loadOptions();
+
+            if (Options.Instance.LogToFile)
+            {
+                createLogStreamWriter();
+            }
         }
 
         private void refreshAdminModeUI(bool adminMode)
@@ -101,6 +110,8 @@ namespace Soko.UI
                     Options.Instance.UvekPitajZaLozinku = bool.Parse((string)regkey.GetValue(UvekPitajZaLozinkuRegKey));
                 if (regkey.GetValue(LozinkaTimerMinutiRegKey) != null)
                     Options.Instance.LozinkaTimerMinuti = int.Parse((string)regkey.GetValue(LozinkaTimerMinutiRegKey));
+                if (regkey.GetValue(LogToFileRegKey) != null)
+                    Options.Instance.LogToFile = bool.Parse((string)regkey.GetValue(LogToFileRegKey));
                 regkey.Close();
             }
             Options.Instance.Font = new Font(Font.FontFamily, fontSize);
@@ -135,6 +146,7 @@ namespace Soko.UI
             regkey.SetValue(VisinaDisplejaRegKey, Options.Instance.VisinaDispleja.ToString());
             regkey.SetValue(UvekPitajZaLozinkuRegKey, Options.Instance.UvekPitajZaLozinku.ToString());
             regkey.SetValue(LozinkaTimerMinutiRegKey, Options.Instance.LozinkaTimerMinuti.ToString());
+            regkey.SetValue(LogToFileRegKey, Options.Instance.LogToFile.ToString());
       
             regkey.Close();
         }
@@ -150,6 +162,7 @@ namespace Soko.UI
             lozinkaTimer.Enabled = false;
             saveOptions();
             NHibernateHelper.Instance.SessionFactory.Close();
+            closeLogStreamWriter();
         }
 
         private void mnUplataClanarine_Click(object sender, EventArgs e)
@@ -1083,6 +1096,8 @@ namespace Soko.UI
                     {
                         af.newOcitavanje(elapsedMs);
                     }
+
+                    Log(elapsedMs.ToString());
                 }
             }
             else
@@ -1174,6 +1189,16 @@ namespace Soko.UI
             }
         }
 
+        public void Log(string logMessage)
+        {
+            if (logStreamWriter != null)
+            {
+                logStreamWriter.WriteLine("{0}", DateTime.Now.ToString("HH:mm:ss dd.MM.yyyy"));
+                logStreamWriter.WriteLine("{0}", logMessage);
+                logStreamWriter.WriteLine("-------------------------------");
+            }
+        }
+        
         private void mnEvidencijaPrisustvaNaTreningu_Click(object sender, EventArgs e)
         {
             BiracIntervala dlg;
@@ -1318,7 +1343,29 @@ namespace Soko.UI
         private void mnAdminOpcije_Click(object sender, EventArgs e)
         {
             AdminForm f = new AdminForm();
-            f.Show();
+            f.ShowDialog();
+            if (Options.Instance.LogToFile && logStreamWriter == null)
+            {
+                createLogStreamWriter();
+            }
+            else if (!Options.Instance.LogToFile && logStreamWriter != null)
+            {
+                closeLogStreamWriter();
+            }
+        }
+
+        private void createLogStreamWriter()
+        {
+            logStreamWriter = File.AppendText("log.txt");
+            logStreamWriter.WriteLine("RESTART");
+        }
+
+        private void closeLogStreamWriter()
+        {
+            if (logStreamWriter != null)
+            {
+                logStreamWriter.Close();
+            }
         }
 
         private void mnDolazakNaTreningMesecni_Click(object sender, EventArgs e)

@@ -40,6 +40,7 @@
             this.lstWriteDataCardReturnValue = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
             this.lstReadDataCardReturnValue = new System.Windows.Forms.ListBox();
+            this.ckbLogToFile = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lstCitacKarticeElapsedMs
@@ -144,11 +145,23 @@
             this.lstReadDataCardReturnValue.Size = new System.Drawing.Size(120, 95);
             this.lstReadDataCardReturnValue.TabIndex = 13;
             // 
+            // ckbLogToFile
+            // 
+            this.ckbLogToFile.AutoSize = true;
+            this.ckbLogToFile.Location = new System.Drawing.Point(26, 322);
+            this.ckbLogToFile.Name = "ckbLogToFile";
+            this.ckbLogToFile.Size = new System.Drawing.Size(79, 17);
+            this.ckbLogToFile.TabIndex = 14;
+            this.ckbLogToFile.Text = "Log To File";
+            this.ckbLogToFile.UseVisualStyleBackColor = true;
+            this.ckbLogToFile.CheckedChanged += new System.EventHandler(this.ckbLogToFile_CheckedChanged);
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(460, 465);
+            this.Controls.Add(this.ckbLogToFile);
             this.Controls.Add(this.lstReadDataCardReturnValue);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lstWriteDataCardReturnValue);
@@ -182,5 +195,6 @@
         private System.Windows.Forms.ListBox lstWriteDataCardReturnValue;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ListBox lstReadDataCardReturnValue;
+        private System.Windows.Forms.CheckBox ckbLogToFile;
     }
 }

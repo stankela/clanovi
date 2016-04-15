@@ -17,6 +17,7 @@ namespace Soko.UI
             txtBrojOcitavanja.Text = "7";
             txtVremenskiIntervalZaCitacKartica.Text = Options.Instance.CitacKarticaTimerInterval.ToString();
             txtBrojPonavljanja.Text = Options.Instance.BrojPokusajaCitacKartica.ToString();
+            ckbLogToFile.Checked = Options.Instance.LogToFile;
         }
 
         public void newOcitavanje(long elapsedMs)
@@ -73,6 +74,11 @@ namespace Soko.UI
                 lstReadDataCardReturnValue.Items.Clear();
             }
             lstReadDataCardReturnValue.Items.Add(retval.ToString() + "     " + elapsedMilliseconds.ToString() + " ms");
+        }
+
+        private void ckbLogToFile_CheckedChanged(object sender, EventArgs e)
+        {
+            Options.Instance.LogToFile = ckbLogToFile.Checked;
         }
     }
 }
