@@ -986,7 +986,7 @@ namespace Soko.UI
         }
 
         private System.Timers.Timer karticaTimer;
-        private int numTimerEvents = 0;
+        private bool citacKarticaJeNaRedu = false;
         private bool lastRead = false;
         private bool repaint = true;
 
@@ -1067,47 +1067,96 @@ namespace Soko.UI
 
         private void karticaTimer_Elapsed(object source, System.Timers.ElapsedEventArgs e)
         {
-            ++numTimerEvents;
-            if (numTimerEvents % 2 == 0)
+            citacKarticaJeNaRedu = !citacKarticaJeNaRedu;
+            if (citacKarticaJeNaRedu)
             {
-                // citac kartica
-                if (!CitacKarticaEnabled)
-                    return;
-
-                if (lastRead)
-                {
-                    lastRead = false;
-                    repaint = true;
-                }
-                else
-                {
-                    if (repaint)
-                    {
-                        Graphics g = SingleInstanceApplication.GlavniProzor.CitacKarticaForm.CreateGraphics();
-                        g.Clear(Options.Instance.PozadinaCitacaKartica);
-                        g.Dispose();
-                        repaint = false;
-                    }
-                    long elapsedMs;
-                    lastRead = CitacKartica.getCitacKartica().TryReadDolazakNaTrening(out elapsedMs);
-
-                    AdminForm af = AdminForm;
-                    if (af != null)
-                    {
-                        af.newOcitavanje(elapsedMs);
-                    }
-
-                    Log(elapsedMs.ToString());
-                }
+                handleCitacKartica();
             }
             else
             {
-                // pisac kartica
-                if (!PisacKarticaEnabled)
-                    return;
+                handlePisacKartica();
+            }
+        }
 
-                PravljenjeKarticeForm pkf = PravljenjeKarticeForm;
-                if (pkf != null && pkf.PendingWrite)
+        private void handleCitacKartica()
+        {
+            if (!CitacKarticaEnabled)
+                return;
+
+            if (lastRead)
+            {
+                lastRead = false;
+                repaint = true;
+            }
+            else
+            {
+                if (repaint)
+                {
+                    Graphics g = SingleInstanceApplication.GlavniProzor.CitacKarticaForm.CreateGraphics();
+                    g.Clear(Options.Instance.PozadinaCitacaKartica);
+                    g.Dispose();
+                    repaint = false;
+                }
+                long elapsedMs;
+                lastRead = CitacKartica.getCitacKartica().TryReadDolazakNaTrening(out elapsedMs);
+
+                AdminForm af = AdminForm;
+                if (af != null)
+                {
+                    af.newOcitavanje(elapsedMs);
+                }
+
+                Log(elapsedMs.ToString());
+            }
+        }
+
+        private void handlePisacKartica()
+        {
+            if (!PisacKarticaEnabled)
+                return;
+
+            PravljenjeKarticeForm pkf = PravljenjeKarticeForm;
+            if (pkf != null && pkf.PendingWrite)
+            {
+                CitacKarticaEnabled = false;
+                PisacKarticaEnabled = false;
+                string msg = String.Empty;
+                int brojPokusaja = Options.Instance.BrojPokusajaCitacKartica;
+                while (brojPokusaja > 0)
+                {
+                    try
+                    {
+                        string okMsg;
+                        pkf.WriteKartica(out okMsg);
+                        brojPokusaja = 0;
+                        msg = okMsg;
+                    }
+                    catch (WriteCardException ex)
+                    {
+                        --brojPokusaja;
+                        if (brojPokusaja > 0)
+                        {
+                            pkf.PendingWrite = true;
+                        }
+                        else
+                        {
+                            msg = ex.Message;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        brojPokusaja = 0;
+                        msg = ex.Message;
+                    }
+                }
+                CitacKarticaEnabled = true;
+                MessageDialogs.showMessage(msg, "Pravljenje kartice");
+                PisacKarticaEnabled = true;
+            }
+            else
+            {
+                UplataClanarineDialog dlg = UplataClanarineDialog;
+                if (dlg != null && dlg.PendingRead)
                 {
                     CitacKarticaEnabled = false;
                     PisacKarticaEnabled = false;
@@ -1117,17 +1166,15 @@ namespace Soko.UI
                     {
                         try
                         {
-                            string okMsg;
-                            pkf.WriteKartica(out okMsg);
+                            dlg.ReadKartica();
                             brojPokusaja = 0;
-                            msg = okMsg;
                         }
-                        catch (WriteCardException ex)
+                        catch (ReadCardException ex)
                         {
                             --brojPokusaja;
                             if (brojPokusaja > 0)
                             {
-                                pkf.PendingWrite = true;
+                                dlg.PendingRead = true;
                             }
                             else
                             {
@@ -1141,50 +1188,11 @@ namespace Soko.UI
                         }
                     }
                     CitacKarticaEnabled = true;
-                    MessageDialogs.showMessage(msg, "Pravljenje kartice");
-                    PisacKarticaEnabled = true;
-                }
-                else
-                {
-                    UplataClanarineDialog dlg = UplataClanarineDialog;
-                    if (dlg != null && dlg.PendingRead)
+                    if (msg != String.Empty)
                     {
-                        CitacKarticaEnabled = false;
-                        PisacKarticaEnabled = false;
-                        string msg = String.Empty;
-                        int brojPokusaja = Options.Instance.BrojPokusajaCitacKartica;
-                        while (brojPokusaja > 0)
-                        {
-                            try
-                            {
-                                dlg.ReadKartica();
-                                brojPokusaja = 0;
-                            }
-                            catch (ReadCardException ex)
-                            {
-                                --brojPokusaja;
-                                if (brojPokusaja > 0)
-                                {
-                                    dlg.PendingRead = true;
-                                }
-                                else
-                                {
-                                    msg = ex.Message;
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                brojPokusaja = 0;
-                                msg = ex.Message;
-                            }
-                        }
-                        CitacKarticaEnabled = true;
-                        if (msg != String.Empty)
-                        {
-                            MessageDialogs.showMessage(msg, "Ocitavanje kartice");
-                        }
-                        PisacKarticaEnabled = true;
+                        MessageDialogs.showMessage(msg, "Ocitavanje kartice");
                     }
+                    PisacKarticaEnabled = true;
                 }
             }
         }
