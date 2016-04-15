@@ -53,14 +53,20 @@ namespace Soko
             name = "                                ";
             broj = -1;
 
-            Stopwatch watch = Stopwatch.StartNew();
-            ulong retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
-            watch.Stop();
-
             AdminForm af = SingleInstanceApplication.GlavniProzor.AdminForm;
-            if (af != null)
+            bool measureTime = af != null;
+
+            ulong retval;
+            if (measureTime)
             {
+                Stopwatch watch = Stopwatch.StartNew();
+                retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+                watch.Stop();
                 af.newCitanjeKartice(retval, watch.ElapsedMilliseconds);
+            }
+            else
+            {
+                retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
             }
 
             if (retval == 1)
@@ -95,15 +101,21 @@ namespace Soko
             string sType = "";
             string sID2 = "";
             string sName = CitacKartica.NAME_FIELD;
-
-            Stopwatch watch = Stopwatch.StartNew();
-            ulong retval = WriteDataCard(Options.Instance.COMPortWriter, sType, sID1, sID2, sName) & 0xFFFFFFFF;
-            watch.Stop();
             
             AdminForm af = SingleInstanceApplication.GlavniProzor.AdminForm;
-            if (af != null)
+            bool measureTime = af != null;
+
+            ulong retval;
+            if (measureTime)
             {
+                Stopwatch watch = Stopwatch.StartNew();
+                retval = WriteDataCard(Options.Instance.COMPortWriter, sType, sID1, sID2, sName) & 0xFFFFFFFF;
+                watch.Stop();
                 af.newPisanjeKartice(retval, watch.ElapsedMilliseconds);
+            }
+            else
+            {
+                retval = WriteDataCard(Options.Instance.COMPortWriter, sType, sID1, sID2, sName) & 0xFFFFFFFF;
             }
 
             if (retval != 1)
@@ -112,16 +124,26 @@ namespace Soko
             }
         }
 
-        public bool TryReadDolazakNaTrening(out long elapsedMs)
+        public bool TryReadDolazakNaTrening()
         {
             int broj;
             string name;  // not used
 
-            elapsedMs = 0;
-            Stopwatch watch = Stopwatch.StartNew();
-            bool result = tryReadCard(Options.Instance.COMPortReader, out broj, out name);
-            watch.Stop();
-            elapsedMs = watch.ElapsedMilliseconds;
+            AdminForm af = SingleInstanceApplication.GlavniProzor.AdminForm;
+            bool measureTime = af != null;
+
+            bool result;
+            if (measureTime)
+            {
+                Stopwatch watch = Stopwatch.StartNew();
+                result = tryReadCard(Options.Instance.COMPortReader, out broj, out name);
+                watch.Stop();
+                af.newOcitavanje(watch.ElapsedMilliseconds);
+            }
+            else
+            {
+                result = tryReadCard(Options.Instance.COMPortReader, out broj, out name);
+            }
 
             if (!result)
                 return false;

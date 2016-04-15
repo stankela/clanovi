@@ -1097,16 +1097,9 @@ namespace Soko.UI
                     g.Dispose();
                     repaint = false;
                 }
-                long elapsedMs;
-                lastRead = CitacKartica.getCitacKartica().TryReadDolazakNaTrening(out elapsedMs);
+                lastRead = CitacKartica.getCitacKartica().TryReadDolazakNaTrening();
 
-                AdminForm af = AdminForm;
-                if (af != null)
-                {
-                    af.newOcitavanje(elapsedMs);
-                }
-
-                Log(elapsedMs.ToString());
+                Log("Proba");
             }
         }
 
