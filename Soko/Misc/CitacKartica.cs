@@ -69,6 +69,8 @@ namespace Soko
                 retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
             }
 
+            Form1.Log("PISAC KARTICA READ   retval: " + retval.ToString());
+
             if (retval == 1)
             {
                 if (!Int32.TryParse(sID1, out broj) || broj <= 0 || name != NAME_FIELD)
@@ -120,6 +122,8 @@ namespace Soko
             {
                 retval = WriteDataCard(Options.Instance.COMPortWriter, sType, sID1, sID2, sName) & 0xFFFFFFFF;
             }
+
+            Form1.Log("PISAC KARTICA WRITE   retval: " + retval.ToString());
 
             if (retval != 1)
             {

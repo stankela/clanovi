@@ -1103,6 +1103,8 @@ namespace Soko.UI
 
         private void handlePisacKartica()
         {
+            Log("PISAC KARTICA   handlePisacKartica entered");
+
             if (!PisacKarticaEnabled)
                 return;
 
