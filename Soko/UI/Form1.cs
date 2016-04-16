@@ -1097,10 +1097,7 @@ namespace Soko.UI
                     g.Dispose();
                     repaint = false;
                 }
-                ulong retval;
-                lastRead = CitacKartica.getCitacKartica().TryReadDolazakNaTrening(out retval);
-
-                Log("CITAC KARTICA   retval: " + retval.ToString());
+                lastRead = CitacKartica.getCitacKartica().TryReadDolazakNaTrening();
             }
         }
 
@@ -1191,7 +1188,7 @@ namespace Soko.UI
             }
         }
 
-        public void Log(string logMessage)
+        public static void Log(string logMessage)
         {
             if (Options.Instance.LogStreamWriter != null)
             {
