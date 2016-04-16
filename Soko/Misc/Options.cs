@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.IO;
 
 namespace Soko
 {
@@ -164,5 +165,13 @@ namespace Soko
             get { return logToFile; }
             set { logToFile = value; }
         }
+
+        private StreamWriter logStreamWriter;
+        public StreamWriter LogStreamWriter
+        {
+            get { return logStreamWriter; }
+            set { logStreamWriter = value; }
+        }
+
     }
 }

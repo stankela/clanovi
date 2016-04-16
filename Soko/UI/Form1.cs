@@ -36,8 +36,6 @@ namespace Soko.UI
         const string LozinkaTimerMinutiRegKey = "LozinkaTimerMinuti";
         const string LogToFileRegKey = "LogToFile";
 
-        private StreamWriter logStreamWriter;
-
         public Form1()
         {
             InitializeComponent();
@@ -1195,10 +1193,10 @@ namespace Soko.UI
 
         public void Log(string logMessage)
         {
-            if (logStreamWriter != null)
+            if (Options.Instance.LogStreamWriter != null)
             {
                 string msg = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "   " + logMessage;
-                logStreamWriter.WriteLine(msg);
+                Options.Instance.LogStreamWriter.WriteLine(msg);
             }
         }
         
@@ -1347,11 +1345,11 @@ namespace Soko.UI
         {
             AdminForm f = new AdminForm();
             f.ShowDialog();
-            if (Options.Instance.LogToFile && logStreamWriter == null)
+            if (Options.Instance.LogToFile && Options.Instance.LogStreamWriter == null)
             {
                 createLogStreamWriter();
             }
-            else if (!Options.Instance.LogToFile && logStreamWriter != null)
+            else if (!Options.Instance.LogToFile && Options.Instance.LogStreamWriter != null)
             {
                 closeLogStreamWriter();
             }
@@ -1359,15 +1357,18 @@ namespace Soko.UI
 
         private void createLogStreamWriter()
         {
-            logStreamWriter = File.AppendText("log.txt");
-            logStreamWriter.WriteLine("RESTART");
+            if (Options.Instance.LogStreamWriter == null)
+            {
+                Options.Instance.LogStreamWriter = File.AppendText("log.txt");
+                Options.Instance.LogStreamWriter.WriteLine("RESTART");
+            }
         }
 
         private void closeLogStreamWriter()
         {
-            if (logStreamWriter != null)
+            if (Options.Instance.LogStreamWriter != null)
             {
-                logStreamWriter.Close();
+                Options.Instance.LogStreamWriter.Close();
             }
         }
 
