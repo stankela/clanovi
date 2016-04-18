@@ -1358,8 +1358,12 @@ namespace Soko.UI
         {
             if (Options.Instance.LogStreamWriter == null)
             {
-                Options.Instance.LogStreamWriter = File.AppendText("log.txt");
-                Options.Instance.LogStreamWriter.WriteLine("RESTART");
+                String dirName = @"..\Log";
+                System.IO.Directory.CreateDirectory(dirName);
+                DateTime now = DateTime.Now;
+                String fileName = String.Format("log_{0}_{1}_{2}_{3}_{4}_{5}.txt", now.Year, now.Month, now.Day, now.Hour,
+                    now.Minute, now.Second);
+                Options.Instance.LogStreamWriter = File.AppendText(Path.Combine(dirName, fileName));
             }
         }
 
