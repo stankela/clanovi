@@ -1082,8 +1082,6 @@ namespace Soko.UI
 
         private void handleCitacKartica()
         {
-            Log("C entered");
-
             if (!CitacKarticaEnabled)
                 return;
 
@@ -1118,6 +1116,10 @@ namespace Soko.UI
             }
             finally
             {
+                if (!CitacKarticaEnabled || !PisacKarticaEnabled)
+                {
+                    Log("UNMANAGED EXCEPTION");
+                }
                 CitacKarticaEnabled = true;
                 PisacKarticaEnabled = true;
             }
