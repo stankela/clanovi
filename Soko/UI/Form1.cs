@@ -1078,7 +1078,7 @@ namespace Soko.UI
 
         private void handleCitacKartica()
         {
-            Log("CITAC KARTICA   handleCitacKartica entered");
+            Log("C entered");
 
             if (!CitacKarticaEnabled)
                 return;
@@ -1103,7 +1103,7 @@ namespace Soko.UI
 
         private void handlePisacKartica()
         {
-            Log("PISAC KARTICA   handlePisacKartica entered");
+            Log("P entered");
 
             if (!PisacKarticaEnabled)
                 return;
