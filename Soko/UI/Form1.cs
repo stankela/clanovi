@@ -1108,6 +1108,19 @@ namespace Soko.UI
             if (!PisacKarticaEnabled)
                 return;
 
+            try
+            {
+                doHandlePisacKartica();
+            }
+            finally
+            {
+                CitacKarticaEnabled = true;
+                PisacKarticaEnabled = true;
+            }
+        }
+
+        private void doHandlePisacKartica()
+        {
             PravljenjeKarticeForm pkf = PravljenjeKarticeForm;
             if (pkf != null && pkf.PendingWrite)
             {
