@@ -35,6 +35,7 @@ namespace Soko.UI
         const string UvekPitajZaLozinkuRegKey = "UvekPitajZaLozinku";
         const string LozinkaTimerMinutiRegKey = "LozinkaTimerMinuti";
         const string LogToFileRegKey = "LogToFile";
+        const string CitacKarticaTimerIntervalRegKey = "CitacKarticaTimerInterval";
 
         public Form1()
         {
@@ -110,6 +111,8 @@ namespace Soko.UI
                     Options.Instance.LozinkaTimerMinuti = int.Parse((string)regkey.GetValue(LozinkaTimerMinutiRegKey));
                 if (regkey.GetValue(LogToFileRegKey) != null)
                     Options.Instance.LogToFile = bool.Parse((string)regkey.GetValue(LogToFileRegKey));
+                if (regkey.GetValue(CitacKarticaTimerIntervalRegKey) != null)
+                    Options.Instance.CitacKarticaTimerInterval = int.Parse((string)regkey.GetValue(CitacKarticaTimerIntervalRegKey));
                 regkey.Close();
             }
             Options.Instance.Font = new Font(Font.FontFamily, fontSize);
@@ -145,6 +148,7 @@ namespace Soko.UI
             regkey.SetValue(UvekPitajZaLozinkuRegKey, Options.Instance.UvekPitajZaLozinku.ToString());
             regkey.SetValue(LozinkaTimerMinutiRegKey, Options.Instance.LozinkaTimerMinuti.ToString());
             regkey.SetValue(LogToFileRegKey, Options.Instance.LogToFile.ToString());
+            regkey.SetValue(CitacKarticaTimerIntervalRegKey, Options.Instance.CitacKarticaTimerInterval.ToString());
       
             regkey.Close();
         }
