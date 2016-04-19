@@ -41,6 +41,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lstReadDataCardReturnValue = new System.Windows.Forms.ListBox();
             this.ckbLogToFile = new System.Windows.Forms.CheckBox();
+            this.btnPromeniVremenskiInterval = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lstCitacKarticeElapsedMs
@@ -92,7 +93,6 @@
             this.txtVremenskiIntervalZaCitacKartica.Name = "txtVremenskiIntervalZaCitacKartica";
             this.txtVremenskiIntervalZaCitacKartica.Size = new System.Drawing.Size(59, 20);
             this.txtVremenskiIntervalZaCitacKartica.TabIndex = 6;
-            this.txtVremenskiIntervalZaCitacKartica.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtVremenskiIntervalZaCitacKartica_KeyDown);
             // 
             // lblBrojPonavljanja
             // 
@@ -156,11 +156,22 @@
             this.ckbLogToFile.UseVisualStyleBackColor = true;
             this.ckbLogToFile.CheckedChanged += new System.EventHandler(this.ckbLogToFile_CheckedChanged);
             // 
+            // btnPromeniVremenskiInterval
+            // 
+            this.btnPromeniVremenskiInterval.Location = new System.Drawing.Point(323, 66);
+            this.btnPromeniVremenskiInterval.Name = "btnPromeniVremenskiInterval";
+            this.btnPromeniVremenskiInterval.Size = new System.Drawing.Size(75, 23);
+            this.btnPromeniVremenskiInterval.TabIndex = 15;
+            this.btnPromeniVremenskiInterval.Text = "Promeni";
+            this.btnPromeniVremenskiInterval.UseVisualStyleBackColor = true;
+            this.btnPromeniVremenskiInterval.Click += new System.EventHandler(this.btnPromeniVremenskiInterval_Click);
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(460, 465);
+            this.Controls.Add(this.btnPromeniVremenskiInterval);
             this.Controls.Add(this.ckbLogToFile);
             this.Controls.Add(this.lstReadDataCardReturnValue);
             this.Controls.Add(this.label2);
@@ -196,5 +207,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ListBox lstReadDataCardReturnValue;
         private System.Windows.Forms.CheckBox ckbLogToFile;
+        private System.Windows.Forms.Button btnPromeniVremenskiInterval;
     }
 }

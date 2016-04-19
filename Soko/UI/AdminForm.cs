@@ -33,19 +33,6 @@ namespace Soko.UI
             lstCitacKarticeElapsedMs.Items.Add(elapsedMs);
         }
 
-        private void txtVremenskiIntervalZaCitacKartica_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                int newInterval;
-                if (int.TryParse(txtVremenskiIntervalZaCitacKartica.Text, out newInterval))
-                {
-                    Options.Instance.CitacKarticaTimerInterval = newInterval;
-                    SingleInstanceApplication.GlavniProzor.initKarticaTimer();
-                }
-            }
-        }
-
         private void txtBrojPonavljanja_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -79,6 +66,16 @@ namespace Soko.UI
         private void ckbLogToFile_CheckedChanged(object sender, EventArgs e)
         {
             Options.Instance.LogToFile = ckbLogToFile.Checked;
+        }
+
+        private void btnPromeniVremenskiInterval_Click(object sender, EventArgs e)
+        {
+            int newInterval;
+            if (int.TryParse(txtVremenskiIntervalZaCitacKartica.Text, out newInterval))
+            {
+                Options.Instance.CitacKarticaTimerInterval = newInterval;
+                SingleInstanceApplication.GlavniProzor.initKarticaTimer();
+            }
         }
     }
 }
