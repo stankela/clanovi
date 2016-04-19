@@ -1121,6 +1121,9 @@ namespace Soko.UI
             {
                 if (!CitacKarticaEnabled || !PisacKarticaEnabled)
                 {
+                    // Uvek loguj ovaj izuzetak
+                    createLogStreamWriter();
+
                     Log("UNMANAGED EXCEPTION");
                 }
                 CitacKarticaEnabled = true;
