@@ -18,6 +18,9 @@ namespace Soko.UI
     {
         private const string FONT_NAME = "Arial";
         string maxGrupa;
+        private Font font;
+        private string msg;
+        private Color color;
 
         public CitacKarticaForm()
         {
@@ -26,6 +29,9 @@ namespace Soko.UI
             this.ControlBox = false;
             this.ShowInTaskbar = false;
             this.StartPosition = FormStartPosition.Manual;
+
+            PodesiFont();
+            msg = String.Empty;
         }
 
         private void CitacKarticaForm_Load(object sender, EventArgs e)
@@ -95,17 +101,36 @@ namespace Soko.UI
 
         private void CitacKarticaForm_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.Clear(Options.Instance.PozadinaCitacaKartica);
+            Graphics g = e.Graphics;
+            if (this.msg != String.Empty)
+            {
+                g.Clear(color);
+                g.DrawString(msg, font, Brushes.Black, 0, 0);
+            }
+            else
+            {
+                g.Clear(Options.Instance.PozadinaCitacaKartica);
+            }
         }
 
         public void PrikaziOcitavanje(string msg, Color color)
         {
-            Graphics g = this.CreateGraphics();
-            g.Clear(color);
-            Font font = new Font(FONT_NAME, Options.Instance.VelicinaSlovaZaCitacKartica, FontStyle.Bold);
-            g.DrawString(msg, font, Brushes.Black, 0, 0);
-            font.Dispose();
-            g.Dispose();
+            this.msg = msg;
+            this.color = color;
+            this.Invalidate();
+            this.Update();
+        }
+
+        public void PodesiFont()
+        {
+            font = new Font(FONT_NAME, Options.Instance.VelicinaSlovaZaCitacKartica, FontStyle.Bold);
+        }
+
+        public void Clear()
+        {
+            this.msg = String.Empty;
+            this.Invalidate();
+            this.Update();
         }
     }
 }

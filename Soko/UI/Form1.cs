@@ -983,6 +983,7 @@ namespace Soko.UI
                 if (citacKarticaForm != null)
                 {
                     citacKarticaForm.PodesiVelicinu();
+                    citacKarticaForm.PodesiFont();
                 }
             }
         }
@@ -1094,10 +1095,12 @@ namespace Soko.UI
             {
                 if (repaint)
                 {
-                    Graphics g = SingleInstanceApplication.GlavniProzor.CitacKarticaForm.CreateGraphics();
-                    g.Clear(Options.Instance.PozadinaCitacaKartica);
-                    g.Dispose();
-                    repaint = false;
+                    CitacKarticaForm citacKarticaForm = this.CitacKarticaForm;
+                    if (citacKarticaForm != null)
+                    {
+                        citacKarticaForm.Clear();
+                        repaint = false;
+                    }
                 }
                 lastRead = CitacKartica.getCitacKartica().TryReadDolazakNaTrening();
             }
