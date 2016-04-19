@@ -56,6 +56,8 @@ namespace Soko
             AdminForm af = SingleInstanceApplication.GlavniProzor.AdminForm;
             bool measureTime = af != null;
 
+            Form1.Log("BEFORE P READ");
+            
             ulong retval;
             if (measureTime)
             {
@@ -94,6 +96,8 @@ namespace Soko
             name = "                                ";
             broj = -1;
 
+            Form1.Log("BEFORE C READ");
+
             ulong retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
 
             Form1.Log("C READ: " + retval.ToString());
@@ -109,6 +113,8 @@ namespace Soko
             
             AdminForm af = SingleInstanceApplication.GlavniProzor.AdminForm;
             bool measureTime = af != null;
+
+            Form1.Log("BEFORE P WRITE");
 
             ulong retval;
             if (measureTime)
