@@ -1102,7 +1102,18 @@ namespace Soko.UI
                         repaint = false;
                     }
                 }
-                lastRead = CitacKartica.getCitacKartica().TryReadDolazakNaTrening();
+                try
+                {
+                    lastRead = CitacKartica.getCitacKartica().TryReadDolazakNaTrening();
+                }
+                catch (Exception ex)
+                {
+                    // Uvek loguj ovaj izuzetak
+                    createLogStreamWriter();
+                    Log("CITAC EXCEPTION");
+                    if (ex.Message != null)
+                        Log(ex.Message);
+                }
             }
         }
 
@@ -1165,6 +1176,12 @@ namespace Soko.UI
                     {
                         brojPokusaja = 0;
                         msg = ex.Message;
+
+                        // Uvek loguj ovaj izuzetak
+                        createLogStreamWriter();
+                        Log("PISAC WRITE EXCEPTION");
+                        if (ex.Message != null)
+                            Log(ex.Message);
                     }
                 }
                 CitacKarticaEnabled = true;
@@ -1203,6 +1220,12 @@ namespace Soko.UI
                         {
                             brojPokusaja = 0;
                             msg = ex.Message;
+
+                            // Uvek loguj ovaj izuzetak
+                            createLogStreamWriter();
+                            Log("PISAC READ EXCEPTION");
+                            if (ex.Message != null)
+                                Log(ex.Message);
                         }
                     }
                     CitacKarticaEnabled = true;
