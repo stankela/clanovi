@@ -1068,8 +1068,30 @@ namespace Soko.UI
             karticaTimer.Enabled = true;
         }
 
+        private int waitingCount = 0;
+        private int waitingMax;
+
         private void karticaTimer_Elapsed(object source, System.Timers.ElapsedEventArgs e)
         {
+            if (waitingCount > 0)
+            {
+                CitacKarticaForm citacKarticaForm = this.CitacKarticaForm;
+                if (citacKarticaForm != null)
+                {
+                    if (waitingCount == waitingMax)
+                    {
+                        citacKarticaForm.PrikaziOcitavanje("Sa\u010Dekajte ...", Options.Instance.PozadinaCitacaKartica);
+                    }
+                    else if (waitingCount == 1)
+                    {
+                        citacKarticaForm.Clear();
+                    }
+                }
+                --waitingCount;
+                return;
+            }
+
+
             citacKarticaJeNaRedu = !citacKarticaJeNaRedu;
             if (citacKarticaJeNaRedu)
             {
@@ -1108,6 +1130,10 @@ namespace Soko.UI
                 }
                 catch (Exception ex)
                 {
+                    // sacekaj 5 sekundi
+                    waitingMax = Convert.ToInt32(5000.0 / Options.Instance.CitacKarticaTimerInterval);
+                    waitingCount = waitingMax;
+
                     // Uvek loguj ovaj izuzetak
                     createLogStreamWriter();
                     Log("CITAC EXCEPTION");
