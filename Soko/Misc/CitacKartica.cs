@@ -172,7 +172,7 @@ namespace Soko
                 CitacKarticaForm form = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
                 if (form != null)
                 {
-                    form.PrikaziOcitavanje(msg, Options.Instance.PozadinaCitacaKartica);
+                    form.Prikazi(msg, Options.Instance.PozadinaCitacaKartica);
                 }
                 return true;
             }
@@ -326,7 +326,7 @@ namespace Soko
                         color = Color.Red;
                     }
                 }
-                form.PrikaziOcitavanje(msg, color);
+                form.Prikazi(msg, color);
             }
         }
 

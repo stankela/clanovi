@@ -1080,7 +1080,7 @@ namespace Soko.UI
                 {
                     if (waitingCount == waitingMax)
                     {
-                        citacKarticaForm.PrikaziOcitavanje("Sa\u010Dekajte ...", Options.Instance.PozadinaCitacaKartica);
+                        citacKarticaForm.Prikazi("Sa\u010Dekajte ...", Options.Instance.PozadinaCitacaKartica);
                     }
                     else if (waitingCount == 1)
                     {

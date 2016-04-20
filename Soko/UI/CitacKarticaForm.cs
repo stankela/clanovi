@@ -114,7 +114,7 @@ namespace Soko.UI
             }
         }
 
-        public void PrikaziOcitavanje(string msg, Color color)
+        public void Prikazi(string msg, Color color)
         {
             this.msg = msg;
             this.color = color;
