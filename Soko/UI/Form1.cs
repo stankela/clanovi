@@ -14,6 +14,7 @@ using NHibernate;
 using NHibernate.Context;
 using Bilten.Dao;
 using System.IO;
+using Soko.Misc;
 
 namespace Soko.UI
 {
@@ -188,6 +189,8 @@ namespace Soko.UI
 
             if (dlg.DialogResult != DialogResult.OK)
                 return;
+
+            CitacKarticaDictionary.Instance.DodajUplate(dlg.Uplate);
 
             string naslov = "Uplata clanarine";
             string pitanje = "Da li zelite da stampate potvrdu o uplati?";
@@ -1027,6 +1030,8 @@ namespace Soko.UI
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            CitacKarticaDictionary.Instance.Init();
+
             // Dogadjaj kada se ekran otkljuca/zakljuca.
             Microsoft.Win32.SystemEvents.SessionSwitch += new Microsoft.Win32.SessionSwitchEventHandler(SystemEvents_SessionSwitch);
             
@@ -1090,7 +1095,16 @@ namespace Soko.UI
                 --waitingCount;
                 return;
             }
+            else if (CitacKarticaDictionary.Instance.CreationDate.Month != DateTime.Now.Month
+                || CitacKarticaDictionary.Instance.CreationDate.Year != DateTime.Now.Year)
+            {
+                CitacKarticaDictionary.Instance.Init();
 
+                // sacekaj 5 sekundi
+                waitingMax = Convert.ToInt32(5000.0 / Options.Instance.CitacKarticaTimerInterval);
+                waitingCount = waitingMax;
+                return;
+            }
 
             citacKarticaJeNaRedu = !citacKarticaJeNaRedu;
             if (citacKarticaJeNaRedu)

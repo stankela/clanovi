@@ -214,6 +214,8 @@ namespace Soko.UI
                     ckbKartica.Checked = true;
 
                     okMsg = String.Format(OK_MSG_WRITE, brojKartice.ToString(), clan.BrojPrezimeImeDatumRodjenja);
+
+                    CitacKarticaDictionary.Instance.DodajClanaSaKarticom(clan);
                     return;
                 }
             }

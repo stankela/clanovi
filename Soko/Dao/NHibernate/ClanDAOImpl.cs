@@ -125,6 +125,23 @@ namespace Bilten.Dao.NHibernate
             }
         }
 
+        public virtual IList<Clan> findClanoviSaKarticom()
+        {
+            try
+            {
+                IQuery q = Session.CreateQuery(@"from Clan c
+                                                 where c.BrojKartice is not null
+                                                 and c.BrojKartice > 0");
+                return q.List<Clan>();
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
         #endregion
 
         public override IList<Clan> FindAll()

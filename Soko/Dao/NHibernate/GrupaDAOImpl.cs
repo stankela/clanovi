@@ -4,6 +4,7 @@ using NHibernate;
 using Soko.Exceptions;
 using Soko.Domain;
 using Soko;
+using Soko.Misc;
 
 namespace Bilten.Dao.NHibernate
 {
@@ -57,6 +58,29 @@ namespace Bilten.Dao.NHibernate
                 IQuery q = Session.CreateQuery("select count(*) from Grupa g where g.Naziv = :naziv");
                 q.SetString("naziv", naziv);
                 return (long)q.UniqueResult() > 0;
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
+        public virtual Grupa findGodisnjaClanarina()
+        {
+            try
+            {
+                IQuery q = Session.CreateQuery(@"from Grupa g");
+                IList<Grupa> grupe = q.List<Grupa>();
+                foreach (Grupa g in grupe)
+                {
+                    if (Util.isGodisnjaClanarina(g.Naziv))
+                    {
+                        return g;
+                    }
+                }
+                return null;
             }
             catch (HibernateException ex)
             {

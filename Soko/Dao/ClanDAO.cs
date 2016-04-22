@@ -18,5 +18,6 @@ namespace Bilten.Dao
         int getMaxBroj();
         Clan findForBrojKartice(int brojKartice);
         IList<Clan> findKojiNePlacajuClanarinu();
+        IList<Clan> findClanoviSaKarticom();
     }
 }

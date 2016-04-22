@@ -13,5 +13,6 @@ namespace Bilten.Dao
         bool existsGrupa(Kategorija k);
         bool existsGrupaSifra(SifraGrupe sifra);
         bool existsGrupaNaziv(string naziv);
+        Grupa findGodisnjaClanarina();
     }
 }

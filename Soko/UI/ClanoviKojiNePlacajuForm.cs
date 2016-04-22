@@ -4,6 +4,7 @@ using NHibernate.Context;
 using Soko.Data;
 using Soko.Domain;
 using Soko.Exceptions;
+using Soko.Misc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -131,6 +132,8 @@ namespace Soko.UI
                     session.Transaction.Commit();
                     onEntityAdded(clan);
                     updateBrojClanovaLabel();
+
+                    CitacKarticaDictionary.Instance.UplateNeplacaClanarinu(clan.BrojKartice.Value, true);
                 }
             }
             catch (InfrastructureException ex)
@@ -167,6 +170,8 @@ namespace Soko.UI
                     session.Transaction.Commit();
                     onEntityDeleted(clan);
                     updateBrojClanovaLabel();
+
+                    CitacKarticaDictionary.Instance.UplateNeplacaClanarinu(clan.BrojKartice.Value, false);
                 }
             }
             catch (InfrastructureException ex)

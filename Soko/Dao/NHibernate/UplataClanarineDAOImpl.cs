@@ -7,6 +7,7 @@ using Soko;
 using System.Collections;
 using Soko.Report;
 using Soko.Misc;
+using Soko.UI;
 
 namespace Bilten.Dao.NHibernate
 {
@@ -90,16 +91,14 @@ namespace Bilten.Dao.NHibernate
             }
         }
 
-        public virtual IList<UplataClanarine> findUplate(Clan clan, DateTime from, DateTime to)
+        public virtual IList<UplataClanarine> findUplateVaziOd(DateTime from, DateTime to)
         {
-            from = from.Date;
-            to = to.Date.AddDays(1);
             try
             {
                 IQuery q = Session.CreateQuery(@"from UplataClanarine u
-                                                 where u.Clan = :clan
-                                                 and u.DatumVremeUplate >= :from and u.DatumVremeUplate <= :to");
-                q.SetEntity("clan", clan);
+                                                 left join fetch u.Clan 
+                                                 left join fetch u.Grupa 
+                                                 where u.VaziOd >= :from and u.VaziOd <= :to");
                 q.SetDateTime("from", from);
                 q.SetDateTime("to", to);
                 return q.List<UplataClanarine>();
@@ -110,6 +109,28 @@ namespace Bilten.Dao.NHibernate
                     "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
                 throw new InfrastructureException(message, ex);
             }
+        }
+
+        public virtual IList<UplataClanarine> findUplate(Grupa grupa, DateTime from, DateTime to)
+        {
+            try
+            {
+                IQuery q = Session.CreateQuery(@"from UplataClanarine u
+                                                 left join fetch u.Clan 
+                                                 left join fetch u.Grupa
+                                                 where u.Grupa = :grupa 
+                                                 and u.VaziOd >= :from and u.VaziOd <= :to");
+                q.SetEntity("grupa", grupa);
+                q.SetDateTime("from", from);
+                q.SetDateTime("to", to);
+                return q.List<UplataClanarine>();
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }                        
         }
 
         // Vraca grupe za koje postoje uplate za dati datumUplate, a ne postoje

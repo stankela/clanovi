@@ -15,7 +15,8 @@ namespace Bilten.Dao
         bool existsUplataGrupa(Grupa g);
         IList<UplataClanarine> findUplate(Clan c);
         IList<UplataClanarine> findUplate(DateTime from, DateTime to);
-        IList<UplataClanarine> findUplate(Clan clan, DateTime from, DateTime to);
+        IList<UplataClanarine> findUplateVaziOd(DateTime from, DateTime to);
+        IList<UplataClanarine> findUplate(Grupa g, DateTime from, DateTime to);
         IList<Grupa> getGrupeBezKategorija(DateTime datumUplate);
         List<object[]> getDnevniPrihodiGrupeReportItems(DateTime from, DateTime to, List<Grupa> grupe);
         decimal getUkupanPrihod(DateTime from, DateTime to, List<Grupa> grupe);

@@ -177,19 +177,21 @@ namespace Soko
                 return true;
             }
 
-            Clan clan;
-            UplataClanarine poslednjaUplata;
-            if (!unesiOcitavanje(broj, vremeOcitavanja, out clan, out poslednjaUplata))
+            Clan clan = CitacKarticaDictionary.Instance.findClan(broj);
+            if (clan == null)
                 return false;
 
-            prikaziOcitavanje(broj, vremeOcitavanja, clan, poslednjaUplata);
+            // Odmah prikazi ocitavanje, da bi se momentalno videlo na ekranu nakon zvuka ocitavanja kartice.
+            UplataClanarine ovomesecnaIliGodisnjaUplata;
+            prikaziOcitavanje(clan, vremeOcitavanja, out ovomesecnaIliGodisnjaUplata);
+
+            unesiOcitavanje(clan, vremeOcitavanja, ovomesecnaIliGodisnjaUplata);
+
             return true;
         }
 
-        private bool unesiOcitavanje(int broj, DateTime vremeOcitavanja, out Clan clan, out UplataClanarine poslednjaUplata)
+        private void unesiOcitavanje(Clan clan, DateTime vremeOcitavanja, UplataClanarine ovomesecnaIliGodisnjaUplata)
         {
-            clan = null;
-            poslednjaUplata = null;
             try
             {
                 using (ISession session = NHibernateHelper.Instance.OpenSession())
@@ -197,46 +199,35 @@ namespace Soko
                 {
                     CurrentSessionContext.Bind(session);
 
-                    clan = DAOFactoryFactory.DAOFactory.GetClanDAO().findForBrojKartice(broj);
-                    if (clan == null)
-                        return false;
-
-                    UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
-                    List<UplataClanarine> uplate = new List<UplataClanarine>(uplataClanarineDAO.findUplate(clan));
-
-                    if (uplate.Count > 0)
-                    {
-                        Util.sortByVaziOdDesc(uplate);
-                        poslednjaUplata = findByGodisnjaClanarina(uplate, vremeOcitavanja.Year);
-                        if (poslednjaUplata == null)
-                        {
-                            poslednjaUplata = findByMonth(uplate, vremeOcitavanja.Year, vremeOcitavanja.Month);
-                        }
-                        if (poslednjaUplata == null)
-                            poslednjaUplata = uplate[0];
-                    }
-
                     DolazakNaTrening dolazak = new DolazakNaTrening();
                     dolazak.Clan = clan;
                     dolazak.DatumVremeDolaska = vremeOcitavanja;
-                    if (poslednjaUplata != null)
+                    if (ovomesecnaIliGodisnjaUplata != null)
                     {
-                        dolazak.Grupa = poslednjaUplata.Grupa;
+                        dolazak.Grupa = ovomesecnaIliGodisnjaUplata.Grupa;
+                    }
+                    else if (clan.NeplacaClanarinu)
+                    {
+                        dolazak.Grupa = null;
                     }
                     else
                     {
-                        dolazak.Grupa = null;
+                        UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
+                        List<UplataClanarine> uplate = new List<UplataClanarine>(uplataClanarineDAO.findUplate(clan));
+                        Util.sortByVaziOdDesc(uplate);
+                        if (uplate.Count > 0)
+                            dolazak.Grupa = uplate[0].Grupa;
+                        else
+                            dolazak.Grupa = null;
                     }
 
                     DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO().MakePersistent(dolazak);
                     session.Transaction.Commit();
-                    return true;
                 }
             }
             catch (Exception ex)
             {
                 MessageDialogs.showMessage(ex.Message, "Citac kartica");
-                return false;
             }
             finally
             {
@@ -244,56 +235,22 @@ namespace Soko
             }
         }
 
-        private UplataClanarine findByGodisnjaClanarina(List<UplataClanarine> uplate, int year)
+        private void prikaziOcitavanje(Clan clan, DateTime vremeOcitavanja, out UplataClanarine ovomesecnaIliGodisnjaUplata)
         {
-            UplataClanarine result = null;
-            for (int i = 0; i < uplate.Count; ++i)
-            {
-                UplataClanarine u = uplate[i];
-                if (Util.isGodisnjaClanarina(u.Grupa.Naziv) && u.VaziOd.Value.Year == year)
-                {
-                    result = u;
-                    break;
-                }
-            }
-            return result;
-        }
+            ovomesecnaIliGodisnjaUplata = CitacKarticaDictionary.Instance.findOvomesecnaIliGodisnjaUplata(clan);
 
-        private UplataClanarine findByMonth(List<UplataClanarine> uplate, int year, int month)
-        {
-            UplataClanarine result = null;
-            for (int i = 0; i < uplate.Count; ++i)
-            {
-                UplataClanarine u = uplate[i];
-                if (u.VaziOd.Value.Year == year && u.VaziOd.Value.Month == month)
-                {
-                    result = u;
-                    break;
-                }
-            }
-            return result;
-        }
-
-        private void prikaziOcitavanje(int broj, DateTime vremeOcitavanja, Clan clan, UplataClanarine poslednjaUplata)
-        {
             bool okForTrening = false;
-            if (poslednjaUplata != null)
+            if (ovomesecnaIliGodisnjaUplata != null)
             {
                 // Najpre proveri godisnju clanarinu.
-                okForTrening = Util.isGodisnjaClanarina(poslednjaUplata.Grupa.Naziv);
+                okForTrening = Util.isGodisnjaClanarina(ovomesecnaIliGodisnjaUplata.Grupa.Naziv);
 
                 // Proveri da li postoji uplata za ovaj mesec.
                 if (!okForTrening)
                 {
                     okForTrening =
-                        poslednjaUplata.VaziOd.Value.Year == vremeOcitavanja.Year
-                        && poslednjaUplata.VaziOd.Value.Month == vremeOcitavanja.Month;
-                }
-
-                // Tolerisi do odredjenog dana u mesecu.
-                if (!okForTrening)
-                {
-                    okForTrening = vremeOcitavanja.Day <= Options.Instance.PoslednjiDanZaUplate;
+                        ovomesecnaIliGodisnjaUplata.VaziOd.Value.Year == vremeOcitavanja.Year
+                        && ovomesecnaIliGodisnjaUplata.VaziOd.Value.Month == vremeOcitavanja.Month;
                 }
             }
             else
@@ -301,12 +258,18 @@ namespace Soko
                 okForTrening = clan.NeplacaClanarinu;
             }
 
-            string grupa = null;
-            if (poslednjaUplata != null)
+            // Tolerisi do odredjenog dana u mesecu.
+            if (!okForTrening)
             {
-                grupa = poslednjaUplata.Grupa.Naziv;
+                okForTrening = vremeOcitavanja.Day <= Options.Instance.PoslednjiDanZaUplate;
             }
-            string msg = FormatMessage(broj, clan, grupa);
+
+            string grupa = null;
+            if (ovomesecnaIliGodisnjaUplata != null)
+            {
+                grupa = ovomesecnaIliGodisnjaUplata.Grupa.Naziv;
+            }
+            string msg = FormatMessage(clan.BrojKartice.Value, clan, grupa);
 
             // Posto ocitavanje kartice traje relativno dugo (oko 374 ms), moguce je da je prozor
             // zatvoren bas u trenutku dok se kartica ocitava. Korisnik je u tom slucaju cuo zvuk
