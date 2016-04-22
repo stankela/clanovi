@@ -17,7 +17,6 @@ namespace Soko.Misc
         public DateTime CreationDate
         {
             get { return creationDate; }
-            set { creationDate = value; }
         }
 
         private IDictionary<int, Clan> clanoviSaKarticom;
@@ -80,7 +79,7 @@ namespace Soko.Misc
                     Grupa godisnjaClanarina = grupaDAO.findGodisnjaClanarina();
                     if (godisnjaClanarina == null)
                     {
-                        Soko.UI.MessageDialogs.showMessage("Ne mogu da pronadjem grupu za godisnju clanarinu", "Greska");
+                        MessageDialogs.showMessage("Ne mogu da pronadjem grupu za godisnju clanarinu", "Greska");
                     }
                     else
                     {
@@ -149,7 +148,7 @@ namespace Soko.Misc
                         uplateGodisnjaClanarina.Add(u.Clan.Id, u);
                     }
                 }
-                else if (u.VaziOd.Value.Month == DateTime.Now.Month)
+                else if (u.VaziOd.Value.Month == DateTime.Now.Month && u.VaziOd.Value.Year == DateTime.Now.Year)
                 {
                     if (ovomesecneUplate.ContainsKey(u.Clan.Id))
                     {
