@@ -21,6 +21,7 @@ namespace Soko.Misc
 
         private IDictionary<int, Clan> clanoviSaKarticom;
         private IDictionary<int, List<UplataClanarine>> ovomesecneUplate;
+        private IDictionary<int, List<UplataClanarine>> prethodneUplate;
         private IDictionary<int, UplataClanarine> uplateGodisnjaClanarina;
 
         private static CitacKarticaDictionary instance;
@@ -55,37 +56,64 @@ namespace Soko.Misc
                         clanoviSaKarticom.Add(clan.BrojKartice.Value, clan);
                     }
 
+                    GrupaDAO grupaDAO = DAOFactoryFactory.DAOFactory.GetGrupaDAO();
+                    Grupa godisnjaClanarinaGrupa = grupaDAO.findGodisnjaClanarina();
+                    int godisnjaClanarinaId = -1;
+                    if (godisnjaClanarinaGrupa != null)
+                    {
+                        godisnjaClanarinaId = godisnjaClanarinaGrupa.Id;
+                    }
+                    else
+                    {
+                        MessageDialogs.showMessage("Ne mogu da pronadjem grupu za godisnju clanarinu", "Greska");
+                    }
+
                     ovomesecneUplate = new Dictionary<int, List<UplataClanarine>>();
+                    prethodneUplate = new Dictionary<int, List<UplataClanarine>>();
                     DateTime now = DateTime.Now;
-                    DateTime from = new DateTime(now.Year, now.Month, 1, 0, 0, 0);
+                    DateTime from = now.AddMonths(-6);
                     DateTime to = now;
                     UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
                     foreach (UplataClanarine u in uplataClanarineDAO.findUplateVaziOd(from, to))
                     {
-                        if (ovomesecneUplate.ContainsKey(u.Clan.Id))
+                        if (u.Grupa.Id == godisnjaClanarinaId)
                         {
-                            ovomesecneUplate[u.Clan.Id].Add(u);
+                            continue;
+                        }
+                        if (u.VaziOd.Value.Month == now.Month && u.VaziOd.Value.Year == now.Year)
+                        {
+                            if (ovomesecneUplate.ContainsKey(u.Clan.Id))
+                            {
+                                ovomesecneUplate[u.Clan.Id].Add(u);
+                            }
+                            else
+                            {
+                                List<UplataClanarine> uplate = new List<UplataClanarine>();
+                                uplate.Add(u);
+                                ovomesecneUplate.Add(u.Clan.Id, uplate);
+                            }
                         }
                         else
                         {
-                            List<UplataClanarine> uplate = new List<UplataClanarine>();
-                            uplate.Add(u);
-                            ovomesecneUplate.Add(u.Clan.Id, uplate);
+                            if (prethodneUplate.ContainsKey(u.Clan.Id))
+                            {
+                                prethodneUplate[u.Clan.Id].Add(u);
+                            }
+                            else
+                            {
+                                List<UplataClanarine> uplate = new List<UplataClanarine>();
+                                uplate.Add(u);
+                                prethodneUplate.Add(u.Clan.Id, uplate);
+                            }
                         }
                     }
 
                     uplateGodisnjaClanarina = new Dictionary<int, UplataClanarine>();
-                    GrupaDAO grupaDAO = DAOFactoryFactory.DAOFactory.GetGrupaDAO();
-                    Grupa godisnjaClanarina = grupaDAO.findGodisnjaClanarina();
-                    if (godisnjaClanarina == null)
-                    {
-                        MessageDialogs.showMessage("Ne mogu da pronadjem grupu za godisnju clanarinu", "Greska");
-                    }
-                    else
+                    if (godisnjaClanarinaGrupa != null)
                     {
                         DateTime firstDateTimeInYear = new DateTime(DateTime.Now.Year, 1, 1, 0, 0, 0);
                         DateTime lastDateTimeInYear = new DateTime(DateTime.Now.Year + 1, 1, 1, 0, 0, 0).AddSeconds(-1);
-                        foreach (UplataClanarine u in uplataClanarineDAO.findUplate(godisnjaClanarina,
+                        foreach (UplataClanarine u in uplataClanarineDAO.findUplate(godisnjaClanarinaGrupa,
                             firstDateTimeInYear, lastDateTimeInYear))
                         {
                             if (!uplateGodisnjaClanarina.ContainsKey(u.Clan.Id))
@@ -104,7 +132,6 @@ namespace Soko.Misc
             {
                 CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
-
         }
 
         public Clan findClan(int brojKartice)
@@ -125,6 +152,17 @@ namespace Soko.Misc
             if (ovomesecneUplate.ContainsKey(clan.Id))
             {
                 return ovomesecneUplate[clan.Id][0];
+            }
+            return null;
+        }
+
+        public UplataClanarine findPrethodnaUplata(Clan clan)
+        {
+            if (prethodneUplate.ContainsKey(clan.Id))
+            {
+                List<UplataClanarine> uplate = prethodneUplate[clan.Id];
+                Util.sortByVaziOdDesc(uplate);
+                return uplate[0];
             }
             return null;
         }
@@ -159,6 +197,19 @@ namespace Soko.Misc
                         List<UplataClanarine> uplate2 = new List<UplataClanarine>();
                         uplate2.Add(u);
                         ovomesecneUplate.Add(u.Clan.Id, uplate2);
+                    }
+                }
+                else
+                {
+                    if (prethodneUplate.ContainsKey(u.Clan.Id))
+                    {
+                        prethodneUplate[u.Clan.Id].Add(u);
+                    }
+                    else
+                    {
+                        List<UplataClanarine> uplate2 = new List<UplataClanarine>();
+                        uplate2.Add(u);
+                        prethodneUplate.Add(u.Clan.Id, uplate2);
                     }
                 }
             }

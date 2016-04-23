@@ -183,14 +183,16 @@ namespace Soko
 
             // Odmah prikazi ocitavanje, da bi se momentalno videlo na ekranu nakon zvuka ocitavanja kartice.
             UplataClanarine ovomesecnaIliGodisnjaUplata;
-            prikaziOcitavanje(clan, vremeOcitavanja, out ovomesecnaIliGodisnjaUplata);
+            UplataClanarine prethodnaUplata;
+            prikaziOcitavanje(clan, vremeOcitavanja, out ovomesecnaIliGodisnjaUplata, out prethodnaUplata);
 
-            unesiOcitavanje(clan, vremeOcitavanja, ovomesecnaIliGodisnjaUplata);
+            unesiOcitavanje(clan, vremeOcitavanja, ovomesecnaIliGodisnjaUplata, prethodnaUplata);
 
             return true;
         }
 
-        private void unesiOcitavanje(Clan clan, DateTime vremeOcitavanja, UplataClanarine ovomesecnaIliGodisnjaUplata)
+        private void unesiOcitavanje(Clan clan, DateTime vremeOcitavanja, UplataClanarine ovomesecnaIliGodisnjaUplata,
+            UplataClanarine prethodnaUplata)
         {
             try
             {
@@ -210,15 +212,13 @@ namespace Soko
                     {
                         dolazak.Grupa = null;
                     }
+                    else if (prethodnaUplata != null)
+                    {
+                        dolazak.Grupa = prethodnaUplata.Grupa;
+                    }
                     else
                     {
-                        UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
-                        List<UplataClanarine> uplate = new List<UplataClanarine>(uplataClanarineDAO.findUplate(clan));
-                        Util.sortByVaziOdDesc(uplate);
-                        if (uplate.Count > 0)
-                            dolazak.Grupa = uplate[0].Grupa;
-                        else
-                            dolazak.Grupa = null;
+                        dolazak.Grupa = null;
                     }
 
                     DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO().MakePersistent(dolazak);
@@ -235,9 +235,14 @@ namespace Soko
             }
         }
 
-        private void prikaziOcitavanje(Clan clan, DateTime vremeOcitavanja, out UplataClanarine ovomesecnaIliGodisnjaUplata)
+        private void prikaziOcitavanje(Clan clan, DateTime vremeOcitavanja,
+            out UplataClanarine ovomesecnaIliGodisnjaUplata, out UplataClanarine prethodnaUplata)
         {
             ovomesecnaIliGodisnjaUplata = CitacKarticaDictionary.Instance.findOvomesecnaIliGodisnjaUplata(clan);
+            if (ovomesecnaIliGodisnjaUplata == null)
+                prethodnaUplata = CitacKarticaDictionary.Instance.findPrethodnaUplata(clan);
+            else
+                prethodnaUplata = null;
 
             bool okForTrening = false;
             if (ovomesecnaIliGodisnjaUplata != null)
@@ -268,6 +273,10 @@ namespace Soko
             if (ovomesecnaIliGodisnjaUplata != null)
             {
                 grupa = ovomesecnaIliGodisnjaUplata.Grupa.Naziv;
+            }
+            else if (prethodnaUplata != null)
+            {
+                grupa = prethodnaUplata.Grupa.Naziv;
             }
             string msg = FormatMessage(clan.BrojKartice.Value, clan, grupa);
 
