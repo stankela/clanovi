@@ -182,17 +182,15 @@ namespace Soko
                 return false;
 
             // Odmah prikazi ocitavanje, da bi se momentalno videlo na ekranu nakon zvuka ocitavanja kartice.
-            UplataClanarine ovomesecnaIliGodisnjaUplata;
-            UplataClanarine prethodnaUplata;
-            prikaziOcitavanje(clan, vremeOcitavanja, out ovomesecnaIliGodisnjaUplata, out prethodnaUplata);
+            UplataClanarine uplata;
+            prikaziOcitavanje(clan, vremeOcitavanja, out uplata);
 
-            unesiOcitavanje(clan, vremeOcitavanja, ovomesecnaIliGodisnjaUplata, prethodnaUplata);
+            unesiOcitavanje(clan, vremeOcitavanja, uplata);
 
             return true;
         }
 
-        private void unesiOcitavanje(Clan clan, DateTime vremeOcitavanja, UplataClanarine ovomesecnaIliGodisnjaUplata,
-            UplataClanarine prethodnaUplata)
+        private void unesiOcitavanje(Clan clan, DateTime vremeOcitavanja, UplataClanarine uplata)
         {
             try
             {
@@ -204,17 +202,9 @@ namespace Soko
                     DolazakNaTrening dolazak = new DolazakNaTrening();
                     dolazak.Clan = clan;
                     dolazak.DatumVremeDolaska = vremeOcitavanja;
-                    if (ovomesecnaIliGodisnjaUplata != null)
+                    if (uplata != null && !clan.NeplacaClanarinu)
                     {
-                        dolazak.Grupa = ovomesecnaIliGodisnjaUplata.Grupa;
-                    }
-                    else if (clan.NeplacaClanarinu)
-                    {
-                        dolazak.Grupa = null;
-                    }
-                    else if (prethodnaUplata != null)
-                    {
-                        dolazak.Grupa = prethodnaUplata.Grupa;
+                        dolazak.Grupa = uplata.Grupa;
                     }
                     else
                     {
@@ -235,27 +225,22 @@ namespace Soko
             }
         }
 
-        private void prikaziOcitavanje(Clan clan, DateTime vremeOcitavanja,
-            out UplataClanarine ovomesecnaIliGodisnjaUplata, out UplataClanarine prethodnaUplata)
+        private void prikaziOcitavanje(Clan clan, DateTime vremeOcitavanja, out UplataClanarine uplata)
         {
-            ovomesecnaIliGodisnjaUplata = CitacKarticaDictionary.Instance.findOvomesecnaIliGodisnjaUplata(clan);
-            if (ovomesecnaIliGodisnjaUplata == null)
-                prethodnaUplata = CitacKarticaDictionary.Instance.findPrethodnaUplata(clan);
-            else
-                prethodnaUplata = null;
+            uplata = CitacKarticaDictionary.Instance.findUplata(clan);
 
             bool okForTrening = false;
-            if (ovomesecnaIliGodisnjaUplata != null)
+            if (uplata != null)
             {
                 // Najpre proveri godisnju clanarinu.
-                okForTrening = Util.isGodisnjaClanarina(ovomesecnaIliGodisnjaUplata.Grupa.Naziv);
+                okForTrening = Util.isGodisnjaClanarina(uplata.Grupa.Naziv);
 
                 // Proveri da li postoji uplata za ovaj mesec.
                 if (!okForTrening)
                 {
                     okForTrening =
-                        ovomesecnaIliGodisnjaUplata.VaziOd.Value.Year == vremeOcitavanja.Year
-                        && ovomesecnaIliGodisnjaUplata.VaziOd.Value.Month == vremeOcitavanja.Month;
+                        uplata.VaziOd.Value.Year == vremeOcitavanja.Year
+                        && uplata.VaziOd.Value.Month == vremeOcitavanja.Month;
                 }
             }
             else
@@ -270,13 +255,9 @@ namespace Soko
             }
 
             string grupa = null;
-            if (ovomesecnaIliGodisnjaUplata != null)
+            if (uplata != null)
             {
-                grupa = ovomesecnaIliGodisnjaUplata.Grupa.Naziv;
-            }
-            else if (prethodnaUplata != null)
-            {
-                grupa = prethodnaUplata.Grupa.Naziv;
+                grupa = uplata.Grupa.Naziv;
             }
             string msg = FormatMessage(clan.BrojKartice.Value, clan, grupa);
 

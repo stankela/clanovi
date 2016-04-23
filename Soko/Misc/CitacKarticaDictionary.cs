@@ -143,7 +143,7 @@ namespace Soko.Misc
             return null;
         }
 
-        public UplataClanarine findOvomesecnaIliGodisnjaUplata(Clan clan)
+        public UplataClanarine findUplata(Clan clan)
         {
             if (uplateGodisnjaClanarina.ContainsKey(clan.Id))
             {
@@ -153,11 +153,6 @@ namespace Soko.Misc
             {
                 return ovomesecneUplate[clan.Id][0];
             }
-            return null;
-        }
-
-        public UplataClanarine findPrethodnaUplata(Clan clan)
-        {
             if (prethodneUplate.ContainsKey(clan.Id))
             {
                 List<UplataClanarine> uplate = prethodneUplate[clan.Id];
