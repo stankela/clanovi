@@ -215,7 +215,7 @@ namespace Soko.Misc
             }
         }
 
-        public void UplateNeplacaClanarinu(int brojKartice, bool neplacaClanarinu)
+        public void UpdateNeplacaClanarinu(int brojKartice, bool neplacaClanarinu)
         {
             Clan clan = findClan(brojKartice);
             if (clan != null)

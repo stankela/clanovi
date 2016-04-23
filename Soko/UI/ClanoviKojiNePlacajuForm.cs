@@ -133,7 +133,7 @@ namespace Soko.UI
                     onEntityAdded(clan);
                     updateBrojClanovaLabel();
 
-                    CitacKarticaDictionary.Instance.UplateNeplacaClanarinu(clan.BrojKartice.Value, true);
+                    CitacKarticaDictionary.Instance.UpdateNeplacaClanarinu(clan.BrojKartice.Value, true);
                 }
             }
             catch (InfrastructureException ex)
@@ -171,7 +171,7 @@ namespace Soko.UI
                     onEntityDeleted(clan);
                     updateBrojClanovaLabel();
 
-                    CitacKarticaDictionary.Instance.UplateNeplacaClanarinu(clan.BrojKartice.Value, false);
+                    CitacKarticaDictionary.Instance.UpdateNeplacaClanarinu(clan.BrojKartice.Value, false);
                 }
             }
             catch (InfrastructureException ex)
