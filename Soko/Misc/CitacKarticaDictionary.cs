@@ -71,7 +71,7 @@ namespace Soko.Misc
                     ovomesecneUplate = new Dictionary<int, List<UplataClanarine>>();
                     prethodneUplate = new Dictionary<int, List<UplataClanarine>>();
                     DateTime now = DateTime.Now;
-                    DateTime from = now.AddMonths(-6);
+                    DateTime from = now.AddMonths(-9);
                     DateTime to = now;
                     UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
                     foreach (UplataClanarine u in uplataClanarineDAO.findUplateVaziOd(from, to))
