@@ -141,6 +141,7 @@
     <Compile Include="Exceptions\WriteCardException.cs" />
     <Compile Include="Misc\CitacKartica.cs" />
     <Compile Include="Misc\CitacKarticaDictionary.cs" />
+    <Compile Include="Misc\Sesija.cs" />
     <Compile Include="Misc\SqlCeUtilities.cs" />
     <Compile Include="Misc\SingleInstanceApplication.cs" />
     <Compile Include="Misc\Util.cs" />

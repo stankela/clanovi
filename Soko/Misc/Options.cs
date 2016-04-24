@@ -166,12 +166,11 @@ namespace Soko
             set { logToFile = value; }
         }
 
-        private StreamWriter logStreamWriter;
-        public StreamWriter LogStreamWriter
+        private int maxLogMessages = 500;
+        public int MaxLogMessages
         {
-            get { return logStreamWriter; }
-            set { logStreamWriter = value; }
+            get { return maxLogMessages; }
+            set { maxLogMessages = value; }
         }
-
     }
 }

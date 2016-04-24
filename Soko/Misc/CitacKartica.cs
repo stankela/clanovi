@@ -56,7 +56,7 @@ namespace Soko
             AdminForm af = SingleInstanceApplication.GlavniProzor.AdminForm;
             bool measureTime = af != null;
 
-            Form1.Log("BEFORE P READ");
+            Sesija.Instance.Log("BEFORE P READ");
             
             ulong retval;
             if (measureTime)
@@ -71,7 +71,7 @@ namespace Soko
                 retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
             }
 
-            Form1.Log("P READ: " + retval.ToString());
+            Sesija.Instance.Log("P READ: " + retval.ToString());
 
             if (retval == 1)
             {
@@ -96,11 +96,11 @@ namespace Soko
             name = "                                ";
             broj = -1;
 
-            Form1.Log("BEFORE C READ");
+            Sesija.Instance.Log("BEFORE C READ");
 
             ulong retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
 
-            Form1.Log("C READ: " + retval.ToString());
+            Sesija.Instance.Log("C READ: " + retval.ToString());
 
             return retval == 1 && Int32.TryParse(sID1, out broj) && broj > 0 && name == NAME_FIELD;
         }
@@ -114,7 +114,7 @@ namespace Soko
             AdminForm af = SingleInstanceApplication.GlavniProzor.AdminForm;
             bool measureTime = af != null;
 
-            Form1.Log("BEFORE P WRITE");
+            Sesija.Instance.Log("BEFORE P WRITE");
 
             ulong retval;
             if (measureTime)
@@ -129,7 +129,7 @@ namespace Soko
                 retval = WriteDataCard(Options.Instance.COMPortWriter, sType, sID1, sID2, sName) & 0xFFFFFFFF;
             }
 
-            Form1.Log("P WRITE: " + retval.ToString());
+            Sesija.Instance.Log("P WRITE: " + retval.ToString());
 
             if (retval != 1)
             {
@@ -177,6 +177,8 @@ namespace Soko
                 return true;
             }
 
+            Sesija.Instance.OnOcitavanjeKartice(broj, vremeOcitavanja);
+
             Clan clan = CitacKarticaDictionary.Instance.findClan(broj);
             if (clan == null)
                 return false;
@@ -186,7 +188,6 @@ namespace Soko
             prikaziOcitavanje(clan, vremeOcitavanja, out uplata);
 
             unesiOcitavanje(clan, vremeOcitavanja, uplata);
-
             return true;
         }
 

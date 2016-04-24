@@ -31,6 +31,7 @@
             this.txtLozinka = new System.Windows.Forms.TextBox();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.ckbIskljuciAdminMode = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // txtLozinka
@@ -61,6 +62,16 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
+            // ckbAdminMode
+            // 
+            this.ckbIskljuciAdminMode.AutoSize = true;
+            this.ckbIskljuciAdminMode.Location = new System.Drawing.Point(15, 4);
+            this.ckbIskljuciAdminMode.Name = "ckbAdminMode";
+            this.ckbIskljuciAdminMode.Size = new System.Drawing.Size(118, 17);
+            this.ckbIskljuciAdminMode.TabIndex = 4;
+            this.ckbIskljuciAdminMode.Text = "Iskljuci admin mode";
+            this.ckbIskljuciAdminMode.UseVisualStyleBackColor = true;
+            // 
             // LozinkaForm
             // 
             this.AcceptButton = this.btnOK;
@@ -68,6 +79,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(198, 104);
+            this.Controls.Add(this.ckbIskljuciAdminMode);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.txtLozinka);
@@ -84,5 +96,6 @@
         private System.Windows.Forms.TextBox txtLozinka;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.CheckBox ckbIskljuciAdminMode;
     }
 }

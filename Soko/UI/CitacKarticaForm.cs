@@ -101,7 +101,6 @@ namespace Soko.UI
 
         private void CitacKarticaForm_Paint(object sender, PaintEventArgs e)
         {
-            Form1.Log("PAINT");
             Graphics g = e.Graphics;
             if (this.msg != String.Empty)
             {

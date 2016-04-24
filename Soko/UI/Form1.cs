@@ -13,7 +13,6 @@ using Soko.Data;
 using NHibernate;
 using NHibernate.Context;
 using Bilten.Dao;
-using System.IO;
 using Soko.Misc;
 
 namespace Soko.UI
@@ -48,11 +47,7 @@ namespace Soko.UI
             //LocalizeUI();
 
             loadOptions();
-
-            if (Options.Instance.LogToFile)
-            {
-                createLogStreamWriter();
-            }
+            Sesija.Instance.InitSession();
         }
 
         private void refreshAdminModeUI(bool adminMode)
@@ -163,9 +158,9 @@ namespace Soko.UI
         {
             karticaTimer.Enabled = false;
             lozinkaTimer.Enabled = false;
+            Sesija.Instance.EndSession();
             saveOptions();
             NHibernateHelper.Instance.SessionFactory.Close();
-            closeLogStreamWriter();
         }
 
         private void mnUplataClanarine_Click(object sender, EventArgs e)
@@ -1149,17 +1144,16 @@ namespace Soko.UI
                     waitingCount = waitingMax;
 
                     // Uvek loguj ovaj izuzetak
-                    createLogStreamWriter();
-                    Log("CITAC EXCEPTION");
+                    Sesija.Instance.Log("CITAC EXCEPTION", true);
                     if (ex.Message != null)
-                        Log(ex.Message);
+                        Sesija.Instance.Log(ex.Message);
                 }
             }
         }
 
         private void handlePisacKartica()
         {
-            Log("P entered");
+            Sesija.Instance.Log("P entered");
 
             if (!PisacKarticaEnabled)
                 return;
@@ -1173,9 +1167,7 @@ namespace Soko.UI
                 if (!CitacKarticaEnabled || !PisacKarticaEnabled)
                 {
                     // Uvek loguj ovaj izuzetak
-                    createLogStreamWriter();
-
-                    Log("UNMANAGED EXCEPTION");
+                    Sesija.Instance.Log("UNMANAGED EXCEPTION", true);
                 }
                 CitacKarticaEnabled = true;
                 PisacKarticaEnabled = true;
@@ -1218,10 +1210,9 @@ namespace Soko.UI
                         msg = ex.Message;
 
                         // Uvek loguj ovaj izuzetak
-                        createLogStreamWriter();
-                        Log("PISAC WRITE EXCEPTION");
+                        Sesija.Instance.Log("PISAC WRITE EXCEPTION", true);
                         if (ex.Message != null)
-                            Log(ex.Message);
+                            Sesija.Instance.Log(ex.Message);
                     }
                 }
                 CitacKarticaEnabled = true;
@@ -1262,10 +1253,9 @@ namespace Soko.UI
                             msg = ex.Message;
 
                             // Uvek loguj ovaj izuzetak
-                            createLogStreamWriter();
-                            Log("PISAC READ EXCEPTION");
+                            Sesija.Instance.Log("PISAC READ EXCEPTION", true);
                             if (ex.Message != null)
-                                Log(ex.Message);
+                                Sesija.Instance.Log(ex.Message);
                         }
                     }
                     CitacKarticaEnabled = true;
@@ -1278,15 +1268,6 @@ namespace Soko.UI
             }
         }
 
-        public static void Log(string logMessage)
-        {
-            if (Options.Instance.LogStreamWriter != null)
-            {
-                string msg = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "   " + logMessage;
-                Options.Instance.LogStreamWriter.WriteLine(msg);
-            }
-        }
-        
         private void mnEvidencijaPrisustvaNaTreningu_Click(object sender, EventArgs e)
         {
             BiracIntervala dlg;
@@ -1362,10 +1343,10 @@ namespace Soko.UI
         {
             if (e.Control && e.Shift && e.KeyCode == Keys.S)
             {
-                LozinkaForm f = new LozinkaForm("Lozinka", false);
+                LozinkaForm f = new LozinkaForm("Lozinka", false, true);
                 if (f.ShowDialog() == DialogResult.OK)
                 {
-                    Options.Instance.AdminMode = true;
+                    Options.Instance.AdminMode = f.AdminMode;
                     refreshAdminModeUI(Options.Instance.AdminMode);
                 }
             }
@@ -1432,35 +1413,6 @@ namespace Soko.UI
         {
             AdminForm f = new AdminForm();
             f.ShowDialog();
-            if (Options.Instance.LogToFile && Options.Instance.LogStreamWriter == null)
-            {
-                createLogStreamWriter();
-            }
-            else if (!Options.Instance.LogToFile && Options.Instance.LogStreamWriter != null)
-            {
-                closeLogStreamWriter();
-            }
-        }
-
-        private void createLogStreamWriter()
-        {
-            if (Options.Instance.LogStreamWriter == null)
-            {
-                String dirName = @"..\Log";
-                System.IO.Directory.CreateDirectory(dirName);
-                DateTime now = DateTime.Now;
-                String fileName = String.Format("log_{0}_{1}_{2}_{3}_{4}_{5}.txt", now.Year, now.Month, now.Day, now.Hour,
-                    now.Minute, now.Second);
-                Options.Instance.LogStreamWriter = File.AppendText(Path.Combine(dirName, fileName));
-            }
-        }
-
-        private void closeLogStreamWriter()
-        {
-            if (Options.Instance.LogStreamWriter != null)
-            {
-                Options.Instance.LogStreamWriter.Close();
-            }
         }
 
         private void mnDolazakNaTreningMesecni_Click(object sender, EventArgs e)
@@ -1546,7 +1498,7 @@ namespace Soko.UI
                     // Restored
                     if (askForPassword)
                     {
-                        LozinkaForm f = new LozinkaForm("sdv158", true);
+                        LozinkaForm f = new LozinkaForm("sdv158", true, false);
                         if (f.ShowDialog() != DialogResult.OK)
                         {
                             this.WindowState = FormWindowState.Minimized;

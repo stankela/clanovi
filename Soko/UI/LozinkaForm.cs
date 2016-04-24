@@ -13,7 +13,13 @@ namespace Soko.UI
     {
         private string lozinka;
 
-        public LozinkaForm(string lozinka, bool usePasswordChar)
+        private bool adminMode;
+        public bool AdminMode
+        {
+            get { return adminMode; }
+        }
+
+        public LozinkaForm(string lozinka, bool usePasswordChar, bool showAdminCheckbox)
         {
             InitializeComponent();
             this.lozinka = lozinka;
@@ -21,6 +27,15 @@ namespace Soko.UI
             {
                 txtLozinka.PasswordChar = '*';
                 txtLozinka.UseSystemPasswordChar = true;
+            }
+            if (showAdminCheckbox)
+            {
+                ckbIskljuciAdminMode.Checked = false;
+            }
+            else
+            {
+                ckbIskljuciAdminMode.Visible = false;
+                ckbIskljuciAdminMode.Enabled = false;
             }
         }
 
@@ -33,6 +48,7 @@ namespace Soko.UI
                 this.DialogResult = DialogResult.None;
                 return;
             }
+            adminMode = !ckbIskljuciAdminMode.Checked;
         }
     }
 }
