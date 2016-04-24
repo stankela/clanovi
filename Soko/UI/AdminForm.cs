@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Soko.Misc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -11,6 +13,8 @@ namespace Soko.UI
 {
     public partial class AdminForm : Form
     {
+        private const string LOG_DIR = @"..\Log";
+
         public AdminForm()
         {
             InitializeComponent();
@@ -18,6 +22,13 @@ namespace Soko.UI
             txtVremenskiIntervalZaCitacKartica.Text = Options.Instance.CitacKarticaTimerInterval.ToString();
             txtBrojPonavljanja.Text = Options.Instance.BrojPokusajaCitacKartica.ToString();
             ckbLogToFile.Checked = Options.Instance.LogToFile;
+
+            lstLogFiles.SelectionMode = SelectionMode.MultiExtended;
+            string[] files = Directory.GetFiles(LOG_DIR);
+            foreach (string file in files)
+            {
+                lstLogFiles.Items.Add(Path.GetFileName(file));
+            }
         }
 
         public void newOcitavanje(long elapsedMs)
@@ -76,6 +87,21 @@ namespace Soko.UI
                 Options.Instance.CitacKarticaTimerInterval = newInterval;
                 SingleInstanceApplication.GlavniProzor.initKarticaTimer();
             }
+        }
+
+        private void btnProveriOcitavanja_Click(object sender, EventArgs e)
+        {
+            if (lstLogFiles.SelectedItems.Count == 0)
+                return;
+
+            string message = String.Empty;
+            foreach (string fileName in lstLogFiles.SelectedItems)
+            {
+                string msg;
+                Sesija.Instance.proveriOcitavanja(Path.Combine(LOG_DIR, fileName), out msg);
+                message += msg + "\n";
+            }
+            MessageBox.Show(message, "Provera ocitavanja");
         }
     }
 }

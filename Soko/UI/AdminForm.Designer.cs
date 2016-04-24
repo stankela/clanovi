@@ -42,6 +42,8 @@
             this.lstReadDataCardReturnValue = new System.Windows.Forms.ListBox();
             this.ckbLogToFile = new System.Windows.Forms.CheckBox();
             this.btnPromeniVremenskiInterval = new System.Windows.Forms.Button();
+            this.btnProveriOcitavanja = new System.Windows.Forms.Button();
+            this.lstLogFiles = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // lstCitacKarticeElapsedMs
@@ -166,11 +168,31 @@
             this.btnPromeniVremenskiInterval.UseVisualStyleBackColor = true;
             this.btnPromeniVremenskiInterval.Click += new System.EventHandler(this.btnPromeniVremenskiInterval_Click);
             // 
+            // btnProveriOcitavanja
+            // 
+            this.btnProveriOcitavanja.Location = new System.Drawing.Point(546, 52);
+            this.btnProveriOcitavanja.Name = "btnProveriOcitavanja";
+            this.btnProveriOcitavanja.Size = new System.Drawing.Size(105, 23);
+            this.btnProveriOcitavanja.TabIndex = 16;
+            this.btnProveriOcitavanja.Text = "Proveri ocitavanja";
+            this.btnProveriOcitavanja.UseVisualStyleBackColor = true;
+            this.btnProveriOcitavanja.Click += new System.EventHandler(this.btnProveriOcitavanja_Click);
+            // 
+            // lstLogFiles
+            // 
+            this.lstLogFiles.FormattingEnabled = true;
+            this.lstLogFiles.Location = new System.Drawing.Point(546, 81);
+            this.lstLogFiles.Name = "lstLogFiles";
+            this.lstLogFiles.Size = new System.Drawing.Size(221, 316);
+            this.lstLogFiles.TabIndex = 17;
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(460, 465);
+            this.ClientSize = new System.Drawing.Size(869, 465);
+            this.Controls.Add(this.lstLogFiles);
+            this.Controls.Add(this.btnProveriOcitavanja);
             this.Controls.Add(this.btnPromeniVremenskiInterval);
             this.Controls.Add(this.ckbLogToFile);
             this.Controls.Add(this.lstReadDataCardReturnValue);
@@ -208,5 +230,7 @@
         private System.Windows.Forms.ListBox lstReadDataCardReturnValue;
         private System.Windows.Forms.CheckBox ckbLogToFile;
         private System.Windows.Forms.Button btnPromeniVremenskiInterval;
+        private System.Windows.Forms.Button btnProveriOcitavanja;
+        private System.Windows.Forms.ListBox lstLogFiles;
     }
 }

@@ -17,6 +17,26 @@ namespace Bilten.Dao.NHibernate
     /// </summary>
     public class DolazakNaTreningDAOImpl : GenericNHibernateDAO<DolazakNaTrening, int>, DolazakNaTreningDAO
     {
+        public virtual IList<DolazakNaTrening> getDolazakNaTrening(DateTime from, DateTime to)
+        {
+            try
+            {
+                IQuery q = Session.CreateQuery(@"from DolazakNaTrening d
+                                                 left join fetch d.Clan 
+                                                 where d.DatumVremeDolaska >= :from and d.DatumVremeDolaska <= :to
+                                                 order by d.DatumVremeDolaska asc");
+                q.SetDateTime("from", from);
+                q.SetDateTime("to", to);
+                return q.List<DolazakNaTrening>();
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
         public virtual List<object[]> getEvidencijaTreningaReportItems(DateTime from, DateTime to, List<Grupa> grupe)
         {
             to = to.AddMinutes(1);
