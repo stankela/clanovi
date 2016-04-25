@@ -172,5 +172,12 @@ namespace Soko
             get { return maxLogMessages; }
             set { maxLogMessages = value; }
         }
+
+        private string adminLozinka = "sdv158";
+        public string AdminLozinka
+        {
+            get { return adminLozinka; }
+            set { adminLozinka = value; }
+        }
     }
 }
