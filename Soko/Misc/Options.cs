@@ -179,5 +179,12 @@ namespace Soko
             get { return adminLozinka; }
             set { adminLozinka = value; }
         }
+
+        private bool traziLozinkuPreOtvatanjaProzora = false;
+        public bool TraziLozinkuPreOtvatanjaProzora
+        {
+            get { return traziLozinkuPreOtvatanjaProzora; }
+            set { traziLozinkuPreOtvatanjaProzora = value; }
+        }
     }
 }
