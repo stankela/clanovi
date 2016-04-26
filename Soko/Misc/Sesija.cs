@@ -29,7 +29,7 @@ namespace Soko.Misc
         private DateTime startTime;
         private DateTime endTime;
         private List<Ocitavanje> ocitavanja;
-        private List<string> logMessages;
+        private Queue<string> logMessages;
         private StreamWriter logStreamWriter;
         private bool iskljuciLogovanjeNaKraju = false;
         private const string OCITAVANJA_KARTICE = "OCITAVANJA KARTICE";
@@ -56,7 +56,7 @@ namespace Soko.Misc
         {
             startTime = DateTime.Now;
             ocitavanja = new List<Ocitavanje>();
-            logMessages = new List<string>();
+            logMessages = new Queue<string>();
         }
 
         public void EndSession()
@@ -97,7 +97,7 @@ namespace Soko.Misc
         {
             String dirName = @"..\Log";
             System.IO.Directory.CreateDirectory(dirName);
-            String fileName = String.Format("log{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}.txt", startTime.Year, startTime.Month,
+            String fileName = String.Format("log_{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}.txt", startTime.Year, startTime.Month,
                 startTime.Day, startTime.Hour, startTime.Minute, startTime.Second);
             logStreamWriter = File.AppendText(Path.Combine(dirName, fileName));
         }
@@ -111,7 +111,8 @@ namespace Soko.Misc
         {
             if (logMessages.Count >= Options.Instance.MaxLogMessages)
             {
-                return;
+                //return;
+                logMessages.Dequeue();
             }
             if (ukljuciLogovanje)
             {
@@ -124,7 +125,7 @@ namespace Soko.Misc
             if (Options.Instance.LogToFile)
             {
                 string msg = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "   " + logMessage;
-                logMessages.Add(msg);
+                logMessages.Enqueue(msg);
             }
         }
 
