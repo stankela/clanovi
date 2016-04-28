@@ -22,6 +22,7 @@ namespace Soko.UI
             txtVremenskiIntervalZaCitacKartica.Text = Options.Instance.CitacKarticaTimerInterval.ToString();
             txtBrojPonavljanja.Text = Options.Instance.BrojPokusajaCitacKartica.ToString();
             ckbLogToFile.Checked = Options.Instance.LogToFile;
+            ckbTraziLozinkuPreOtvaranjaProzora.Checked = Options.Instance.TraziLozinkuPreOtvatanjaProzora;
 
             lstLogFiles.SelectionMode = SelectionMode.MultiExtended;
             string[] files = Directory.GetFiles(LOG_DIR);
@@ -102,6 +103,11 @@ namespace Soko.UI
                 message += msg + "\n";
             }
             MessageBox.Show(message, "Provera ocitavanja");
+        }
+
+        private void ckbTraziLozinkuPreOtvaranjaProzora_CheckedChanged(object sender, EventArgs e)
+        {
+            Options.Instance.TraziLozinkuPreOtvatanjaProzora = ckbTraziLozinkuPreOtvaranjaProzora.Checked;
         }
     }
 }

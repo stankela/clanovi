@@ -44,6 +44,7 @@
             this.btnPromeniVremenskiInterval = new System.Windows.Forms.Button();
             this.btnProveriOcitavanja = new System.Windows.Forms.Button();
             this.lstLogFiles = new System.Windows.Forms.ListBox();
+            this.ckbTraziLozinkuPreOtvaranjaProzora = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lstCitacKarticeElapsedMs
@@ -186,11 +187,23 @@
             this.lstLogFiles.Size = new System.Drawing.Size(221, 316);
             this.lstLogFiles.TabIndex = 17;
             // 
+            // ckbTraziLozinkuPreOtvaranjaProzora
+            // 
+            this.ckbTraziLozinkuPreOtvaranjaProzora.AutoSize = true;
+            this.ckbTraziLozinkuPreOtvaranjaProzora.Location = new System.Drawing.Point(25, 361);
+            this.ckbTraziLozinkuPreOtvaranjaProzora.Name = "ckbTraziLozinkuPreOtvaranjaProzora";
+            this.ckbTraziLozinkuPreOtvaranjaProzora.Size = new System.Drawing.Size(188, 17);
+            this.ckbTraziLozinkuPreOtvaranjaProzora.TabIndex = 18;
+            this.ckbTraziLozinkuPreOtvaranjaProzora.Text = "Trazi lozinku pre otvaranja prozora";
+            this.ckbTraziLozinkuPreOtvaranjaProzora.UseVisualStyleBackColor = true;
+            this.ckbTraziLozinkuPreOtvaranjaProzora.CheckedChanged += new System.EventHandler(this.ckbTraziLozinkuPreOtvaranjaProzora_CheckedChanged);
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(869, 465);
+            this.Controls.Add(this.ckbTraziLozinkuPreOtvaranjaProzora);
             this.Controls.Add(this.lstLogFiles);
             this.Controls.Add(this.btnProveriOcitavanja);
             this.Controls.Add(this.btnPromeniVremenskiInterval);
@@ -232,5 +245,6 @@
         private System.Windows.Forms.Button btnPromeniVremenskiInterval;
         private System.Windows.Forms.Button btnProveriOcitavanja;
         private System.Windows.Forms.ListBox lstLogFiles;
+        private System.Windows.Forms.CheckBox ckbTraziLozinkuPreOtvaranjaProzora;
     }
 }
