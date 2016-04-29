@@ -1517,11 +1517,11 @@ namespace Soko.UI
 
         private FormWindowState lastWindowState = FormWindowState.Normal;
         private System.Timers.Timer lozinkaTimer;
-        bool askForPassword = false;
+        bool passwordExpired = false;
 
         void lozinkaTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            askForPassword = true;
+            passwordExpired = true;
             lozinkaTimer.Enabled = false;
         }
 
@@ -1537,18 +1537,18 @@ namespace Soko.UI
                 {
                     if (Options.Instance.UvekPitajZaLozinku)
                     {
-                        askForPassword = true;
+                        passwordExpired = true;
                     }
                     else
                     {
-                        askForPassword = false;
+                        passwordExpired = false;
                         lozinkaTimer.Enabled = true;
                     }
                 }
                 else if (WindowState == FormWindowState.Normal && lastWindowState == FormWindowState.Minimized)
                 {
                     // Restored
-                    if (askForPassword)
+                    if (passwordExpired)
                     {
                         LozinkaForm f = new LozinkaForm(Options.Instance.AdminLozinka, true, false);
                         if (f.ShowDialog() != DialogResult.OK)
