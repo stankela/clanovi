@@ -169,12 +169,8 @@ namespace Soko.UI
 
         private void mnUplataClanarine_Click(object sender, EventArgs e)
         {
-            if (Options.Instance.TraziLozinkuPreOtvatanjaProzora)
-            {
-                LozinkaForm f = new LozinkaForm(Options.Instance.AdminLozinka, true, false);
-                if (f.ShowDialog() != DialogResult.OK)
-                    return;
-            }
+            if (!dozvoliOtvaranjeProzora())
+                return;
 
             UplataClanarineDialog dlg;
             try
@@ -235,14 +231,20 @@ namespace Soko.UI
             }
         }
 
+        private bool dozvoliOtvaranjeProzora()
+        {
+            if (!Options.Instance.TraziLozinkuPreOtvatanjaProzora)
+                return true;
+
+            LozinkaForm f = new LozinkaForm(Options.Instance.AdminLozinka, true, false);
+            return f.ShowDialog() == DialogResult.OK;
+        }
+
         private void mnClanoviClanovi_Click(object sender, EventArgs e)
         {
-            if (Options.Instance.TraziLozinkuPreOtvatanjaProzora)
-            {
-                LozinkaForm form = new LozinkaForm(Options.Instance.AdminLozinka, true, false);
-                if (form.ShowDialog() != DialogResult.OK)
-                    return;
-            }
+            if (!dozvoliOtvaranjeProzora())
+                return;
+
             try
             {
                 ClanoviForm f = new ClanoviForm();
@@ -260,12 +262,9 @@ namespace Soko.UI
 
         private void mnCenovnik_Click(object sender, EventArgs e)
         {
-            if (Options.Instance.TraziLozinkuPreOtvatanjaProzora)
-            {
-                LozinkaForm f = new LozinkaForm(Options.Instance.AdminLozinka, true, false);
-                if (f.ShowDialog() != DialogResult.OK)
-                    return;
-            }
+            if (!dozvoliOtvaranjeProzora())
+                return;
+
             try
             {
                 MesecneClanarineForm d = new MesecneClanarineForm();
@@ -283,12 +282,9 @@ namespace Soko.UI
 
         private void mnGrupe_Click(object sender, EventArgs e)
         {
-            if (Options.Instance.TraziLozinkuPreOtvatanjaProzora)
-            {
-                LozinkaForm f = new LozinkaForm(Options.Instance.AdminLozinka, true, false);
-                if (f.ShowDialog() != DialogResult.OK)
-                    return;
-            }
+            if (!dozvoliOtvaranjeProzora())
+                return;
+
             try
             {
                 GrupeForm d = new GrupeForm();
@@ -306,12 +302,9 @@ namespace Soko.UI
 
         private void mnKategorije_Click(object sender, EventArgs e)
         {
-            if (Options.Instance.TraziLozinkuPreOtvatanjaProzora)
-            {
-                LozinkaForm form = new LozinkaForm(Options.Instance.AdminLozinka, true, false);
-                if (form.ShowDialog() != DialogResult.OK)
-                    return;
-            }
+            if (!dozvoliOtvaranjeProzora())
+                return;
+
             try
             {
                 KategorijeForm f = new KategorijeForm();
@@ -329,12 +322,9 @@ namespace Soko.UI
 
         private void mnMesta_Click(object sender, EventArgs e)
         {
-            if (Options.Instance.TraziLozinkuPreOtvatanjaProzora)
-            {
-                LozinkaForm f = new LozinkaForm(Options.Instance.AdminLozinka, true, false);
-                if (f.ShowDialog() != DialogResult.OK)
-                    return;
-            }
+            if (!dozvoliOtvaranjeProzora())
+                return;
+
             try
             {
                 MestaForm form = new MestaForm();
@@ -352,12 +342,9 @@ namespace Soko.UI
 
         private void mnInstitucije_Click(object sender, EventArgs e)
         {
-            if (Options.Instance.TraziLozinkuPreOtvatanjaProzora)
-            {
-                LozinkaForm f = new LozinkaForm(Options.Instance.AdminLozinka, true, false);
-                if (f.ShowDialog() != DialogResult.OK)
-                    return;
-            }
+            if (!dozvoliOtvaranjeProzora())
+                return;
+
             try
             {
                 InstitucijeForm d = new InstitucijeForm();
@@ -375,12 +362,9 @@ namespace Soko.UI
 
         private void mnUplate_Click(object sender, EventArgs e)
         {
-            if (Options.Instance.TraziLozinkuPreOtvatanjaProzora)
-            {
-                LozinkaForm f = new LozinkaForm(Options.Instance.AdminLozinka, true, false);
-                if (f.ShowDialog() != DialogResult.OK)
-                    return;
-            }
+            if (!dozvoliOtvaranjeProzora())
+                return;
+
             Cursor.Current = Cursors.WaitCursor;
             Cursor.Show();
 
@@ -820,12 +804,9 @@ namespace Soko.UI
 
         private void mnFont_Click(object sender, EventArgs e)
         {
-            if (Options.Instance.TraziLozinkuPreOtvatanjaProzora)
-            {
-                LozinkaForm f = new LozinkaForm(Options.Instance.AdminLozinka, true, false);
-                if (f.ShowDialog() != DialogResult.OK)
-                    return;
-            }
+            if (!dozvoliOtvaranjeProzora())
+                return;
+
             FontChooserDialog dlg = new FontChooserDialog();
             if (dlg.ShowDialog() == DialogResult.OK)
             {
@@ -835,12 +816,9 @@ namespace Soko.UI
 
         private void mnStampaci_Click(object sender, EventArgs e)
         {
-            if (Options.Instance.TraziLozinkuPreOtvatanjaProzora)
-            {
-                LozinkaForm f = new LozinkaForm(Options.Instance.AdminLozinka, true, false);
-                if (f.ShowDialog() != DialogResult.OK)
-                    return;
-            }
+            if (!dozvoliOtvaranjeProzora())
+                return;
+
             PrinterSelectionForm form = new PrinterSelectionForm();
             if (form.ShowDialog() == DialogResult.OK)
             {
@@ -955,12 +933,9 @@ namespace Soko.UI
 
         private void mnPravljenjeKartice_Click(object sender, EventArgs e)
         {
-            if (Options.Instance.TraziLozinkuPreOtvatanjaProzora)
-            {
-                LozinkaForm f = new LozinkaForm(Options.Instance.AdminLozinka, true, false);
-                if (f.ShowDialog() != DialogResult.OK)
-                    return;
-            }
+            if (!dozvoliOtvaranjeProzora())
+                return;
+
             PravljenjeKarticeForm dlg;
             try
             {
@@ -1045,12 +1020,9 @@ namespace Soko.UI
 
         private void mnCitacKartica_Click(object sender, EventArgs e)
         {
-            if (Options.Instance.TraziLozinkuPreOtvatanjaProzora)
-            {
-                LozinkaForm f = new LozinkaForm(Options.Instance.AdminLozinka, true, false);
-                if (f.ShowDialog() != DialogResult.OK)
-                    return;
-            }
+            if (!dozvoliOtvaranjeProzora())
+                return;
+
             CitacKarticaDialog form = new CitacKarticaDialog();
             if (form.ShowDialog() == DialogResult.OK)
             {
@@ -1606,12 +1578,9 @@ namespace Soko.UI
 
         private void mnClanoviKojiNePlacajuClanarinu_Click(object sender, EventArgs e)
         {
-            if (Options.Instance.TraziLozinkuPreOtvatanjaProzora)
-            {
-                LozinkaForm form = new LozinkaForm(Options.Instance.AdminLozinka, true, false);
-                if (form.ShowDialog() != DialogResult.OK)
-                    return;
-            }
+            if (!dozvoliOtvaranjeProzora())
+                return;
+
             try
             {
                 ClanoviKojiNePlacajuForm f = new ClanoviKojiNePlacajuForm();
@@ -1629,12 +1598,9 @@ namespace Soko.UI
 
         private void mnLozinka_Click(object sender, EventArgs e)
         {
-            if (Options.Instance.TraziLozinkuPreOtvatanjaProzora)
-            {
-                LozinkaForm f = new LozinkaForm(Options.Instance.AdminLozinka, true, false);
-                if (f.ShowDialog() != DialogResult.OK)
-                    return;
-            }
+            if (!dozvoliOtvaranjeProzora())
+                return;
+
             LozinkaOptionsForm form = new LozinkaOptionsForm();
             if (form.ShowDialog() == DialogResult.OK)
             {
