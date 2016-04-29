@@ -38,6 +38,10 @@ namespace Soko.UI
         const string CitacKarticaTimerIntervalRegKey = "CitacKarticaTimerInterval";
         const string TraziLozinkuPreOtvatanjaProzoraRegKey = "TraziLozinkuPreOtvatanjaProzora";
 
+        private FormWindowState lastWindowState = FormWindowState.Normal;
+        private System.Timers.Timer lozinkaTimer;
+        private bool passwordExpired;
+
         public Form1()
         {
             InitializeComponent();
@@ -49,6 +53,8 @@ namespace Soko.UI
 
             loadOptions();
             Sesija.Instance.InitSession();
+
+            passwordExpired = true;
         }
 
         private void refreshAdminModeUI(bool adminMode)
@@ -161,7 +167,7 @@ namespace Soko.UI
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             karticaTimer.Enabled = false;
-            lozinkaTimer.Enabled = false;
+            lozinkaTimer.Stop();
             Sesija.Instance.EndSession();
             saveOptions();
             NHibernateHelper.Instance.SessionFactory.Close();
@@ -235,9 +241,25 @@ namespace Soko.UI
         {
             if (!Options.Instance.TraziLozinkuPreOtvatanjaProzora)
                 return true;
+            if (!passwordExpired)
+            {
+                // restartuj tajmer svaki put kada korisnik otvori prozor
+                lozinkaTimer.Stop();
+                lozinkaTimer.Start();
+                return true;
+            }
 
             LozinkaForm f = new LozinkaForm(Options.Instance.AdminLozinka, true, false);
-            return f.ShowDialog() == DialogResult.OK;
+            if (f.ShowDialog() == DialogResult.OK)
+            {
+                if (!Options.Instance.UvekPitajZaLozinku)
+                {
+                    passwordExpired = false;
+                    lozinkaTimer.Start();
+                }
+                return true;
+            }
+            return false;
         }
 
         private void mnClanoviClanovi_Click(object sender, EventArgs e)
@@ -1107,7 +1129,6 @@ namespace Soko.UI
             lozinkaTimer = new System.Timers.Timer();
             lozinkaTimer.Elapsed += lozinkaTimer_Elapsed;
             lozinkaTimer.Interval = Options.Instance.LozinkaTimerMinuti * 60 * 1000;
-            lozinkaTimer.Enabled = false;
         }
 
         public void initKarticaTimer()
@@ -1515,14 +1536,10 @@ namespace Soko.UI
             }
         }
 
-        private FormWindowState lastWindowState = FormWindowState.Normal;
-        private System.Timers.Timer lozinkaTimer;
-        bool passwordExpired = false;
-
         void lozinkaTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             passwordExpired = true;
-            lozinkaTimer.Enabled = false;
+            lozinkaTimer.Stop();
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -1542,7 +1559,7 @@ namespace Soko.UI
                     else
                     {
                         passwordExpired = false;
-                        lozinkaTimer.Enabled = true;
+                        lozinkaTimer.Start();
                     }
                 }
                 else if (WindowState == FormWindowState.Normal && lastWindowState == FormWindowState.Minimized)
@@ -1558,7 +1575,7 @@ namespace Soko.UI
                     }
                     else
                     {
-                        lozinkaTimer.Enabled = false;
+                        lozinkaTimer.Stop();
                     }
                 }
                 lastWindowState = WindowState;

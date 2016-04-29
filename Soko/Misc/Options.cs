@@ -152,7 +152,7 @@ namespace Soko
             set { uvekPitajZaLozinku = value; }
         }
 
-        private int lozinkaTimerMinuti = 5;
+        private int lozinkaTimerMinuti = 1;
         public int LozinkaTimerMinuti
         {
             get { return lozinkaTimerMinuti; }
