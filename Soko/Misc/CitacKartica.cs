@@ -15,6 +15,7 @@ using Soko.UI;
 using Soko.Misc;
 using System.Diagnostics;
 using Soko.Exceptions;
+using Bilten.Dao.NHibernate;
 
 namespace Soko
 {
@@ -233,7 +234,10 @@ namespace Soko
                 using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
-                    CurrentSessionContext.Bind(session);
+                    // NOTE: DolazakNaTreningDAO (vidi dole) ne uzima session iz CurrentSessionContext zato sto planiram
+                    // da metod unesiOcitavanje izvrsavam u posebnom threadu.
+
+                    // CurrentSessionContext.Bind(session);
 
                     DolazakNaTrening dolazak = new DolazakNaTrening();
                     dolazak.Clan = clan;
@@ -247,7 +251,10 @@ namespace Soko
                         dolazak.Grupa = null;
                     }
 
-                    DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO().MakePersistent(dolazak);
+                    DolazakNaTreningDAOImpl dolazakNaTreningDAO = 
+                        DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO() as DolazakNaTreningDAOImpl;
+                    dolazakNaTreningDAO.Session = session;
+                    dolazakNaTreningDAO.MakePersistent(dolazak);
                     session.Transaction.Commit();
                 }
             }
@@ -257,7 +264,7 @@ namespace Soko
             }
             finally
             {
-                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
+                // CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
         }
 
