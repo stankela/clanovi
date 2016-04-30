@@ -109,7 +109,7 @@ namespace Soko
             return retval == 1 && Int32.TryParse(sID1, out broj) && broj > 0 && name == NAME_FIELD;
         }
 
-        public void writeCard(int comPort, string sID1, string errorMsg)
+        public bool writeCard(int comPort, string sID1)
         {
             string sType = "";
             string sID2 = "";
@@ -135,10 +135,7 @@ namespace Soko
 
             Sesija.Instance.Log("P WRITE: " + retval.ToString());
 
-            if (retval != 1)
-            {
-                throw new WriteCardException(errorMsg);
-            }
+            return retval == 1;
         }
 
         public bool TryReadDolazakNaTrening()
