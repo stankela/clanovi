@@ -29,9 +29,11 @@ namespace Soko
         [DllImport("PanReaderIf.dll")]
         private static extern ulong WaitAndReadDataCard(int comport, int nSecs, ref string sType, ref string sID1, ref string sID2, ref string sName);
 
+        private Object readAndWriteLock = new Object();
+
         private CitacKartica()
-        { 
-        
+        {
+
         }
 
         private static CitacKartica instance;
@@ -44,6 +46,21 @@ namespace Soko
                 return instance;
             }
         }
+
+        // NOTE: Thread safe creation
+        /*private static Object creationLock = new Object();
+        public static CitacKartica Instance
+        {
+            get
+            {
+                lock (creationLock)
+                {
+                    if (instance == null)
+                        instance = new CitacKartica();
+                    return instance;
+                }
+            }
+        }*/
 
         public static readonly string NAME_FIELD = "SDV";
         public static readonly int TEST_KARTICA_BROJ = 100000;
@@ -68,7 +85,11 @@ namespace Soko
                 watch = Stopwatch.StartNew();
             }
 
-            ulong retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+            ulong retval;
+            lock (readAndWriteLock)
+            {
+                retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+            }
             
             if (measureTime)
             {
@@ -103,7 +124,11 @@ namespace Soko
 
             Sesija.Instance.Log("BEFORE C READ");
 
-            ulong retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+            ulong retval;
+            lock (readAndWriteLock)
+            {
+                retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+            }
 
             Sesija.Instance.Log("C READ: " + retval.ToString());
 
@@ -132,7 +157,11 @@ namespace Soko
                 watch = Stopwatch.StartNew();
             }
 
-            ulong retval = WriteDataCard(Options.Instance.COMPortWriter, sType, sID1, sID2, sName) & 0xFFFFFFFF;
+            ulong retval;
+            lock (readAndWriteLock)
+            {
+                retval = WriteDataCard(Options.Instance.COMPortWriter, sType, sID1, sID2, sName) & 0xFFFFFFFF;
+            }
 
             if (measureTime)
             {
