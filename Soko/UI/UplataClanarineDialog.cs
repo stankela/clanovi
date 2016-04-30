@@ -648,5 +648,41 @@ namespace Soko.UI
                 }
             }
         }
+
+        public void handlePisacKarticaRead(out string msg)
+        {
+            msg = String.Empty;
+            int brojPokusaja = Options.Instance.BrojPokusajaCitacKartica;
+            while (brojPokusaja > 0)
+            {
+                try
+                {
+                    this.ReadKartica();
+                    brojPokusaja = 0;
+                }
+                catch (ReadCardException ex)
+                {
+                    --brojPokusaja;
+                    if (brojPokusaja > 0)
+                    {
+                        this.PendingRead = true;
+                    }
+                    else
+                    {
+                        msg = ex.Message;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    brojPokusaja = 0;
+                    msg = ex.Message;
+
+                    // Uvek loguj ovaj izuzetak
+                    Sesija.Instance.Log("PISAC READ EXCEPTION", true);
+                    if (ex.Message != null)
+                        Sesija.Instance.Log(ex.Message);
+                }
+            }
+        }
     }
 }

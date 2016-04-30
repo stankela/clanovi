@@ -244,5 +244,43 @@ namespace Soko.UI
             txtSifraClana.Enabled = !ckbTestKartica.Checked;
             cmbClan.Enabled = !ckbTestKartica.Checked;
         }
+
+        public void handlePisacKarticaWrite(out string msg)
+        {
+            msg = String.Empty;
+            int brojPokusaja = Options.Instance.BrojPokusajaCitacKartica;
+            while (brojPokusaja > 0)
+            {
+                try
+                {
+                    string okMsg;
+                    this.WriteKartica(out okMsg);
+                    brojPokusaja = 0;
+                    msg = okMsg;
+                }
+                catch (WriteCardException ex)
+                {
+                    --brojPokusaja;
+                    if (brojPokusaja > 0)
+                    {
+                        this.PendingWrite = true;
+                    }
+                    else
+                    {
+                        msg = ex.Message;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    brojPokusaja = 0;
+                    msg = ex.Message;
+
+                    // Uvek loguj ovaj izuzetak
+                    Sesija.Instance.Log("PISAC WRITE EXCEPTION", true);
+                    if (ex.Message != null)
+                        Sesija.Instance.Log(ex.Message);
+                }
+            }
+        }
     }
 }

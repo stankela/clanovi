@@ -1251,40 +1251,10 @@ namespace Soko.UI
             {
                 CitacKarticaEnabled = false;
                 PisacKarticaEnabled = false;
-                string msg = String.Empty;
-                int brojPokusaja = Options.Instance.BrojPokusajaCitacKartica;
-                while (brojPokusaja > 0)
-                {
-                    try
-                    {
-                        string okMsg;
-                        pkf.WriteKartica(out okMsg);
-                        brojPokusaja = 0;
-                        msg = okMsg;
-                    }
-                    catch (WriteCardException ex)
-                    {
-                        --brojPokusaja;
-                        if (brojPokusaja > 0)
-                        {
-                            pkf.PendingWrite = true;
-                        }
-                        else
-                        {
-                            msg = ex.Message;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        brojPokusaja = 0;
-                        msg = ex.Message;
 
-                        // Uvek loguj ovaj izuzetak
-                        Sesija.Instance.Log("PISAC WRITE EXCEPTION", true);
-                        if (ex.Message != null)
-                            Sesija.Instance.Log(ex.Message);
-                    }
-                }
+                string msg;
+                handlePisacKarticaWrite(pkf, out msg);
+
                 CitacKarticaEnabled = true;
                 MessageDialogs.showMessage(msg, "Pravljenje kartice");
                 PisacKarticaEnabled = true;
@@ -1296,38 +1266,10 @@ namespace Soko.UI
                 {
                     CitacKarticaEnabled = false;
                     PisacKarticaEnabled = false;
-                    string msg = String.Empty;
-                    int brojPokusaja = Options.Instance.BrojPokusajaCitacKartica;
-                    while (brojPokusaja > 0)
-                    {
-                        try
-                        {
-                            dlg.ReadKartica();
-                            brojPokusaja = 0;
-                        }
-                        catch (ReadCardException ex)
-                        {
-                            --brojPokusaja;
-                            if (brojPokusaja > 0)
-                            {
-                                dlg.PendingRead = true;
-                            }
-                            else
-                            {
-                                msg = ex.Message;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            brojPokusaja = 0;
-                            msg = ex.Message;
 
-                            // Uvek loguj ovaj izuzetak
-                            Sesija.Instance.Log("PISAC READ EXCEPTION", true);
-                            if (ex.Message != null)
-                                Sesija.Instance.Log(ex.Message);
-                        }
-                    }
+                    string msg;
+                    handlePisacKarticaRead(dlg, out msg);
+
                     CitacKarticaEnabled = true;
                     if (msg != String.Empty)
                     {
@@ -1336,6 +1278,16 @@ namespace Soko.UI
                     PisacKarticaEnabled = true;
                 }
             }
+        }
+
+        private void handlePisacKarticaWrite(PravljenjeKarticeForm pkf, out string msg)
+        {
+            pkf.handlePisacKarticaWrite(out msg);
+        }
+
+        private void handlePisacKarticaRead(UplataClanarineDialog dlg, out string msg)
+        {
+            dlg.handlePisacKarticaRead(out msg);
         }
 
         private void mnEvidencijaPrisustvaNaTreningu_Click(object sender, EventArgs e)
