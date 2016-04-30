@@ -153,23 +153,21 @@ namespace Soko
             AdminForm af = SingleInstanceApplication.GlavniProzor.AdminForm;
             bool measureTime = af != null;
 
-            bool result;
+            Stopwatch watch = null;
             if (measureTime)
             {
-                Stopwatch watch = Stopwatch.StartNew();
-                result = tryReadCard(Options.Instance.COMPortReader, out broj, out name);
+                watch = Stopwatch.StartNew();
+            }
+
+            bool result = tryReadCard(Options.Instance.COMPortReader, out broj, out name);
+
+            if (measureTime)
+            {
                 watch.Stop();
                 af.newOcitavanje(watch.ElapsedMilliseconds);
             }
-            else
-            {
-                result = tryReadCard(Options.Instance.COMPortReader, out broj, out name);
-            }
 
-            if (!result)
-                return false;
-
-            return handleDolazakNaTrening(broj, DateTime.Now);
+            return result && handleDolazakNaTrening(broj, DateTime.Now);
         }
 
         public bool handleDolazakNaTrening(int broj, DateTime vremeOcitavanja)
