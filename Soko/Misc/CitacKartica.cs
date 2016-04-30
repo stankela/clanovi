@@ -62,17 +62,18 @@ namespace Soko
 
             Sesija.Instance.Log("BEFORE P READ");
             
-            ulong retval;
+            Stopwatch watch = null;
             if (measureTime)
             {
-                Stopwatch watch = Stopwatch.StartNew();
-                retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+                watch = Stopwatch.StartNew();
+            }
+
+            ulong retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+            
+            if (measureTime)
+            {
                 watch.Stop();
                 af.newCitanjeKartice(retval, watch.ElapsedMilliseconds);
-            }
-            else
-            {
-                retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
             }
 
             Sesija.Instance.Log("P READ: " + retval.ToString());
@@ -120,17 +121,18 @@ namespace Soko
 
             Sesija.Instance.Log("BEFORE P WRITE");
 
-            ulong retval;
+            Stopwatch watch = null;
             if (measureTime)
             {
-                Stopwatch watch = Stopwatch.StartNew();
-                retval = WriteDataCard(Options.Instance.COMPortWriter, sType, sID1, sID2, sName) & 0xFFFFFFFF;
+                watch = Stopwatch.StartNew();
+            }
+
+            ulong retval = WriteDataCard(Options.Instance.COMPortWriter, sType, sID1, sID2, sName) & 0xFFFFFFFF;
+
+            if (measureTime)
+            {
                 watch.Stop();
                 af.newPisanjeKartice(retval, watch.ElapsedMilliseconds);
-            }
-            else
-            {
-                retval = WriteDataCard(Options.Instance.COMPortWriter, sType, sID1, sID2, sName) & 0xFFFFFFFF;
             }
 
             Sesija.Instance.Log("P WRITE: " + retval.ToString());
