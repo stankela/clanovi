@@ -1205,7 +1205,7 @@ namespace Soko.UI
                 }
                 try
                 {
-                    lastRead = CitacKartica.getCitacKartica().TryReadDolazakNaTrening();
+                    lastRead = CitacKartica.Instance.TryReadDolazakNaTrening();
                 }
                 catch (Exception ex)
                 {

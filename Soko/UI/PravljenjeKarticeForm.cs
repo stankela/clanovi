@@ -192,13 +192,13 @@ namespace Soko.UI
             if (testKartica)
             {
                 // TODO2: Prvo proveri da li je kartica vazeca, i prikazi upozorenje ako jeste (isto i dole).
-                CitacKartica.getCitacKartica().writeCard(Options.Instance.COMPortWriter,
+                CitacKartica.Instance.writeCard(Options.Instance.COMPortWriter,
                     CitacKartica.TEST_KARTICA_BROJ.ToString(), ERROR_MSG_WRITE_TEST);
                 okMsg = OK_MSG_WRITE_TEST;
                 return;
             }
 
-            CitacKartica.getCitacKartica().writeCard(Options.Instance.COMPortWriter,
+            CitacKartica.Instance.writeCard(Options.Instance.COMPortWriter,
                 brojKartice.ToString(), ERROR_MSG_WRITE);
 
             try

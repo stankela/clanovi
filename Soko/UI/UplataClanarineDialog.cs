@@ -397,7 +397,7 @@ namespace Soko.UI
 
             int broj;
             string notUsed;
-            CitacKartica.getCitacKartica().readCard(Options.Instance.COMPortWriter, out broj, out notUsed);
+            CitacKartica.Instance.readCard(Options.Instance.COMPortWriter, out broj, out notUsed);
 
             // SelectedClan will be updated in txtBrojClana_TextChanged
             txtBrojClana.Text = broj.ToString();

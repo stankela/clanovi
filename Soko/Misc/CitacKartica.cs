@@ -34,11 +34,15 @@ namespace Soko
         
         }
 
-        private static CitacKartica citacKartica = new CitacKartica();
-
-        public static CitacKartica getCitacKartica()
+        private static CitacKartica instance;
+        public static CitacKartica Instance
         {
-            return citacKartica;
+            get
+            {
+                if (instance == null)
+                    instance = new CitacKartica();
+                return instance;
+            }
         }
 
         public static readonly string NAME_FIELD = "SDV";
