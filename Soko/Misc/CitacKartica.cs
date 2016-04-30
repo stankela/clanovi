@@ -80,7 +80,7 @@ namespace Soko
 
             if (retval == 1)
             {
-                if (!Int32.TryParse(sID1, out broj) || broj <= 0 || name != NAME_FIELD)
+                if (!dobroFormatiranaKartica(sID1, name, out broj))
                 {
                     throw new ReadCardException("Lose formatirana kartica.");
                 }
@@ -107,7 +107,12 @@ namespace Soko
 
             Sesija.Instance.Log("C READ: " + retval.ToString());
 
-            return retval == 1 && Int32.TryParse(sID1, out broj) && broj > 0 && name == NAME_FIELD;
+            return retval == 1 && dobroFormatiranaKartica(sID1, name, out broj);
+        }
+
+        private bool dobroFormatiranaKartica(string sID1, string name, out int broj)
+        {
+            return Int32.TryParse(sID1, out broj) && broj > 0 && name == NAME_FIELD;
         }
 
         public bool writeCard(int comPort, string sID1)
