@@ -86,7 +86,7 @@ namespace Soko.UI
             if (int.TryParse(txtVremenskiIntervalZaCitacKartica.Text, out newInterval))
             {
                 Options.Instance.CitacKarticaTimerInterval = newInterval;
-                SingleInstanceApplication.GlavniProzor.initKarticaTimer();
+                SingleInstanceApplication.GlavniProzor.startKarticaTimer();
             }
         }
 

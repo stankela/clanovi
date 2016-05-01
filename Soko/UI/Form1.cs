@@ -1100,42 +1100,29 @@ namespace Soko.UI
 
             // Dogadjaj kada se ekran otkljuca/zakljuca.
             Microsoft.Win32.SystemEvents.SessionSwitch += new Microsoft.Win32.SessionSwitchEventHandler(SystemEvents_SessionSwitch);
+
+            lozinkaTimer = new System.Timers.Timer();
+            lozinkaTimer.Elapsed += lozinkaTimer_Elapsed;
+            lozinkaTimer.Interval = Options.Instance.LozinkaTimerMinuti * 60 * 1000;
             
             // Pokreni citac kartica
             CitacKarticaForm citacKarticaForm = new CitacKarticaForm();
             citacKarticaForm.Show();
             CitacKarticaEnabled = true;
 
-            // Normally, the timer is declared at the class level, 
-            // so that it stays in scope as long as it is needed. 
-            // If the timer is declared in a long-running method,   
-            // KeepAlive must be used to prevent the JIT compiler  
-            // from allowing aggressive garbage collection to occur  
-            // before the method ends. You can experiment with this 
-            // by commenting out the class-level declaration and  
-            // uncommenting the declaration below; then uncomment 
-            // the GC.KeepAlive(aTimer) at the end of the method. 
-            //System.Timers.Timer aTimer; 
-
             karticaTimer = new System.Timers.Timer();
             karticaTimer.Elapsed += new System.Timers.ElapsedEventHandler(karticaTimer_Elapsed);
-            initKarticaTimer();
-
-            // If the timer is declared in a long-running method, use 
-            // KeepAlive to prevent garbage collection from occurring 
-            // before the method ends. 
-            //GC.KeepAlive(aTimer);        
-
-            lozinkaTimer = new System.Timers.Timer();
-            lozinkaTimer.Elapsed += lozinkaTimer_Elapsed;
-            lozinkaTimer.Interval = Options.Instance.LozinkaTimerMinuti * 60 * 1000;
+            startKarticaTimer();
         }
 
-        public void initKarticaTimer()
+        public void startKarticaTimer()
         {
-            // Set the Interval (in milliseconds).
-            karticaTimer.Interval = Options.Instance.CitacKarticaTimerInterval;
-            karticaTimer.Enabled = true;
+            if (!Options.Instance.CitacKarticeNaPosebnomThreadu)
+            {
+                // Set the Interval (in milliseconds).
+                karticaTimer.Interval = Options.Instance.CitacKarticaTimerInterval;
+                karticaTimer.Enabled = true;
+            }
         }
 
         private int waitingCount = 0;
@@ -1253,7 +1240,7 @@ namespace Soko.UI
                 PisacKarticaEnabled = false;
 
                 string msg;
-                handlePisacKarticaWrite(pkf, out msg);
+                pkf.handlePisacKarticaWrite(out msg);
 
                 CitacKarticaEnabled = true;
                 MessageDialogs.showMessage(msg, "Pravljenje kartice");
@@ -1268,7 +1255,7 @@ namespace Soko.UI
                     PisacKarticaEnabled = false;
 
                     string msg;
-                    handlePisacKarticaRead(dlg, out msg);
+                    dlg.handlePisacKarticaRead(out msg);
 
                     CitacKarticaEnabled = true;
                     if (msg != String.Empty)
@@ -1278,16 +1265,6 @@ namespace Soko.UI
                     PisacKarticaEnabled = true;
                 }
             }
-        }
-
-        private void handlePisacKarticaWrite(PravljenjeKarticeForm pkf, out string msg)
-        {
-            pkf.handlePisacKarticaWrite(out msg);
-        }
-
-        private void handlePisacKarticaRead(UplataClanarineDialog dlg, out string msg)
-        {
-            dlg.handlePisacKarticaRead(out msg);
         }
 
         private void mnEvidencijaPrisustvaNaTreningu_Click(object sender, EventArgs e)

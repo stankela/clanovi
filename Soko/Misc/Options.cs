@@ -186,5 +186,12 @@ namespace Soko
             get { return traziLozinkuPreOtvatanjaProzora; }
             set { traziLozinkuPreOtvatanjaProzora = value; }
         }
+
+        private bool citacKarticeNaPosebnomThreadu = false;
+        public bool CitacKarticeNaPosebnomThreadu
+        {
+            get { return citacKarticeNaPosebnomThreadu; }
+            set { citacKarticeNaPosebnomThreadu = value; }
+        }
     }
 }
