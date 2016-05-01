@@ -14,6 +14,7 @@ using NHibernate;
 using NHibernate.Context;
 using Bilten.Dao;
 using Soko.Misc;
+using System.Threading;
 
 namespace Soko.UI
 {
@@ -166,7 +167,15 @@ namespace Soko.UI
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            karticaTimer.Enabled = false;
+            if (!Options.Instance.CitacKarticeNaPosebnomThreadu)
+            {
+                karticaTimer.Enabled = false;
+            }
+            else
+            {
+                CitacKartica.Instance.RequestStop();
+            }
+
             lozinkaTimer.Stop();
             Sesija.Instance.EndSession();
             saveOptions();
@@ -1105,14 +1114,21 @@ namespace Soko.UI
             lozinkaTimer.Elapsed += lozinkaTimer_Elapsed;
             lozinkaTimer.Interval = Options.Instance.LozinkaTimerMinuti * 60 * 1000;
             
-            // Pokreni citac kartica
             CitacKarticaForm citacKarticaForm = new CitacKarticaForm();
             citacKarticaForm.Show();
             CitacKarticaEnabled = true;
 
-            karticaTimer = new System.Timers.Timer();
-            karticaTimer.Elapsed += new System.Timers.ElapsedEventHandler(karticaTimer_Elapsed);
-            startKarticaTimer();
+            if (!Options.Instance.CitacKarticeNaPosebnomThreadu)
+            {
+                karticaTimer = new System.Timers.Timer();
+                karticaTimer.Elapsed += new System.Timers.ElapsedEventHandler(karticaTimer_Elapsed);
+                startKarticaTimer();
+            }
+            else
+            {
+                Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.WaitAndReadLoop));
+                citacKarticaThread.Start();
+            }
         }
 
         public void startKarticaTimer()

@@ -32,6 +32,10 @@ namespace Soko
 
         private Object readAndWriteLock = new Object();
 
+        // Volatile is used as hint to the compiler that this data 
+        // member will be accessed by multiple threads. 
+        private volatile bool _shouldStop = false;
+        
         private CitacKartica()
         {
 
@@ -200,6 +204,59 @@ namespace Soko
             return result && handleDolazakNaTrening(broj, DateTime.Now);
         }
 
+        public void WaitAndReadLoop()
+        {
+            while (!_shouldStop)
+            {
+                // NOTE: Izabran je mali vremenski interval (a ne recimo 20 sec), zato sto kada se program zatvori
+                // WaitAndReadDataCard je i dalje aktivan dok ne istekne interval, a samim tim i proces je i dalje
+                // aktivan, i nije moguce ponovo restartovanje programa (ili je moguce ali imamo istovremeno dva
+                // procesa).
+                int nSecs = 2;
+                ulong retval = 0;
+
+                string sType = " ";
+                string sID1 = "          ";
+                string sID2 = "          ";
+
+                string name = "                                ";
+                int broj = -1;
+
+                retval = WaitAndReadDataCard(Options.Instance.COMPortReader, nSecs,
+                    ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+
+                /*retval = 2;
+                sID1 = "5504";
+                name = NAME_FIELD;*/
+
+                if (retval > 1)
+                {
+                    if (dobroFormatiranaKartica(sID1, name, out broj) && handleDolazakNaTrening(broj, DateTime.Now))
+                    {
+                        CitacKarticaForm citacKarticaForm = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
+                        if (citacKarticaForm != null)
+                        {
+                            Thread.Sleep(1500);
+                            citacKarticaForm.Clear();
+                        }
+                    }
+                }
+                else if (retval == 1)
+                {
+                    // Waiting time elapsed
+                }
+                else
+                {
+                    // Wrong card
+                }
+            }
+        }
+
+        public void RequestStop()
+        {
+            _shouldStop = true;
+        }
+        
         public bool handleDolazakNaTrening(int broj, DateTime vremeOcitavanja)
         {
             if (broj == TEST_KARTICA_BROJ)
