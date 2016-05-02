@@ -71,12 +71,12 @@ namespace Soko
         public static readonly int TEST_KARTICA_BROJ = 100000;
         public static readonly string TEST_KARTICA_NAME = "TEST KARTICA";
 
-        public void readCard(int comPort, out int broj, out string name)
+        public void readCard(int comPort, out int broj)
         {
             string sType = " ";
             string sID1 = "          ";
             string sID2 = "          ";
-            name = "                                ";
+            string name = "                                ";
             broj = -1;
 
             AdminForm af = SingleInstanceApplication.GlavniProzor.AdminForm;
@@ -119,12 +119,12 @@ namespace Soko
             }
         }
 
-        public bool tryReadCard(int comPort, out int broj, out string name)
+        public bool tryReadCard(int comPort, out int broj)
         {
             string sType = " ";
             string sID1 = "          ";
             string sID2 = "          ";
-            name = "                                ";
+            string name = "                                ";
             broj = -1;
 
             Sesija.Instance.Log("BEFORE C READ");
@@ -181,9 +181,6 @@ namespace Soko
 
         public bool TryReadDolazakNaTrening()
         {
-            int broj;
-            string name;  // not used
-
             AdminForm af = SingleInstanceApplication.GlavniProzor.AdminForm;
             bool measureTime = af != null;
 
@@ -193,7 +190,11 @@ namespace Soko
                 watch = Stopwatch.StartNew();
             }
 
-            bool result = tryReadCard(Options.Instance.COMPortReader, out broj, out name);
+            int broj;
+            bool result = tryReadCard(Options.Instance.COMPortReader, out broj);
+
+            /*result = true;
+            broj = 5464;*/
 
             if (measureTime)
             {

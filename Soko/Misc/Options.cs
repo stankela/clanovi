@@ -180,11 +180,11 @@ namespace Soko
             set { adminLozinka = value; }
         }
 
-        private bool traziLozinkuPreOtvatanjaProzora = false;
-        public bool TraziLozinkuPreOtvatanjaProzora
+        private bool traziLozinkuPreOtvaranjaProzora = false;
+        public bool TraziLozinkuPreOtvaranjaProzora
         {
-            get { return traziLozinkuPreOtvatanjaProzora; }
-            set { traziLozinkuPreOtvatanjaProzora = value; }
+            get { return traziLozinkuPreOtvaranjaProzora; }
+            set { traziLozinkuPreOtvaranjaProzora = value; }
         }
 
         private bool citacKarticeNaPosebnomThreadu = false;

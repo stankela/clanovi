@@ -45,6 +45,7 @@
             this.btnProveriOcitavanja = new System.Windows.Forms.Button();
             this.lstLogFiles = new System.Windows.Forms.ListBox();
             this.ckbTraziLozinkuPreOtvaranjaProzora = new System.Windows.Forms.CheckBox();
+            this.ckbCitacKarticeNaPosebnomThreadu = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lstCitacKarticeElapsedMs
@@ -198,11 +199,23 @@
             this.ckbTraziLozinkuPreOtvaranjaProzora.UseVisualStyleBackColor = true;
             this.ckbTraziLozinkuPreOtvaranjaProzora.CheckedChanged += new System.EventHandler(this.ckbTraziLozinkuPreOtvaranjaProzora_CheckedChanged);
             // 
+            // ckbCitacKarticeNaPosebnomThreadu
+            // 
+            this.ckbCitacKarticeNaPosebnomThreadu.AutoSize = true;
+            this.ckbCitacKarticeNaPosebnomThreadu.Location = new System.Drawing.Point(26, 394);
+            this.ckbCitacKarticeNaPosebnomThreadu.Name = "ckbCitacKarticeNaPosebnomThreadu";
+            this.ckbCitacKarticeNaPosebnomThreadu.Size = new System.Drawing.Size(191, 17);
+            this.ckbCitacKarticeNaPosebnomThreadu.TabIndex = 19;
+            this.ckbCitacKarticeNaPosebnomThreadu.Text = "Citac kartice na posebnom threadu";
+            this.ckbCitacKarticeNaPosebnomThreadu.UseVisualStyleBackColor = true;
+            this.ckbCitacKarticeNaPosebnomThreadu.CheckedChanged += new System.EventHandler(this.ckbCitacKarticeNaPosebnomThreadu_CheckedChanged);
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(869, 465);
+            this.Controls.Add(this.ckbCitacKarticeNaPosebnomThreadu);
             this.Controls.Add(this.ckbTraziLozinkuPreOtvaranjaProzora);
             this.Controls.Add(this.lstLogFiles);
             this.Controls.Add(this.btnProveriOcitavanja);
@@ -246,5 +259,6 @@
         private System.Windows.Forms.Button btnProveriOcitavanja;
         private System.Windows.Forms.ListBox lstLogFiles;
         private System.Windows.Forms.CheckBox ckbTraziLozinkuPreOtvaranjaProzora;
+        private System.Windows.Forms.CheckBox ckbCitacKarticeNaPosebnomThreadu;
     }
 }

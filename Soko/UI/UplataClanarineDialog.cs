@@ -406,8 +406,7 @@ namespace Soko.UI
             PendingRead = false;
 
             int broj;
-            string notUsed;
-            CitacKartica.Instance.readCard(Options.Instance.COMPortWriter, out broj, out notUsed);
+            CitacKartica.Instance.readCard(Options.Instance.COMPortWriter, out broj);
 
             // SelectedClan will be updated in txtBrojClana_TextChanged
             txtBrojClana.Text = broj.ToString();

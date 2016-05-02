@@ -37,7 +37,8 @@ namespace Soko.UI
         const string LozinkaTimerMinutiRegKey = "LozinkaTimerMinuti";
         const string LogToFileRegKey = "LogToFile";
         const string CitacKarticaTimerIntervalRegKey = "CitacKarticaTimerInterval";
-        const string TraziLozinkuPreOtvatanjaProzoraRegKey = "TraziLozinkuPreOtvatanjaProzora";
+        const string TraziLozinkuPreOtvaranjaProzoraRegKey = "TraziLozinkuPreOtvaranjaProzora";
+        const string CitacKarticeNaPosebnomThreaduRegKey = "CitacKarticeNaPosebnomThreadu";
 
         private FormWindowState lastWindowState = FormWindowState.Normal;
         private System.Timers.Timer lozinkaTimer;
@@ -117,8 +118,10 @@ namespace Soko.UI
                     Options.Instance.LogToFile = bool.Parse((string)regkey.GetValue(LogToFileRegKey));
                 if (regkey.GetValue(CitacKarticaTimerIntervalRegKey) != null)
                     Options.Instance.CitacKarticaTimerInterval = int.Parse((string)regkey.GetValue(CitacKarticaTimerIntervalRegKey));
-                if (regkey.GetValue(TraziLozinkuPreOtvatanjaProzoraRegKey) != null)
-                    Options.Instance.TraziLozinkuPreOtvatanjaProzora = bool.Parse((string)regkey.GetValue(TraziLozinkuPreOtvatanjaProzoraRegKey));
+                if (regkey.GetValue(TraziLozinkuPreOtvaranjaProzoraRegKey) != null)
+                    Options.Instance.TraziLozinkuPreOtvaranjaProzora = bool.Parse((string)regkey.GetValue(TraziLozinkuPreOtvaranjaProzoraRegKey));
+                if (regkey.GetValue(CitacKarticeNaPosebnomThreaduRegKey) != null)
+                    Options.Instance.CitacKarticeNaPosebnomThreadu = bool.Parse((string)regkey.GetValue(CitacKarticeNaPosebnomThreaduRegKey));
                 regkey.Close();
             }
             Options.Instance.Font = new Font(Font.FontFamily, fontSize);
@@ -155,7 +158,8 @@ namespace Soko.UI
             regkey.SetValue(LozinkaTimerMinutiRegKey, Options.Instance.LozinkaTimerMinuti.ToString());
             regkey.SetValue(LogToFileRegKey, Options.Instance.LogToFile.ToString());
             regkey.SetValue(CitacKarticaTimerIntervalRegKey, Options.Instance.CitacKarticaTimerInterval.ToString());
-            regkey.SetValue(TraziLozinkuPreOtvatanjaProzoraRegKey, Options.Instance.TraziLozinkuPreOtvatanjaProzora.ToString());
+            regkey.SetValue(TraziLozinkuPreOtvaranjaProzoraRegKey, Options.Instance.TraziLozinkuPreOtvaranjaProzora.ToString());
+            regkey.SetValue(CitacKarticeNaPosebnomThreaduRegKey, Options.Instance.CitacKarticeNaPosebnomThreadu.ToString());
       
             regkey.Close();
         }
@@ -167,6 +171,15 @@ namespace Soko.UI
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
+            zaustaviCitacKartica();
+            lozinkaTimer.Stop();
+            Sesija.Instance.EndSession();
+            saveOptions();
+            NHibernateHelper.Instance.SessionFactory.Close();
+        }
+
+        public void zaustaviCitacKartica()
+        {
             if (!Options.Instance.CitacKarticeNaPosebnomThreadu)
             {
                 karticaTimer.Enabled = false;
@@ -175,11 +188,6 @@ namespace Soko.UI
             {
                 CitacKartica.Instance.RequestStop();
             }
-
-            lozinkaTimer.Stop();
-            Sesija.Instance.EndSession();
-            saveOptions();
-            NHibernateHelper.Instance.SessionFactory.Close();
         }
 
         private void mnUplataClanarine_Click(object sender, EventArgs e)
@@ -248,7 +256,7 @@ namespace Soko.UI
 
         private bool dozvoliOtvaranjeProzora()
         {
-            if (!Options.Instance.TraziLozinkuPreOtvatanjaProzora)
+            if (!Options.Instance.TraziLozinkuPreOtvaranjaProzora)
                 return true;
             if (!passwordExpired)
             {
@@ -1118,26 +1126,24 @@ namespace Soko.UI
             citacKarticaForm.Show();
             CitacKarticaEnabled = true;
 
-            if (!Options.Instance.CitacKarticeNaPosebnomThreadu)
-            {
-                karticaTimer = new System.Timers.Timer();
-                karticaTimer.Elapsed += new System.Timers.ElapsedEventHandler(karticaTimer_Elapsed);
-                startKarticaTimer();
-            }
-            else
-            {
-                Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.WaitAndReadLoop));
-                citacKarticaThread.Start();
-            }
+            karticaTimer = new System.Timers.Timer();
+            karticaTimer.Elapsed += new System.Timers.ElapsedEventHandler(karticaTimer_Elapsed);
+
+            pokreniCitacKartica();
         }
 
-        public void startKarticaTimer()
+        public void pokreniCitacKartica()
         {
             if (!Options.Instance.CitacKarticeNaPosebnomThreadu)
             {
                 // Set the Interval (in milliseconds).
                 karticaTimer.Interval = Options.Instance.CitacKarticaTimerInterval;
                 karticaTimer.Enabled = true;
+            }
+            else
+            {
+                Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.WaitAndReadLoop));
+                citacKarticaThread.Start();
             }
         }
 
@@ -1489,7 +1495,7 @@ namespace Soko.UI
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            if (Options.Instance.TraziLozinkuPreOtvatanjaProzora)
+            if (Options.Instance.TraziLozinkuPreOtvaranjaProzora)
                 return;
 
             // Check if window state changes
@@ -1529,7 +1535,7 @@ namespace Soko.UI
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (Options.Instance.TraziLozinkuPreOtvatanjaProzora)
+            if (Options.Instance.TraziLozinkuPreOtvaranjaProzora)
                 return;
 
             if (this.WindowState == FormWindowState.Minimized)

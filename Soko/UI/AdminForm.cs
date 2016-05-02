@@ -22,7 +22,8 @@ namespace Soko.UI
             txtVremenskiIntervalZaCitacKartica.Text = Options.Instance.CitacKarticaTimerInterval.ToString();
             txtBrojPonavljanja.Text = Options.Instance.BrojPokusajaCitacKartica.ToString();
             ckbLogToFile.Checked = Options.Instance.LogToFile;
-            ckbTraziLozinkuPreOtvaranjaProzora.Checked = Options.Instance.TraziLozinkuPreOtvatanjaProzora;
+            ckbTraziLozinkuPreOtvaranjaProzora.Checked = Options.Instance.TraziLozinkuPreOtvaranjaProzora;
+            ckbCitacKarticeNaPosebnomThreadu.Checked = Options.Instance.CitacKarticeNaPosebnomThreadu;
 
             lstLogFiles.SelectionMode = SelectionMode.MultiExtended;
             string[] files = Directory.GetFiles(LOG_DIR);
@@ -86,7 +87,11 @@ namespace Soko.UI
             if (int.TryParse(txtVremenskiIntervalZaCitacKartica.Text, out newInterval))
             {
                 Options.Instance.CitacKarticaTimerInterval = newInterval;
-                SingleInstanceApplication.GlavniProzor.startKarticaTimer();
+                if (!Options.Instance.CitacKarticeNaPosebnomThreadu)
+                {
+                    SingleInstanceApplication.GlavniProzor.zaustaviCitacKartica();
+                    SingleInstanceApplication.GlavniProzor.pokreniCitacKartica();
+                }
             }
         }
 
@@ -107,7 +112,14 @@ namespace Soko.UI
 
         private void ckbTraziLozinkuPreOtvaranjaProzora_CheckedChanged(object sender, EventArgs e)
         {
-            Options.Instance.TraziLozinkuPreOtvatanjaProzora = ckbTraziLozinkuPreOtvaranjaProzora.Checked;
+            Options.Instance.TraziLozinkuPreOtvaranjaProzora = ckbTraziLozinkuPreOtvaranjaProzora.Checked;
+        }
+
+        private void ckbCitacKarticeNaPosebnomThreadu_CheckedChanged(object sender, EventArgs e)
+        {
+            SingleInstanceApplication.GlavniProzor.zaustaviCitacKartica();
+            Options.Instance.CitacKarticeNaPosebnomThreadu = ckbCitacKarticeNaPosebnomThreadu.Checked;
+            SingleInstanceApplication.GlavniProzor.pokreniCitacKartica();
         }
     }
 }
