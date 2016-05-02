@@ -213,7 +213,6 @@ namespace Soko
                 // aktivan, i nije moguce ponovo restartovanje programa (ili je moguce ali imamo istovremeno dva
                 // procesa).
                 int nSecs = 2;
-                ulong retval = 0;
 
                 string sType = " ";
                 string sID1 = "          ";
@@ -222,8 +221,12 @@ namespace Soko
                 string name = "                                ";
                 int broj = -1;
 
-                retval = WaitAndReadDataCard(Options.Instance.COMPortReader, nSecs,
-                    ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+                ulong retval;
+                lock (readAndWriteLock)
+                {
+                    retval = WaitAndReadDataCard(Options.Instance.COMPortReader, nSecs,
+                       ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+                }
 
                 /*retval = 2;
                 sID1 = "5504";
