@@ -207,6 +207,7 @@ namespace Soko
 
         public void WaitAndReadLoop()
         {
+            // TODO2: Proveri da li je sve u ovom metodu thread safe.
             while (!_shouldStop)
             {
                 // NOTE: Izabran je mali vremenski interval (a ne recimo 20 sec), zato sto kada se program zatvori
