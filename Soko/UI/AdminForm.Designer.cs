@@ -208,7 +208,6 @@
             this.ckbCitacKarticeNaPosebnomThreadu.TabIndex = 19;
             this.ckbCitacKarticeNaPosebnomThreadu.Text = "Citac kartice na posebnom threadu";
             this.ckbCitacKarticeNaPosebnomThreadu.UseVisualStyleBackColor = true;
-            this.ckbCitacKarticeNaPosebnomThreadu.CheckedChanged += new System.EventHandler(this.ckbCitacKarticeNaPosebnomThreadu_CheckedChanged);
             // 
             // AdminForm
             // 

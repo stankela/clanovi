@@ -1142,7 +1142,8 @@ namespace Soko.UI
             }
             else
             {
-                Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.WaitAndReadLoop));
+                //Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.WaitAndReadLoop));
+                Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.ReadLoop));
                 citacKarticaThread.Start();
             }
         }

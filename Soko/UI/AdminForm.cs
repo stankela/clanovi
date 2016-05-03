@@ -23,7 +23,6 @@ namespace Soko.UI
             txtBrojPonavljanja.Text = Options.Instance.BrojPokusajaCitacKartica.ToString();
             ckbLogToFile.Checked = Options.Instance.LogToFile;
             ckbTraziLozinkuPreOtvaranjaProzora.Checked = Options.Instance.TraziLozinkuPreOtvaranjaProzora;
-            ckbCitacKarticeNaPosebnomThreadu.Checked = Options.Instance.CitacKarticeNaPosebnomThreadu;
 
             lstLogFiles.SelectionMode = SelectionMode.MultiExtended;
             string[] files = Directory.GetFiles(LOG_DIR);
@@ -31,6 +30,9 @@ namespace Soko.UI
             {
                 lstLogFiles.Items.Add(Path.GetFileName(file));
             }
+
+            ckbCitacKarticeNaPosebnomThreadu.Checked = Options.Instance.CitacKarticeNaPosebnomThreadu;
+            ckbCitacKarticeNaPosebnomThreadu.CheckedChanged += new EventHandler(ckbCitacKarticeNaPosebnomThreadu_CheckedChanged);
         }
 
         public void newOcitavanje(long elapsedMs)
