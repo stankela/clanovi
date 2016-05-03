@@ -262,10 +262,6 @@ namespace Soko
             // TODO2: Proveri da li je sve u ovom metodu thread safe.
             while (!_shouldStop)
             {
-                /*retval = 2;
-                sID1 = "5504";
-                name = NAME_FIELD;*/
-
                 if (CitacKartica.Instance.TryReadDolazakNaTrening(Options.Instance.COMPortReader))
                 {
                     CitacKarticaForm citacKarticaForm = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
