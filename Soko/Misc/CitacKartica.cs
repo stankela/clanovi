@@ -165,7 +165,7 @@ namespace Soko
             ulong retval;
             lock (readAndWriteLock)
             {
-                retval = WriteDataCard(Options.Instance.COMPortWriter, sType, sID1, sID2, sName) & 0xFFFFFFFF;
+                retval = WriteDataCard(comPort, sType, sID1, sID2, sName) & 0xFFFFFFFF;
             }
 
             if (measureTime)
@@ -179,7 +179,7 @@ namespace Soko
             return retval == 1;
         }
 
-        public bool TryReadDolazakNaTrening()
+        public bool TryReadDolazakNaTrening(int comPort)
         {
             AdminForm af = SingleInstanceApplication.GlavniProzor.AdminForm;
             bool measureTime = af != null;
@@ -191,7 +191,7 @@ namespace Soko
             }
 
             int broj;
-            bool result = tryReadCard(Options.Instance.COMPortReader, out broj);
+            bool result = tryReadCard(comPort, out broj);
 
             /*result = true;
             broj = 5464;*/
