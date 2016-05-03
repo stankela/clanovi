@@ -193,9 +193,6 @@ namespace Soko
             int broj;
             bool result = tryReadCard(comPort, out broj);
 
-            /*result = true;
-            broj = 5464;*/
-
             if (measureTime)
             {
                 watch.Stop();
@@ -260,21 +257,54 @@ namespace Soko
         public void ReadLoop()
         {
             // TODO2: Proveri da li je sve u ovom metodu thread safe.
+            int MAX_WAIT_COUNT = 4;
+            int MAX_CLEAR_COUNT = 5;
+            bool lastRead = false;
+            bool pendingClear = false;
+            int clearCount = 0;
+            int waitCount = 0;
+
             while (!_shouldStop)
             {
-                if (CitacKartica.Instance.TryReadDolazakNaTrening(Options.Instance.COMPortReader))
+                if (lastRead)
                 {
-                    CitacKarticaForm citacKarticaForm = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
-                    if (citacKarticaForm != null)
-                    {
-                        Thread.Sleep(Options.Instance.CitacKarticaDisplejVisibleTime);
-                        citacKarticaForm.Clear();
-                    }
+                    // preskoci ocitavanje
+                    lastRead = false;
+                    waitCount = 1;
                 }
                 else
                 {
-                    Thread.Sleep(500);
+                    // Kod radi samo za MAX_WAIT_COUNT >= 2
+                    if (waitCount > 0 && ++waitCount == MAX_WAIT_COUNT)
+                    {
+                        waitCount = 0;
+                    }
+                    if (waitCount == 0)
+                    {
+                        lastRead = CitacKartica.Instance.TryReadDolazakNaTrening(Options.Instance.COMPortReader);
+                    }
                 }
+
+                if (lastRead)
+                {
+                    pendingClear = true;
+                    clearCount = 0;
+                }
+                else if (pendingClear)
+                {
+                    ++clearCount;
+                    if (clearCount == MAX_CLEAR_COUNT)
+                    {
+                        CitacKarticaForm citacKarticaForm = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
+                        if (citacKarticaForm != null)
+                        {
+                            //Thread.Sleep(Options.Instance.CitacKarticaDisplejVisibleTime);
+                            citacKarticaForm.Clear();
+                        }
+                        pendingClear = false;
+                    }
+                }
+                Thread.Sleep(500);
             }
         }
 
