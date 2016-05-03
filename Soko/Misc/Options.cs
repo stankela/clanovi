@@ -193,5 +193,12 @@ namespace Soko
             get { return citacKarticeNaPosebnomThreadu; }
             set { citacKarticeNaPosebnomThreadu = value; }
         }
+
+        private int citacKarticaDisplejVisibleTime = 2500;
+        public int CitacKarticaDisplejVisibleTime
+        {
+            get { return citacKarticaDisplejVisibleTime; }
+            set { citacKarticaDisplejVisibleTime = value; }
+        }
     }
 }

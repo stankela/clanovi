@@ -23,6 +23,7 @@ namespace Soko.UI
             txtBrojPonavljanja.Text = Options.Instance.BrojPokusajaCitacKartica.ToString();
             ckbLogToFile.Checked = Options.Instance.LogToFile;
             ckbTraziLozinkuPreOtvaranjaProzora.Checked = Options.Instance.TraziLozinkuPreOtvaranjaProzora;
+            txtCitacKarticaDisplejVisibleTime.Text = Options.Instance.CitacKarticaDisplejVisibleTime.ToString();
 
             lstLogFiles.SelectionMode = SelectionMode.MultiExtended;
             string[] files = Directory.GetFiles(LOG_DIR);
@@ -122,6 +123,15 @@ namespace Soko.UI
             SingleInstanceApplication.GlavniProzor.zaustaviCitacKartica();
             Options.Instance.CitacKarticeNaPosebnomThreadu = ckbCitacKarticeNaPosebnomThreadu.Checked;
             SingleInstanceApplication.GlavniProzor.pokreniCitacKartica();
+        }
+
+        private void btnPromeniCitacKarticaDisplejVisibleTime_Click(object sender, EventArgs e)
+        {
+            int newValue;
+            if (int.TryParse(txtCitacKarticaDisplejVisibleTime.Text, out newValue))
+            {
+                Options.Instance.CitacKarticaDisplejVisibleTime = newValue;
+            }
         }
     }
 }

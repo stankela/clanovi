@@ -46,6 +46,9 @@
             this.lstLogFiles = new System.Windows.Forms.ListBox();
             this.ckbTraziLozinkuPreOtvaranjaProzora = new System.Windows.Forms.CheckBox();
             this.ckbCitacKarticeNaPosebnomThreadu = new System.Windows.Forms.CheckBox();
+            this.lblCitacKarticaDisplejVisibleTime = new System.Windows.Forms.Label();
+            this.txtCitacKarticaDisplejVisibleTime = new System.Windows.Forms.TextBox();
+            this.btnPromeniCitacKarticaDisplejVisibleTime = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lstCitacKarticeElapsedMs
@@ -209,11 +212,40 @@
             this.ckbCitacKarticeNaPosebnomThreadu.Text = "Citac kartice na posebnom threadu";
             this.ckbCitacKarticeNaPosebnomThreadu.UseVisualStyleBackColor = true;
             // 
+            // lblCitacKarticaDisplejVisibleTime
+            // 
+            this.lblCitacKarticaDisplejVisibleTime.AutoSize = true;
+            this.lblCitacKarticaDisplejVisibleTime.Location = new System.Drawing.Point(23, 459);
+            this.lblCitacKarticaDisplejVisibleTime.Name = "lblCitacKarticaDisplejVisibleTime";
+            this.lblCitacKarticaDisplejVisibleTime.Size = new System.Drawing.Size(152, 13);
+            this.lblCitacKarticaDisplejVisibleTime.TabIndex = 20;
+            this.lblCitacKarticaDisplejVisibleTime.Text = "Citac kartica displej visible time";
+            // 
+            // txtCitacKarticaDisplejVisibleTime
+            // 
+            this.txtCitacKarticaDisplejVisibleTime.Location = new System.Drawing.Point(25, 493);
+            this.txtCitacKarticaDisplejVisibleTime.Name = "txtCitacKarticaDisplejVisibleTime";
+            this.txtCitacKarticaDisplejVisibleTime.Size = new System.Drawing.Size(75, 20);
+            this.txtCitacKarticaDisplejVisibleTime.TabIndex = 21;
+            // 
+            // btnPromeniCitacKarticaDisplejVisibleTime
+            // 
+            this.btnPromeniCitacKarticaDisplejVisibleTime.Location = new System.Drawing.Point(119, 491);
+            this.btnPromeniCitacKarticaDisplejVisibleTime.Name = "btnPromeniCitacKarticaDisplejVisibleTime";
+            this.btnPromeniCitacKarticaDisplejVisibleTime.Size = new System.Drawing.Size(75, 23);
+            this.btnPromeniCitacKarticaDisplejVisibleTime.TabIndex = 22;
+            this.btnPromeniCitacKarticaDisplejVisibleTime.Text = "Promeni";
+            this.btnPromeniCitacKarticaDisplejVisibleTime.UseVisualStyleBackColor = true;
+            this.btnPromeniCitacKarticaDisplejVisibleTime.Click += new System.EventHandler(this.btnPromeniCitacKarticaDisplejVisibleTime_Click);
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(869, 465);
+            this.ClientSize = new System.Drawing.Size(869, 525);
+            this.Controls.Add(this.btnPromeniCitacKarticaDisplejVisibleTime);
+            this.Controls.Add(this.txtCitacKarticaDisplejVisibleTime);
+            this.Controls.Add(this.lblCitacKarticaDisplejVisibleTime);
             this.Controls.Add(this.ckbCitacKarticeNaPosebnomThreadu);
             this.Controls.Add(this.ckbTraziLozinkuPreOtvaranjaProzora);
             this.Controls.Add(this.lstLogFiles);
@@ -259,5 +291,8 @@
         private System.Windows.Forms.ListBox lstLogFiles;
         private System.Windows.Forms.CheckBox ckbTraziLozinkuPreOtvaranjaProzora;
         private System.Windows.Forms.CheckBox ckbCitacKarticeNaPosebnomThreadu;
+        private System.Windows.Forms.Label lblCitacKarticaDisplejVisibleTime;
+        private System.Windows.Forms.TextBox txtCitacKarticaDisplejVisibleTime;
+        private System.Windows.Forms.Button btnPromeniCitacKarticaDisplejVisibleTime;
     }
 }

@@ -39,6 +39,7 @@ namespace Soko.UI
         const string CitacKarticaTimerIntervalRegKey = "CitacKarticaTimerInterval";
         const string TraziLozinkuPreOtvaranjaProzoraRegKey = "TraziLozinkuPreOtvaranjaProzora";
         const string CitacKarticeNaPosebnomThreaduRegKey = "CitacKarticeNaPosebnomThreadu";
+        const string CitacKarticaDisplejVisibleTimeRegKey = "CitacKarticaDisplejVisibleTime";
 
         private FormWindowState lastWindowState = FormWindowState.Normal;
         private System.Timers.Timer lozinkaTimer;
@@ -122,6 +123,8 @@ namespace Soko.UI
                     Options.Instance.TraziLozinkuPreOtvaranjaProzora = bool.Parse((string)regkey.GetValue(TraziLozinkuPreOtvaranjaProzoraRegKey));
                 if (regkey.GetValue(CitacKarticeNaPosebnomThreaduRegKey) != null)
                     Options.Instance.CitacKarticeNaPosebnomThreadu = bool.Parse((string)regkey.GetValue(CitacKarticeNaPosebnomThreaduRegKey));
+                if (regkey.GetValue(CitacKarticaDisplejVisibleTimeRegKey) != null)
+                    Options.Instance.CitacKarticaDisplejVisibleTime = int.Parse((string)regkey.GetValue(CitacKarticaDisplejVisibleTimeRegKey));
                 regkey.Close();
             }
             Options.Instance.Font = new Font(Font.FontFamily, fontSize);
@@ -160,6 +163,7 @@ namespace Soko.UI
             regkey.SetValue(CitacKarticaTimerIntervalRegKey, Options.Instance.CitacKarticaTimerInterval.ToString());
             regkey.SetValue(TraziLozinkuPreOtvaranjaProzoraRegKey, Options.Instance.TraziLozinkuPreOtvaranjaProzora.ToString());
             regkey.SetValue(CitacKarticeNaPosebnomThreaduRegKey, Options.Instance.CitacKarticeNaPosebnomThreadu.ToString());
+            regkey.SetValue(CitacKarticaDisplejVisibleTimeRegKey, Options.Instance.CitacKarticaDisplejVisibleTime.ToString());
       
             regkey.Close();
         }
