@@ -200,5 +200,19 @@ namespace Soko
             get { return citacKarticaThreadInterval; }
             set { citacKarticaThreadInterval = value; }
         }
+
+        private int citacKarticaThreadSkipCount = 2;
+        public int CitacKarticaThreadSkipCount
+        {
+            get { return citacKarticaThreadSkipCount; }
+            set { citacKarticaThreadSkipCount = value; }
+        }
+
+        private int citacKarticaThreadVisibleCount = 5;
+        public int CitacKarticaThreadVisibleCount
+        {
+            get { return citacKarticaThreadVisibleCount; }
+            set { citacKarticaThreadVisibleCount = value; }
+        }
     }
 }

@@ -257,29 +257,27 @@ namespace Soko
         public void ReadLoop()
         {
             // TODO2: Proveri da li je sve u ovom metodu thread safe.
-            int MAX_WAIT_COUNT = 4;
-            int MAX_CLEAR_COUNT = 5;
             bool lastRead = false;
             bool pendingClear = false;
-            int clearCount = 0;
-            int waitCount = 0;
+            int visibleCount = 0;
+            int skipCount = 0;
 
             while (!_shouldStop)
             {
                 if (lastRead)
                 {
-                    // preskoci ocitavanje
+                    // Preskoci narednih CitacKarticaThreadSkipCount ocitavanja.
+                    // Kod radi samo za CitacKarticaThreadSkipCount > 0.
                     lastRead = false;
-                    waitCount = 1;
+                    skipCount = 1;
                 }
                 else
                 {
-                    // Kod radi samo za MAX_WAIT_COUNT >= 2
-                    if (waitCount > 0 && ++waitCount == MAX_WAIT_COUNT)
+                    if (skipCount > 0 && ++skipCount > Options.Instance.CitacKarticaThreadSkipCount)
                     {
-                        waitCount = 0;
+                        skipCount = 0;
                     }
-                    if (waitCount == 0)
+                    if (skipCount == 0)
                     {
                         lastRead = CitacKartica.Instance.TryReadDolazakNaTrening(Options.Instance.COMPortReader);
                     }
@@ -287,13 +285,14 @@ namespace Soko
 
                 if (lastRead)
                 {
+                    // Prikazivanje treba da bude vidljivo tokom trajanja CitacKarticaThreadVisibleCount intervala.
                     pendingClear = true;
-                    clearCount = 0;
+                    visibleCount = 1;
                 }
                 else if (pendingClear)
                 {
-                    ++clearCount;
-                    if (clearCount == MAX_CLEAR_COUNT)
+                    ++visibleCount;
+                    if (visibleCount > Options.Instance.CitacKarticaThreadVisibleCount)
                     {
                         CitacKarticaForm citacKarticaForm = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
                         if (citacKarticaForm != null)
@@ -303,6 +302,7 @@ namespace Soko
                         pendingClear = false;
                     }
                 }
+                
                 Thread.Sleep(Options.Instance.CitacKarticaThreadInterval);
             }
         }
