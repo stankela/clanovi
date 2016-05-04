@@ -298,13 +298,12 @@ namespace Soko
                         CitacKarticaForm citacKarticaForm = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
                         if (citacKarticaForm != null)
                         {
-                            //Thread.Sleep(Options.Instance.CitacKarticaDisplejVisibleTime);
                             citacKarticaForm.Clear();
                         }
                         pendingClear = false;
                     }
                 }
-                Thread.Sleep(500);
+                Thread.Sleep(Options.Instance.CitacKarticaThreadInterval);
             }
         }
 

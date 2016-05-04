@@ -46,9 +46,9 @@
             this.lstLogFiles = new System.Windows.Forms.ListBox();
             this.ckbTraziLozinkuPreOtvaranjaProzora = new System.Windows.Forms.CheckBox();
             this.ckbCitacKarticeNaPosebnomThreadu = new System.Windows.Forms.CheckBox();
-            this.lblCitacKarticaDisplejVisibleTime = new System.Windows.Forms.Label();
-            this.txtCitacKarticaDisplejVisibleTime = new System.Windows.Forms.TextBox();
-            this.btnPromeniCitacKarticaDisplejVisibleTime = new System.Windows.Forms.Button();
+            this.lblCitacKarticaThreadInterval = new System.Windows.Forms.Label();
+            this.txtCitacKarticaThreadInterval = new System.Windows.Forms.TextBox();
+            this.btnPromeniCitacKarticaThreadInterval = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lstCitacKarticeElapsedMs
@@ -212,40 +212,40 @@
             this.ckbCitacKarticeNaPosebnomThreadu.Text = "Citac kartice na posebnom threadu";
             this.ckbCitacKarticeNaPosebnomThreadu.UseVisualStyleBackColor = true;
             // 
-            // lblCitacKarticaDisplejVisibleTime
+            // lblCitacKarticaThreadInterval
             // 
-            this.lblCitacKarticaDisplejVisibleTime.AutoSize = true;
-            this.lblCitacKarticaDisplejVisibleTime.Location = new System.Drawing.Point(23, 459);
-            this.lblCitacKarticaDisplejVisibleTime.Name = "lblCitacKarticaDisplejVisibleTime";
-            this.lblCitacKarticaDisplejVisibleTime.Size = new System.Drawing.Size(152, 13);
-            this.lblCitacKarticaDisplejVisibleTime.TabIndex = 20;
-            this.lblCitacKarticaDisplejVisibleTime.Text = "Citac kartica displej visible time";
+            this.lblCitacKarticaThreadInterval.AutoSize = true;
+            this.lblCitacKarticaThreadInterval.Location = new System.Drawing.Point(23, 459);
+            this.lblCitacKarticaThreadInterval.Name = "lblCitacKarticaThreadInterval";
+            this.lblCitacKarticaThreadInterval.Size = new System.Drawing.Size(152, 13);
+            this.lblCitacKarticaThreadInterval.TabIndex = 20;
+            this.lblCitacKarticaThreadInterval.Text = "Citac kartica displej visible time";
             // 
-            // txtCitacKarticaDisplejVisibleTime
+            // txtCitacKarticaThreadInterval
             // 
-            this.txtCitacKarticaDisplejVisibleTime.Location = new System.Drawing.Point(25, 493);
-            this.txtCitacKarticaDisplejVisibleTime.Name = "txtCitacKarticaDisplejVisibleTime";
-            this.txtCitacKarticaDisplejVisibleTime.Size = new System.Drawing.Size(75, 20);
-            this.txtCitacKarticaDisplejVisibleTime.TabIndex = 21;
+            this.txtCitacKarticaThreadInterval.Location = new System.Drawing.Point(25, 493);
+            this.txtCitacKarticaThreadInterval.Name = "txtCitacKarticaThreadInterval";
+            this.txtCitacKarticaThreadInterval.Size = new System.Drawing.Size(75, 20);
+            this.txtCitacKarticaThreadInterval.TabIndex = 21;
             // 
-            // btnPromeniCitacKarticaDisplejVisibleTime
+            // btnPromeniCitacKarticaThreadInterval
             // 
-            this.btnPromeniCitacKarticaDisplejVisibleTime.Location = new System.Drawing.Point(119, 491);
-            this.btnPromeniCitacKarticaDisplejVisibleTime.Name = "btnPromeniCitacKarticaDisplejVisibleTime";
-            this.btnPromeniCitacKarticaDisplejVisibleTime.Size = new System.Drawing.Size(75, 23);
-            this.btnPromeniCitacKarticaDisplejVisibleTime.TabIndex = 22;
-            this.btnPromeniCitacKarticaDisplejVisibleTime.Text = "Promeni";
-            this.btnPromeniCitacKarticaDisplejVisibleTime.UseVisualStyleBackColor = true;
-            this.btnPromeniCitacKarticaDisplejVisibleTime.Click += new System.EventHandler(this.btnPromeniCitacKarticaDisplejVisibleTime_Click);
+            this.btnPromeniCitacKarticaThreadInterval.Location = new System.Drawing.Point(119, 491);
+            this.btnPromeniCitacKarticaThreadInterval.Name = "btnPromeniCitacKarticaThreadInterval";
+            this.btnPromeniCitacKarticaThreadInterval.Size = new System.Drawing.Size(75, 23);
+            this.btnPromeniCitacKarticaThreadInterval.TabIndex = 22;
+            this.btnPromeniCitacKarticaThreadInterval.Text = "Promeni";
+            this.btnPromeniCitacKarticaThreadInterval.UseVisualStyleBackColor = true;
+            this.btnPromeniCitacKarticaThreadInterval.Click += new System.EventHandler(this.btnPromeniCitacKarticaThreadInterval_Click);
             // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(869, 525);
-            this.Controls.Add(this.btnPromeniCitacKarticaDisplejVisibleTime);
-            this.Controls.Add(this.txtCitacKarticaDisplejVisibleTime);
-            this.Controls.Add(this.lblCitacKarticaDisplejVisibleTime);
+            this.Controls.Add(this.btnPromeniCitacKarticaThreadInterval);
+            this.Controls.Add(this.txtCitacKarticaThreadInterval);
+            this.Controls.Add(this.lblCitacKarticaThreadInterval);
             this.Controls.Add(this.ckbCitacKarticeNaPosebnomThreadu);
             this.Controls.Add(this.ckbTraziLozinkuPreOtvaranjaProzora);
             this.Controls.Add(this.lstLogFiles);
@@ -291,8 +291,8 @@
         private System.Windows.Forms.ListBox lstLogFiles;
         private System.Windows.Forms.CheckBox ckbTraziLozinkuPreOtvaranjaProzora;
         private System.Windows.Forms.CheckBox ckbCitacKarticeNaPosebnomThreadu;
-        private System.Windows.Forms.Label lblCitacKarticaDisplejVisibleTime;
-        private System.Windows.Forms.TextBox txtCitacKarticaDisplejVisibleTime;
-        private System.Windows.Forms.Button btnPromeniCitacKarticaDisplejVisibleTime;
+        private System.Windows.Forms.Label lblCitacKarticaThreadInterval;
+        private System.Windows.Forms.TextBox txtCitacKarticaThreadInterval;
+        private System.Windows.Forms.Button btnPromeniCitacKarticaThreadInterval;
     }
 }

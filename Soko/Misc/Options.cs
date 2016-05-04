@@ -194,11 +194,11 @@ namespace Soko
             set { citacKarticeNaPosebnomThreadu = value; }
         }
 
-        private int citacKarticaDisplejVisibleTime = 2500;
-        public int CitacKarticaDisplejVisibleTime
+        private int citacKarticaThreadInterval = 500;
+        public int CitacKarticaThreadInterval
         {
-            get { return citacKarticaDisplejVisibleTime; }
-            set { citacKarticaDisplejVisibleTime = value; }
+            get { return citacKarticaThreadInterval; }
+            set { citacKarticaThreadInterval = value; }
         }
     }
 }
