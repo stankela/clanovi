@@ -40,6 +40,8 @@ namespace Soko.UI
         const string TraziLozinkuPreOtvaranjaProzoraRegKey = "TraziLozinkuPreOtvaranjaProzora";
         const string CitacKarticeNaPosebnomThreaduRegKey = "CitacKarticeNaPosebnomThreadu";
         const string CitacKarticaThreadIntervalRegKey = "CitacKarticaThreadInterval";
+        const string CitacKarticaThreadSkipCountRegKey = "CitacKarticaThreadSkipCount";
+        const string CitacKarticaThreadVisibleCountRegKey = "CitacKarticaThreadVisibleCount";
 
         private FormWindowState lastWindowState = FormWindowState.Normal;
         private System.Timers.Timer lozinkaTimer;
@@ -125,6 +127,10 @@ namespace Soko.UI
                     Options.Instance.CitacKarticeNaPosebnomThreadu = bool.Parse((string)regkey.GetValue(CitacKarticeNaPosebnomThreaduRegKey));
                 if (regkey.GetValue(CitacKarticaThreadIntervalRegKey) != null)
                     Options.Instance.CitacKarticaThreadInterval = int.Parse((string)regkey.GetValue(CitacKarticaThreadIntervalRegKey));
+                if (regkey.GetValue(CitacKarticaThreadSkipCountRegKey) != null)
+                    Options.Instance.CitacKarticaThreadSkipCount = int.Parse((string)regkey.GetValue(CitacKarticaThreadSkipCountRegKey));
+                if (regkey.GetValue(CitacKarticaThreadVisibleCountRegKey) != null)
+                    Options.Instance.CitacKarticaThreadVisibleCount = int.Parse((string)regkey.GetValue(CitacKarticaThreadVisibleCountRegKey));
                 regkey.Close();
             }
             Options.Instance.Font = new Font(Font.FontFamily, fontSize);
@@ -164,6 +170,8 @@ namespace Soko.UI
             regkey.SetValue(TraziLozinkuPreOtvaranjaProzoraRegKey, Options.Instance.TraziLozinkuPreOtvaranjaProzora.ToString());
             regkey.SetValue(CitacKarticeNaPosebnomThreaduRegKey, Options.Instance.CitacKarticeNaPosebnomThreadu.ToString());
             regkey.SetValue(CitacKarticaThreadIntervalRegKey, Options.Instance.CitacKarticaThreadInterval.ToString());
+            regkey.SetValue(CitacKarticaThreadSkipCountRegKey, Options.Instance.CitacKarticaThreadSkipCount.ToString());
+            regkey.SetValue(CitacKarticaThreadVisibleCountRegKey, Options.Instance.CitacKarticaThreadVisibleCount.ToString());
       
             regkey.Close();
         }

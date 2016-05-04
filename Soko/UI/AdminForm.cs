@@ -24,6 +24,8 @@ namespace Soko.UI
             ckbLogToFile.Checked = Options.Instance.LogToFile;
             ckbTraziLozinkuPreOtvaranjaProzora.Checked = Options.Instance.TraziLozinkuPreOtvaranjaProzora;
             txtCitacKarticaThreadInterval.Text = Options.Instance.CitacKarticaThreadInterval.ToString();
+            txtCitacKarticaThreadSkipCount.Text = Options.Instance.CitacKarticaThreadSkipCount.ToString();
+            txtCitacKarticaThreadVisibleCount.Text = Options.Instance.CitacKarticaThreadVisibleCount.ToString();
 
             lstLogFiles.SelectionMode = SelectionMode.MultiExtended;
             string[] files = Directory.GetFiles(LOG_DIR);
@@ -131,6 +133,24 @@ namespace Soko.UI
             if (int.TryParse(txtCitacKarticaThreadInterval.Text, out newValue))
             {
                 Options.Instance.CitacKarticaThreadInterval = newValue;
+            }
+        }
+
+        private void btnPromeniCitacKarticaThreadSkipCount_Click(object sender, EventArgs e)
+        {
+            int newValue;
+            if (int.TryParse(txtCitacKarticaThreadSkipCount.Text, out newValue))
+            {
+                Options.Instance.CitacKarticaThreadSkipCount = newValue;
+            }
+        }
+
+        private void btnPromeniCitacKarticaThreadVisibleCount_Click(object sender, EventArgs e)
+        {
+            int newValue;
+            if (int.TryParse(txtCitacKarticaThreadVisibleCount.Text, out newValue))
+            {
+                Options.Instance.CitacKarticaThreadVisibleCount = newValue;
             }
         }
     }
