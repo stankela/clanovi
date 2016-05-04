@@ -35,6 +35,7 @@ namespace Soko.Misc
         private const string OCITAVANJA_KARTICE = "OCITAVANJA KARTICE";
         private const string START_TIME = "START TIME";
         private const string END_TIME = "END TIME";
+        private Object logLock = new Object();
 
         private static Sesija instance;
         public static Sesija Instance
@@ -109,23 +110,26 @@ namespace Soko.Misc
 
         public void Log(string logMessage, bool ukljuciLogovanje = false)
         {
-            if (logMessages.Count >= Options.Instance.MaxLogMessages)
+            lock (logLock)
             {
-                //return;
-                logMessages.Dequeue();
-            }
-            if (ukljuciLogovanje)
-            {
-                if (!Options.Instance.LogToFile)
+                if (logMessages.Count >= Options.Instance.MaxLogMessages)
                 {
-                    Options.Instance.LogToFile = true;
-                    iskljuciLogovanjeNaKraju = true;
+                    //return;
+                    logMessages.Dequeue();
                 }
-            }
-            if (Options.Instance.LogToFile)
-            {
-                string msg = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "   " + logMessage;
-                logMessages.Enqueue(msg);
+                if (ukljuciLogovanje)
+                {
+                    if (!Options.Instance.LogToFile)
+                    {
+                        Options.Instance.LogToFile = true;
+                        iskljuciLogovanjeNaKraju = true;
+                    }
+                }
+                if (Options.Instance.LogToFile)
+                {
+                    string msg = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "   " + logMessage;
+                    logMessages.Enqueue(msg);
+                }
             }
         }
 
