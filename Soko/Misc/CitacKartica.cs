@@ -341,7 +341,7 @@ namespace Soko
                 if (citacKarticaForm != null)
                 {
                     citacKarticaForm.Clear();
-                    Thread.Sleep(Options.Instance.CitacKarticaThreadInterval / 3);
+                    Thread.Sleep(Options.Instance.CitacKarticaThreadPauzaZaBrisanje);
                 }
             }
             prikaziOcitavanje(clan, vremeOcitavanja, out uplata);

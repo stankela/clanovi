@@ -42,6 +42,7 @@ namespace Soko.UI
         const string CitacKarticaThreadIntervalRegKey = "CitacKarticaThreadInterval";
         const string CitacKarticaThreadSkipCountRegKey = "CitacKarticaThreadSkipCount";
         const string CitacKarticaThreadVisibleCountRegKey = "CitacKarticaThreadVisibleCount";
+        const string CitacKarticaThreadPauzaZaBrisanjeRegKey = "CitacKarticaThreadPauzaZaBrisanje";
 
         private FormWindowState lastWindowState = FormWindowState.Normal;
         private System.Timers.Timer lozinkaTimer;
@@ -131,6 +132,8 @@ namespace Soko.UI
                     Options.Instance.CitacKarticaThreadSkipCount = int.Parse((string)regkey.GetValue(CitacKarticaThreadSkipCountRegKey));
                 if (regkey.GetValue(CitacKarticaThreadVisibleCountRegKey) != null)
                     Options.Instance.CitacKarticaThreadVisibleCount = int.Parse((string)regkey.GetValue(CitacKarticaThreadVisibleCountRegKey));
+                if (regkey.GetValue(CitacKarticaThreadPauzaZaBrisanjeRegKey) != null)
+                    Options.Instance.CitacKarticaThreadPauzaZaBrisanje = int.Parse((string)regkey.GetValue(CitacKarticaThreadPauzaZaBrisanjeRegKey));
                 regkey.Close();
             }
             Options.Instance.Font = new Font(Font.FontFamily, fontSize);
@@ -172,6 +175,7 @@ namespace Soko.UI
             regkey.SetValue(CitacKarticaThreadIntervalRegKey, Options.Instance.CitacKarticaThreadInterval.ToString());
             regkey.SetValue(CitacKarticaThreadSkipCountRegKey, Options.Instance.CitacKarticaThreadSkipCount.ToString());
             regkey.SetValue(CitacKarticaThreadVisibleCountRegKey, Options.Instance.CitacKarticaThreadVisibleCount.ToString());
+            regkey.SetValue(CitacKarticaThreadPauzaZaBrisanjeRegKey, Options.Instance.CitacKarticaThreadPauzaZaBrisanje.ToString());
       
             regkey.Close();
         }

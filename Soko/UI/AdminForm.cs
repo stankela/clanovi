@@ -26,6 +26,7 @@ namespace Soko.UI
             txtCitacKarticaThreadInterval.Text = Options.Instance.CitacKarticaThreadInterval.ToString();
             txtCitacKarticaThreadSkipCount.Text = Options.Instance.CitacKarticaThreadSkipCount.ToString();
             txtCitacKarticaThreadVisibleCount.Text = Options.Instance.CitacKarticaThreadVisibleCount.ToString();
+            txtCitacKarticaThreadPauzaZaBrisanje.Text = Options.Instance.CitacKarticaThreadPauzaZaBrisanje.ToString();
 
             lstLogFiles.SelectionMode = SelectionMode.MultiExtended;
             string[] files = Directory.GetFiles(LOG_DIR);
@@ -151,6 +152,15 @@ namespace Soko.UI
             if (int.TryParse(txtCitacKarticaThreadVisibleCount.Text, out newValue))
             {
                 Options.Instance.CitacKarticaThreadVisibleCount = newValue;
+            }
+        }
+
+        private void btnPromeniCitacKarticaThreadPauzaZaBrisanje_Click(object sender, EventArgs e)
+        {
+            int newValue;
+            if (int.TryParse(txtCitacKarticaThreadPauzaZaBrisanje.Text, out newValue))
+            {
+                Options.Instance.CitacKarticaThreadPauzaZaBrisanje = newValue;
             }
         }
     }
