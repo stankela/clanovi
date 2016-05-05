@@ -1227,7 +1227,7 @@ namespace Soko.UI
                 }
                 try
                 {
-                    lastRead = CitacKartica.Instance.TryReadDolazakNaTrening(Options.Instance.COMPortReader);
+                    lastRead = CitacKartica.Instance.TryReadDolazakNaTrening(Options.Instance.COMPortReader, false);
                 }
                 catch (Exception ex)
                 {

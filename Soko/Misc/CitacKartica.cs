@@ -179,7 +179,7 @@ namespace Soko
             return retval == 1;
         }
 
-        public bool TryReadDolazakNaTrening(int comPort)
+        public bool TryReadDolazakNaTrening(int comPort, bool obrisiPrePrikazivanja)
         {
             AdminForm af = SingleInstanceApplication.GlavniProzor.AdminForm;
             bool measureTime = af != null;
@@ -199,7 +199,7 @@ namespace Soko
                 af.newOcitavanje(watch.ElapsedMilliseconds);
             }
 
-            return result && handleDolazakNaTrening(broj, DateTime.Now);
+            return result && handleDolazakNaTrening(broj, DateTime.Now, obrisiPrePrikazivanja);
         }
 
         public void WaitAndReadLoop()
@@ -233,7 +233,7 @@ namespace Soko
 
                 if (retval > 1)
                 {
-                    if (dobroFormatiranaKartica(sID1, name, out broj) && handleDolazakNaTrening(broj, DateTime.Now))
+                    if (dobroFormatiranaKartica(sID1, name, out broj) && handleDolazakNaTrening(broj, DateTime.Now, false))
                     {
                         CitacKarticaForm citacKarticaForm = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
                         if (citacKarticaForm != null)
@@ -279,7 +279,7 @@ namespace Soko
                     }
                     if (skipCount == 0)
                     {
-                        lastRead = CitacKartica.Instance.TryReadDolazakNaTrening(Options.Instance.COMPortReader);
+                        lastRead = CitacKartica.Instance.TryReadDolazakNaTrening(Options.Instance.COMPortReader, pendingClear);
                     }
                 }
 
@@ -311,8 +311,8 @@ namespace Soko
         {
             _shouldStop = true;
         }
-        
-        public bool handleDolazakNaTrening(int broj, DateTime vremeOcitavanja)
+
+        public bool handleDolazakNaTrening(int broj, DateTime vremeOcitavanja, bool obrisiPrePrikazivanja)
         {
             if (broj == TEST_KARTICA_BROJ)
             {
@@ -333,6 +333,17 @@ namespace Soko
 
             // Odmah prikazi ocitavanje, da bi se momentalno videlo na ekranu nakon zvuka ocitavanja kartice.
             UplataClanarine uplata;
+            if (obrisiPrePrikazivanja)
+            {
+                // Kartica je ocitana, a na displeju je prikaz prethodnog ocitavanja. Obrisi prethodno ocitavanje
+                // i pauziraj (tako da se vidi prazan displej), pre nego sto prikazes naredno ocitavanje.
+                CitacKarticaForm citacKarticaForm = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
+                if (citacKarticaForm != null)
+                {
+                    citacKarticaForm.Clear();
+                    Thread.Sleep(Options.Instance.CitacKarticaThreadInterval / 3);
+                }
+            }
             prikaziOcitavanje(clan, vremeOcitavanja, out uplata);
 
             unesiOcitavanje(clan, vremeOcitavanja, uplata);
