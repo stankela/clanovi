@@ -1548,13 +1548,13 @@ namespace Soko.UI
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (Options.Instance.TraziLozinkuPreOtvaranjaProzora)
+            /*if (Options.Instance.TraziLozinkuPreOtvaranjaProzora)
                 return;
 
             if (this.WindowState == FormWindowState.Minimized)
             {
                 e.Cancel = true;
-            }
+            }*/
         }
 
         private void mnClanoviKojiNePlacajuClanarinu_Click(object sender, EventArgs e)
