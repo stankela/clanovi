@@ -215,7 +215,7 @@ namespace Soko
             set { citacKarticaThreadVisibleCount = value; }
         }
 
-        private int citacKarticaThreadPauzaZaBrisanje = 150;
+        private int citacKarticaThreadPauzaZaBrisanje = 200;
         public int CitacKarticaThreadPauzaZaBrisanje
         {
             get { return citacKarticaThreadPauzaZaBrisanje; }
