@@ -13,10 +13,10 @@ namespace Soko.Misc
 {
     public class CitacKarticaDictionary
     {
-        private DateTime creationDate;
-        public DateTime CreationDate
+        private DateTime initDate;
+        public DateTime InitDate
         {
-            get { return creationDate; }
+            get { return initDate; }
         }
 
         private IDictionary<int, Clan> clanoviSaKarticom;
@@ -42,7 +42,7 @@ namespace Soko.Misc
 
         public void Init()
         {
-            creationDate = DateTime.Now;
+            initDate = DateTime.Now;
             try
             {
                 using (ISession session = NHibernateHelper.Instance.OpenSession())

@@ -44,6 +44,7 @@ namespace Soko.UI
 
         private FormWindowState lastWindowState = FormWindowState.Normal;
         private System.Timers.Timer lozinkaTimer;
+        private System.Timers.Timer citacKarticaDictionaryTimer;
         private bool passwordExpired;
 
         public Form1()
@@ -1107,6 +1108,19 @@ namespace Soko.UI
             CitacKarticaForm citacKarticaForm = new CitacKarticaForm();
             citacKarticaForm.Show();
             pokreniCitacKartica();
+
+            citacKarticaDictionaryTimer = new System.Timers.Timer();
+            citacKarticaDictionaryTimer.Elapsed += citacKarticaDictionaryTimer_Elapsed;
+            citacKarticaDictionaryTimer.Interval = 8 * 60 * 60 * 1000;
+        }
+
+        void citacKarticaDictionaryTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (CitacKarticaDictionary.Instance.InitDate.Month != DateTime.Now.Month
+                || CitacKarticaDictionary.Instance.InitDate.Year != DateTime.Now.Year)
+            {
+                CitacKarticaDictionary.Instance.Init();
+            }
         }
 
         public void pokreniCitacKartica()
