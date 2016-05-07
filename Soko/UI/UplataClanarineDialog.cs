@@ -386,16 +386,15 @@ namespace Soko.UI
         private void btnOcitajKarticu_Click(object sender, EventArgs e)
         {
             PendingRead = true;
-            if (Options.Instance.CitacKarticeNaPosebnomThreadu)
+
+            // Odmah ocitaj karticu
+            string msg;
+            handlePisacKarticaRead(out msg);
+            if (msg != String.Empty)
             {
-                // Odmah ocitaj karticu
-                string msg;
-                handlePisacKarticaRead(out msg);
-                if (msg != String.Empty)
-                {
-                    MessageDialogs.showMessage(msg, "Ocitavanje kartice");
-                }
+                MessageDialogs.showMessage(msg, "Ocitavanje kartice");
             }
+
             txtIznos.Focus();
         }
 

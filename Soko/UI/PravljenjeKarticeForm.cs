@@ -180,13 +180,11 @@ namespace Soko.UI
                     brojKartice = SelectedClan.Broj.Value;
                 }
                 PendingWrite = true;
-                if (Options.Instance.CitacKarticeNaPosebnomThreadu)
-                {
-                    // Odmah upisi na karticu
-                    string msg;
-                    handlePisacKarticaWrite(out msg);
-                    MessageDialogs.showMessage(msg, "Pravljenje kartice");
-                }
+
+                // Odmah upisi na karticu
+                string msg;
+                handlePisacKarticaWrite(out msg);
+                MessageDialogs.showMessage(msg, "Pravljenje kartice");
             }
         }
 

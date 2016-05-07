@@ -187,13 +187,6 @@ namespace Soko
             set { traziLozinkuPreOtvaranjaProzora = value; }
         }
 
-        private bool citacKarticeNaPosebnomThreadu = false;
-        public bool CitacKarticeNaPosebnomThreadu
-        {
-            get { return citacKarticeNaPosebnomThreadu; }
-            set { citacKarticeNaPosebnomThreadu = value; }
-        }
-
         private int citacKarticaThreadInterval = 500;
         public int CitacKarticaThreadInterval
         {

@@ -33,9 +33,6 @@ namespace Soko.UI
             {
                 lstLogFiles.Items.Add(Path.GetFileName(file));
             }
-
-            ckbCitacKarticeNaPosebnomThreadu.Checked = Options.Instance.CitacKarticeNaPosebnomThreadu;
-            ckbCitacKarticeNaPosebnomThreadu.CheckedChanged += new EventHandler(ckbCitacKarticeNaPosebnomThreadu_CheckedChanged);
         }
 
         public void newOcitavanje(long elapsedMs)
@@ -104,13 +101,6 @@ namespace Soko.UI
         private void ckbTraziLozinkuPreOtvaranjaProzora_CheckedChanged(object sender, EventArgs e)
         {
             Options.Instance.TraziLozinkuPreOtvaranjaProzora = ckbTraziLozinkuPreOtvaranjaProzora.Checked;
-        }
-
-        private void ckbCitacKarticeNaPosebnomThreadu_CheckedChanged(object sender, EventArgs e)
-        {
-            SingleInstanceApplication.GlavniProzor.zaustaviCitacKartica();
-            Options.Instance.CitacKarticeNaPosebnomThreadu = ckbCitacKarticeNaPosebnomThreadu.Checked;
-            SingleInstanceApplication.GlavniProzor.pokreniCitacKartica();
         }
 
         private void btnPromeniCitacKarticaThreadInterval_Click(object sender, EventArgs e)

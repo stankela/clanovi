@@ -42,7 +42,6 @@
             this.btnProveriOcitavanja = new System.Windows.Forms.Button();
             this.lstLogFiles = new System.Windows.Forms.ListBox();
             this.ckbTraziLozinkuPreOtvaranjaProzora = new System.Windows.Forms.CheckBox();
-            this.ckbCitacKarticeNaPosebnomThreadu = new System.Windows.Forms.CheckBox();
             this.lblCitacKarticaThreadInterval = new System.Windows.Forms.Label();
             this.txtCitacKarticaThreadInterval = new System.Windows.Forms.TextBox();
             this.btnPromeniCitacKarticaThreadInterval = new System.Windows.Forms.Button();
@@ -182,16 +181,6 @@
             this.ckbTraziLozinkuPreOtvaranjaProzora.UseVisualStyleBackColor = true;
             this.ckbTraziLozinkuPreOtvaranjaProzora.CheckedChanged += new System.EventHandler(this.ckbTraziLozinkuPreOtvaranjaProzora_CheckedChanged);
             // 
-            // ckbCitacKarticeNaPosebnomThreadu
-            // 
-            this.ckbCitacKarticeNaPosebnomThreadu.AutoSize = true;
-            this.ckbCitacKarticeNaPosebnomThreadu.Location = new System.Drawing.Point(12, 328);
-            this.ckbCitacKarticeNaPosebnomThreadu.Name = "ckbCitacKarticeNaPosebnomThreadu";
-            this.ckbCitacKarticeNaPosebnomThreadu.Size = new System.Drawing.Size(191, 17);
-            this.ckbCitacKarticeNaPosebnomThreadu.TabIndex = 19;
-            this.ckbCitacKarticeNaPosebnomThreadu.Text = "Citac kartice na posebnom threadu";
-            this.ckbCitacKarticeNaPosebnomThreadu.UseVisualStyleBackColor = true;
-            // 
             // lblCitacKarticaThreadInterval
             // 
             this.lblCitacKarticaThreadInterval.AutoSize = true;
@@ -313,7 +302,6 @@
             this.Controls.Add(this.btnPromeniCitacKarticaThreadInterval);
             this.Controls.Add(this.txtCitacKarticaThreadInterval);
             this.Controls.Add(this.lblCitacKarticaThreadInterval);
-            this.Controls.Add(this.ckbCitacKarticeNaPosebnomThreadu);
             this.Controls.Add(this.ckbTraziLozinkuPreOtvaranjaProzora);
             this.Controls.Add(this.lstLogFiles);
             this.Controls.Add(this.btnProveriOcitavanja);
@@ -351,7 +339,6 @@
         private System.Windows.Forms.Button btnProveriOcitavanja;
         private System.Windows.Forms.ListBox lstLogFiles;
         private System.Windows.Forms.CheckBox ckbTraziLozinkuPreOtvaranjaProzora;
-        private System.Windows.Forms.CheckBox ckbCitacKarticeNaPosebnomThreadu;
         private System.Windows.Forms.Label lblCitacKarticaThreadInterval;
         private System.Windows.Forms.TextBox txtCitacKarticaThreadInterval;
         private System.Windows.Forms.Button btnPromeniCitacKarticaThreadInterval;

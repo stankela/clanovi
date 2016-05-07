@@ -38,7 +38,6 @@ namespace Soko.UI
         const string LogToFileRegKey = "LogToFile";
         const string CitacKarticaTimerIntervalRegKey = "CitacKarticaTimerInterval";
         const string TraziLozinkuPreOtvaranjaProzoraRegKey = "TraziLozinkuPreOtvaranjaProzora";
-        const string CitacKarticeNaPosebnomThreaduRegKey = "CitacKarticeNaPosebnomThreadu";
         const string CitacKarticaThreadIntervalRegKey = "CitacKarticaThreadInterval";
         const string CitacKarticaThreadSkipCountRegKey = "CitacKarticaThreadSkipCount";
         const string CitacKarticaThreadVisibleCountRegKey = "CitacKarticaThreadVisibleCount";
@@ -124,8 +123,6 @@ namespace Soko.UI
                     Options.Instance.CitacKarticaTimerInterval = int.Parse((string)regkey.GetValue(CitacKarticaTimerIntervalRegKey));
                 if (regkey.GetValue(TraziLozinkuPreOtvaranjaProzoraRegKey) != null)
                     Options.Instance.TraziLozinkuPreOtvaranjaProzora = bool.Parse((string)regkey.GetValue(TraziLozinkuPreOtvaranjaProzoraRegKey));
-                if (regkey.GetValue(CitacKarticeNaPosebnomThreaduRegKey) != null)
-                    Options.Instance.CitacKarticeNaPosebnomThreadu = bool.Parse((string)regkey.GetValue(CitacKarticeNaPosebnomThreaduRegKey));
                 if (regkey.GetValue(CitacKarticaThreadIntervalRegKey) != null)
                     Options.Instance.CitacKarticaThreadInterval = int.Parse((string)regkey.GetValue(CitacKarticaThreadIntervalRegKey));
                 if (regkey.GetValue(CitacKarticaThreadSkipCountRegKey) != null)
@@ -171,7 +168,6 @@ namespace Soko.UI
             regkey.SetValue(LogToFileRegKey, Options.Instance.LogToFile.ToString());
             regkey.SetValue(CitacKarticaTimerIntervalRegKey, Options.Instance.CitacKarticaTimerInterval.ToString());
             regkey.SetValue(TraziLozinkuPreOtvaranjaProzoraRegKey, Options.Instance.TraziLozinkuPreOtvaranjaProzora.ToString());
-            regkey.SetValue(CitacKarticeNaPosebnomThreaduRegKey, Options.Instance.CitacKarticeNaPosebnomThreadu.ToString());
             regkey.SetValue(CitacKarticaThreadIntervalRegKey, Options.Instance.CitacKarticaThreadInterval.ToString());
             regkey.SetValue(CitacKarticaThreadSkipCountRegKey, Options.Instance.CitacKarticaThreadSkipCount.ToString());
             regkey.SetValue(CitacKarticaThreadVisibleCountRegKey, Options.Instance.CitacKarticaThreadVisibleCount.ToString());
@@ -196,14 +192,7 @@ namespace Soko.UI
 
         public void zaustaviCitacKartica()
         {
-            if (!Options.Instance.CitacKarticeNaPosebnomThreadu)
-            {
-                karticaTimer.Enabled = false;
-            }
-            else
-            {
-                CitacKartica.Instance.RequestStop();
-            }
+            CitacKartica.Instance.RequestStop();
         }
 
         private void mnUplataClanarine_Click(object sender, EventArgs e)
@@ -1150,18 +1139,9 @@ namespace Soko.UI
 
         public void pokreniCitacKartica()
         {
-            if (!Options.Instance.CitacKarticeNaPosebnomThreadu)
-            {
-                // Set the Interval (in milliseconds).
-                karticaTimer.Interval = Options.Instance.CitacKarticaTimerInterval;
-                karticaTimer.Enabled = true;
-            }
-            else
-            {
-                //Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.WaitAndReadLoop));
-                Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.ReadLoop));
-                citacKarticaThread.Start();
-            }
+            //Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.WaitAndReadLoop));
+            Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.ReadLoop));
+            citacKarticaThread.Start();
         }
 
         private int waitingCount = 0;
