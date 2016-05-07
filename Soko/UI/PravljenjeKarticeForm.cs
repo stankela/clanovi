@@ -20,7 +20,6 @@ namespace Soko.UI
 {
     public partial class PravljenjeKarticeForm : Form
     {
-        public bool PendingWrite = false;    
         private List<Clan> clanovi;
 
         private bool testKartica;
@@ -179,7 +178,6 @@ namespace Soko.UI
                     clanId = SelectedClan.Id;
                     brojKartice = SelectedClan.Broj.Value;
                 }
-                PendingWrite = true;
 
                 // Odmah upisi na karticu
                 string msg;
@@ -191,10 +189,6 @@ namespace Soko.UI
         public void WriteKartica(out string okMsg)
         {
             okMsg = String.Empty;
-            if (!PendingWrite)
-                return;
-            PendingWrite = false;
-
             if (testKartica)
             {
                 // TODO2: Prvo proveri da li je kartica vazeca, i prikazi upozorenje ako jeste (isto i dole).
@@ -266,11 +260,7 @@ namespace Soko.UI
                 catch (WriteCardException ex)
                 {
                     --brojPokusaja;
-                    if (brojPokusaja > 0)
-                    {
-                        this.PendingWrite = true;
-                    }
-                    else
+                    if (brojPokusaja == 0)
                     {
                         msg = ex.Message;
                     }
