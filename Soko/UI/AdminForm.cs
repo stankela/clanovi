@@ -19,7 +19,6 @@ namespace Soko.UI
         {
             InitializeComponent();
             txtBrojOcitavanja.Text = "7";
-            txtVremenskiIntervalZaCitacKartica.Text = Options.Instance.CitacKarticaTimerInterval.ToString();
             txtBrojPonavljanja.Text = Options.Instance.BrojPokusajaCitacKartica.ToString();
             ckbLogToFile.Checked = Options.Instance.LogToFile;
             ckbTraziLozinkuPreOtvaranjaProzora.Checked = Options.Instance.TraziLozinkuPreOtvaranjaProzora;
@@ -85,20 +84,6 @@ namespace Soko.UI
         private void ckbLogToFile_CheckedChanged(object sender, EventArgs e)
         {
             Options.Instance.LogToFile = ckbLogToFile.Checked;
-        }
-
-        private void btnPromeniVremenskiInterval_Click(object sender, EventArgs e)
-        {
-            int newInterval;
-            if (int.TryParse(txtVremenskiIntervalZaCitacKartica.Text, out newInterval))
-            {
-                Options.Instance.CitacKarticaTimerInterval = newInterval;
-                if (!Options.Instance.CitacKarticeNaPosebnomThreadu)
-                {
-                    SingleInstanceApplication.GlavniProzor.zaustaviCitacKartica();
-                    SingleInstanceApplication.GlavniProzor.pokreniCitacKartica();
-                }
-            }
         }
 
         private void btnProveriOcitavanja_Click(object sender, EventArgs e)

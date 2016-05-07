@@ -32,8 +32,6 @@
             this.ckbPrikaziVremenaOcitavanja = new System.Windows.Forms.CheckBox();
             this.txtBrojOcitavanja = new System.Windows.Forms.TextBox();
             this.lblBrojOcitavanja = new System.Windows.Forms.Label();
-            this.lblVremenskiIntervalZaCitacKartica = new System.Windows.Forms.Label();
-            this.txtVremenskiIntervalZaCitacKartica = new System.Windows.Forms.TextBox();
             this.lblBrojPonavljanja = new System.Windows.Forms.Label();
             this.txtBrojPonavljanja = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -41,7 +39,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lstReadDataCardReturnValue = new System.Windows.Forms.ListBox();
             this.ckbLogToFile = new System.Windows.Forms.CheckBox();
-            this.btnPromeniVremenskiInterval = new System.Windows.Forms.Button();
             this.btnProveriOcitavanja = new System.Windows.Forms.Button();
             this.lstLogFiles = new System.Windows.Forms.ListBox();
             this.ckbTraziLozinkuPreOtvaranjaProzora = new System.Windows.Forms.CheckBox();
@@ -93,22 +90,6 @@
             this.lblBrojOcitavanja.Size = new System.Drawing.Size(77, 13);
             this.lblBrojOcitavanja.TabIndex = 4;
             this.lblBrojOcitavanja.Text = "Broj ocitavanja";
-            // 
-            // lblVremenskiIntervalZaCitacKartica
-            // 
-            this.lblVremenskiIntervalZaCitacKartica.AutoSize = true;
-            this.lblVremenskiIntervalZaCitacKartica.Location = new System.Drawing.Point(244, 21);
-            this.lblVremenskiIntervalZaCitacKartica.Name = "lblVremenskiIntervalZaCitacKartica";
-            this.lblVremenskiIntervalZaCitacKartica.Size = new System.Drawing.Size(190, 13);
-            this.lblVremenskiIntervalZaCitacKartica.TabIndex = 5;
-            this.lblVremenskiIntervalZaCitacKartica.Text = "Vremenski interval za citac kartica (ms)";
-            // 
-            // txtVremenskiIntervalZaCitacKartica
-            // 
-            this.txtVremenskiIntervalZaCitacKartica.Location = new System.Drawing.Point(247, 47);
-            this.txtVremenskiIntervalZaCitacKartica.Name = "txtVremenskiIntervalZaCitacKartica";
-            this.txtVremenskiIntervalZaCitacKartica.Size = new System.Drawing.Size(59, 20);
-            this.txtVremenskiIntervalZaCitacKartica.TabIndex = 6;
             // 
             // lblBrojPonavljanja
             // 
@@ -171,16 +152,6 @@
             this.ckbLogToFile.Text = "Log To File";
             this.ckbLogToFile.UseVisualStyleBackColor = true;
             this.ckbLogToFile.CheckedChanged += new System.EventHandler(this.ckbLogToFile_CheckedChanged);
-            // 
-            // btnPromeniVremenskiInterval
-            // 
-            this.btnPromeniVremenskiInterval.Location = new System.Drawing.Point(323, 45);
-            this.btnPromeniVremenskiInterval.Name = "btnPromeniVremenskiInterval";
-            this.btnPromeniVremenskiInterval.Size = new System.Drawing.Size(75, 23);
-            this.btnPromeniVremenskiInterval.TabIndex = 15;
-            this.btnPromeniVremenskiInterval.Text = "Promeni";
-            this.btnPromeniVremenskiInterval.UseVisualStyleBackColor = true;
-            this.btnPromeniVremenskiInterval.Click += new System.EventHandler(this.btnPromeniVremenskiInterval_Click);
             // 
             // btnProveriOcitavanja
             // 
@@ -346,7 +317,6 @@
             this.Controls.Add(this.ckbTraziLozinkuPreOtvaranjaProzora);
             this.Controls.Add(this.lstLogFiles);
             this.Controls.Add(this.btnProveriOcitavanja);
-            this.Controls.Add(this.btnPromeniVremenskiInterval);
             this.Controls.Add(this.ckbLogToFile);
             this.Controls.Add(this.lstReadDataCardReturnValue);
             this.Controls.Add(this.label2);
@@ -354,8 +324,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtBrojPonavljanja);
             this.Controls.Add(this.lblBrojPonavljanja);
-            this.Controls.Add(this.txtVremenskiIntervalZaCitacKartica);
-            this.Controls.Add(this.lblVremenskiIntervalZaCitacKartica);
             this.Controls.Add(this.lblBrojOcitavanja);
             this.Controls.Add(this.txtBrojOcitavanja);
             this.Controls.Add(this.ckbPrikaziVremenaOcitavanja);
@@ -373,8 +341,6 @@
         private System.Windows.Forms.CheckBox ckbPrikaziVremenaOcitavanja;
         private System.Windows.Forms.TextBox txtBrojOcitavanja;
         private System.Windows.Forms.Label lblBrojOcitavanja;
-        private System.Windows.Forms.Label lblVremenskiIntervalZaCitacKartica;
-        private System.Windows.Forms.TextBox txtVremenskiIntervalZaCitacKartica;
         private System.Windows.Forms.Label lblBrojPonavljanja;
         private System.Windows.Forms.TextBox txtBrojPonavljanja;
         private System.Windows.Forms.Label label1;
@@ -382,7 +348,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ListBox lstReadDataCardReturnValue;
         private System.Windows.Forms.CheckBox ckbLogToFile;
-        private System.Windows.Forms.Button btnPromeniVremenskiInterval;
         private System.Windows.Forms.Button btnProveriOcitavanja;
         private System.Windows.Forms.ListBox lstLogFiles;
         private System.Windows.Forms.CheckBox ckbTraziLozinkuPreOtvaranjaProzora;
