@@ -1079,25 +1079,6 @@ namespace Soko.UI
             }
         }
 
-        private System.Timers.Timer karticaTimer;
-        private bool citacKarticaJeNaRedu = false;
-        private bool lastRead = false;
-        private bool repaint = true;
-
-        private bool citacKarticaEnabled = false;
-        public bool CitacKarticaEnabled
-        {
-            get { return citacKarticaEnabled; }
-            set { citacKarticaEnabled = value; }
-        }
-
-        private bool pisacKarticaEnabled = true;
-        public bool PisacKarticaEnabled
-        {
-            get { return pisacKarticaEnabled; }
-            set { pisacKarticaEnabled = value; }
-        }
-
         void SystemEvents_SessionSwitch(object sender, Microsoft.Win32.SessionSwitchEventArgs e)
         {
             if (e.Reason == SessionSwitchReason.SessionLock)
@@ -1129,11 +1110,6 @@ namespace Soko.UI
             
             CitacKarticaForm citacKarticaForm = new CitacKarticaForm();
             citacKarticaForm.Show();
-            CitacKarticaEnabled = true;
-
-            karticaTimer = new System.Timers.Timer();
-            karticaTimer.Elapsed += new System.Timers.ElapsedEventHandler(karticaTimer_Elapsed);
-
             pokreniCitacKartica();
         }
 
@@ -1142,148 +1118,6 @@ namespace Soko.UI
             //Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.WaitAndReadLoop));
             Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.ReadLoop));
             citacKarticaThread.Start();
-        }
-
-        private int waitingCount = 0;
-        private int waitingMax;
-
-        private void karticaTimer_Elapsed(object source, System.Timers.ElapsedEventArgs e)
-        {
-            if (waitingCount > 0)
-            {
-                CitacKarticaForm citacKarticaForm = this.CitacKarticaForm;
-                if (citacKarticaForm != null)
-                {
-                    if (waitingCount == waitingMax)
-                    {
-                        citacKarticaForm.Prikazi("Sa\u010Dekajte ...", Options.Instance.PozadinaCitacaKartica);
-                    }
-                    else if (waitingCount == 1)
-                    {
-                        citacKarticaForm.Clear();
-                    }
-                }
-                --waitingCount;
-                return;
-            }
-            else if (CitacKarticaDictionary.Instance.CreationDate.Month != DateTime.Now.Month
-                || CitacKarticaDictionary.Instance.CreationDate.Year != DateTime.Now.Year)
-            {
-                CitacKarticaDictionary.Instance.Init();
-
-                // sacekaj 5 sekundi
-                waitingMax = Convert.ToInt32(5000.0 / Options.Instance.CitacKarticaTimerInterval);
-                waitingCount = waitingMax;
-                return;
-            }
-
-            citacKarticaJeNaRedu = !citacKarticaJeNaRedu;
-            if (citacKarticaJeNaRedu)
-            {
-                handleCitacKartica();
-            }
-            else
-            {
-                handlePisacKartica();
-            }
-        }
-
-        private void handleCitacKartica()
-        {
-            if (!CitacKarticaEnabled)
-                return;
-
-            if (lastRead)
-            {
-                lastRead = false;
-                repaint = true;
-            }
-            else
-            {
-                if (repaint)
-                {
-                    CitacKarticaForm citacKarticaForm = this.CitacKarticaForm;
-                    if (citacKarticaForm != null)
-                    {
-                        citacKarticaForm.Clear();
-                        repaint = false;
-                    }
-                }
-                try
-                {
-                    lastRead = CitacKartica.Instance.TryReadDolazakNaTrening(Options.Instance.COMPortReader, false);
-                }
-                catch (Exception ex)
-                {
-                    // sacekaj 5 sekundi
-                    waitingMax = Convert.ToInt32(5000.0 / Options.Instance.CitacKarticaTimerInterval);
-                    waitingCount = waitingMax;
-
-                    // Uvek loguj ovaj izuzetak
-                    Sesija.Instance.Log("CITAC EXCEPTION", true);
-                    if (ex.Message != null)
-                        Sesija.Instance.Log(ex.Message);
-                }
-            }
-        }
-
-        private void handlePisacKartica()
-        {
-            Sesija.Instance.Log("P entered");
-
-            if (!PisacKarticaEnabled)
-                return;
-
-            try
-            {
-                doHandlePisacKartica();
-            }
-            finally
-            {
-                if (!CitacKarticaEnabled || !PisacKarticaEnabled)
-                {
-                    // Uvek loguj ovaj izuzetak
-                    Sesija.Instance.Log("UNMANAGED EXCEPTION", true);
-                }
-                CitacKarticaEnabled = true;
-                PisacKarticaEnabled = true;
-            }
-        }
-
-        private void doHandlePisacKartica()
-        {
-            PravljenjeKarticeForm pkf = PravljenjeKarticeForm;
-            if (pkf != null && pkf.PendingWrite)
-            {
-                CitacKarticaEnabled = false;
-                PisacKarticaEnabled = false;
-
-                string msg;
-                pkf.handlePisacKarticaWrite(out msg);
-
-                CitacKarticaEnabled = true;
-                MessageDialogs.showMessage(msg, "Pravljenje kartice");
-                PisacKarticaEnabled = true;
-            }
-            else
-            {
-                UplataClanarineDialog dlg = UplataClanarineDialog;
-                if (dlg != null && dlg.PendingRead)
-                {
-                    CitacKarticaEnabled = false;
-                    PisacKarticaEnabled = false;
-
-                    string msg;
-                    dlg.handlePisacKarticaRead(out msg);
-
-                    CitacKarticaEnabled = true;
-                    if (msg != String.Empty)
-                    {
-                        MessageDialogs.showMessage(msg, "Ocitavanje kartice");
-                    }
-                    PisacKarticaEnabled = true;
-                }
-            }
         }
 
         private void mnEvidencijaPrisustvaNaTreningu_Click(object sender, EventArgs e)
