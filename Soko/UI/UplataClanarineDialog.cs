@@ -21,7 +21,6 @@ namespace Soko.UI
         private List<Clan> clanovi;
         private List<Grupa> grupe;
         private DateTime currentDatumClanarine;
-        public bool PendingRead = false;
 
         private List<UplataClanarine> uplateList = new List<UplataClanarine>();
         public List<UplataClanarine> Uplate
@@ -385,9 +384,6 @@ namespace Soko.UI
 
         private void btnOcitajKarticu_Click(object sender, EventArgs e)
         {
-            PendingRead = true;
-
-            // Odmah ocitaj karticu
             string msg;
             handlePisacKarticaRead(out msg);
             if (msg != String.Empty)
@@ -400,10 +396,6 @@ namespace Soko.UI
 
         public void ReadKartica()
         {
-            if (!PendingRead)
-                return;
-            PendingRead = false;
-
             int broj;
             CitacKartica.Instance.readCard(Options.Instance.COMPortWriter, out broj);
 
@@ -671,11 +663,7 @@ namespace Soko.UI
                 catch (ReadCardException ex)
                 {
                     --brojPokusaja;
-                    if (brojPokusaja > 0)
-                    {
-                        this.PendingRead = true;
-                    }
-                    else
+                    if (brojPokusaja == 0)
                     {
                         msg = ex.Message;
                     }

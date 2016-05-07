@@ -179,7 +179,6 @@ namespace Soko.UI
                     brojKartice = SelectedClan.Broj.Value;
                 }
 
-                // Odmah upisi na karticu
                 string msg;
                 handlePisacKarticaWrite(out msg);
                 MessageDialogs.showMessage(msg, "Pravljenje kartice");
