@@ -226,9 +226,9 @@
             this.lblCitacKarticaThreadInterval.AutoSize = true;
             this.lblCitacKarticaThreadInterval.Location = new System.Drawing.Point(13, 377);
             this.lblCitacKarticaThreadInterval.Name = "lblCitacKarticaThreadInterval";
-            this.lblCitacKarticaThreadInterval.Size = new System.Drawing.Size(152, 13);
+            this.lblCitacKarticaThreadInterval.Size = new System.Drawing.Size(136, 13);
             this.lblCitacKarticaThreadInterval.TabIndex = 20;
-            this.lblCitacKarticaThreadInterval.Text = "Citac kartica displej visible time";
+            this.lblCitacKarticaThreadInterval.Text = "Citac kartica thread interval";
             // 
             // txtCitacKarticaThreadInterval
             // 
