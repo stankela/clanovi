@@ -135,10 +135,6 @@ namespace Soko.Misc
 
         public void proveriOcitavanja(string fileName, out string msg)
         {
-            msg = String.Empty;
-            string failMsg = "   " + "FAIL" + "   ";
-            string okMsg = "   " + "OK" + "   ";
-
             string[] lines = System.IO.File.ReadAllLines(fileName);
             string startTime = String.Empty;
             string endTime = String.Empty;
@@ -162,7 +158,7 @@ namespace Soko.Misc
             }
             if (startTime == String.Empty || endTime == String.Empty || beginOcitavanje == -1)
             {
-                msg = Path.GetFileName(fileName) + failMsg + "(Lose formatiran fajl)";
+                msg = formatirajProveraOcitavanjaMsg(false, "(Lose formatiran fajl)", fileName);
                 return;
             }
 
@@ -171,6 +167,27 @@ namespace Soko.Misc
             line = endTime.Split(' ');
             DateTime to = DateTime.Parse(line[2] + " " + line[3]);
 
+            int brojOcitavanja = Int32.Parse(lines[beginOcitavanje].Trim().Split(' ')[0]);
+            List<Ocitavanje> listaOcitavanja = new List<Ocitavanje>();
+            for (int i = 1; i <= brojOcitavanja; ++i)
+            {
+                line = lines[beginOcitavanje + i].Split(' ');
+                int brojKartice = Int32.Parse(line[0]);
+                DateTime vremeOcitavanja = DateTime.Parse(line[1] + " " + line[2]);
+                listaOcitavanja.Add(new Ocitavanje(brojKartice, vremeOcitavanja));
+            }
+
+            bool result = proveriOcitavanja(from, to, listaOcitavanja, out msg);
+            msg = formatirajProveraOcitavanjaMsg(result, msg, fileName);
+        }
+
+        private string formatirajProveraOcitavanjaMsg(bool ok, string msg, string fileName)
+        {
+            return (ok ? "OK  " : "FAIL") + "   " + msg + "   " + Path.GetFileName(fileName);
+        }
+
+        private bool proveriOcitavanja(DateTime from, DateTime to, List<Ocitavanje> listaOcitavanja, out string msg)
+        {
             IList<DolazakNaTrening> dolasci = null;
             try
             {
@@ -183,29 +200,18 @@ namespace Soko.Misc
             }
             catch (Exception ex)
             {
-                MessageDialogs.showMessage(ex.Message, "Citac kartica");
-                return;
+                msg = ex.Message;
+                return false;
             }
             finally
             {
                 CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
 
-            int brojOcitavanja = Int32.Parse(lines[beginOcitavanje].Trim().Split(' ')[0]);
-            List<Ocitavanje> listaOcitavanja = new List<Ocitavanje>();
-            for (int i = 1; i <= brojOcitavanja; ++i)
-            {
-                line = lines[beginOcitavanje + i].Split(' ');
-                int brojKartice = Int32.Parse(line[0]);
-                DateTime vremeOcitavanja = DateTime.Parse(line[1] + " " + line[2]);
-                listaOcitavanja.Add(new Ocitavanje(brojKartice, vremeOcitavanja));
-            }
-
-            bool error = false;
             if (dolasci.Count != listaOcitavanja.Count)
             {
-                msg += String.Format("(Razlicit broj ocitavanja. Baza: {0} Fajl: {1})", dolasci.Count, listaOcitavanja.Count);
-                error = true;
+                msg = String.Format("(Razlicit broj ocitavanja. Baza: {0} Fajl: {1})", dolasci.Count, listaOcitavanja.Count);
+                return false;
             }
             else
             {
@@ -215,28 +221,21 @@ namespace Soko.Misc
                     Ocitavanje o = listaOcitavanja[i];
                     if (d.Clan.BrojKartice != o.brojKartice)
                     {
-                        msg += String.Format("(Broj kartice se ne poklapa. Baza: {0} Fajl: {1})",
+                        msg = String.Format("(Broj kartice se ne poklapa. Baza: {0} Fajl: {1})",
                             d.Clan.BrojKartice, o.brojKartice);
-                        error = true;
-                        break;
+                        return false;
                     }
                     else if (d.DatumVremeDolaska != o.vremeOcitavanja)
                     {
-                        msg += String.Format("(Vreme dolaska se ne poklapa. Baza: {0} Fajl: {1})",
+                        msg = String.Format("(Vreme dolaska se ne poklapa. Baza: {0} Fajl: {1})",
                             d.DatumVremeDolaska, o.vremeOcitavanja);
-                        error = true;
-                        break;
+                        return false;
                     }
                 }
             }
-            if (error)
-            {
-                msg = Path.GetFileName(fileName) + failMsg + msg;
-            }
-            else
-            {
-                msg = Path.GetFileName(fileName) + okMsg + String.Format("(Broj ocitavanja: {0})", dolasci.Count);
-            }
+
+            msg = String.Format("(Broj ocitavanja: {0})", dolasci.Count);
+            return true;
         }
     }
 }
