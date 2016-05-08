@@ -1,4 +1,5 @@
 ﻿using Bilten.Dao;
+using Bilten.Dao.NHibernate;
 using NHibernate;
 using NHibernate.Context;
 using Soko.Data;
@@ -73,6 +74,14 @@ namespace Soko.Misc
                 foreach (Ocitavanje o in ocitavanja)
                 {
                     logStreamWriter.WriteLine(o.brojKartice.ToString() + " " + o.vremeOcitavanja.ToString("dd.MM.yyyy HH:mm:ss"));
+                }
+
+                // Proveri ocitavanja
+                string msg;
+                bool result = proveriOcitavanja(startTime, endTime, ocitavanja, out msg);
+                if (!result)
+                {
+                    logStreamWriter.WriteLine(formatirajProveraOcitavanjaMsg(result, msg, ""));
                 }
 
                 foreach (string s in logMessages)
@@ -193,7 +202,10 @@ namespace Soko.Misc
 
         private string formatirajProveraOcitavanjaMsg(bool ok, string msg, string fileName)
         {
-            return (ok ? "OK  " : "FAIL") + "   " + msg + "   " + Path.GetFileName(fileName);
+            string result = (ok ? "OK  " : "FAIL") + "   " + msg;
+            if (!String.IsNullOrEmpty(fileName))
+                result += "   " + Path.GetFileName(fileName);
+            return result;
         }
 
         private bool proveriOcitavanja(DateTime from, DateTime to, List<Ocitavanje> listaOcitavanja, out string msg)
@@ -204,18 +216,17 @@ namespace Soko.Misc
                 using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
-                    CurrentSessionContext.Bind(session);
-                    dolasci = DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO().getDolazakNaTrening(from, to);
+                    DolazakNaTreningDAOImpl dolazakNaTreningDAO =
+                        DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO() as DolazakNaTreningDAOImpl;
+                    dolazakNaTreningDAO.Session = session;
+
+                    dolasci = dolazakNaTreningDAO.getDolazakNaTrening(from, to);
                 }
             }
             catch (Exception ex)
             {
                 msg = ex.Message;
                 return false;
-            }
-            finally
-            {
-                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
 
             if (dolasci.Count != listaOcitavanja.Count)
@@ -235,7 +246,8 @@ namespace Soko.Misc
                             d.Clan.BrojKartice, o.brojKartice);
                         return false;
                     }
-                    else if (d.DatumVremeDolaska != o.vremeOcitavanja)
+                    else if (d.DatumVremeDolaska.Value.ToString("dd.MM.yyyy HH:mm:ss")
+                        != o.vremeOcitavanja.ToString("dd.MM.yyyy HH:mm:ss"))
                     {
                         msg = String.Format("(Vreme dolaska se ne poklapa. Baza: {0} Fajl: {1})",
                             d.DatumVremeDolaska, o.vremeOcitavanja);
