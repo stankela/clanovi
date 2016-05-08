@@ -22,10 +22,6 @@ namespace Soko.UI
     {
         private List<Clan> clanovi;
 
-        private bool testKartica;
-        private int clanId;
-        private int brojKartice;
-
         private const string OK_MSG_WRITE_TEST = "TEST KARTICA je napravljena.";
         private const string OK_MSG_WRITE = "Kartica je napravljena.\n\nBroj kartice:   {0}\nClan:   {1}";
         private const string ERROR_MSG_WRITE_TEST = "Neuspesno pravljenje TEST KARTICE. " +
@@ -163,7 +159,7 @@ namespace Soko.UI
 
         private void btnNapraviKarticu_Click(object sender, EventArgs e)
         {
-            testKartica = ckbTestKartica.Checked;
+            bool testKartica = ckbTestKartica.Checked;
             if (!testKartica && SelectedClan == null)
             {
                 MessageDialogs.showMessage("Izaberite clana.", "Pravljenje kartice");
@@ -173,35 +169,77 @@ namespace Soko.UI
             if (napraviKarticuDlg(SelectedClan, testKartica))
             {
                 MessageDialogs.showMessage("Prislonite karticu na citac i kliknite OK.", "Pravljenje kartice");
+                string msg;
                 if (!testKartica)
                 {
-                    clanId = SelectedClan.Id;
-                    brojKartice = SelectedClan.Broj.Value;
+                    handlePisacKarticaWrite(SelectedClan.Id, SelectedClan.Broj.Value, testKartica, out msg);
                 }
-
-                string msg;
-                handlePisacKarticaWrite(out msg);
+                else
+                {
+                    handlePisacKarticaWrite(-1, -1, testKartica, out msg);
+                }
                 MessageDialogs.showMessage(msg, "Pravljenje kartice");
             }
         }
 
-        public void WriteKartica(out string okMsg)
+        private void handlePisacKarticaWrite(int clanId, int brojKartice, bool testKartica, out string msg)
         {
-            okMsg = String.Empty;
-            if (testKartica)
+            msg = String.Empty;
+            int brojPokusaja = Options.Instance.BrojPokusajaCitacKartica;
+            while (brojPokusaja > 0)
             {
-                // TODO2: Prvo proveri da li je kartica vazeca, i prikazi upozorenje ako jeste (isto i dole).
-                if (CitacKartica.Instance.writeCard(Options.Instance.COMPortWriter,
-                    CitacKartica.TEST_KARTICA_BROJ.ToString()))
+                try
                 {
-                    okMsg = OK_MSG_WRITE_TEST;
-                    return;
+                    string okMsg;
+                    if (testKartica)
+                        WriteTestKartica(out okMsg);
+                    else
+                        WriteClanKartica(clanId, brojKartice, out okMsg);
+                    brojPokusaja = 0;
+                    msg = okMsg;
                 }
-                else
+                catch (WriteCardException ex)
                 {
-                    throw new WriteCardException(ERROR_MSG_WRITE_TEST);
+                    --brojPokusaja;
+                    if (brojPokusaja == 0)
+                    {
+                        msg = ex.Message;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    brojPokusaja = 0;
+                    msg = ex.Message;
+
+                    // Uvek loguj ovaj izuzetak
+                    Sesija.Instance.Log("PISAC WRITE EXCEPTION", true);
+                    if (ex.Message != null)
+                        Sesija.Instance.Log(ex.Message);
                 }
             }
+        }
+
+        private void WriteTestKartica(out string okMsg)
+        {
+            okMsg = String.Empty;
+
+            // TODO2: Prvo proveri da li je kartica vazeca, i prikazi upozorenje ako jeste (isto i u WriteClanKartica).
+            if (CitacKartica.Instance.writeCard(Options.Instance.COMPortWriter,
+                CitacKartica.TEST_KARTICA_BROJ.ToString()))
+            {
+                okMsg = OK_MSG_WRITE_TEST;
+                return;
+            }
+            else
+            {
+                throw new WriteCardException(ERROR_MSG_WRITE_TEST);
+            }
+
+        }
+
+        private void WriteClanKartica(int clanId, int brojKartice, out string okMsg)
+        {
+            okMsg = String.Empty;
 
             if (!CitacKartica.Instance.writeCard(Options.Instance.COMPortWriter,
                 brojKartice.ToString()))
@@ -241,40 +279,6 @@ namespace Soko.UI
             }
             txtSifraClana.Enabled = !ckbTestKartica.Checked;
             cmbClan.Enabled = !ckbTestKartica.Checked;
-        }
-
-        public void handlePisacKarticaWrite(out string msg)
-        {
-            msg = String.Empty;
-            int brojPokusaja = Options.Instance.BrojPokusajaCitacKartica;
-            while (brojPokusaja > 0)
-            {
-                try
-                {
-                    string okMsg;
-                    this.WriteKartica(out okMsg);
-                    brojPokusaja = 0;
-                    msg = okMsg;
-                }
-                catch (WriteCardException ex)
-                {
-                    --brojPokusaja;
-                    if (brojPokusaja == 0)
-                    {
-                        msg = ex.Message;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    brojPokusaja = 0;
-                    msg = ex.Message;
-
-                    // Uvek loguj ovaj izuzetak
-                    Sesija.Instance.Log("PISAC WRITE EXCEPTION", true);
-                    if (ex.Message != null)
-                        Sesija.Instance.Log(ex.Message);
-                }
-            }
         }
     }
 }
