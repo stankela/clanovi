@@ -394,7 +394,39 @@ namespace Soko.UI
             txtIznos.Focus();
         }
 
-        public void ReadKartica()
+        private void handlePisacKarticaRead(out string msg)
+        {
+            msg = String.Empty;
+            int brojPokusaja = Options.Instance.BrojPokusajaCitacKartica;
+            while (brojPokusaja > 0)
+            {
+                try
+                {
+                    this.ReadKartica();
+                    brojPokusaja = 0;
+                }
+                catch (ReadCardException ex)
+                {
+                    --brojPokusaja;
+                    if (brojPokusaja == 0)
+                    {
+                        msg = ex.Message;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    brojPokusaja = 0;
+                    msg = ex.Message;
+
+                    // Uvek loguj ovaj izuzetak
+                    Sesija.Instance.Log("PISAC READ EXCEPTION", true);
+                    if (ex.Message != null)
+                        Sesija.Instance.Log(ex.Message);
+                }
+            }
+        }
+
+        private void ReadKartica()
         {
             int broj;
             CitacKartica.Instance.readCard(Options.Instance.COMPortWriter, out broj);
@@ -645,38 +677,6 @@ namespace Soko.UI
                     txtIznos.Text = String.Empty;
                     dateTimePickerDatumClanarine.Value = dateTimePickerDatumClanarine.Value.AddMonths(1);
                     txtIznos.Focus();
-                }
-            }
-        }
-
-        public void handlePisacKarticaRead(out string msg)
-        {
-            msg = String.Empty;
-            int brojPokusaja = Options.Instance.BrojPokusajaCitacKartica;
-            while (brojPokusaja > 0)
-            {
-                try
-                {
-                    this.ReadKartica();
-                    brojPokusaja = 0;
-                }
-                catch (ReadCardException ex)
-                {
-                    --brojPokusaja;
-                    if (brojPokusaja == 0)
-                    {
-                        msg = ex.Message;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    brojPokusaja = 0;
-                    msg = ex.Message;
-
-                    // Uvek loguj ovaj izuzetak
-                    Sesija.Instance.Log("PISAC READ EXCEPTION", true);
-                    if (ex.Message != null)
-                        Sesija.Instance.Log(ex.Message);
                 }
             }
         }
