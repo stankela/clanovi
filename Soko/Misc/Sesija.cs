@@ -135,6 +135,23 @@ namespace Soko.Misc
 
         public void proveriOcitavanja(string fileName, out string msg)
         {
+            DateTime from;
+            DateTime to;
+            List<Ocitavanje> listaOcitavanja = new List<Ocitavanje>();
+            if (!parseOcitavanjaFromLogFile(fileName, listaOcitavanja, out from, out to))
+            {
+                msg = formatirajProveraOcitavanjaMsg(false, "(Lose formatiran fajl)", fileName);
+            }
+            else
+            {
+                bool result = proveriOcitavanja(from, to, listaOcitavanja, out msg);
+                msg = formatirajProveraOcitavanjaMsg(result, msg, fileName);
+            }
+        }
+
+        private bool parseOcitavanjaFromLogFile(string fileName, List<Ocitavanje> listaOcitavanja, out DateTime from,
+            out DateTime to)
+        {
             string[] lines = System.IO.File.ReadAllLines(fileName);
             string startTime = String.Empty;
             string endTime = String.Empty;
@@ -158,17 +175,17 @@ namespace Soko.Misc
             }
             if (startTime == String.Empty || endTime == String.Empty || beginOcitavanje == -1)
             {
-                msg = formatirajProveraOcitavanjaMsg(false, "(Lose formatiran fajl)", fileName);
-                return;
+                from = DateTime.Now;
+                to = DateTime.Now;
+                return false;
             }
 
             string[] line = startTime.Split(' ');
-            DateTime from = DateTime.Parse(line[2] + " " + line[3]);
+            from = DateTime.Parse(line[2] + " " + line[3]);
             line = endTime.Split(' ');
-            DateTime to = DateTime.Parse(line[2] + " " + line[3]);
+            to = DateTime.Parse(line[2] + " " + line[3]);
 
             int brojOcitavanja = Int32.Parse(lines[beginOcitavanje].Trim().Split(' ')[0]);
-            List<Ocitavanje> listaOcitavanja = new List<Ocitavanje>();
             for (int i = 1; i <= brojOcitavanja; ++i)
             {
                 line = lines[beginOcitavanje + i].Split(' ');
@@ -176,9 +193,7 @@ namespace Soko.Misc
                 DateTime vremeOcitavanja = DateTime.Parse(line[1] + " " + line[2]);
                 listaOcitavanja.Add(new Ocitavanje(brojKartice, vremeOcitavanja));
             }
-
-            bool result = proveriOcitavanja(from, to, listaOcitavanja, out msg);
-            msg = formatirajProveraOcitavanjaMsg(result, msg, fileName);
+            return true;
         }
 
         private string formatirajProveraOcitavanjaMsg(bool ok, string msg, string fileName)
