@@ -417,11 +417,7 @@ namespace Soko.UI
                 {
                     brojPokusaja = 0;
                     msg = ex.Message;
-
-                    // Uvek loguj ovaj izuzetak
-                    Sesija.Instance.Log("PISAC READ EXCEPTION", true);
-                    if (ex.Message != null)
-                        Sesija.Instance.Log(ex.Message);
+                    Sesija.Instance.LogException("PISAC READ EXCEPTION", ex);
                 }
             }
         }

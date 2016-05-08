@@ -31,7 +31,6 @@ namespace Soko.Misc
         private List<Ocitavanje> ocitavanja;
         private Queue<string> logMessages;
         private StreamWriter logStreamWriter;
-        private bool iskljuciLogovanjeNaKraju = false;
         private const string OCITAVANJA_KARTICE = "OCITAVANJA KARTICE";
         private const string START_TIME = "START TIME";
         private const string END_TIME = "END TIME";
@@ -82,10 +81,6 @@ namespace Soko.Misc
                 }
 
                 closeLogStreamWriter();
-                if (iskljuciLogovanjeNaKraju)
-                {
-                    Options.Instance.LogToFile = false;
-                }
             }
         }
 
@@ -108,28 +103,28 @@ namespace Soko.Misc
             logStreamWriter.Close();
         }
 
-        public void Log(string logMessage, bool ukljuciLogovanje = false)
+        public void Log(string logMessage)
         {
-            lock (logLock)
+            if (Options.Instance.LogToFile)
             {
-                if (logMessages.Count >= Options.Instance.MaxLogMessages)
+                lock (logLock)
                 {
-                    //return;
-                    logMessages.Dequeue();
-                }
-                if (ukljuciLogovanje)
-                {
-                    if (!Options.Instance.LogToFile)
+                    if (logMessages.Count >= Options.Instance.MaxLogMessages)
                     {
-                        Options.Instance.LogToFile = true;
-                        iskljuciLogovanjeNaKraju = true;
+                        logMessages.Dequeue();
                     }
-                }
-                if (Options.Instance.LogToFile)
-                {
                     string msg = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "   " + logMessage;
                     logMessages.Enqueue(msg);
                 }
+            }
+        }
+
+        public void LogException(string kind, Exception ex)
+        {
+            Log(kind);
+            if (ex.Message != null)
+            {
+                Log(ex.Message);
             }
         }
 
