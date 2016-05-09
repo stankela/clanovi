@@ -69,6 +69,15 @@ namespace Soko.Misc
             {
                 createLogStreamWriter();
 
+                TimeSpan uptime = endTime - startTime;
+                string uptimeStr = "UPTIME: ";
+                if (uptime.Days != 0)
+                   uptimeStr += uptime.Days.ToString() + "d ";
+                uptimeStr += uptime.Hours.ToString("D2") + ":";
+                uptimeStr += uptime.Minutes.ToString("D2") + ":";
+                uptimeStr += uptime.Seconds.ToString("D2");
+
+                logStreamWriter.WriteLine(uptimeStr);
                 logStreamWriter.WriteLine(START_TIME + ": " + startTime.ToString("dd.MM.yyyy HH:mm:ss"));
                 logStreamWriter.WriteLine(END_TIME + ": " + endTime.ToString("dd.MM.yyyy HH:mm:ss"));
 
@@ -79,12 +88,12 @@ namespace Soko.Misc
                 }
 
                 // Proveri ocitavanja
-                string msg;
+                /*string msg;
                 bool result = proveriOcitavanja(startTime, endTime, ocitavanja, out msg);
                 if (!result)
                 {
                     logStreamWriter.WriteLine(formatirajProveraOcitavanjaMsg(result, msg, ""));
-                }
+                }*/
 
                 foreach (string s in logMessages)
                 {
