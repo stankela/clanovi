@@ -13,8 +13,6 @@ namespace Soko.UI
 {
     public partial class AdminForm : Form
     {
-        private const string LOG_DIR = @"..\Log";
-
         public AdminForm()
         {
             InitializeComponent();
@@ -28,7 +26,7 @@ namespace Soko.UI
             txtCitacKarticaThreadPauzaZaBrisanje.Text = Options.Instance.CitacKarticaThreadPauzaZaBrisanje.ToString();
 
             lstLogFiles.SelectionMode = SelectionMode.MultiExtended;
-            string[] files = Directory.GetFiles(LOG_DIR);
+            string[] files = Directory.GetFiles(Sesija.LOG_DIR);
             foreach (string file in files)
             {
                 lstLogFiles.Items.Add(Path.GetFileName(file));
@@ -92,7 +90,7 @@ namespace Soko.UI
             foreach (string fileName in lstLogFiles.SelectedItems)
             {
                 string msg;
-                Sesija.Instance.proveriOcitavanja(Path.Combine(LOG_DIR, fileName), out msg);
+                Sesija.Instance.proveriOcitavanja(Path.Combine(Sesija.LOG_DIR, fileName), out msg);
                 message += msg + "\n";
             }
             MessageBox.Show(message, "Provera ocitavanja");

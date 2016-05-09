@@ -27,6 +27,8 @@ namespace Soko.Misc
             }
         }
 
+        public const string LOG_DIR = @"..\Log";
+        
         private DateTime startTime;
         private DateTime endTime;
         private List<Ocitavanje> ocitavanja;
@@ -100,11 +102,10 @@ namespace Soko.Misc
 
         private void createLogStreamWriter()
         {
-            String dirName = @"..\Log";
-            System.IO.Directory.CreateDirectory(dirName);
+            System.IO.Directory.CreateDirectory(LOG_DIR);
             String fileName = String.Format("log_{0}{1:D2}{2:D2}_{3:D2}{4:D2}{5:D2}.txt", startTime.Year, startTime.Month,
                 startTime.Day, startTime.Hour, startTime.Minute, startTime.Second);
-            logStreamWriter = File.AppendText(Path.Combine(dirName, fileName));
+            logStreamWriter = File.AppendText(Path.Combine(LOG_DIR, fileName));
         }
 
         private void closeLogStreamWriter()
