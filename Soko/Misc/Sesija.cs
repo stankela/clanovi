@@ -33,6 +33,7 @@ namespace Soko.Misc
         private DateTime endTime;
         private List<Ocitavanje> ocitavanja;
         private Queue<string> logMessages;
+        private List<string> exceptionMessages;
         private StreamWriter logStreamWriter;
         private const string OCITAVANJA_KARTICE = "OCITAVANJA KARTICE";
         private const string START_TIME = "START TIME";
@@ -60,6 +61,7 @@ namespace Soko.Misc
             startTime = DateTime.Now;
             ocitavanja = new List<Ocitavanje>();
             logMessages = new Queue<string>();
+            exceptionMessages = new List<string>();
         }
 
         public void EndSession()
@@ -80,6 +82,11 @@ namespace Soko.Misc
                 logStreamWriter.WriteLine(uptimeStr);
                 logStreamWriter.WriteLine(START_TIME + ": " + startTime.ToString("dd.MM.yyyy HH:mm:ss"));
                 logStreamWriter.WriteLine(END_TIME + ": " + endTime.ToString("dd.MM.yyyy HH:mm:ss"));
+
+                foreach (string s in exceptionMessages)
+                {
+                    logStreamWriter.WriteLine(s);
+                }
 
                 logStreamWriter.WriteLine(ocitavanja.Count.ToString() + " " + OCITAVANJA_KARTICE);
                 foreach (Ocitavanje o in ocitavanja)
@@ -140,10 +147,14 @@ namespace Soko.Misc
 
         public void LogException(string kind, Exception ex)
         {
-            Log(kind);
-            if (ex.Message != null)
+            if (exceptionMessages.Count < 100)
             {
-                Log(ex.Message);
+                string msg = DateTime.Now.ToString("dd.MM.yyyy HH:mm:ss") + "   " + kind;
+                exceptionMessages.Add(msg);
+                if (ex.Message != null)
+                {
+                    exceptionMessages.Add(ex.Message);
+                }
             }
         }
 
