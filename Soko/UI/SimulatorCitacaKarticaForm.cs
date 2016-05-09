@@ -119,7 +119,7 @@ namespace Soko.UI
         {
             if (SelectedClan != null)
             {
-                CitacKartica.Instance.handleDolazakNaTrening(SelectedClan.Broj.Value, dtpVremeOcitavanja.Value, false);
+                CitacKartica.Instance.handleOcitavanjeKarticeTrening(SelectedClan.Broj.Value, dtpVremeOcitavanja.Value, false);
             }
         }
 

@@ -199,7 +199,7 @@ namespace Soko
                 af.newOcitavanje(watch.ElapsedMilliseconds);
             }
 
-            return result && handleDolazakNaTrening(broj, DateTime.Now, obrisiPrePrikazivanja);
+            return result && handleOcitavanjeKarticeTrening(broj, DateTime.Now, obrisiPrePrikazivanja);
         }
 
         public void WaitAndReadLoop()
@@ -233,7 +233,7 @@ namespace Soko
 
                 if (retval > 1)
                 {
-                    if (dobroFormatiranaKartica(sID1, name, out broj) && handleDolazakNaTrening(broj, DateTime.Now, false))
+                    if (dobroFormatiranaKartica(sID1, name, out broj) && handleOcitavanjeKarticeTrening(broj, DateTime.Now, false))
                     {
                         CitacKarticaForm citacKarticaForm = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
                         if (citacKarticaForm != null)
@@ -312,15 +312,26 @@ namespace Soko
             _shouldStop = true;
         }
 
-        public bool handleDolazakNaTrening(int broj, DateTime vremeOcitavanja, bool obrisiPrePrikazivanja)
+        public bool handleOcitavanjeKarticeTrening(int broj, DateTime vremeOcitavanja, bool obrisiPrePrikazivanja)
         {
+            CitacKarticaForm citacKarticaForm = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
+            if (obrisiPrePrikazivanja)
+            {
+                // Kartica je ocitana, a na displeju je prikaz prethodnog ocitavanja. Obrisi prethodno ocitavanje
+                // i pauziraj (tako da se vidi prazan displej), pre nego sto prikazes naredno ocitavanje.
+                if (citacKarticaForm != null)
+                {
+                    citacKarticaForm.Clear();
+                    Thread.Sleep(Options.Instance.CitacKarticaThreadPauzaZaBrisanje);
+                }
+            }
+
             if (broj == TEST_KARTICA_BROJ)
             {
-                string msg = FormatMessage(broj, null, TEST_KARTICA_NAME);
-                CitacKarticaForm form = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
-                if (form != null)
+                if (citacKarticaForm != null)
                 {
-                    form.Prikazi(msg, Options.Instance.PozadinaCitacaKartica);
+                    string msg = FormatMessage(broj, null, TEST_KARTICA_NAME);
+                    citacKarticaForm.Prikazi(msg, Options.Instance.PozadinaCitacaKartica);
                 }
                 return true;
             }
@@ -333,17 +344,6 @@ namespace Soko
 
             // Odmah prikazi ocitavanje, da bi se momentalno videlo na ekranu nakon zvuka ocitavanja kartice.
             UplataClanarine uplata;
-            if (obrisiPrePrikazivanja)
-            {
-                // Kartica je ocitana, a na displeju je prikaz prethodnog ocitavanja. Obrisi prethodno ocitavanje
-                // i pauziraj (tako da se vidi prazan displej), pre nego sto prikazes naredno ocitavanje.
-                CitacKarticaForm citacKarticaForm = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
-                if (citacKarticaForm != null)
-                {
-                    citacKarticaForm.Clear();
-                    Thread.Sleep(Options.Instance.CitacKarticaThreadPauzaZaBrisanje);
-                }
-            }
             prikaziOcitavanje(clan, vremeOcitavanja, out uplata);
 
             unesiOcitavanje(clan, vremeOcitavanja, uplata);
