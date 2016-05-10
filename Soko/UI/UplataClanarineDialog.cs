@@ -413,12 +413,6 @@ namespace Soko.UI
                         msg = ex.Message;
                     }
                 }
-                catch (Exception ex)
-                {
-                    brojPokusaja = 0;
-                    msg = ex.Message;
-                    Sesija.Instance.LogException("PISAC READ EXCEPTION", ex);
-                }
             }
         }
 

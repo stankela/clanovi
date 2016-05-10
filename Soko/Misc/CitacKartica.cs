@@ -82,8 +82,6 @@ namespace Soko
             AdminForm af = SingleInstanceApplication.GlavniProzor.AdminForm;
             bool measureTime = af != null;
 
-            Sesija.Instance.Log("BEFORE P READ");
-            
             Stopwatch watch = null;
             if (measureTime)
             {
@@ -101,8 +99,6 @@ namespace Soko
                 watch.Stop();
                 af.newCitanjeKartice(retval, watch.ElapsedMilliseconds);
             }
-
-            Sesija.Instance.Log("P READ: " + retval.ToString());
 
             if (retval == 1)
             {
@@ -127,15 +123,13 @@ namespace Soko
             string name = "                                ";
             broj = -1;
 
-            Sesija.Instance.Log("BEFORE C READ");
-
             ulong retval;
             lock (readAndWriteLock)
             {
                 retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
             }
 
-            Sesija.Instance.Log("C READ: " + retval.ToString());
+            // Sesija.Instance.Log("C READ: " + retval.ToString());
 
             return retval == 1 && dobroFormatiranaKartica(sID1, name, out broj);
         }
@@ -154,8 +148,6 @@ namespace Soko
             AdminForm af = SingleInstanceApplication.GlavniProzor.AdminForm;
             bool measureTime = af != null;
 
-            Sesija.Instance.Log("BEFORE P WRITE");
-
             Stopwatch watch = null;
             if (measureTime)
             {
@@ -173,8 +165,6 @@ namespace Soko
                 watch.Stop();
                 af.newPisanjeKartice(retval, watch.ElapsedMilliseconds);
             }
-
-            Sesija.Instance.Log("P WRITE: " + retval.ToString());
 
             return retval == 1;
         }
