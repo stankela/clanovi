@@ -89,10 +89,10 @@ namespace Soko
             }
 
             ulong retval;
-            lock (readAndWriteLock)
-            {
+            //lock (readAndWriteLock)
+            //{
                 retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
-            }
+            //}
             
             if (measureTime)
             {
@@ -124,10 +124,10 @@ namespace Soko
             broj = -1;
 
             ulong retval;
-            lock (readAndWriteLock)
-            {
+            //lock (readAndWriteLock)
+            //{
                 retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
-            }
+            //}
 
             // Sesija.Instance.Log("C READ: " + retval.ToString());
 
@@ -155,10 +155,10 @@ namespace Soko
             }
 
             ulong retval;
-            lock (readAndWriteLock)
-            {
+            //lock (readAndWriteLock)
+            //{
                 retval = WriteDataCard(comPort, sType, sID1, sID2, sName) & 0xFFFFFFFF;
-            }
+            //}
 
             if (measureTime)
             {
@@ -211,11 +211,11 @@ namespace Soko
                 int broj = -1;
 
                 ulong retval;
-                lock (readAndWriteLock)
-                {
+                //lock (readAndWriteLock)
+                //{
                     retval = WaitAndReadDataCard(Options.Instance.COMPortReader, nSecs,
                        ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
-                }
+                //}
 
                 /*retval = 2;
                 sID1 = "5504";
