@@ -1011,38 +1011,6 @@ namespace Soko.UI
             }
         }
 
-        public PravljenjeKarticeForm PravljenjeKarticeForm
-        {
-            get
-            {
-                foreach (Form f in Application.OpenForms)
-                {
-                    PravljenjeKarticeForm form = f as PravljenjeKarticeForm;
-                    if (form != null)
-                    {
-                        return form;
-                    }
-                }
-                return null;
-            }
-        }
-
-        public UplataClanarineDialog UplataClanarineDialog
-        {
-            get
-            {
-                foreach (Form f in Application.OpenForms)
-                {
-                    UplataClanarineDialog form = f as UplataClanarineDialog;
-                    if (form != null)
-                    {
-                        return form;
-                    }
-                }
-                return null;
-            }
-        }
-
         public AdminForm AdminForm
         {
             get
