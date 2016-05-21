@@ -50,16 +50,6 @@ namespace Soko.UI
         public Form1()
         {
             InitializeComponent();
-            this.Text = "Uplata clanarine";
-
-            refreshAdminModeUI(Options.Instance.AdminMode);
-
-            //LocalizeUI();
-
-            loadOptions();
-            Sesija.Instance.InitSession();
-
-            passwordExpired = true;
         }
 
         private void refreshAdminModeUI(bool adminMode)
@@ -1046,19 +1036,60 @@ namespace Soko.UI
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            CitacKarticaDictionary.Instance.Init();
+            init();
+        }
 
+        private void init()
+        {
+            loadOptions();
+
+            if (Options.Instance.JedinstvenProgram)
+            {
+                this.Text = "Uplata clanarine";
+                refreshAdminModeUI(Options.Instance.AdminMode);
+                //LocalizeUI();
+
+                Sesija.Instance.InitSession();
+
+                initlozinkaTimer();
+
+                initCitacKarticaDictionary();
+                pokreniCitacKartica();
+            }
+            else if (Options.Instance.IsProgramZaClanarinu)
+            {
+                this.Text = "Uplata clanarine";
+                refreshAdminModeUI(Options.Instance.AdminMode);
+                //LocalizeUI();
+
+                Sesija.Instance.InitSession();
+
+                initlozinkaTimer();
+            }
+            else
+            {
+                initCitacKarticaDictionary();
+                pokreniCitacKartica();
+                this.Visible = false;
+            }
+        }
+
+        private void initlozinkaTimer()
+        {
             lozinkaTimer = new System.Timers.Timer();
             lozinkaTimer.Elapsed += lozinkaTimer_Elapsed;
             lozinkaTimer.Interval = Options.Instance.LozinkaTimerMinuti * 60 * 1000;
-            
-            CitacKarticaForm citacKarticaForm = new CitacKarticaForm();
-            citacKarticaForm.Show();
-            pokreniCitacKartica();
+            passwordExpired = true;
+        }
 
+        private void initCitacKarticaDictionary()
+        {
+            CitacKarticaDictionary.Instance.Init();
+            // Na svakih 8 sati proveravaj da li smo usli u novi dan, i ako jesmo reinicijalizuj CitacKarticaDictionary
             citacKarticaDictionaryTimer = new System.Timers.Timer();
             citacKarticaDictionaryTimer.Elapsed += citacKarticaDictionaryTimer_Elapsed;
             citacKarticaDictionaryTimer.Interval = 8 * 60 * 60 * 1000;
+            citacKarticaDictionaryTimer.Start();
         }
 
         void citacKarticaDictionaryTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -1072,6 +1103,9 @@ namespace Soko.UI
 
         public void pokreniCitacKartica()
         {
+            CitacKarticaForm citacKarticaForm = new CitacKarticaForm();
+            citacKarticaForm.Show();
+            
             //Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.WaitAndReadLoop));
             Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.ReadLoop));
             citacKarticaThread.Start();

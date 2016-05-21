@@ -207,5 +207,19 @@ namespace Soko
             get { return citacKarticaThreadPauzaZaBrisanje; }
             set { citacKarticaThreadPauzaZaBrisanje = value; }
         }
+
+        private bool jedinstvenProgram = true;
+        public bool JedinstvenProgram
+        {
+            get { return jedinstvenProgram; }
+            set { jedinstvenProgram = value; }
+        }
+
+        private bool isProgramZaClanarinu = true;
+        public bool IsProgramZaClanarinu
+        {
+            get { return isProgramZaClanarinu; }
+            set { isProgramZaClanarinu = value; }
+        }
     }
 }
