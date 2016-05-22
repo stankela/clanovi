@@ -59,12 +59,12 @@ namespace Soko.UI
             this.mnPodesavanja = new System.Windows.Forms.ToolStripMenuItem();
             this.mnFont = new System.Windows.Forms.ToolStripMenuItem();
             this.mnStampaci = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnLozinka = new System.Windows.Forms.ToolStripMenuItem();
             this.mnCitacKartica = new System.Windows.Forms.ToolStripMenuItem();
             this.mnAdmin = new System.Windows.Forms.ToolStripMenuItem();
             this.mnDuplikatiClanova = new System.Windows.Forms.ToolStripMenuItem();
             this.mnSimulatorCitacaKartica = new System.Windows.Forms.ToolStripMenuItem();
             this.mnAdminOpcije = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnLozinka = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -309,21 +309,28 @@ namespace Soko.UI
             // mnFont
             // 
             this.mnFont.Name = "mnFont";
-            this.mnFont.Size = new System.Drawing.Size(152, 22);
+            this.mnFont.Size = new System.Drawing.Size(139, 22);
             this.mnFont.Text = "Font";
             this.mnFont.Click += new System.EventHandler(this.mnFont_Click);
             // 
             // mnStampaci
             // 
             this.mnStampaci.Name = "mnStampaci";
-            this.mnStampaci.Size = new System.Drawing.Size(152, 22);
+            this.mnStampaci.Size = new System.Drawing.Size(139, 22);
             this.mnStampaci.Text = "Stampaci";
             this.mnStampaci.Click += new System.EventHandler(this.mnStampaci_Click);
+            // 
+            // mnLozinka
+            // 
+            this.mnLozinka.Name = "mnLozinka";
+            this.mnLozinka.Size = new System.Drawing.Size(139, 22);
+            this.mnLozinka.Text = "Lozinka";
+            this.mnLozinka.Click += new System.EventHandler(this.mnLozinka_Click);
             // 
             // mnCitacKartica
             // 
             this.mnCitacKartica.Name = "mnCitacKartica";
-            this.mnCitacKartica.Size = new System.Drawing.Size(152, 22);
+            this.mnCitacKartica.Size = new System.Drawing.Size(139, 22);
             this.mnCitacKartica.Text = "Citac kartica";
             this.mnCitacKartica.Click += new System.EventHandler(this.mnCitacKartica_Click);
             // 
@@ -358,13 +365,6 @@ namespace Soko.UI
             this.mnAdminOpcije.Text = "Opcije";
             this.mnAdminOpcije.Click += new System.EventHandler(this.mnAdminOpcije_Click);
             // 
-            // mnLozinka
-            // 
-            this.mnLozinka.Name = "mnLozinka";
-            this.mnLozinka.Size = new System.Drawing.Size(152, 22);
-            this.mnLozinka.Text = "Lozinka";
-            this.mnLozinka.Click += new System.EventHandler(this.mnLozinka_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -377,6 +377,7 @@ namespace Soko.UI
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Shown += new System.EventHandler(this.Form1_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.menuStrip1.ResumeLayout(false);

@@ -1070,6 +1070,13 @@ namespace Soko.UI
             {
                 initCitacKarticaDictionary();
                 pokreniCitacKartica();
+            }
+        }
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            if (!Options.Instance.JedinstvenProgram && !Options.Instance.IsProgramZaClanarinu)
+            {
                 this.Visible = false;
             }
         }

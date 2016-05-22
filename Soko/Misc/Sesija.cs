@@ -106,7 +106,14 @@ namespace Soko.Misc
 
         public void OnOcitavanjeKartice(int brojKartice, DateTime vremeOcitavanja)
         {
-            ocitavanja.Add(new Ocitavanje(brojKartice, vremeOcitavanja));
+            if (Options.Instance.JedinstvenProgram)
+            {
+                ocitavanja.Add(new Ocitavanje(brojKartice, vremeOcitavanja));
+            }
+            else if (!Options.Instance.IsProgramZaClanarinu)
+            { 
+                // TODO3
+            }
         }
 
         private void createLogStreamWriter()
