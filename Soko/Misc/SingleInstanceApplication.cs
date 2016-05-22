@@ -34,9 +34,6 @@ namespace Soko
         {
             // Do your initialization here
 
-            // This creates singleton instance of NHibernateHelper and builds session factory
-            NHibernateHelper nh = NHibernateHelper.Instance;
-     
             // Then create the main form, the splash screen will automatically close
             this.MainForm = new Form1();
         }

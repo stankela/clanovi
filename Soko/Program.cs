@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using Soko.UI;
 using Soko.Exceptions;
+using Soko.Data;
 
 namespace Soko
 {
@@ -27,6 +28,9 @@ namespace Soko
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            // This creates singleton instance of NHibernateHelper and builds session factory
+            NHibernateHelper nh = NHibernateHelper.Instance;
 
             //Application.Run(new Form1());
             SingleInstanceApplication.Application.Run(args);
