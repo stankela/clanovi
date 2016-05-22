@@ -88,7 +88,7 @@ namespace Soko.UI
             {
                 txtSirinaDispleja.Enabled = true;
                 txtVisinaDispleja.Enabled = true;
-                CitacKarticaForm f = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
+                CitacKarticaForm f = Form1.Instance.CitacKarticaForm;
                 if (f != null)
                 {
                     txtSirinaDispleja.Text = f.ClientSize.Width.ToString();

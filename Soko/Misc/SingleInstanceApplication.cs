@@ -10,10 +10,7 @@ namespace Soko
 {
     class SingleInstanceApplication : WindowsFormsApplicationBase
     {
-        public static Form1 GlavniProzor;
-
         private static SingleInstanceApplication application;
-
         internal static SingleInstanceApplication Application
         {
             get
@@ -42,7 +39,6 @@ namespace Soko
      
             // Then create the main form, the splash screen will automatically close
             this.MainForm = new Form1();
-            GlavniProzor = this.MainForm as Form1;
         }
     }
 }

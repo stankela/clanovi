@@ -46,10 +46,12 @@ namespace Soko.UI
         private System.Timers.Timer lozinkaTimer;
         private System.Timers.Timer citacKarticaDictionaryTimer;
         private bool passwordExpired;
+        public static Form1 Instance;
 
         public Form1()
         {
             InitializeComponent();
+            Instance = this;
         }
 
         private void refreshAdminModeUI(bool adminMode)

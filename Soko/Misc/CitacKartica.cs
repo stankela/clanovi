@@ -79,7 +79,7 @@ namespace Soko
             string name = "                                ";
             broj = -1;
 
-            AdminForm af = SingleInstanceApplication.GlavniProzor.AdminForm;
+            AdminForm af = Form1.Instance.AdminForm;
             bool measureTime = af != null;
 
             Stopwatch watch = null;
@@ -144,8 +144,8 @@ namespace Soko
             string sType = "";
             string sID2 = "";
             string sName = CitacKartica.NAME_FIELD;
-            
-            AdminForm af = SingleInstanceApplication.GlavniProzor.AdminForm;
+
+            AdminForm af = Form1.Instance.AdminForm;
             bool measureTime = af != null;
 
             Stopwatch watch = null;
@@ -171,7 +171,7 @@ namespace Soko
 
         public bool TryReadDolazakNaTrening(int comPort, bool obrisiPrePrikazivanja)
         {
-            AdminForm af = SingleInstanceApplication.GlavniProzor.AdminForm;
+            AdminForm af = Form1.Instance.AdminForm;
             bool measureTime = af != null;
 
             Stopwatch watch = null;
@@ -225,7 +225,7 @@ namespace Soko
                 {
                     if (dobroFormatiranaKartica(sID1, name, out broj) && handleOcitavanjeKarticeTrening(broj, DateTime.Now, false))
                     {
-                        CitacKarticaForm citacKarticaForm = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
+                        CitacKarticaForm citacKarticaForm = Form1.Instance.CitacKarticaForm;
                         if (citacKarticaForm != null)
                         {
                             Thread.Sleep(1500);
@@ -284,7 +284,7 @@ namespace Soko
                     ++visibleCount;
                     if (visibleCount > Options.Instance.CitacKarticaThreadVisibleCount)
                     {
-                        CitacKarticaForm citacKarticaForm = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
+                        CitacKarticaForm citacKarticaForm = Form1.Instance.CitacKarticaForm;
                         if (citacKarticaForm != null)
                         {
                             citacKarticaForm.Clear();
@@ -304,7 +304,7 @@ namespace Soko
 
         public bool handleOcitavanjeKarticeTrening(int broj, DateTime vremeOcitavanja, bool obrisiPrePrikazivanja)
         {
-            CitacKarticaForm citacKarticaForm = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
+            CitacKarticaForm citacKarticaForm = Form1.Instance.CitacKarticaForm;
             if (obrisiPrePrikazivanja)
             {
                 // Kartica je ocitana, a na displeju je prikaz prethodnog ocitavanja. Obrisi prethodno ocitavanje
@@ -420,7 +420,7 @@ namespace Soko
             // Posto ocitavanje kartice traje relativno dugo (oko 374 ms), moguce je da je prozor
             // zatvoren bas u trenutku dok se kartica ocitava. Korisnik je u tom slucaju cuo zvuk
             // da je kartica ocitana ali se na displeju ne prikazuje da je kartica ocitana.
-            CitacKarticaForm form = SingleInstanceApplication.GlavniProzor.CitacKarticaForm;
+            CitacKarticaForm form = Form1.Instance.CitacKarticaForm;
             if (form != null)
             {
                 Color color = Options.Instance.PozadinaCitacaKartica;
