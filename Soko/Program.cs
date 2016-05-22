@@ -32,8 +32,34 @@ namespace Soko
             // This creates singleton instance of NHibernateHelper and builds session factory
             NHibernateHelper nh = NHibernateHelper.Instance;
 
+            parseOptionsFile();
+
             Application.Run(new Form1());
             //SingleInstanceApplication.Application.Run(args);
+        }
+
+        private static void parseOptionsFile()
+        {
+            string fileName = "Options.txt";
+            try
+            {
+                string[] lines = System.IO.File.ReadAllLines(fileName);
+                for (int i = 0; i < lines.Length; ++i)
+                {
+                    if (lines[i].ToUpper().Contains("JedinstvenProgram".ToUpper()))
+                    {
+                        Options.Instance.JedinstvenProgram = bool.Parse(lines[i].Split(' ')[1].Trim());
+                    }
+                    else if (lines[i].ToUpper().Contains("IsProgramZaClanarinu".ToUpper()))
+                    {
+                        Options.Instance.IsProgramZaClanarinu = bool.Parse(lines[i].Split(' ')[1].Trim());
+                    }
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                MessageDialogs.showMessage("Ne mogu da pronadjem fajl Options.txt", "Program za clanarinu");
+            }
         }
     }
 }
