@@ -32,8 +32,8 @@ namespace Soko
             // This creates singleton instance of NHibernateHelper and builds session factory
             NHibernateHelper nh = NHibernateHelper.Instance;
 
-            //Application.Run(new Form1());
-            SingleInstanceApplication.Application.Run(args);
+            Application.Run(new Form1());
+            //SingleInstanceApplication.Application.Run(args);
         }
     }
 }
