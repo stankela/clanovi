@@ -17,7 +17,7 @@ namespace Soko.UI
     public partial class CitacKarticaForm : Form
     {
         private const string FONT_NAME = "Arial";
-        string maxGrupa;
+        private string maxGrupa;
         private Font font;
         private string msg;
         private Color color;

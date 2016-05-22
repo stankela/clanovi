@@ -37,7 +37,10 @@ namespace Soko.Misc
 
         protected CitacKarticaDictionary()
         {
-
+            clanoviSaKarticom = new Dictionary<int, Clan>();
+            ovomesecneUplate = new Dictionary<int, List<UplataClanarine>>();
+            prethodneUplate = new Dictionary<int, List<UplataClanarine>>();
+            uplateGodisnjaClanarina = new Dictionary<int, UplataClanarine>();
         }
 
         public void Init()
@@ -48,6 +51,7 @@ namespace Soko.Misc
                 using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
+                    // TODO3: Proveri da li ovde treba koristiti CurrentSessionContext ako nije JedinstenProgram
                     CurrentSessionContext.Bind(session);
 
                     clanoviSaKarticom = new Dictionary<int, Clan>();
@@ -164,58 +168,79 @@ namespace Soko.Misc
 
         public void DodajClanaSaKarticom(Clan clan)
         {
-            if (!clanoviSaKarticom.ContainsKey(clan.BrojKartice.Value))
+            if (Options.Instance.JedinstvenProgram)
             {
-                clanoviSaKarticom.Add(clan.BrojKartice.Value, clan);
+                if (!clanoviSaKarticom.ContainsKey(clan.BrojKartice.Value))
+                {
+                    clanoviSaKarticom.Add(clan.BrojKartice.Value, clan);
+                }
+            }
+            else if (Options.Instance.IsProgramZaClanarinu)
+            { 
+                // TODO3
             }
         }
 
         public void DodajUplate(List<UplataClanarine> uplate)
         {
-            foreach (UplataClanarine u in uplate)
+            if (Options.Instance.JedinstvenProgram)
             {
-                if (Util.isGodisnjaClanarina(u.Grupa.Naziv) && u.VaziOd.Value.Year == DateTime.Now.Year)
+                foreach (UplataClanarine u in uplate)
                 {
-                    if (!uplateGodisnjaClanarina.ContainsKey(u.Clan.Id))
+                    if (Util.isGodisnjaClanarina(u.Grupa.Naziv) && u.VaziOd.Value.Year == DateTime.Now.Year)
                     {
-                        uplateGodisnjaClanarina.Add(u.Clan.Id, u);
+                        if (!uplateGodisnjaClanarina.ContainsKey(u.Clan.Id))
+                        {
+                            uplateGodisnjaClanarina.Add(u.Clan.Id, u);
+                        }
                     }
-                }
-                else if (u.VaziOd.Value.Month == DateTime.Now.Month && u.VaziOd.Value.Year == DateTime.Now.Year)
-                {
-                    if (ovomesecneUplate.ContainsKey(u.Clan.Id))
+                    else if (u.VaziOd.Value.Month == DateTime.Now.Month && u.VaziOd.Value.Year == DateTime.Now.Year)
                     {
-                        ovomesecneUplate[u.Clan.Id].Add(u);
+                        if (ovomesecneUplate.ContainsKey(u.Clan.Id))
+                        {
+                            ovomesecneUplate[u.Clan.Id].Add(u);
+                        }
+                        else
+                        {
+                            List<UplataClanarine> uplate2 = new List<UplataClanarine>();
+                            uplate2.Add(u);
+                            ovomesecneUplate.Add(u.Clan.Id, uplate2);
+                        }
                     }
                     else
                     {
-                        List<UplataClanarine> uplate2 = new List<UplataClanarine>();
-                        uplate2.Add(u);
-                        ovomesecneUplate.Add(u.Clan.Id, uplate2);
+                        if (prethodneUplate.ContainsKey(u.Clan.Id))
+                        {
+                            prethodneUplate[u.Clan.Id].Add(u);
+                        }
+                        else
+                        {
+                            List<UplataClanarine> uplate2 = new List<UplataClanarine>();
+                            uplate2.Add(u);
+                            prethodneUplate.Add(u.Clan.Id, uplate2);
+                        }
                     }
                 }
-                else
-                {
-                    if (prethodneUplate.ContainsKey(u.Clan.Id))
-                    {
-                        prethodneUplate[u.Clan.Id].Add(u);
-                    }
-                    else
-                    {
-                        List<UplataClanarine> uplate2 = new List<UplataClanarine>();
-                        uplate2.Add(u);
-                        prethodneUplate.Add(u.Clan.Id, uplate2);
-                    }
-                }
+            }
+            else if (Options.Instance.IsProgramZaClanarinu)
+            {
+                // TODO3
             }
         }
 
         public void UpdateNeplacaClanarinu(int brojKartice, bool neplacaClanarinu)
         {
-            Clan clan = findClan(brojKartice);
-            if (clan != null)
+            if (Options.Instance.JedinstvenProgram)
             {
-                clan.NeplacaClanarinu = neplacaClanarinu;
+                Clan clan = findClan(brojKartice);
+                if (clan != null)
+                {
+                    clan.NeplacaClanarinu = neplacaClanarinu;
+                }
+            }
+            else if (Options.Instance.IsProgramZaClanarinu)
+            {
+                // TODO3
             }
         }
     }
