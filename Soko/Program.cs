@@ -29,17 +29,18 @@ namespace Soko
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            // This creates singleton instance of NHibernateHelper and builds session factory
-            NHibernateHelper nh = NHibernateHelper.Instance;
-
             parseOptionsFile();
             if (args.Length > 0)
             {
-                // Ako postoje argumenti, u pitanju je klient process (prvi argument je server pipe handle,
+                // Ako postoje argumenti, u pitanju je klient process (prvi argument je pipe handle,
                 // prosledjen od servera).
+                Options.Instance.PipeHandle = args[0];
                 Options.Instance.JedinstvenProgram = false;
                 Options.Instance.IsProgramZaClanarinu = false;
             }
+
+            // This creates singleton instance of NHibernateHelper and builds session factory
+            NHibernateHelper nh = NHibernateHelper.Instance;
 
             Application.ApplicationExit += Application_ApplicationExit;
 

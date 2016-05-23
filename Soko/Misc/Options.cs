@@ -228,5 +228,12 @@ namespace Soko
             get { return clientPath; }
             set { clientPath = value; }
         }
+
+        private string pipeHandle;
+        public string PipeHandle
+        {
+            get { return pipeHandle; }
+            set { pipeHandle = value; }
+        }
     }
 }

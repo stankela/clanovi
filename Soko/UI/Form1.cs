@@ -51,7 +51,8 @@ namespace Soko.UI
         private bool passwordExpired;
         public static Form1 Instance;
         public AnonymousPipeServerStream pipeServer;
-        private Process pipeClient;
+        private Process clientProcess;
+        public StreamWriter pipeServerStreamWriter;
 
         public Form1()
         {
@@ -206,20 +207,18 @@ namespace Soko.UI
 
                 try
                 {
-                    // Read user input and send that to the client process. 
-                    using (StreamWriter sw = new StreamWriter(Form1.Instance.pipeServer))
-                    {
-                        sw.AutoFlush = true;
-                        sw.WriteLine("Exit");
-                    }
+                    pipeServerStreamWriter.AutoFlush = true;
+                    pipeServerStreamWriter.WriteLine("Exit");
                 }
-                catch (IOException ex)
+                catch (Exception ex)
                 {
-                    // IOException is raised if the pipe is broken  or disconnected.
+                    // Exception is raised if the pipe is broken  or disconnected.
                     MessageDialogs.showMessage(ex.Message, Form1.Instance.Text);
                 }
 
-                pipeClient.Close();
+                clientProcess.Close();
+                if (pipeServerStreamWriter != null)
+                    ((IDisposable)pipeServerStreamWriter).Dispose();
                 if (pipeServer != null)
                     ((IDisposable)pipeServer).Dispose();
             }
@@ -1121,14 +1120,14 @@ namespace Soko.UI
                 initlozinkaTimer();
 
                 pipeServer = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
-                pipeClient = new Process();
-                pipeClient.StartInfo.FileName = Options.Instance.ClientPath;
+                clientProcess = new Process();
+                clientProcess.StartInfo.FileName = Options.Instance.ClientPath;
                 // Pass the client process a handle to the server.
-                pipeClient.StartInfo.Arguments = pipeServer.GetClientHandleAsString();
-                pipeClient.StartInfo.UseShellExecute = false;
+                clientProcess.StartInfo.Arguments = pipeServer.GetClientHandleAsString();
+                clientProcess.StartInfo.UseShellExecute = false;
                 try
                 {
-                    pipeClient.Start();
+                    clientProcess.Start();
                 }
                 catch (Exception)
                 {
@@ -1136,11 +1135,14 @@ namespace Soko.UI
                         Form1.Instance.Text);
                 }
                 pipeServer.DisposeLocalCopyOfClientHandle();
+
+                pipeServerStreamWriter = new StreamWriter(pipeServer);
             }
             else
             {
                 initCitacKarticaDictionary();
                 pokreniCitacKartica();
+                pokreniPipeClientThread();
             }
         }
 
@@ -1187,6 +1189,90 @@ namespace Soko.UI
             //Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.WaitAndReadLoop));
             Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.ReadLoop));
             citacKarticaThread.Start();
+        }
+
+        private void pokreniPipeClientThread()
+        {
+            Thread pipeClientThread = new Thread(new ThreadStart(Form1.Instance.pipeClientWorker));
+            pipeClientThread.Start();
+        }
+
+        private void pipeClientWorker()
+        {
+            using (PipeStream pipeClient = new AnonymousPipeClientStream(PipeDirection.In, Options.Instance.PipeHandle))
+            {
+                using (StreamReader sr = new StreamReader(pipeClient))
+                {
+                    string temp;
+
+                    // Read the server data.
+                    while ((temp = sr.ReadLine()) != null)
+                    {
+                        if (temp.ToUpper().StartsWith(CitacKarticaDictionary.DODAJ_CLANA.ToUpper()))
+                        {
+                            try
+                            {
+                                using (ISession session = NHibernateHelper.Instance.OpenSession())
+                                using (session.BeginTransaction())
+                                {
+                                    CurrentSessionContext.Bind(session);
+
+                                    string[] parts = temp.Split(' ');
+                                    ClanDAO clanDAO = DAOFactoryFactory.DAOFactory.GetClanDAO();
+                                    Clan clan = clanDAO.FindById(int.Parse(parts[1]));
+                                    
+                                    CitacKarticaDictionary.Instance.DodajClanaSaKarticom(clan);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageDialogs.showError(ex.Message, this.Text);
+                            }
+                            finally
+                            {
+                                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
+                            }
+                        }
+                        else if (temp.ToUpper().StartsWith(CitacKarticaDictionary.DODAJ_UPLATE.ToUpper()))
+                        {
+                            try
+                            {
+                                using (ISession session = NHibernateHelper.Instance.OpenSession())
+                                using (session.BeginTransaction())
+                                {
+                                    CurrentSessionContext.Bind(session);
+
+                                    List<UplataClanarine> uplate = new List<UplataClanarine>();
+                                    string[] parts = temp.Split(' ');
+                                    UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
+                                    for (int i = 1; i < parts.Length; ++i)
+                                    {
+                                        uplate.Add(uplataClanarineDAO.FindById(int.Parse(parts[i])));
+                                    }
+                                    CitacKarticaDictionary.Instance.DodajUplate(uplate);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageDialogs.showError(ex.Message, this.Text);
+                            }
+                            finally
+                            {
+                                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
+                            }
+                        }
+                        else if (temp.ToUpper().StartsWith(CitacKarticaDictionary.UPDATE_NEPLACA_CLANARINU.ToUpper()))
+                        {
+                            string[] parts = temp.Split(' ');
+                            CitacKarticaDictionary.Instance.UpdateNeplacaClanarinu(int.Parse(parts[1]), bool.Parse(parts[2]));
+                        }
+                        else if (temp.ToUpper().StartsWith("EXIT"))
+                        {
+                            Application.Exit();
+                        }
+                    }
+                }
+            }
         }
 
         private void mnEvidencijaPrisustvaNaTreningu_Click(object sender, EventArgs e)

@@ -26,6 +26,8 @@ namespace Soko.Misc
         private IDictionary<int, UplataClanarine> uplateGodisnjaClanarina;
 
         public const string DODAJ_CLANA = "DodajClana";
+        public const string DODAJ_UPLATE = "DodajUplate";
+        public const string UPDATE_NEPLACA_CLANARINU = "UpdateNeplacaClanarinu";
 
         private static CitacKarticaDictionary instance;
         public static CitacKarticaDictionary Instance
@@ -182,16 +184,12 @@ namespace Soko.Misc
             {
                 try
                 {
-                    // Read user input and send that to the client process. 
-                    using (StreamWriter sw = new StreamWriter(Form1.Instance.pipeServer))
-                    {
-                        sw.AutoFlush = true;
-                        sw.WriteLine(DODAJ_CLANA + " " + clan.Id);
-                    }
+                    Form1.Instance.pipeServerStreamWriter.AutoFlush = true;
+                    Form1.Instance.pipeServerStreamWriter.WriteLine(DODAJ_CLANA + " " + clan.Id);
                 }
-                catch (IOException e)
+                catch (Exception e)
                 {
-                    // IOException is raised if the pipe is broken  or disconnected.
+                    // Exception is raised if the pipe is broken  or disconnected.
                     MessageDialogs.showMessage(e.Message, Form1.Instance.Text);
                 }
             }
@@ -240,7 +238,21 @@ namespace Soko.Misc
             }
             else
             {
-                // TODO3
+                try
+                {
+                    string uplateStr = String.Empty;
+                    foreach (UplataClanarine u in uplate)
+                    {
+                        uplateStr += " " + u.Id.ToString();
+                    }
+                    Form1.Instance.pipeServerStreamWriter.AutoFlush = true;
+                    Form1.Instance.pipeServerStreamWriter.WriteLine(DODAJ_UPLATE + uplateStr);
+                }
+                catch (Exception e)
+                {
+                    // Exception is raised if the pipe is broken  or disconnected.
+                    MessageDialogs.showMessage(e.Message, Form1.Instance.Text);
+                }
             }
         }
 
@@ -256,7 +268,17 @@ namespace Soko.Misc
             }
             else
             {
-                // TODO3
+                try
+                {
+                    Form1.Instance.pipeServerStreamWriter.AutoFlush = true;
+                    Form1.Instance.pipeServerStreamWriter.WriteLine(UPDATE_NEPLACA_CLANARINU
+                        + " " + brojKartice.ToString() + " " + neplacaClanarinu.ToString());
+                }
+                catch (Exception e)
+                {
+                    // Exception is raised if the pipe is broken  or disconnected.
+                    MessageDialogs.showMessage(e.Message, Form1.Instance.Text);
+                }
             }
         }
     }
