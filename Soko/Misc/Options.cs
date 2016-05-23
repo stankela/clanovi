@@ -221,5 +221,12 @@ namespace Soko
             get { return isProgramZaClanarinu; }
             set { isProgramZaClanarinu = value; }
         }
+
+        private string clientPath = @"..\CitacKartica\CitacKartica.exe";
+        public string ClientPath
+        {
+            get { return clientPath; }
+            set { clientPath = value; }
+        }
     }
 }

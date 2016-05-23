@@ -6,6 +6,7 @@ using Soko.Domain;
 using Soko.UI;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -23,6 +24,8 @@ namespace Soko.Misc
         private IDictionary<int, List<UplataClanarine>> ovomesecneUplate;
         private IDictionary<int, List<UplataClanarine>> prethodneUplate;
         private IDictionary<int, UplataClanarine> uplateGodisnjaClanarina;
+
+        public const string DODAJ_CLANA = "DodajClana";
 
         private static CitacKarticaDictionary instance;
         public static CitacKarticaDictionary Instance
@@ -168,22 +171,35 @@ namespace Soko.Misc
 
         public void DodajClanaSaKarticom(Clan clan)
         {
-            if (Options.Instance.JedinstvenProgram)
+            if (Options.Instance.JedinstvenProgram || !Options.Instance.IsProgramZaClanarinu)
             {
                 if (!clanoviSaKarticom.ContainsKey(clan.BrojKartice.Value))
                 {
                     clanoviSaKarticom.Add(clan.BrojKartice.Value, clan);
                 }
             }
-            else if (Options.Instance.IsProgramZaClanarinu)
-            { 
-                // TODO3
+            else
+            {
+                try
+                {
+                    // Read user input and send that to the client process. 
+                    using (StreamWriter sw = new StreamWriter(Form1.Instance.pipeServer))
+                    {
+                        sw.AutoFlush = true;
+                        sw.WriteLine(DODAJ_CLANA + " " + clan.Id);
+                    }
+                }
+                catch (IOException e)
+                {
+                    // IOException is raised if the pipe is broken  or disconnected.
+                    MessageDialogs.showMessage(e.Message, Form1.Instance.Text);
+                }
             }
         }
 
         public void DodajUplate(List<UplataClanarine> uplate)
         {
-            if (Options.Instance.JedinstvenProgram)
+            if (Options.Instance.JedinstvenProgram || !Options.Instance.IsProgramZaClanarinu)
             {
                 foreach (UplataClanarine u in uplate)
                 {
@@ -222,7 +238,7 @@ namespace Soko.Misc
                     }
                 }
             }
-            else if (Options.Instance.IsProgramZaClanarinu)
+            else
             {
                 // TODO3
             }
@@ -230,7 +246,7 @@ namespace Soko.Misc
 
         public void UpdateNeplacaClanarinu(int brojKartice, bool neplacaClanarinu)
         {
-            if (Options.Instance.JedinstvenProgram)
+            if (Options.Instance.JedinstvenProgram || !Options.Instance.IsProgramZaClanarinu)
             {
                 Clan clan = findClan(brojKartice);
                 if (clan != null)
@@ -238,7 +254,7 @@ namespace Soko.Misc
                     clan.NeplacaClanarinu = neplacaClanarinu;
                 }
             }
-            else if (Options.Instance.IsProgramZaClanarinu)
+            else
             {
                 // TODO3
             }

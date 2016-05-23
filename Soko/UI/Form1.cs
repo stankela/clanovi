@@ -15,6 +15,9 @@ using NHibernate.Context;
 using Bilten.Dao;
 using Soko.Misc;
 using System.Threading;
+using System.IO.Pipes;
+using System.IO;
+using System.Diagnostics;
 
 namespace Soko.UI
 {
@@ -47,6 +50,8 @@ namespace Soko.UI
         private System.Timers.Timer citacKarticaDictionaryTimer;
         private bool passwordExpired;
         public static Form1 Instance;
+        public AnonymousPipeServerStream pipeServer;
+        private Process pipeClient;
 
         public Form1()
         {
@@ -170,12 +175,59 @@ namespace Soko.UI
             Close();
         }
 
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            /*if (Options.Instance.TraziLozinkuPreOtvaranjaProzora)
+                return;
+
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                e.Cancel = true;
+            }*/
+        }
+
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            zaustaviCitacKartica();
-            lozinkaTimer.Stop();
-            Sesija.Instance.EndSession();
-            saveOptions();
+            if (Options.Instance.JedinstvenProgram)
+            {
+                zaustaviCitacKartica();
+                lozinkaTimer.Stop();
+                Sesija.Instance.EndSession();
+                saveOptions();
+            }
+            else if (Options.Instance.IsProgramZaClanarinu)
+            {
+                lozinkaTimer.Stop();
+                Sesija.Instance.EndSession();
+                saveOptions();
+
+                //pipeClient.CloseMainWindow();
+                //pipeClient.Kill();
+
+                try
+                {
+                    // Read user input and send that to the client process. 
+                    using (StreamWriter sw = new StreamWriter(Form1.Instance.pipeServer))
+                    {
+                        sw.AutoFlush = true;
+                        sw.WriteLine("Exit");
+                    }
+                }
+                catch (IOException ex)
+                {
+                    // IOException is raised if the pipe is broken  or disconnected.
+                    MessageDialogs.showMessage(ex.Message, Form1.Instance.Text);
+                }
+
+                pipeClient.Close();
+                if (pipeServer != null)
+                    ((IDisposable)pipeServer).Dispose();
+            }
+            else
+            {
+                // Stavljeno u ApplicationExit zato sto se iz nekog razloga FormClosed ne poziva za ovaj slucaj
+            }
+
             NHibernateHelper.Instance.SessionFactory.Close();
         }
 
@@ -1067,6 +1119,23 @@ namespace Soko.UI
                 Sesija.Instance.InitSession();
 
                 initlozinkaTimer();
+
+                pipeServer = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
+                pipeClient = new Process();
+                pipeClient.StartInfo.FileName = Options.Instance.ClientPath;
+                // Pass the client process a handle to the server.
+                pipeClient.StartInfo.Arguments = pipeServer.GetClientHandleAsString();
+                pipeClient.StartInfo.UseShellExecute = false;
+                try
+                {
+                    pipeClient.Start();
+                }
+                catch (Exception)
+                {
+                    MessageDialogs.showMessage("GRESKA: Ne mogu da pokrenem '" + Options.Instance.ClientPath + "'",
+                        Form1.Instance.Text);
+                }
+                pipeServer.DisposeLocalCopyOfClientHandle();
             }
             else
             {
@@ -1362,17 +1431,6 @@ namespace Soko.UI
                 }
                 lastWindowState = WindowState;
             }
-        }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            /*if (Options.Instance.TraziLozinkuPreOtvaranjaProzora)
-                return;
-
-            if (this.WindowState == FormWindowState.Minimized)
-            {
-                e.Cancel = true;
-            }*/
         }
 
         private void mnClanoviKojiNePlacajuClanarinu_Click(object sender, EventArgs e)
