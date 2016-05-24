@@ -47,8 +47,14 @@ namespace Soko
 
             Application.ApplicationExit += Application_ApplicationExit;
 
-            Application.Run(new Form1());
-            //SingleInstanceApplication.Application.Run(args);
+            if (Options.Instance.JedinstvenProgram || Options.Instance.IsProgramZaClanarinu)
+            {
+                SingleInstanceApplication.Application.Run(args);
+            }
+            else
+            {
+                Application.Run(new Form1());
+            }
         }
 
         static void Application_ApplicationExit(object sender, EventArgs e)
