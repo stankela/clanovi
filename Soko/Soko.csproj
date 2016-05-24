@@ -552,6 +552,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="TODO.txt" />
+    <Content Include="UPUTSTVO_ZA_DVA_PROGRAMA.txt" />
     <EmbeddedResource Include="Data\NHibernate\Mappings\Mesto.hbm.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
