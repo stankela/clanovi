@@ -209,16 +209,7 @@ namespace Soko.UI
                 //pipeClient.CloseMainWindow();
                 //pipeClient.Kill();
 
-                try
-                {
-                    pipeServerStreamWriter.AutoFlush = true;
-                    pipeServerStreamWriter.WriteLine("Exit");
-                }
-                catch (Exception ex)
-                {
-                    // Exception is raised if the pipe is broken  or disconnected.
-                    MessageDialogs.showMessage(ex.Message, Form1.Instance.Text);
-                }
+                sendToPipeClient("Exit");
 
                 clientProcess.Close();
                 if (pipeServerStreamWriter != null)
@@ -1625,6 +1616,20 @@ namespace Soko.UI
                 {
                     lozinkaTimer.Interval = Options.Instance.LozinkaTimerMinuti * 60 * 1000;
                 }
+            }
+        }
+
+        public void sendToPipeClient(string msg)
+        {
+            try
+            {
+                Form1.Instance.pipeServerStreamWriter.AutoFlush = true;
+                Form1.Instance.pipeServerStreamWriter.WriteLine(msg);
+            }
+            catch (Exception ex)
+            {
+                // Exception is raised if the pipe is broken  or disconnected.
+                MessageDialogs.showMessage(ex.Message, Form1.Instance.Text);
             }
         }
     }

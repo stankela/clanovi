@@ -182,16 +182,7 @@ namespace Soko.Misc
             }
             else
             {
-                try
-                {
-                    Form1.Instance.pipeServerStreamWriter.AutoFlush = true;
-                    Form1.Instance.pipeServerStreamWriter.WriteLine(DODAJ_CLANA + " " + clan.Id);
-                }
-                catch (Exception e)
-                {
-                    // Exception is raised if the pipe is broken  or disconnected.
-                    MessageDialogs.showMessage(e.Message, Form1.Instance.Text);
-                }
+                Form1.Instance.sendToPipeClient(DODAJ_CLANA + " " + clan.Id);
             }
         }
 
@@ -238,21 +229,12 @@ namespace Soko.Misc
             }
             else
             {
-                try
+                string uplateStr = String.Empty;
+                foreach (UplataClanarine u in uplate)
                 {
-                    string uplateStr = String.Empty;
-                    foreach (UplataClanarine u in uplate)
-                    {
-                        uplateStr += " " + u.Id.ToString();
-                    }
-                    Form1.Instance.pipeServerStreamWriter.AutoFlush = true;
-                    Form1.Instance.pipeServerStreamWriter.WriteLine(DODAJ_UPLATE + uplateStr);
+                    uplateStr += " " + u.Id.ToString();
                 }
-                catch (Exception e)
-                {
-                    // Exception is raised if the pipe is broken  or disconnected.
-                    MessageDialogs.showMessage(e.Message, Form1.Instance.Text);
-                }
+                Form1.Instance.sendToPipeClient(DODAJ_UPLATE + uplateStr);
             }
         }
 
@@ -268,17 +250,8 @@ namespace Soko.Misc
             }
             else
             {
-                try
-                {
-                    Form1.Instance.pipeServerStreamWriter.AutoFlush = true;
-                    Form1.Instance.pipeServerStreamWriter.WriteLine(UPDATE_NEPLACA_CLANARINU
-                        + " " + brojKartice.ToString() + " " + neplacaClanarinu.ToString());
-                }
-                catch (Exception e)
-                {
-                    // Exception is raised if the pipe is broken  or disconnected.
-                    MessageDialogs.showMessage(e.Message, Form1.Instance.Text);
-                }
+                Form1.Instance.sendToPipeClient(UPDATE_NEPLACA_CLANARINU
+                    + " " + brojKartice.ToString() + " " + neplacaClanarinu.ToString());
             }
         }
     }

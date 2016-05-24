@@ -77,27 +77,17 @@ namespace Soko.UI
 
             if (!Options.Instance.JedinstvenProgram && Options.Instance.IsProgramZaClanarinu)
             {
-                try
-                {
-                    string msg = "CitacKarticaOpcije";
-                    msg += " COMPortReader " + Options.Instance.COMPortReader.ToString();
-                    msg += " COMPortWriter " + Options.Instance.COMPortWriter.ToString();
-                    msg += " PoslednjiDanZaUplate " + Options.Instance.PoslednjiDanZaUplate.ToString();
-                    msg += " VelicinaSlovaZaCitacKartica " + Options.Instance.VelicinaSlovaZaCitacKartica.ToString();
-                    msg += " PrikaziBojeKodOcitavanja " + Options.Instance.PrikaziBojeKodOcitavanja.ToString();
-                    msg += " PrikaziImeClanaKodOcitavanjaKartice " + Options.Instance.PrikaziImeClanaKodOcitavanjaKartice.ToString();
-                    msg += " PrikaziDisplejPrekoCelogEkrana " + Options.Instance.PrikaziDisplejPrekoCelogEkrana.ToString();
-                    msg += " SirinaDispleja " + Options.Instance.SirinaDispleja.ToString();
-                    msg += " VisinaDispleja " + Options.Instance.VisinaDispleja.ToString();
-
-                    Form1.Instance.pipeServerStreamWriter.AutoFlush = true;
-                    Form1.Instance.pipeServerStreamWriter.WriteLine(msg);
-                }
-                catch (Exception ex)
-                {
-                    // Exception is raised if the pipe is broken  or disconnected.
-                    MessageDialogs.showMessage(ex.Message, Form1.Instance.Text);
-                }
+                string msg = "CitacKarticaOpcije";
+                msg += " COMPortReader " + Options.Instance.COMPortReader.ToString();
+                msg += " COMPortWriter " + Options.Instance.COMPortWriter.ToString();
+                msg += " PoslednjiDanZaUplate " + Options.Instance.PoslednjiDanZaUplate.ToString();
+                msg += " VelicinaSlovaZaCitacKartica " + Options.Instance.VelicinaSlovaZaCitacKartica.ToString();
+                msg += " PrikaziBojeKodOcitavanja " + Options.Instance.PrikaziBojeKodOcitavanja.ToString();
+                msg += " PrikaziImeClanaKodOcitavanjaKartice " + Options.Instance.PrikaziImeClanaKodOcitavanjaKartice.ToString();
+                msg += " PrikaziDisplejPrekoCelogEkrana " + Options.Instance.PrikaziDisplejPrekoCelogEkrana.ToString();
+                msg += " SirinaDispleja " + Options.Instance.SirinaDispleja.ToString();
+                msg += " VisinaDispleja " + Options.Instance.VisinaDispleja.ToString();
+                Form1.Instance.sendToPipeClient(msg);
             }
         }
 
