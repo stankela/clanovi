@@ -29,7 +29,6 @@ namespace Soko
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            parseOptionsFile();
             if (args.Length > 0)
             {
                 // Ako postoje argumenti, u pitanju je klient process (prvi argument je pipe handle,
@@ -37,6 +36,10 @@ namespace Soko
                 Options.Instance.PipeHandle = args[0];
                 Options.Instance.JedinstvenProgram = false;
                 Options.Instance.IsProgramZaClanarinu = false;
+            }
+            else
+            {
+                parseOptionsFile();
             }
 
             // This creates singleton instance of NHibernateHelper and builds session factory
