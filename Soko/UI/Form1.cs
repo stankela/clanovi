@@ -1277,6 +1277,69 @@ namespace Soko.UI
                             string[] parts = temp.Split(' ');
                             CitacKarticaDictionary.Instance.UpdateNeplacaClanarinu(int.Parse(parts[1]), bool.Parse(parts[2]));
                         }
+                        else if (temp.ToUpper().StartsWith("CitacKarticaOpcije".ToUpper()))
+                        {
+                            string COMPortReader = String.Empty;
+                            string COMPortWriter = String.Empty;
+                            string PoslednjiDanZaUplate = String.Empty;
+                            string VelicinaSlovaZaCitacKartica = String.Empty;
+                            string PrikaziBojeKodOcitavanja = String.Empty;
+                            string PrikaziImeClanaKodOcitavanjaKartice = String.Empty;
+                            string PrikaziDisplejPrekoCelogEkrana = String.Empty;
+                            string SirinaDispleja = String.Empty;
+                            string VisinaDispleja = String.Empty;
+
+                            string[] parts = temp.Split(' ');
+                            for (int i = 1; i < parts.Length; i = i + 2)
+                            {
+                                if (parts[i].ToUpper() == "COMPortReader".ToUpper())
+                                {
+                                    COMPortReader = parts[i + 1];
+                                }
+                                else if (parts[i].ToUpper() == "COMPortWriter".ToUpper())
+                                {
+                                    COMPortWriter = parts[i + 1];
+                                }
+                                else if (parts[i].ToUpper() == "PoslednjiDanZaUplate".ToUpper())
+                                {
+                                    PoslednjiDanZaUplate = parts[i + 1];
+                                }
+                                else if (parts[i].ToUpper() == "VelicinaSlovaZaCitacKartica".ToUpper())
+                                {
+                                    VelicinaSlovaZaCitacKartica = parts[i + 1];
+                                }
+                                else if (parts[i].ToUpper() == "PrikaziBojeKodOcitavanja".ToUpper())
+                                {
+                                    PrikaziBojeKodOcitavanja = parts[i + 1];
+                                }
+                                else if (parts[i].ToUpper() == "PrikaziImeClanaKodOcitavanjaKartice".ToUpper())
+                                {
+                                    PrikaziImeClanaKodOcitavanjaKartice = parts[i + 1];
+                                }
+                                else if (parts[i].ToUpper() == "PrikaziDisplejPrekoCelogEkrana".ToUpper())
+                                {
+                                    PrikaziDisplejPrekoCelogEkrana = parts[i + 1];
+                                }
+                                else if (parts[i].ToUpper() == "SirinaDispleja".ToUpper())
+                                {
+                                    SirinaDispleja = parts[i + 1];
+                                }
+                                else if (parts[i].ToUpper() == "VisinaDispleja".ToUpper())
+                                {
+                                    VisinaDispleja = parts[i + 1];
+                                }
+                            }
+
+                            Options.Instance.COMPortReader = int.Parse(COMPortReader);
+                            Options.Instance.COMPortWriter = int.Parse(COMPortWriter);
+                            Options.Instance.PoslednjiDanZaUplate = int.Parse(PoslednjiDanZaUplate);
+                            Options.Instance.VelicinaSlovaZaCitacKartica = int.Parse(VelicinaSlovaZaCitacKartica);
+                            Options.Instance.PrikaziBojeKodOcitavanja = bool.Parse(PrikaziBojeKodOcitavanja);
+                            Options.Instance.PrikaziImeClanaKodOcitavanjaKartice = bool.Parse(PrikaziImeClanaKodOcitavanjaKartice);
+                            Options.Instance.PrikaziDisplejPrekoCelogEkrana = bool.Parse(PrikaziDisplejPrekoCelogEkrana);
+                            Options.Instance.SirinaDispleja = int.Parse(SirinaDispleja);
+                            Options.Instance.VisinaDispleja = int.Parse(VisinaDispleja);
+                        }
                         else if (temp.ToUpper().StartsWith("EXIT"))
                         {
                             Application.Exit();
