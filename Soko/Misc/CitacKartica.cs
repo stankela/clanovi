@@ -89,7 +89,14 @@ namespace Soko
             }
 
             ulong retval;
-            lock (readAndWriteLock)
+            if (Options.Instance.JedinstvenProgram)
+            {
+                lock (readAndWriteLock)
+                {
+                    retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+                }
+            }
+            else
             {
                 retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
             }
@@ -124,7 +131,14 @@ namespace Soko
             broj = -1;
 
             ulong retval;
-            lock (readAndWriteLock)
+            if (Options.Instance.JedinstvenProgram)
+            {
+                lock (readAndWriteLock)
+                {
+                    retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+                }
+            }
+            else
             {
                 retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
             }
@@ -155,7 +169,14 @@ namespace Soko
             }
 
             ulong retval;
-            lock (readAndWriteLock)
+            if (Options.Instance.JedinstvenProgram)
+            {
+                lock (readAndWriteLock)
+                {
+                    retval = WriteDataCard(comPort, sType, sID1, sID2, sName) & 0xFFFFFFFF;
+                }
+            }
+            else
             {
                 retval = WriteDataCard(comPort, sType, sID1, sID2, sName) & 0xFFFFFFFF;
             }
@@ -211,7 +232,15 @@ namespace Soko
                 int broj = -1;
 
                 ulong retval;
-                lock (readAndWriteLock)
+                if (Options.Instance.JedinstvenProgram)
+                {
+                    lock (readAndWriteLock)
+                    {
+                        retval = WaitAndReadDataCard(Options.Instance.COMPortReader, nSecs,
+                           ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+                    }
+                }
+                else
                 {
                     retval = WaitAndReadDataCard(Options.Instance.COMPortReader, nSecs,
                        ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
