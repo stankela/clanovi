@@ -257,7 +257,8 @@ namespace Soko
                         CitacKarticaForm citacKarticaForm = Form1.Instance.CitacKarticaForm;
                         if (citacKarticaForm != null)
                         {
-                            Thread.Sleep(1500);
+                            Thread.Sleep(Options.Instance.CitacKarticaThreadVisibleCount 
+                                * Options.Instance.CitacKarticaThreadInterval);
                             citacKarticaForm.Clear();
                         }
                     }

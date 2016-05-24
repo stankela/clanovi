@@ -44,6 +44,7 @@ namespace Soko.UI
         const string CitacKarticaThreadSkipCountRegKey = "CitacKarticaThreadSkipCount";
         const string CitacKarticaThreadVisibleCountRegKey = "CitacKarticaThreadVisibleCount";
         const string CitacKarticaThreadPauzaZaBrisanjeRegKey = "CitacKarticaThreadPauzaZaBrisanje";
+        const string UseWaitAndReadLoopRegKey = "UseWaitAndReadLoop";
 
         private FormWindowState lastWindowState = FormWindowState.Normal;
         private System.Timers.Timer lozinkaTimer;
@@ -127,6 +128,8 @@ namespace Soko.UI
                     Options.Instance.CitacKarticaThreadVisibleCount = int.Parse((string)regkey.GetValue(CitacKarticaThreadVisibleCountRegKey));
                 if (regkey.GetValue(CitacKarticaThreadPauzaZaBrisanjeRegKey) != null)
                     Options.Instance.CitacKarticaThreadPauzaZaBrisanje = int.Parse((string)regkey.GetValue(CitacKarticaThreadPauzaZaBrisanjeRegKey));
+                if (regkey.GetValue(UseWaitAndReadLoopRegKey) != null)
+                    Options.Instance.UseWaitAndReadLoop = bool.Parse((string)regkey.GetValue(UseWaitAndReadLoopRegKey));
                 regkey.Close();
             }
             Options.Instance.Font = new Font(Font.FontFamily, fontSize);
@@ -167,6 +170,7 @@ namespace Soko.UI
             regkey.SetValue(CitacKarticaThreadSkipCountRegKey, Options.Instance.CitacKarticaThreadSkipCount.ToString());
             regkey.SetValue(CitacKarticaThreadVisibleCountRegKey, Options.Instance.CitacKarticaThreadVisibleCount.ToString());
             regkey.SetValue(CitacKarticaThreadPauzaZaBrisanjeRegKey, Options.Instance.CitacKarticaThreadPauzaZaBrisanje.ToString());
+            regkey.SetValue(UseWaitAndReadLoopRegKey, Options.Instance.UseWaitAndReadLoop.ToString());
       
             regkey.Close();
         }
@@ -1185,9 +1189,16 @@ namespace Soko.UI
         {
             CitacKarticaForm citacKarticaForm = new CitacKarticaForm();
             citacKarticaForm.Show();
-            
-            //Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.WaitAndReadLoop));
-            Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.ReadLoop));
+
+            Thread citacKarticaThread;
+            if (Options.Instance.UseWaitAndReadLoop)
+            {
+                citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.WaitAndReadLoop));
+            }
+            else
+            {
+                citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.ReadLoop));
+            }
             citacKarticaThread.Start();
         }
 

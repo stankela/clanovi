@@ -235,5 +235,12 @@ namespace Soko
             get { return pipeHandle; }
             set { pipeHandle = value; }
         }
+
+        private bool useWaitAndReadLoop = false;
+        public bool UseWaitAndReadLoop
+        {
+            get { return useWaitAndReadLoop; }
+            set { useWaitAndReadLoop = value; }
+        }
     }
 }

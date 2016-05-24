@@ -54,6 +54,7 @@
             this.lblCitacKarticaThreadPauzaZaBrisanje = new System.Windows.Forms.Label();
             this.txtCitacKarticaThreadPauzaZaBrisanje = new System.Windows.Forms.TextBox();
             this.btnPromeniCitacKarticaThreadPauzaZaBrisanje = new System.Windows.Forms.Button();
+            this.ckbUseWaitAndReadLoop = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lstCitacKarticeElapsedMs
@@ -285,11 +286,23 @@
             this.btnPromeniCitacKarticaThreadPauzaZaBrisanje.UseVisualStyleBackColor = true;
             this.btnPromeniCitacKarticaThreadPauzaZaBrisanje.Click += new System.EventHandler(this.btnPromeniCitacKarticaThreadPauzaZaBrisanje_Click);
             // 
+            // ckbUseWaitAndReadLoop
+            // 
+            this.ckbUseWaitAndReadLoop.AutoSize = true;
+            this.ckbUseWaitAndReadLoop.Location = new System.Drawing.Point(12, 328);
+            this.ckbUseWaitAndReadLoop.Name = "ckbUseWaitAndReadLoop";
+            this.ckbUseWaitAndReadLoop.Size = new System.Drawing.Size(142, 17);
+            this.ckbUseWaitAndReadLoop.TabIndex = 32;
+            this.ckbUseWaitAndReadLoop.Text = "Use WaitAndRead Loop";
+            this.ckbUseWaitAndReadLoop.UseVisualStyleBackColor = true;
+            this.ckbUseWaitAndReadLoop.CheckedChanged += new System.EventHandler(this.ckbUseWaitAndReadLoop_CheckedChanged);
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(869, 525);
+            this.Controls.Add(this.ckbUseWaitAndReadLoop);
             this.Controls.Add(this.btnPromeniCitacKarticaThreadPauzaZaBrisanje);
             this.Controls.Add(this.txtCitacKarticaThreadPauzaZaBrisanje);
             this.Controls.Add(this.lblCitacKarticaThreadPauzaZaBrisanje);
@@ -351,5 +364,6 @@
         private System.Windows.Forms.Label lblCitacKarticaThreadPauzaZaBrisanje;
         private System.Windows.Forms.TextBox txtCitacKarticaThreadPauzaZaBrisanje;
         private System.Windows.Forms.Button btnPromeniCitacKarticaThreadPauzaZaBrisanje;
+        private System.Windows.Forms.CheckBox ckbUseWaitAndReadLoop;
     }
 }
