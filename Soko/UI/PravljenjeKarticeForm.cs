@@ -237,28 +237,29 @@ namespace Soko.UI
                 throw new WriteCardException(ERROR_MSG_WRITE);
             }
 
+            Clan clan = null;
             try
             {
                 using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
-                    Clan clan = session.Load<Clan>(clanId);
+                    clan = session.Load<Clan>(clanId);
                     clan.BrojKartice = brojKartice;
                     DAOFactoryFactory.DAOFactory.GetClanDAO().MakePersistent(clan);
                     session.Transaction.Commit();
                     ckbKartica.Checked = true;
 
                     okMsg = String.Format(OK_MSG_WRITE, brojKartice.ToString(), clan.BrojPrezimeImeDatumRodjenja);
-
-                    CitacKarticaDictionary.Instance.DodajClanaSaKarticom(clan);
-                    return;
                 }
             }
             finally
             {
                 CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
+
+            if (clan != null)
+                CitacKarticaDictionary.Instance.DodajClanaSaKarticom(clan);
         }
 
         private void ckbTestKartica_CheckedChanged(object sender, EventArgs e)

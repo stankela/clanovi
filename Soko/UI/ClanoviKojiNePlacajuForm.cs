@@ -132,22 +132,19 @@ namespace Soko.UI
                     session.Transaction.Commit();
                     onEntityAdded(clan);
                     updateBrojClanovaLabel();
-
-                    CitacKarticaDictionary.Instance.UpdateNeplacaClanarinu(clan.BrojKartice.Value, true);
                 }
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
             }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
+                return;
             }
             finally
             {
                 CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
+
+            CitacKarticaDictionary.Instance.UpdateNeplacaClanarinu(clan.BrojKartice.Value, true);
         }
 
         private void btnBrisi_Click(object sender, System.EventArgs e)
@@ -170,22 +167,19 @@ namespace Soko.UI
                     session.Transaction.Commit();
                     onEntityDeleted(clan);
                     updateBrojClanovaLabel();
-
-                    CitacKarticaDictionary.Instance.UpdateNeplacaClanarinu(clan.BrojKartice.Value, false);
                 }
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
             }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
+                return;
             }
             finally
             {
                 CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
+
+            CitacKarticaDictionary.Instance.UpdateNeplacaClanarinu(clan.BrojKartice.Value, false);
         }
 
         protected override string deleteConfirmationMessage(DomainObject entity)
