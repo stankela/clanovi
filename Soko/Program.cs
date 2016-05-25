@@ -69,6 +69,8 @@ namespace Soko
             }
             else
             {
+                // NOTE: Ovaj kod se nece izvrsiti ako je UseWaitAndReadLoop = true zato sto se tada program zatvara
+                // pomocu Kill, i ApplicationExit ne generise.
                 Form1.Instance.zaustaviCitacKartica();
                 NHibernateHelper.Instance.SessionFactory.Close();
             }

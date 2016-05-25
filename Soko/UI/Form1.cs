@@ -206,10 +206,18 @@ namespace Soko.UI
                 Sesija.Instance.EndSession();
                 saveOptions();
 
-                //pipeClient.CloseMainWindow();
-                //pipeClient.Kill();
-
-                sendToPipeClient("Exit");
+                if (Options.Instance.UseWaitAndReadLoop)
+                {
+                    // NOTE: Moram da pozivam Kill jer ako se client program regularno zatvori (slanjem "Exit" poruke)
+                    // WaitAndReadDataCard je i dalje aktivan dok ne istekne interval, a samim tim i proces je i dalje
+                    // aktivan, i nije moguce ponovo restartovanje programa (ili je moguce ali imamo istovremeno dva
+                    // procesa).
+                    clientProcess.Kill();
+                }
+                else
+                {
+                    sendToPipeClient("Exit");
+                }
 
                 clientProcess.Close();
                 if (pipeServerStreamWriter != null)

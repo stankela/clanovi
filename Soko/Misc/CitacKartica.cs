@@ -218,11 +218,13 @@ namespace Soko
             // TODO2: Proveri da li je sve u ovom metodu thread safe.
             while (!_shouldStop)
             {
-                // NOTE: Izabran je mali vremenski interval (a ne recimo 20 sec), zato sto kada se program zatvori
+                // NOTE: Izabran je mali vremenski interval (a ne recimo 10 sec), zato sto kada se program zatvori
                 // WaitAndReadDataCard je i dalje aktivan dok ne istekne interval, a samim tim i proces je i dalje
                 // aktivan, i nije moguce ponovo restartovanje programa (ili je moguce ali imamo istovremeno dva
                 // procesa).
-                int nSecs = 2;
+
+                //int nSecs = 2;
+                int nSecs = 10;
 
                 string sType = " ";
                 string sID1 = "          ";
