@@ -1159,6 +1159,8 @@ namespace Soko.UI
         {
             if (!Options.Instance.JedinstvenProgram && !Options.Instance.IsProgramZaClanarinu)
             {
+                // TODO3: Probaj da nadjes bolji nacin za sakrivanje Form1, zato sto se u ovom slucaju (tj. kada se
+                // Visible postavi na false) ipak Form1 prikaze za trenutak pre nego sto se sakrije.
                 this.Visible = false;
             }
         }
