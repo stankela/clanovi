@@ -1128,18 +1128,24 @@ namespace Soko.UI
                 // Pass the client process a handle to the server.
                 clientProcess.StartInfo.Arguments = pipeServer.GetClientHandleAsString();
                 clientProcess.StartInfo.UseShellExecute = false;
+
+                bool clientStarted = true;
                 try
                 {
                     clientProcess.Start();
                 }
                 catch (Exception)
                 {
-                    MessageDialogs.showMessage("GRESKA: Ne mogu da pokrenem '" + Options.Instance.ClientPath + "'",
+                    clientStarted = false;
+                    MessageDialogs.showMessage("GRESKA: Ne mogu da pokrenem citac kartica '" + Options.Instance.ClientPath + "'",
                         Form1.Instance.Text);
                 }
                 pipeServer.DisposeLocalCopyOfClientHandle();
 
-                pipeServerStreamWriter = new StreamWriter(pipeServer);
+                if (clientStarted)
+                {
+                    pipeServerStreamWriter = new StreamWriter(pipeServer);
+                }
             }
             else
             {
@@ -1631,8 +1637,11 @@ namespace Soko.UI
         {
             try
             {
-                Form1.Instance.pipeServerStreamWriter.AutoFlush = true;
-                Form1.Instance.pipeServerStreamWriter.WriteLine(msg);
+                if (pipeServerStreamWriter != null)
+                {
+                    pipeServerStreamWriter.AutoFlush = true;
+                    pipeServerStreamWriter.WriteLine(msg);
+                }
             }
             catch (Exception ex)
             {
