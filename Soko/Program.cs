@@ -42,9 +42,6 @@ namespace Soko
                 parseOptionsFile();
             }
 
-            // This creates singleton instance of NHibernateHelper and builds session factory
-            NHibernateHelper nh = NHibernateHelper.Instance;
-
             Application.ApplicationExit += Application_ApplicationExit;
 
             if (Options.Instance.JedinstvenProgram || Options.Instance.IsProgramZaClanarinu)

@@ -54,6 +54,7 @@ namespace Soko.UI
         public AnonymousPipeServerStream pipeServer;
         private Process clientProcess;
         public StreamWriter pipeServerStreamWriter;
+        private bool clientStarted;
 
         public Form1()
         {
@@ -212,7 +213,8 @@ namespace Soko.UI
                     // WaitAndReadDataCard je i dalje aktivan dok ne istekne interval, a samim tim i proces je i dalje
                     // aktivan, i nije moguce ponovo restartovanje programa (ili je moguce ali imamo istovremeno dva
                     // procesa).
-                    clientProcess.Kill();
+                    if (clientStarted)
+                        clientProcess.Kill();
                 }
                 else
                 {
@@ -1097,6 +1099,9 @@ namespace Soko.UI
 
         private void init()
         {
+            // This creates singleton instance of NHibernateHelper and builds session factory
+            NHibernateHelper nh = NHibernateHelper.Instance;
+
             loadOptions();
 
             if (Options.Instance.JedinstvenProgram)
@@ -1129,7 +1134,7 @@ namespace Soko.UI
                 clientProcess.StartInfo.Arguments = pipeServer.GetClientHandleAsString();
                 clientProcess.StartInfo.UseShellExecute = false;
 
-                bool clientStarted = true;
+                clientStarted = true;
                 try
                 {
                     clientProcess.Start();
