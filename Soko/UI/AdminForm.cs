@@ -25,6 +25,7 @@ namespace Soko.UI
             txtCitacKarticaThreadVisibleCount.Text = Options.Instance.CitacKarticaThreadVisibleCount.ToString();
             txtCitacKarticaThreadPauzaZaBrisanje.Text = Options.Instance.CitacKarticaThreadPauzaZaBrisanje.ToString();
             ckbUseWaitAndReadLoop.Checked = Options.Instance.UseWaitAndReadLoop;
+            txtBrojSekundiWaitAndRead.Text = Options.Instance.NumSecondsWaitAndRead.ToString();
 
             lstLogFiles.SelectionMode = SelectionMode.MultiExtended;
             string[] files = Directory.GetFiles(Sesija.LOG_DIR);
@@ -141,6 +142,15 @@ namespace Soko.UI
         private void ckbUseWaitAndReadLoop_CheckedChanged(object sender, EventArgs e)
         {
             Options.Instance.UseWaitAndReadLoop = ckbUseWaitAndReadLoop.Checked;
+        }
+
+        private void btnPromeniBrojSekundiWaitAndRead_Click(object sender, EventArgs e)
+        {
+            int newValue;
+            if (int.TryParse(txtBrojSekundiWaitAndRead.Text, out newValue))
+            {
+                Options.Instance.NumSecondsWaitAndRead = newValue;
+            }
         }
     }
 }

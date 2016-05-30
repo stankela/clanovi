@@ -242,5 +242,12 @@ namespace Soko
             get { return useWaitAndReadLoop; }
             set { useWaitAndReadLoop = value; }
         }
+
+        private int numSecondsWaitAndRead = 3600;
+        public int NumSecondsWaitAndRead
+        {
+            get { return numSecondsWaitAndRead; }
+            set { numSecondsWaitAndRead = value; }
+        }
     }
 }

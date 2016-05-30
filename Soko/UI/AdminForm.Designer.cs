@@ -55,6 +55,9 @@
             this.txtCitacKarticaThreadPauzaZaBrisanje = new System.Windows.Forms.TextBox();
             this.btnPromeniCitacKarticaThreadPauzaZaBrisanje = new System.Windows.Forms.Button();
             this.ckbUseWaitAndReadLoop = new System.Windows.Forms.CheckBox();
+            this.lblBrojSekundiWaitAndRead = new System.Windows.Forms.Label();
+            this.txtBrojSekundiWaitAndRead = new System.Windows.Forms.TextBox();
+            this.btnPromeniBrojSekundiWaitAndRead = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lstCitacKarticeElapsedMs
@@ -94,7 +97,7 @@
             // lblBrojPonavljanja
             // 
             this.lblBrojPonavljanja.AutoSize = true;
-            this.lblBrojPonavljanja.Location = new System.Drawing.Point(11, 191);
+            this.lblBrojPonavljanja.Location = new System.Drawing.Point(11, 181);
             this.lblBrojPonavljanja.Name = "lblBrojPonavljanja";
             this.lblBrojPonavljanja.Size = new System.Drawing.Size(154, 13);
             this.lblBrojPonavljanja.TabIndex = 8;
@@ -102,7 +105,7 @@
             // 
             // txtBrojPonavljanja
             // 
-            this.txtBrojPonavljanja.Location = new System.Drawing.Point(14, 207);
+            this.txtBrojPonavljanja.Location = new System.Drawing.Point(14, 197);
             this.txtBrojPonavljanja.Name = "txtBrojPonavljanja";
             this.txtBrojPonavljanja.Size = new System.Drawing.Size(74, 20);
             this.txtBrojPonavljanja.TabIndex = 9;
@@ -111,7 +114,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(275, 91);
+            this.label1.Location = new System.Drawing.Point(382, 53);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(136, 13);
             this.label1.TabIndex = 10;
@@ -120,7 +123,7 @@
             // lstWriteDataCardReturnValue
             // 
             this.lstWriteDataCardReturnValue.FormattingEnabled = true;
-            this.lstWriteDataCardReturnValue.Location = new System.Drawing.Point(278, 109);
+            this.lstWriteDataCardReturnValue.Location = new System.Drawing.Point(385, 71);
             this.lstWriteDataCardReturnValue.Name = "lstWriteDataCardReturnValue";
             this.lstWriteDataCardReturnValue.Size = new System.Drawing.Size(120, 95);
             this.lstWriteDataCardReturnValue.TabIndex = 11;
@@ -128,7 +131,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(275, 234);
+            this.label2.Location = new System.Drawing.Point(382, 196);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(137, 13);
             this.label2.TabIndex = 12;
@@ -137,7 +140,7 @@
             // lstReadDataCardReturnValue
             // 
             this.lstReadDataCardReturnValue.FormattingEnabled = true;
-            this.lstReadDataCardReturnValue.Location = new System.Drawing.Point(278, 250);
+            this.lstReadDataCardReturnValue.Location = new System.Drawing.Point(385, 212);
             this.lstReadDataCardReturnValue.Name = "lstReadDataCardReturnValue";
             this.lstReadDataCardReturnValue.Size = new System.Drawing.Size(120, 95);
             this.lstReadDataCardReturnValue.TabIndex = 13;
@@ -145,7 +148,7 @@
             // ckbLogToFile
             // 
             this.ckbLogToFile.AutoSize = true;
-            this.ckbLogToFile.Location = new System.Drawing.Point(12, 262);
+            this.ckbLogToFile.Location = new System.Drawing.Point(12, 235);
             this.ckbLogToFile.Name = "ckbLogToFile";
             this.ckbLogToFile.Size = new System.Drawing.Size(79, 17);
             this.ckbLogToFile.TabIndex = 14;
@@ -155,7 +158,7 @@
             // 
             // btnProveriOcitavanja
             // 
-            this.btnProveriOcitavanja.Location = new System.Drawing.Point(546, 52);
+            this.btnProveriOcitavanja.Location = new System.Drawing.Point(584, 52);
             this.btnProveriOcitavanja.Name = "btnProveriOcitavanja";
             this.btnProveriOcitavanja.Size = new System.Drawing.Size(105, 23);
             this.btnProveriOcitavanja.TabIndex = 16;
@@ -166,7 +169,7 @@
             // lstLogFiles
             // 
             this.lstLogFiles.FormattingEnabled = true;
-            this.lstLogFiles.Location = new System.Drawing.Point(546, 81);
+            this.lstLogFiles.Location = new System.Drawing.Point(584, 81);
             this.lstLogFiles.Name = "lstLogFiles";
             this.lstLogFiles.Size = new System.Drawing.Size(221, 316);
             this.lstLogFiles.TabIndex = 17;
@@ -174,7 +177,7 @@
             // ckbTraziLozinkuPreOtvaranjaProzora
             // 
             this.ckbTraziLozinkuPreOtvaranjaProzora.AutoSize = true;
-            this.ckbTraziLozinkuPreOtvaranjaProzora.Location = new System.Drawing.Point(11, 295);
+            this.ckbTraziLozinkuPreOtvaranjaProzora.Location = new System.Drawing.Point(11, 268);
             this.ckbTraziLozinkuPreOtvaranjaProzora.Name = "ckbTraziLozinkuPreOtvaranjaProzora";
             this.ckbTraziLozinkuPreOtvaranjaProzora.Size = new System.Drawing.Size(188, 17);
             this.ckbTraziLozinkuPreOtvaranjaProzora.TabIndex = 18;
@@ -185,7 +188,7 @@
             // lblCitacKarticaThreadInterval
             // 
             this.lblCitacKarticaThreadInterval.AutoSize = true;
-            this.lblCitacKarticaThreadInterval.Location = new System.Drawing.Point(13, 377);
+            this.lblCitacKarticaThreadInterval.Location = new System.Drawing.Point(13, 341);
             this.lblCitacKarticaThreadInterval.Name = "lblCitacKarticaThreadInterval";
             this.lblCitacKarticaThreadInterval.Size = new System.Drawing.Size(136, 13);
             this.lblCitacKarticaThreadInterval.TabIndex = 20;
@@ -193,14 +196,14 @@
             // 
             // txtCitacKarticaThreadInterval
             // 
-            this.txtCitacKarticaThreadInterval.Location = new System.Drawing.Point(208, 374);
+            this.txtCitacKarticaThreadInterval.Location = new System.Drawing.Point(208, 338);
             this.txtCitacKarticaThreadInterval.Name = "txtCitacKarticaThreadInterval";
             this.txtCitacKarticaThreadInterval.Size = new System.Drawing.Size(75, 20);
             this.txtCitacKarticaThreadInterval.TabIndex = 21;
             // 
             // btnPromeniCitacKarticaThreadInterval
             // 
-            this.btnPromeniCitacKarticaThreadInterval.Location = new System.Drawing.Point(301, 372);
+            this.btnPromeniCitacKarticaThreadInterval.Location = new System.Drawing.Point(301, 336);
             this.btnPromeniCitacKarticaThreadInterval.Name = "btnPromeniCitacKarticaThreadInterval";
             this.btnPromeniCitacKarticaThreadInterval.Size = new System.Drawing.Size(75, 23);
             this.btnPromeniCitacKarticaThreadInterval.TabIndex = 22;
@@ -211,7 +214,7 @@
             // lblCitacKarticaThreadSkipCount
             // 
             this.lblCitacKarticaThreadSkipCount.AutoSize = true;
-            this.lblCitacKarticaThreadSkipCount.Location = new System.Drawing.Point(13, 418);
+            this.lblCitacKarticaThreadSkipCount.Location = new System.Drawing.Point(13, 382);
             this.lblCitacKarticaThreadSkipCount.Name = "lblCitacKarticaThreadSkipCount";
             this.lblCitacKarticaThreadSkipCount.Size = new System.Drawing.Size(151, 13);
             this.lblCitacKarticaThreadSkipCount.TabIndex = 23;
@@ -219,14 +222,14 @@
             // 
             // txtCitacKarticaThreadSkipCount
             // 
-            this.txtCitacKarticaThreadSkipCount.Location = new System.Drawing.Point(208, 411);
+            this.txtCitacKarticaThreadSkipCount.Location = new System.Drawing.Point(208, 375);
             this.txtCitacKarticaThreadSkipCount.Name = "txtCitacKarticaThreadSkipCount";
             this.txtCitacKarticaThreadSkipCount.Size = new System.Drawing.Size(75, 20);
             this.txtCitacKarticaThreadSkipCount.TabIndex = 24;
             // 
             // btnPromeniCitacKarticaThreadSkipCount
             // 
-            this.btnPromeniCitacKarticaThreadSkipCount.Location = new System.Drawing.Point(302, 409);
+            this.btnPromeniCitacKarticaThreadSkipCount.Location = new System.Drawing.Point(302, 373);
             this.btnPromeniCitacKarticaThreadSkipCount.Name = "btnPromeniCitacKarticaThreadSkipCount";
             this.btnPromeniCitacKarticaThreadSkipCount.Size = new System.Drawing.Size(75, 23);
             this.btnPromeniCitacKarticaThreadSkipCount.TabIndex = 25;
@@ -237,7 +240,7 @@
             // lblCitacKarticaThreadVisibleCount
             // 
             this.lblCitacKarticaThreadVisibleCount.AutoSize = true;
-            this.lblCitacKarticaThreadVisibleCount.Location = new System.Drawing.Point(11, 458);
+            this.lblCitacKarticaThreadVisibleCount.Location = new System.Drawing.Point(11, 422);
             this.lblCitacKarticaThreadVisibleCount.Name = "lblCitacKarticaThreadVisibleCount";
             this.lblCitacKarticaThreadVisibleCount.Size = new System.Drawing.Size(161, 13);
             this.lblCitacKarticaThreadVisibleCount.TabIndex = 26;
@@ -245,14 +248,14 @@
             // 
             // txtCitacKarticaThreadVisibleCount
             // 
-            this.txtCitacKarticaThreadVisibleCount.Location = new System.Drawing.Point(208, 455);
+            this.txtCitacKarticaThreadVisibleCount.Location = new System.Drawing.Point(208, 419);
             this.txtCitacKarticaThreadVisibleCount.Name = "txtCitacKarticaThreadVisibleCount";
             this.txtCitacKarticaThreadVisibleCount.Size = new System.Drawing.Size(75, 20);
             this.txtCitacKarticaThreadVisibleCount.TabIndex = 27;
             // 
             // btnPromeniCitacKarticaThreadVisibleCount
             // 
-            this.btnPromeniCitacKarticaThreadVisibleCount.Location = new System.Drawing.Point(301, 453);
+            this.btnPromeniCitacKarticaThreadVisibleCount.Location = new System.Drawing.Point(301, 417);
             this.btnPromeniCitacKarticaThreadVisibleCount.Name = "btnPromeniCitacKarticaThreadVisibleCount";
             this.btnPromeniCitacKarticaThreadVisibleCount.Size = new System.Drawing.Size(75, 23);
             this.btnPromeniCitacKarticaThreadVisibleCount.TabIndex = 28;
@@ -263,7 +266,7 @@
             // lblCitacKarticaThreadPauzaZaBrisanje
             // 
             this.lblCitacKarticaThreadPauzaZaBrisanje.AutoSize = true;
-            this.lblCitacKarticaThreadPauzaZaBrisanje.Location = new System.Drawing.Point(15, 499);
+            this.lblCitacKarticaThreadPauzaZaBrisanje.Location = new System.Drawing.Point(15, 463);
             this.lblCitacKarticaThreadPauzaZaBrisanje.Name = "lblCitacKarticaThreadPauzaZaBrisanje";
             this.lblCitacKarticaThreadPauzaZaBrisanje.Size = new System.Drawing.Size(184, 13);
             this.lblCitacKarticaThreadPauzaZaBrisanje.TabIndex = 29;
@@ -271,14 +274,14 @@
             // 
             // txtCitacKarticaThreadPauzaZaBrisanje
             // 
-            this.txtCitacKarticaThreadPauzaZaBrisanje.Location = new System.Drawing.Point(208, 496);
+            this.txtCitacKarticaThreadPauzaZaBrisanje.Location = new System.Drawing.Point(208, 460);
             this.txtCitacKarticaThreadPauzaZaBrisanje.Name = "txtCitacKarticaThreadPauzaZaBrisanje";
             this.txtCitacKarticaThreadPauzaZaBrisanje.Size = new System.Drawing.Size(75, 20);
             this.txtCitacKarticaThreadPauzaZaBrisanje.TabIndex = 30;
             // 
             // btnPromeniCitacKarticaThreadPauzaZaBrisanje
             // 
-            this.btnPromeniCitacKarticaThreadPauzaZaBrisanje.Location = new System.Drawing.Point(302, 494);
+            this.btnPromeniCitacKarticaThreadPauzaZaBrisanje.Location = new System.Drawing.Point(302, 458);
             this.btnPromeniCitacKarticaThreadPauzaZaBrisanje.Name = "btnPromeniCitacKarticaThreadPauzaZaBrisanje";
             this.btnPromeniCitacKarticaThreadPauzaZaBrisanje.Size = new System.Drawing.Size(75, 23);
             this.btnPromeniCitacKarticaThreadPauzaZaBrisanje.TabIndex = 31;
@@ -289,7 +292,7 @@
             // ckbUseWaitAndReadLoop
             // 
             this.ckbUseWaitAndReadLoop.AutoSize = true;
-            this.ckbUseWaitAndReadLoop.Location = new System.Drawing.Point(12, 328);
+            this.ckbUseWaitAndReadLoop.Location = new System.Drawing.Point(12, 301);
             this.ckbUseWaitAndReadLoop.Name = "ckbUseWaitAndReadLoop";
             this.ckbUseWaitAndReadLoop.Size = new System.Drawing.Size(142, 17);
             this.ckbUseWaitAndReadLoop.TabIndex = 32;
@@ -297,11 +300,40 @@
             this.ckbUseWaitAndReadLoop.UseVisualStyleBackColor = true;
             this.ckbUseWaitAndReadLoop.CheckedChanged += new System.EventHandler(this.ckbUseWaitAndReadLoop_CheckedChanged);
             // 
+            // lblBrojSekundiWaitAndRead
+            // 
+            this.lblBrojSekundiWaitAndRead.AutoSize = true;
+            this.lblBrojSekundiWaitAndRead.Location = new System.Drawing.Point(15, 503);
+            this.lblBrojSekundiWaitAndRead.Name = "lblBrojSekundiWaitAndRead";
+            this.lblBrojSekundiWaitAndRead.Size = new System.Drawing.Size(135, 13);
+            this.lblBrojSekundiWaitAndRead.TabIndex = 33;
+            this.lblBrojSekundiWaitAndRead.Text = "Broj sekundi WaitAndRead";
+            // 
+            // txtBrojSekundiWaitAndRead
+            // 
+            this.txtBrojSekundiWaitAndRead.Location = new System.Drawing.Point(208, 496);
+            this.txtBrojSekundiWaitAndRead.Name = "txtBrojSekundiWaitAndRead";
+            this.txtBrojSekundiWaitAndRead.Size = new System.Drawing.Size(75, 20);
+            this.txtBrojSekundiWaitAndRead.TabIndex = 34;
+            // 
+            // btnPromeniBrojSekundiWaitAndRead
+            // 
+            this.btnPromeniBrojSekundiWaitAndRead.Location = new System.Drawing.Point(302, 494);
+            this.btnPromeniBrojSekundiWaitAndRead.Name = "btnPromeniBrojSekundiWaitAndRead";
+            this.btnPromeniBrojSekundiWaitAndRead.Size = new System.Drawing.Size(75, 23);
+            this.btnPromeniBrojSekundiWaitAndRead.TabIndex = 35;
+            this.btnPromeniBrojSekundiWaitAndRead.Text = "Promeni";
+            this.btnPromeniBrojSekundiWaitAndRead.UseVisualStyleBackColor = true;
+            this.btnPromeniBrojSekundiWaitAndRead.Click += new System.EventHandler(this.btnPromeniBrojSekundiWaitAndRead_Click);
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(869, 525);
+            this.Controls.Add(this.btnPromeniBrojSekundiWaitAndRead);
+            this.Controls.Add(this.txtBrojSekundiWaitAndRead);
+            this.Controls.Add(this.lblBrojSekundiWaitAndRead);
             this.Controls.Add(this.ckbUseWaitAndReadLoop);
             this.Controls.Add(this.btnPromeniCitacKarticaThreadPauzaZaBrisanje);
             this.Controls.Add(this.txtCitacKarticaThreadPauzaZaBrisanje);
@@ -365,5 +397,8 @@
         private System.Windows.Forms.TextBox txtCitacKarticaThreadPauzaZaBrisanje;
         private System.Windows.Forms.Button btnPromeniCitacKarticaThreadPauzaZaBrisanje;
         private System.Windows.Forms.CheckBox ckbUseWaitAndReadLoop;
+        private System.Windows.Forms.Label lblBrojSekundiWaitAndRead;
+        private System.Windows.Forms.TextBox txtBrojSekundiWaitAndRead;
+        private System.Windows.Forms.Button btnPromeniBrojSekundiWaitAndRead;
     }
 }
