@@ -53,6 +53,7 @@ namespace Soko.UI
             this.cmbClan = new System.Windows.Forms.ComboBox();
             this.txtBrojClana = new System.Windows.Forms.TextBox();
             this.lblClan = new System.Windows.Forms.Label();
+            this.btnNedostajuceUplate = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -90,6 +91,7 @@ namespace Soko.UI
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.btnNedostajuceUplate);
             this.groupBox1.Controls.Add(this.lblUkupnoIznos);
             this.groupBox1.Controls.Add(this.lblUkupno);
             this.groupBox1.Controls.Add(this.listViewNoveUplate);
@@ -180,7 +182,7 @@ namespace Soko.UI
             this.btnPrethodneUplate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnPrethodneUplate.Location = new System.Drawing.Point(211, 90);
             this.btnPrethodneUplate.Name = "btnPrethodneUplate";
-            this.btnPrethodneUplate.Size = new System.Drawing.Size(100, 23);
+            this.btnPrethodneUplate.Size = new System.Drawing.Size(110, 23);
             this.btnPrethodneUplate.TabIndex = 16;
             this.btnPrethodneUplate.TabStop = false;
             this.btnPrethodneUplate.Text = "Prethodne uplate";
@@ -319,6 +321,16 @@ namespace Soko.UI
             this.lblClan.TabIndex = 0;
             this.lblClan.Text = "Clan";
             // 
+            // btnNedostajuceUplate
+            // 
+            this.btnNedostajuceUplate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnNedostajuceUplate.Location = new System.Drawing.Point(336, 90);
+            this.btnNedostajuceUplate.Name = "btnNedostajuceUplate";
+            this.btnNedostajuceUplate.Size = new System.Drawing.Size(121, 23);
+            this.btnNedostajuceUplate.TabIndex = 23;
+            this.btnNedostajuceUplate.Text = "Nedostajuce uplate";
+            this.btnNedostajuceUplate.UseVisualStyleBackColor = true;
+            // 
             // UplataClanarineDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -370,5 +382,6 @@ namespace Soko.UI
         private System.Windows.Forms.ListView listViewNoveUplate;
         private System.Windows.Forms.Label lblUkupnoIznos;
         private System.Windows.Forms.Label lblUkupno;
+        private System.Windows.Forms.Button btnNedostajuceUplate;
     }
 }

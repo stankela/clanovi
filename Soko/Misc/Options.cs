@@ -249,5 +249,12 @@ namespace Soko
             get { return numSecondsWaitAndRead; }
             set { numSecondsWaitAndRead = value; }
         }
+
+        private DateTime nedostajuceUplateStartDate = new DateTime(2016, 1, 1, 0, 0, 0);
+        public DateTime NedostajuceUplateStartDate
+        {
+            get { return nedostajuceUplateStartDate; }
+            set { nedostajuceUplateStartDate = value; }
+        }
     }
 }

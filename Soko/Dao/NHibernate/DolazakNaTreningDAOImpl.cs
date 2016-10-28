@@ -37,6 +37,28 @@ namespace Bilten.Dao.NHibernate
             }
         }
 
+        public virtual IList<DolazakNaTrening> getDolazakNaTrening(Clan c, DateTime from, DateTime to)
+        {
+            try
+            {
+                IQuery q = Session.CreateQuery(@"from DolazakNaTrening d
+                                                 left join fetch d.Clan c
+                                                 where c = :clan
+                                                 and d.DatumVremeDolaska >= :from and d.DatumVremeDolaska <= :to
+                                                 order by d.DatumVremeDolaska asc");
+                q.SetEntity("clan", c);
+                q.SetDateTime("from", from);
+                q.SetDateTime("to", to);
+                return q.List<DolazakNaTrening>();
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
         public virtual List<object[]> getEvidencijaTreningaReportItems(DateTime from, DateTime to, List<Grupa> grupe)
         {
             to = to.AddMinutes(1);
@@ -188,40 +210,6 @@ ORDER BY
             }
         }
 
-        class ClanGodinaMesec
-        {
-            private int clan_id;
-            private int godina;
-            private int mesec;
-
-            public ClanGodinaMesec(int clan_id, int godina, int mesec)
-            {
-                this.clan_id = clan_id;
-                this.godina = godina;
-                this.mesec = mesec;
-            }
-
-            public override bool Equals(object other)
-            {
-                if (object.ReferenceEquals(this, other))
-                    return true;
-                if (!(other is ClanGodinaMesec))
-                    return false;
-                ClanGodinaMesec that = (ClanGodinaMesec)other;
-                return this.clan_id == that.clan_id && this.godina == that.godina && this.mesec == that.mesec;
-            }
-
-            public override int GetHashCode()
-            {
-                unchecked
-                {
-                    int result = clan_id;
-                    result = 29 * result + godina.GetHashCode() + mesec.GetHashCode();
-                    return result;
-                }
-            }
-        }
-
         public virtual List<object[]> getDolazakNaTreningMesecniReportItems(DateTime from, DateTime to, bool samoNedostajuceUplate)
         {
             try
@@ -346,6 +334,41 @@ WHERE (u.grupa_id = {0}) AND (u.vazi_od BETWEEN '{1}' AND '{2}')";
                 string message = String.Format(
                     "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
                 throw new InfrastructureException(message, ex);
+            }
+        }
+    }
+
+    // TODO2: Prebaci ovu klasu na drugo mesto.
+    public class ClanGodinaMesec
+    {
+        private int clan_id;
+        private int godina;
+        private int mesec;
+
+        public ClanGodinaMesec(int clan_id, int godina, int mesec)
+        {
+            this.clan_id = clan_id;
+            this.godina = godina;
+            this.mesec = mesec;
+        }
+
+        public override bool Equals(object other)
+        {
+            if (object.ReferenceEquals(this, other))
+                return true;
+            if (!(other is ClanGodinaMesec))
+                return false;
+            ClanGodinaMesec that = (ClanGodinaMesec)other;
+            return this.clan_id == that.clan_id && this.godina == that.godina && this.mesec == that.mesec;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int result = clan_id;
+                result = 29 * result + godina.GetHashCode() + mesec.GetHashCode();
+                return result;
             }
         }
     }

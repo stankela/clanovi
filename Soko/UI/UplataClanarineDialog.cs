@@ -13,6 +13,8 @@ using Soko.Data;
 using NHibernate.Context;
 using Soko.Misc;
 using Soko.Exceptions;
+using Bilten.Dao.NHibernate;
+using Iesi.Collections;
 
 namespace Soko.UI
 {
@@ -27,6 +29,9 @@ namespace Soko.UI
         {
             get { return uplateList; }
         }
+
+        private List<UplataClanarine> prethodneUplate;
+        private List<DolazakNaTrening> neplaceniDolasci;
         
         public UplataClanarineDialog(Nullable<int> entityId)
         {
@@ -423,9 +428,20 @@ namespace Soko.UI
 
             // SelectedClan will be updated in txtBrojClana_TextChanged
             txtBrojClana.Text = broj.ToString();
-            List<UplataClanarine> uplate = getUplate(SelectedClan);
-            updateGrupaFromUplate(uplate);
-            updatePrethodneUplate(uplate);
+            findPrethodneUplateAndNeplaceniDolasci(SelectedClan);
+            updateGrupaFromUplate(prethodneUplate);
+            updatePrethodneUplate(prethodneUplate);
+        }
+
+        private void findPrethodneUplateAndNeplaceniDolasci(Clan SelectedClan)
+        {
+            prethodneUplate = getUplate(SelectedClan);
+
+            DateTime from = Options.Instance.NedostajuceUplateStartDate;
+            DateTime to = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0).AddSeconds(-1);
+            List<DolazakNaTrening> dolasci = getDolasci(SelectedClan, from, to);
+
+            neplaceniDolasci = findNeplaceniDolasci(dolasci, from, to, prethodneUplate);
         }
 
         private void updateGrupaFromUplate(List<UplataClanarine> uplate)
@@ -443,7 +459,7 @@ namespace Soko.UI
         private List<UplataClanarine> getUplate(Clan c)
         {
             if (c == null || c.Broj == CitacKartica.TEST_KARTICA_BROJ)
-                return null;
+                return new List<UplataClanarine>();
 
             List<UplataClanarine> uplate = null;
             try
@@ -465,8 +481,9 @@ namespace Soko.UI
                 CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
 
-            if (uplate != null)
-                Util.sortByVaziOdDesc(uplate);
+            if (uplate == null)
+                uplate = new List<UplataClanarine>();
+            Util.sortByVaziOdDesc(uplate);
             return uplate;
         }
 
@@ -474,19 +491,19 @@ namespace Soko.UI
         {
             if (txtSifraGrupe.Text == String.Empty || SelectedGrupa == null)
             {
-                List<UplataClanarine> uplate = getUplate(SelectedClan);
-                updateGrupaFromUplate(uplate);
-                updatePrethodneUplate(uplate);
+                findPrethodneUplateAndNeplaceniDolasci(SelectedClan);
+                updateGrupaFromUplate(prethodneUplate);
+                updatePrethodneUplate(prethodneUplate);
             }
         }
 
         private void btnPrethodneUplate_Click(object sender, EventArgs e)
         {
-            List<UplataClanarine> uplate = getUplate(SelectedClan);
-            updatePrethodneUplate(uplate);
+            findPrethodneUplateAndNeplaceniDolasci(SelectedClan);
+            updatePrethodneUplate(prethodneUplate);
             if (txtSifraGrupe.Text == String.Empty || SelectedGrupa == null)
             {
-                updateGrupaFromUplate(uplate);
+                updateGrupaFromUplate(prethodneUplate);
             }
         }
 
@@ -669,6 +686,58 @@ namespace Soko.UI
                     txtIznos.Focus();
                 }
             }
+        }
+
+        private List<DolazakNaTrening> getDolasci(Clan c, DateTime from, DateTime to)
+        {
+            if (c == null || c.Broj == CitacKartica.TEST_KARTICA_BROJ)
+                return new List<DolazakNaTrening>();
+
+            List<DolazakNaTrening> result = null;
+            try
+            {
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
+                using (session.BeginTransaction())
+                {
+                    CurrentSessionContext.Bind(session);
+                    DolazakNaTreningDAO dolazakNaTreningDAO = DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO();
+                    result = new List<DolazakNaTrening>(dolazakNaTreningDAO.getDolazakNaTrening(c, from, to));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showMessage(ex.Message, "Uplata clanarine");
+            }
+            finally
+            {
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
+            }
+            if (result == null)
+                result = new List<DolazakNaTrening>();
+            return result;
+        }
+
+        List<DolazakNaTrening> findNeplaceniDolasci(List<DolazakNaTrening> dolasci, DateTime from, DateTime to,
+            List<UplataClanarine> uplate)
+        {
+            ISet uplateSet = new HashedSet();
+            foreach (UplataClanarine u in uplate)
+            {
+                if (u.VaziOd.Value >= from && u.VaziOd.Value <= to)
+                {
+                    uplateSet.Add(new ClanGodinaMesec(u.Clan.Id, u.VaziOd.Value.Year, u.VaziOd.Value.Month));
+                }
+            }
+
+            List<DolazakNaTrening> result = new List<DolazakNaTrening>();
+            foreach (DolazakNaTrening d in dolasci)
+            {
+                if (!uplateSet.Contains(new ClanGodinaMesec(d.Clan.Id, d.DatumDolaska.Value.Year, d.DatumDolaska.Value.Month)))
+                {
+                    result.Add(d);
+                }       
+            }
+            return result;
         }
     }
 }
