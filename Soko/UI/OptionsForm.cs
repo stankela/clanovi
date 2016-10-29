@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Soko.UI
 {
-    public partial class LozinkaOptionsForm : Form
+    public partial class OptionsForm : Form
     {
         // FontChooserDialog
 
@@ -47,7 +47,7 @@ namespace Soko.UI
             set { printerNameIzvestaj = value; }
         }
         
-        public LozinkaOptionsForm()
+        public OptionsForm()
         {
             InitializeComponent();
 
@@ -64,7 +64,7 @@ namespace Soko.UI
             cmbStampacIzvestaj.DropDownStyle = ComboBoxStyle.DropDownList;
         }
 
-        private void LozinkaOptionsForm_Load(object sender, EventArgs e)
+        private void OptionsForm_Load(object sender, EventArgs e)
         {
             // PrinterSelectionForm
             if (PrinterSettings.InstalledPrinters.Count == 0)
@@ -82,7 +82,7 @@ namespace Soko.UI
                 cmbStampacIzvestaj.SelectedItem = Options.Instance.PrinterNameIzvestaj;
             }
 
-            // LozinkaOptionsForm
+            // OptionsForm
             rbtUvekTraziLozinku.Checked = Options.Instance.UvekPitajZaLozinku;
             rbtTraziLozinkuNakon.Checked = !Options.Instance.UvekPitajZaLozinku;
         }
@@ -132,7 +132,7 @@ namespace Soko.UI
             else
                 printerNameIzvestaj = null;
 
-            // LozinkaOptionsForm  
+            // OptionsForm  
             if (rbtTraziLozinkuNakon.Checked)
             {
                 int i;

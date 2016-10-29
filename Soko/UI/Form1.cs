@@ -1609,7 +1609,7 @@ namespace Soko.UI
             if (!dozvoliOtvaranjeProzora())
                 return;
 
-            LozinkaOptionsForm form = new LozinkaOptionsForm();
+            OptionsForm form = new OptionsForm();
             if (form.ShowDialog() == DialogResult.OK)
             {
                 Options.Instance.Font = form.SelectedFont;

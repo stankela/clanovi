@@ -1,6 +1,6 @@
 ﻿namespace Soko.UI
 {
-    partial class LozinkaOptionsForm
+    partial class OptionsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -156,7 +156,7 @@
             this.lblStampacPotvrda.TabIndex = 8;
             this.lblStampacPotvrda.Text = "Stampac za potvrde";
             // 
-            // LozinkaOptionsForm
+            // OptionsForm
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -177,11 +177,11 @@
             this.Controls.Add(this.rbtUvekTraziLozinku);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "LozinkaOptionsForm";
+            this.Name = "OptionsForm";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Opcije";
-            this.Load += new System.EventHandler(this.LozinkaOptionsForm_Load);
+            this.Load += new System.EventHandler(this.OptionsForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

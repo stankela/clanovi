@@ -209,12 +209,6 @@
     <Compile Include="UI\LozinkaForm.Designer.cs">
       <DependentUpon>LozinkaForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\LozinkaOptionsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\LozinkaOptionsForm.Designer.cs">
-      <DependentUpon>LozinkaOptionsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\MergeClanoviForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -292,9 +286,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\LozinkaForm.resx">
       <DependentUpon>LozinkaForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\LozinkaOptionsForm.resx">
-      <DependentUpon>LozinkaOptionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\MergeClanoviForm.resx">
       <DependentUpon>MergeClanoviForm.cs</DependentUpon>
@@ -376,6 +367,9 @@
     <EmbeddedResource Include="UI\MestoDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>MestoDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\OptionsForm.resx">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\PotvrdaDialog.resx">
       <SubType>Designer</SubType>
@@ -486,6 +480,12 @@
     </Compile>
     <Compile Include="UI\MestoDialog.Designer.cs">
       <DependentUpon>MestoDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\OptionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\OptionsForm.Designer.cs">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\PotvrdaDialog.cs">
       <SubType>Form</SubType>
