@@ -250,7 +250,7 @@ namespace Soko
             set { numSecondsWaitAndRead = value; }
         }
 
-        private DateTime nedostajuceUplateStartDate = new DateTime(2016, 1, 1, 0, 0, 0);
+        private DateTime nedostajuceUplateStartDate = new DateTime(2016, 9, 1, 0, 0, 0);
         public DateTime NedostajuceUplateStartDate
         {
             get { return nedostajuceUplateStartDate; }

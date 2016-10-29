@@ -12,10 +12,6 @@ namespace Soko.UI
 {
     public partial class OptionsForm : Form
     {
-        // FontChooserDialog
-
-        private int initSize;
-
         public Font SelectedFont
         {
             get
@@ -28,8 +24,6 @@ namespace Soko.UI
                 return new Font(Font.FontFamily, size);
             }
         }
-
-        // PrinterSelectionForm
 
         private readonly string NO_PRINTERS_MSG = "Ne postoje instalirani stampaci.";
 
@@ -50,23 +44,22 @@ namespace Soko.UI
         public OptionsForm()
         {
             InitializeComponent();
+            Text = "Opcije";
 
-            // FontChooserDialog
             object[] sizes = { 8, 9, 10, 11, 12, 13, 14, 15, 16 };
             cmbVelicina.Items.AddRange(sizes);
             Font = Options.Instance.Font;
-            initSize = (int)Math.Round(Font.SizeInPoints);
+            int initSize = (int)Math.Round(Font.SizeInPoints);
             cmbVelicina.SelectedIndex = cmbVelicina.Items.IndexOf(initSize);
 
-            // PrinterSelectionForm
-            Text = "Opcije";
             cmbStampacPotvrda.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbStampacIzvestaj.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            txtNedostajuceUplate.Text = Options.Instance.NedostajuceUplateStartDate.ToString("dd-MM-yyyy");
         }
 
         private void OptionsForm_Load(object sender, EventArgs e)
         {
-            // PrinterSelectionForm
             if (PrinterSettings.InstalledPrinters.Count == 0)
             {
                 MessageDialogs.showMessage(NO_PRINTERS_MSG, this.Text);
@@ -82,7 +75,6 @@ namespace Soko.UI
                 cmbStampacIzvestaj.SelectedItem = Options.Instance.PrinterNameIzvestaj;
             }
 
-            // OptionsForm
             rbtUvekTraziLozinku.Checked = Options.Instance.UvekPitajZaLozinku;
             rbtTraziLozinkuNakon.Checked = !Options.Instance.UvekPitajZaLozinku;
         }
@@ -121,18 +113,23 @@ namespace Soko.UI
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            // PrinterSelectionForm
-            if (cmbStampacPotvrda.SelectedItem != null)
-                printerNamePotvrda = (string)cmbStampacPotvrda.SelectedItem;
-            else
-                printerNamePotvrda = null;
+            DateTime dummy;
+            if (txtNedostajuceUplate.Text.Trim() == String.Empty)
+            {
+                MessageDialogs.showMessage("Unesite datum za nedostajuce uplate.", this.Text);
+                txtNedostajuceUplate.Focus();
+                this.DialogResult = DialogResult.None;
+                return;
+            }
+            else if (!DateTime.TryParse(txtNedostajuceUplate.Text, out dummy))
+            {
+                string msg = "Nepravilan datum za nedostajuce uplate. Datum se unosi u formatu dd-mm-gggg ili dd.mm.gggg.";
+                MessageDialogs.showMessage(msg, this.Text);
+                txtNedostajuceUplate.Focus();
+                this.DialogResult = DialogResult.None;
+                return;
+            }
 
-            if (cmbStampacIzvestaj.SelectedItem != null)
-                printerNameIzvestaj = (string)cmbStampacIzvestaj.SelectedItem;
-            else
-                printerNameIzvestaj = null;
-
-            // OptionsForm  
             if (rbtTraziLozinkuNakon.Checked)
             {
                 int i;
@@ -144,6 +141,18 @@ namespace Soko.UI
                     return;
                 }
             }
+
+            if (cmbStampacPotvrda.SelectedItem != null)
+                printerNamePotvrda = (string)cmbStampacPotvrda.SelectedItem;
+            else
+                printerNamePotvrda = null;
+
+            if (cmbStampacIzvestaj.SelectedItem != null)
+                printerNameIzvestaj = (string)cmbStampacIzvestaj.SelectedItem;
+            else
+                printerNameIzvestaj = null;
+
+            Options.Instance.NedostajuceUplateStartDate = DateTime.Parse(txtNedostajuceUplate.Text.Trim());
 
             Options.Instance.UvekPitajZaLozinku = rbtUvekTraziLozinku.Checked;
             if (!Options.Instance.UvekPitajZaLozinku)
