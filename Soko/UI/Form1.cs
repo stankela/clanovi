@@ -46,6 +46,7 @@ namespace Soko.UI
         const string CitacKarticaThreadPauzaZaBrisanjeRegKey = "CitacKarticaThreadPauzaZaBrisanje";
         const string UseWaitAndReadLoopRegKey = "UseWaitAndReadLoop";
         const string NumSecondsWaitAndReadRegKey = "NumSecondsWaitAndRead";
+        const string NedostajuceUplateStartDateRegKey = "NedostajuceUplateStartDate";
 
         private FormWindowState lastWindowState = FormWindowState.Normal;
         private System.Timers.Timer lozinkaTimer;
@@ -134,6 +135,8 @@ namespace Soko.UI
                     Options.Instance.UseWaitAndReadLoop = bool.Parse((string)regkey.GetValue(UseWaitAndReadLoopRegKey));
                 if (regkey.GetValue(NumSecondsWaitAndReadRegKey) != null)
                     Options.Instance.NumSecondsWaitAndRead = int.Parse((string)regkey.GetValue(NumSecondsWaitAndReadRegKey));
+                if (regkey.GetValue(NedostajuceUplateStartDateRegKey) != null)
+                    Options.Instance.NedostajuceUplateStartDate = DateTime.Parse((string)regkey.GetValue(NedostajuceUplateStartDateRegKey));
                 regkey.Close();
             }
             Options.Instance.Font = new Font(Font.FontFamily, fontSize);
@@ -176,6 +179,7 @@ namespace Soko.UI
             regkey.SetValue(CitacKarticaThreadPauzaZaBrisanjeRegKey, Options.Instance.CitacKarticaThreadPauzaZaBrisanje.ToString());
             regkey.SetValue(UseWaitAndReadLoopRegKey, Options.Instance.UseWaitAndReadLoop.ToString());
             regkey.SetValue(NumSecondsWaitAndReadRegKey, Options.Instance.NumSecondsWaitAndRead.ToString());
+            regkey.SetValue(NedostajuceUplateStartDateRegKey, Options.Instance.NedostajuceUplateStartDate.ToString("dd-MM-yyyy"));
       
             regkey.Close();
         }
