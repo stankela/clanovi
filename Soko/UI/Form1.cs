@@ -895,31 +895,6 @@ namespace Soko.UI
             }
         }
 
-        private void mnFont_Click(object sender, EventArgs e)
-        {
-            if (!dozvoliOtvaranjeProzora())
-                return;
-
-            FontChooserDialog dlg = new FontChooserDialog();
-            if (dlg.ShowDialog() == DialogResult.OK)
-            {
-                Options.Instance.Font = dlg.SelectedFont;
-            }
-        }
-
-        private void mnStampaci_Click(object sender, EventArgs e)
-        {
-            if (!dozvoliOtvaranjeProzora())
-                return;
-
-            PrinterSelectionForm form = new PrinterSelectionForm();
-            if (form.ShowDialog() == DialogResult.OK)
-            {
-                Options.Instance.PrinterNamePotvrda = form.PrinterNamePotvrda;
-                Options.Instance.PrinterNameIzvestaj = form.PrinterNameIzvestaj;
-            }
-        }
-
         private void mnAktivniClanoviGrupe_Click(object sender, EventArgs e)
         {
             BiracIntervala dlg;
@@ -1629,7 +1604,7 @@ namespace Soko.UI
             }
         }
 
-        private void mnLozinka_Click(object sender, EventArgs e)
+        private void mnOpcije_Click(object sender, EventArgs e)
         {
             if (!dozvoliOtvaranjeProzora())
                 return;

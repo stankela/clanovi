@@ -251,12 +251,6 @@
     <Compile Include="UI\EntityListForm.Designer.cs">
       <DependentUpon>EntityListForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\FontChooserDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FontChooserDialog.Designer.cs">
-      <DependentUpon>FontChooserDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -329,10 +323,6 @@
       <SubType>Designer</SubType>
       <DependentUpon>EntityListForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\FontChooserDialog.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>FontChooserDialog.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\Form1.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Form1.cs</DependentUpon>
@@ -404,10 +394,6 @@
     <EmbeddedResource Include="UI\PreviewDialog.resx">
       <SubType>Designer</SubType>
       <DependentUpon>PreviewDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\PrinterSelectionForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>PrinterSelectionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\UplataClanarineDialog.resx">
       <SubType>Designer</SubType>
@@ -536,12 +522,6 @@
     </Compile>
     <Compile Include="UI\PreviewDialog.Designer.cs">
       <DependentUpon>PreviewDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\PrinterSelectionForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\PrinterSelectionForm.Designer.cs">
-      <DependentUpon>PrinterSelectionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\UplataClanarineDialog.cs">
       <SubType>Form</SubType>

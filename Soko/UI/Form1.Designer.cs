@@ -53,13 +53,11 @@ namespace Soko.UI
             this.mnUplateClanova = new System.Windows.Forms.ToolStripMenuItem();
             this.mnAktivniClanovi = new System.Windows.Forms.ToolStripMenuItem();
             this.mnAktivniClanoviGrupe = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnEvidencijaPrisustvaNaTreningu = new System.Windows.Forms.ToolStripMenuItem();
             this.mnDolazakNaTreningMesecni = new System.Windows.Forms.ToolStripMenuItem();
             this.mnNedostajuceUplate = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnEvidencijaPrisustvaNaTreningu = new System.Windows.Forms.ToolStripMenuItem();
             this.mnPodesavanja = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnFont = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnStampaci = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnLozinka = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnOpcije = new System.Windows.Forms.ToolStripMenuItem();
             this.mnCitacKartica = new System.Windows.Forms.ToolStripMenuItem();
             this.mnAdmin = new System.Windows.Forms.ToolStripMenuItem();
             this.mnDuplikatiClanova = new System.Windows.Forms.ToolStripMenuItem();
@@ -274,13 +272,6 @@ namespace Soko.UI
             this.mnAktivniClanoviGrupe.Text = "Aktivni clanovi - grupe";
             this.mnAktivniClanoviGrupe.Click += new System.EventHandler(this.mnAktivniClanoviGrupe_Click);
             // 
-            // mnEvidencijaPrisustvaNaTreningu
-            // 
-            this.mnEvidencijaPrisustvaNaTreningu.Name = "mnEvidencijaPrisustvaNaTreningu";
-            this.mnEvidencijaPrisustvaNaTreningu.Size = new System.Drawing.Size(272, 22);
-            this.mnEvidencijaPrisustvaNaTreningu.Text = "Dolazak na trening - vremena dolaska";
-            this.mnEvidencijaPrisustvaNaTreningu.Click += new System.EventHandler(this.mnEvidencijaPrisustvaNaTreningu_Click);
-            // 
             // mnDolazakNaTreningMesecni
             // 
             this.mnDolazakNaTreningMesecni.Name = "mnDolazakNaTreningMesecni";
@@ -295,42 +286,33 @@ namespace Soko.UI
             this.mnNedostajuceUplate.Text = "Nedostajuce uplate";
             this.mnNedostajuceUplate.Click += new System.EventHandler(this.mnNedostajuceUplate_Click);
             // 
+            // mnEvidencijaPrisustvaNaTreningu
+            // 
+            this.mnEvidencijaPrisustvaNaTreningu.Name = "mnEvidencijaPrisustvaNaTreningu";
+            this.mnEvidencijaPrisustvaNaTreningu.Size = new System.Drawing.Size(272, 22);
+            this.mnEvidencijaPrisustvaNaTreningu.Text = "Dolazak na trening - vremena dolaska";
+            this.mnEvidencijaPrisustvaNaTreningu.Click += new System.EventHandler(this.mnEvidencijaPrisustvaNaTreningu_Click);
+            // 
             // mnPodesavanja
             // 
             this.mnPodesavanja.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnFont,
-            this.mnStampaci,
-            this.mnLozinka,
+            this.mnOpcije,
             this.mnCitacKartica});
             this.mnPodesavanja.Name = "mnPodesavanja";
             this.mnPodesavanja.Size = new System.Drawing.Size(85, 20);
             this.mnPodesavanja.Text = "Podesavanja";
             // 
-            // mnFont
+            // mnOpcije
             // 
-            this.mnFont.Name = "mnFont";
-            this.mnFont.Size = new System.Drawing.Size(139, 22);
-            this.mnFont.Text = "Font";
-            this.mnFont.Click += new System.EventHandler(this.mnFont_Click);
-            // 
-            // mnStampaci
-            // 
-            this.mnStampaci.Name = "mnStampaci";
-            this.mnStampaci.Size = new System.Drawing.Size(139, 22);
-            this.mnStampaci.Text = "Stampaci";
-            this.mnStampaci.Click += new System.EventHandler(this.mnStampaci_Click);
-            // 
-            // mnLozinka
-            // 
-            this.mnLozinka.Name = "mnLozinka";
-            this.mnLozinka.Size = new System.Drawing.Size(139, 22);
-            this.mnLozinka.Text = "Lozinka";
-            this.mnLozinka.Click += new System.EventHandler(this.mnLozinka_Click);
+            this.mnOpcije.Name = "mnOpcije";
+            this.mnOpcije.Size = new System.Drawing.Size(152, 22);
+            this.mnOpcije.Text = "Opcije";
+            this.mnOpcije.Click += new System.EventHandler(this.mnOpcije_Click);
             // 
             // mnCitacKartica
             // 
             this.mnCitacKartica.Name = "mnCitacKartica";
-            this.mnCitacKartica.Size = new System.Drawing.Size(139, 22);
+            this.mnCitacKartica.Size = new System.Drawing.Size(152, 22);
             this.mnCitacKartica.Text = "Citac kartica";
             this.mnCitacKartica.Click += new System.EventHandler(this.mnCitacKartica_Click);
             // 
@@ -411,8 +393,6 @@ namespace Soko.UI
         private System.Windows.Forms.ToolStripMenuItem mnIzvestajiCenovnik;
         private System.Windows.Forms.ToolStripMenuItem mnUplateClanova;
         private System.Windows.Forms.ToolStripMenuItem mnPodesavanja;
-        private System.Windows.Forms.ToolStripMenuItem mnFont;
-        private System.Windows.Forms.ToolStripMenuItem mnStampaci;
         private System.Windows.Forms.ToolStripMenuItem mnAktivniClanoviGrupe;
         private System.Windows.Forms.ToolStripMenuItem mnAktivniClanovi;
         private System.Windows.Forms.ToolStripMenuItem mnPravljenjeKartice;
@@ -425,7 +405,7 @@ namespace Soko.UI
         private System.Windows.Forms.ToolStripMenuItem mnAdminOpcije;
         private System.Windows.Forms.ToolStripMenuItem mnDolazakNaTreningMesecni;
         private System.Windows.Forms.ToolStripMenuItem mnClanoviKojiNePlacajuClanarinu;
-        private System.Windows.Forms.ToolStripMenuItem mnLozinka;
+        private System.Windows.Forms.ToolStripMenuItem mnOpcije;
     }
 }
 
