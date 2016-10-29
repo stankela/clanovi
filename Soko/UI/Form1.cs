@@ -1612,11 +1612,6 @@ namespace Soko.UI
             OptionsForm form = new OptionsForm();
             if (form.ShowDialog() == DialogResult.OK)
             {
-                Options.Instance.Font = form.SelectedFont;
-
-                Options.Instance.PrinterNamePotvrda = form.PrinterNamePotvrda;
-                Options.Instance.PrinterNameIzvestaj = form.PrinterNameIzvestaj;
-                
                 if (!Options.Instance.UvekPitajZaLozinku)
                 {
                     lozinkaTimer.Interval = Options.Instance.LozinkaTimerMinuti * 60 * 1000;

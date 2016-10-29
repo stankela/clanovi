@@ -12,35 +12,6 @@ namespace Soko.UI
 {
     public partial class OptionsForm : Form
     {
-        public Font SelectedFont
-        {
-            get
-            {
-                int size;
-                if (cmbVelicina.SelectedIndex != -1)
-                    size = (int)cmbVelicina.SelectedItem;
-                else
-                    size = (int)Math.Round(Font.SizeInPoints);
-                return new Font(Font.FontFamily, size);
-            }
-        }
-
-        private readonly string NO_PRINTERS_MSG = "Ne postoje instalirani stampaci.";
-
-        private string printerNamePotvrda;
-        public string PrinterNamePotvrda
-        {
-            get { return printerNamePotvrda; }
-            set { printerNamePotvrda = value; }
-        }
-
-        private string printerNameIzvestaj;
-        public string PrinterNameIzvestaj
-        {
-            get { return printerNameIzvestaj; }
-            set { printerNameIzvestaj = value; }
-        }
-        
         public OptionsForm()
         {
             InitializeComponent();
@@ -51,6 +22,7 @@ namespace Soko.UI
             Font = Options.Instance.Font;
             int initSize = (int)Math.Round(Font.SizeInPoints);
             cmbVelicina.SelectedIndex = cmbVelicina.Items.IndexOf(initSize);
+            cmbVelicina.DropDownStyle = ComboBoxStyle.DropDownList;
 
             cmbStampacPotvrda.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbStampacIzvestaj.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -62,7 +34,7 @@ namespace Soko.UI
         {
             if (PrinterSettings.InstalledPrinters.Count == 0)
             {
-                MessageDialogs.showMessage(NO_PRINTERS_MSG, this.Text);
+                MessageDialogs.showMessage("Ne postoje instalirani stampaci.", this.Text);
             }
             else
             {
@@ -77,6 +49,11 @@ namespace Soko.UI
 
             rbtUvekTraziLozinku.Checked = Options.Instance.UvekPitajZaLozinku;
             rbtTraziLozinkuNakon.Checked = !Options.Instance.UvekPitajZaLozinku;
+        }
+
+        private void OptionsForm_Shown(object sender, EventArgs e)
+        {
+            lblVelicina.Focus();
         }
 
         private void cmbVelicina_SelectionChangeCommitted(object sender, EventArgs e)
@@ -113,17 +90,20 @@ namespace Soko.UI
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            // Validate
+
             DateTime dummy;
+            string msg = String.Empty;
             if (txtNedostajuceUplate.Text.Trim() == String.Empty)
             {
-                MessageDialogs.showMessage("Unesite datum za nedostajuce uplate.", this.Text);
-                txtNedostajuceUplate.Focus();
-                this.DialogResult = DialogResult.None;
-                return;
+                msg = "Unesite datum za nedostajuce uplate.";
             }
             else if (!DateTime.TryParse(txtNedostajuceUplate.Text, out dummy))
             {
-                string msg = "Nepravilan datum za nedostajuce uplate. Datum se unosi u formatu dd-mm-gggg ili dd.mm.gggg.";
+                msg = "Nepravilan datum za nedostajuce uplate. Datum se unosi u formatu dd-mm-gggg ili dd.mm.gggg.";
+            }
+            if (msg != String.Empty)
+            {
                 MessageDialogs.showMessage(msg, this.Text);
                 txtNedostajuceUplate.Focus();
                 this.DialogResult = DialogResult.None;
@@ -142,15 +122,24 @@ namespace Soko.UI
                 }
             }
 
-            if (cmbStampacPotvrda.SelectedItem != null)
-                printerNamePotvrda = (string)cmbStampacPotvrda.SelectedItem;
+            // Update options
+
+            int size;
+            if (cmbVelicina.SelectedIndex != -1)
+                size = (int)cmbVelicina.SelectedItem;
             else
-                printerNamePotvrda = null;
+                size = (int)Math.Round(Font.SizeInPoints);
+            Options.Instance.Font = new Font(Font.FontFamily, size);
+
+            if (cmbStampacPotvrda.SelectedItem != null)
+                Options.Instance.PrinterNamePotvrda = (string)cmbStampacPotvrda.SelectedItem;
+            else
+                Options.Instance.PrinterNamePotvrda = null;
 
             if (cmbStampacIzvestaj.SelectedItem != null)
-                printerNameIzvestaj = (string)cmbStampacIzvestaj.SelectedItem;
+                Options.Instance.PrinterNameIzvestaj = (string)cmbStampacIzvestaj.SelectedItem;
             else
-                printerNameIzvestaj = null;
+                Options.Instance.PrinterNameIzvestaj = null;
 
             Options.Instance.NedostajuceUplateStartDate = DateTime.Parse(txtNedostajuceUplate.Text.Trim());
 

@@ -50,7 +50,7 @@
             this.rbtUvekTraziLozinku.Location = new System.Drawing.Point(14, 261);
             this.rbtUvekTraziLozinku.Name = "rbtUvekTraziLozinku";
             this.rbtUvekTraziLozinku.Size = new System.Drawing.Size(109, 17);
-            this.rbtUvekTraziLozinku.TabIndex = 0;
+            this.rbtUvekTraziLozinku.TabIndex = 15;
             this.rbtUvekTraziLozinku.TabStop = true;
             this.rbtUvekTraziLozinku.Text = "Uvek trazi lozinku";
             this.rbtUvekTraziLozinku.UseVisualStyleBackColor = true;
@@ -62,7 +62,7 @@
             this.rbtTraziLozinkuNakon.Location = new System.Drawing.Point(14, 288);
             this.rbtTraziLozinkuNakon.Name = "rbtTraziLozinkuNakon";
             this.rbtTraziLozinkuNakon.Size = new System.Drawing.Size(117, 17);
-            this.rbtTraziLozinkuNakon.TabIndex = 1;
+            this.rbtTraziLozinkuNakon.TabIndex = 16;
             this.rbtTraziLozinkuNakon.TabStop = true;
             this.rbtTraziLozinkuNakon.Text = "Trazi lozinku nakon";
             this.rbtTraziLozinkuNakon.UseVisualStyleBackColor = true;
@@ -73,7 +73,7 @@
             this.txtBrojMinuta.Location = new System.Drawing.Point(137, 287);
             this.txtBrojMinuta.Name = "txtBrojMinuta";
             this.txtBrojMinuta.Size = new System.Drawing.Size(45, 20);
-            this.txtBrojMinuta.TabIndex = 2;
+            this.txtBrojMinuta.TabIndex = 17;
             // 
             // lblMinuta
             // 
@@ -90,7 +90,7 @@
             this.btnOK.Location = new System.Drawing.Point(87, 342);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 4;
+            this.btnOK.TabIndex = 18;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -101,13 +101,12 @@
             this.btnCancel.Location = new System.Drawing.Point(178, 342);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 5;
+            this.btnCancel.TabIndex = 19;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
             // cmbVelicina
             // 
-            this.cmbVelicina.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbVelicina.FormattingEnabled = true;
             this.cmbVelicina.Location = new System.Drawing.Point(23, 39);
             this.cmbVelicina.Name = "cmbVelicina";
@@ -202,6 +201,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Opcije";
             this.Load += new System.EventHandler(this.OptionsForm_Load);
+            this.Shown += new System.EventHandler(this.OptionsForm_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
