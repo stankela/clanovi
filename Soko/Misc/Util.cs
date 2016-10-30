@@ -28,6 +28,14 @@ namespace Soko.Misc
             clanovi.Sort(new SortComparer<Clan>(propDesc, direction));
         }
 
+        // Pretpostavlja se da lista sadrzi samo dolaske za jednog clana
+        public static void sortByDatumDolaskaDesc(List<DolazakNaTrening> dolasci)
+        {
+            PropertyDescriptor propDesc =
+                TypeDescriptor.GetProperties(typeof(DolazakNaTrening))["DatumDolaska"];
+            dolasci.Sort(new SortComparer<DolazakNaTrening>(propDesc, ListSortDirection.Descending));
+        }
+
         public static string getGrupeFilter(List<Grupa> grupe, string table, string grupaColumn)
         {
             string result;

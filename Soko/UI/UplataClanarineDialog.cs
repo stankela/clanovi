@@ -430,7 +430,7 @@ namespace Soko.UI
             txtBrojClana.Text = broj.ToString();
             findPrethodneUplateAndNeplaceniDolasci(SelectedClan);
             updateGrupaFromUplate(prethodneUplate);
-            updatePrethodneUplate(prethodneUplate);
+            showPrethodneUplate(prethodneUplate);
         }
 
         private void findPrethodneUplateAndNeplaceniDolasci(Clan SelectedClan)
@@ -493,22 +493,27 @@ namespace Soko.UI
             {
                 findPrethodneUplateAndNeplaceniDolasci(SelectedClan);
                 updateGrupaFromUplate(prethodneUplate);
-                updatePrethodneUplate(prethodneUplate);
+                showPrethodneUplate(prethodneUplate);
             }
         }
 
         private void btnPrethodneUplate_Click(object sender, EventArgs e)
         {
             findPrethodneUplateAndNeplaceniDolasci(SelectedClan);
-            updatePrethodneUplate(prethodneUplate);
+            showPrethodneUplate(prethodneUplate);
             if (txtSifraGrupe.Text == String.Empty || SelectedGrupa == null)
             {
                 updateGrupaFromUplate(prethodneUplate);
             }
         }
 
-        private void updatePrethodneUplate(List<UplataClanarine> uplate)
+        private void showPrethodneUplate(List<UplataClanarine> uplate)
         {
+            if (neplaceniDolasci.Count > 0)
+            {
+                btnNedostajuceUplate.ForeColor = Color.Red;
+            }
+
             if (uplate == null || uplate.Count == 0)
             {
                 listViewPrethodneUplate.Items.Clear();
@@ -738,6 +743,68 @@ namespace Soko.UI
                 }       
             }
             return result;
+        }
+
+        private void btnNedostajuceUplate_Click(object sender, EventArgs e)
+        {
+            if (neplaceniDolasci == null || neplaceniDolasci.Count == 0)
+            {
+                listViewPrethodneUplate.Items.Clear();
+                return;
+            }
+
+            Util.sortByDatumDolaskaDesc(neplaceniDolasci);
+
+            List<string[]> items = new List<string[]>();
+            int i = 0;
+            int prevGod = -1;
+            int prevMes = -1;
+            int prevDan = -1;
+            int brojDana = 0;
+            while (i < neplaceniDolasci.Count)
+            {
+                int god = neplaceniDolasci[i].DatumDolaska.Value.Year;
+                int mes = neplaceniDolasci[i].DatumDolaska.Value.Month;
+                int dan = neplaceniDolasci[i].DatumDolaska.Value.Day;
+                if (god == prevGod && mes == prevMes)
+                {
+                    if (dan != prevDan)
+                    {
+                        ++brojDana;
+                        prevDan = dan;
+                    }
+                }
+                else
+                {
+                    if (prevGod != -1)
+                    {
+                        addRow(prevGod, prevMes, brojDana, items);
+                    }
+                    brojDana = 1;
+                    prevGod = god;
+                    prevMes = mes;
+                    prevDan = dan;
+                }
+                ++i;
+            }
+            // Add last row
+            addRow(prevGod, prevMes, brojDana, items);
+
+            ListViewItem[] listViewItems = new ListViewItem[items.Count];
+            for (int j = 0; j < items.Count; ++j)
+            {
+                listViewItems[j] = new ListViewItem(items[j]);
+            }
+            listViewPrethodneUplate.Items.Clear();
+            listViewPrethodneUplate.Items.AddRange(listViewItems);
+            listViewPrethodneUplate.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+        }
+
+        private void addRow(int god, int mes, int brojDana, List<string[]> items)
+        {
+            DateTime datum = new DateTime(god, mes, 1);
+            string brojDanaStr = brojDana.ToString() + (brojDana == 1 ? " dan" : " dana");
+            items.Add(new string[] { datum.ToString("MMM"), datum.ToString("yyyy"), brojDanaStr });
         }
     }
 }

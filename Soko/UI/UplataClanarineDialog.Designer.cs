@@ -32,6 +32,7 @@ namespace Soko.UI
             this.btnOcitajKarticu = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnNedostajuceUplate = new System.Windows.Forms.Button();
             this.lblUkupnoIznos = new System.Windows.Forms.Label();
             this.lblUkupno = new System.Windows.Forms.Label();
             this.listViewNoveUplate = new System.Windows.Forms.ListView();
@@ -53,7 +54,6 @@ namespace Soko.UI
             this.cmbClan = new System.Windows.Forms.ComboBox();
             this.txtBrojClana = new System.Windows.Forms.TextBox();
             this.lblClan = new System.Windows.Forms.Label();
-            this.btnNedostajuceUplate = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -118,6 +118,17 @@ namespace Soko.UI
             this.groupBox1.Size = new System.Drawing.Size(602, 280);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            // 
+            // btnNedostajuceUplate
+            // 
+            this.btnNedostajuceUplate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnNedostajuceUplate.Location = new System.Drawing.Point(336, 90);
+            this.btnNedostajuceUplate.Name = "btnNedostajuceUplate";
+            this.btnNedostajuceUplate.Size = new System.Drawing.Size(121, 23);
+            this.btnNedostajuceUplate.TabIndex = 23;
+            this.btnNedostajuceUplate.Text = "Nedostajuce uplate";
+            this.btnNedostajuceUplate.UseVisualStyleBackColor = true;
+            this.btnNedostajuceUplate.Click += new System.EventHandler(this.btnNedostajuceUplate_Click);
             // 
             // lblUkupnoIznos
             // 
@@ -320,16 +331,6 @@ namespace Soko.UI
             this.lblClan.Size = new System.Drawing.Size(28, 13);
             this.lblClan.TabIndex = 0;
             this.lblClan.Text = "Clan";
-            // 
-            // btnNedostajuceUplate
-            // 
-            this.btnNedostajuceUplate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnNedostajuceUplate.Location = new System.Drawing.Point(336, 90);
-            this.btnNedostajuceUplate.Name = "btnNedostajuceUplate";
-            this.btnNedostajuceUplate.Size = new System.Drawing.Size(121, 23);
-            this.btnNedostajuceUplate.TabIndex = 23;
-            this.btnNedostajuceUplate.Text = "Nedostajuce uplate";
-            this.btnNedostajuceUplate.UseVisualStyleBackColor = true;
             // 
             // UplataClanarineDialog
             // 
