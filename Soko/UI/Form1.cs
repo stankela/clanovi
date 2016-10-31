@@ -1462,6 +1462,8 @@ namespace Soko.UI
             if (dlg.DialogResult != DialogResult.OK)
                 return;
 
+            bool exportToFile = true;
+
             Cursor.Current = Cursors.WaitCursor;
             Cursor.Show();
             try
@@ -1470,9 +1472,25 @@ namespace Soko.UI
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
-                    PreviewDialog p = new PreviewDialog();
-                    p.setIzvestaj(new DolazakNaTreningMesecniIzvestaj(dlg.OdDatum, dlg.DoDatum, true));
-                    p.ShowDialog();
+                    if (exportToFile)
+                    {
+                        String fileName = "Izvestaj.txt";
+                        StreamWriter streamWriter = File.CreateText(fileName);
+                        streamWriter.WriteLine("NEDOSTAJU\u0106E UPLATE");
+                        streamWriter.WriteLine("");
+                        List<object[]> items = new DolazakNaTreningMesecniLista(dlg.OdDatum, dlg.DoDatum, true).getItems();
+                        foreach (object[] item in items)
+                        {
+                            streamWriter.WriteLine(item[0].ToString() + '\t' + item[1].ToString());
+                        }
+                        streamWriter.Close();
+                    }
+                    else
+                    {
+                        PreviewDialog p = new PreviewDialog();
+                        p.setIzvestaj(new DolazakNaTreningMesecniIzvestaj(dlg.OdDatum, dlg.DoDatum, true));
+                        p.ShowDialog();
+                    }
                 }
             }
             catch (InfrastructureException ex)
@@ -1519,6 +1537,8 @@ namespace Soko.UI
             if (dlg.DialogResult != DialogResult.OK)
                 return;
 
+            bool exportToFile = true;
+
             Cursor.Current = Cursors.WaitCursor;
             Cursor.Show();
             try
@@ -1527,9 +1547,25 @@ namespace Soko.UI
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
-                    PreviewDialog p = new PreviewDialog();
-                    p.setIzvestaj(new DolazakNaTreningMesecniIzvestaj(dlg.OdDatum, dlg.DoDatum, false));
-                    p.ShowDialog();
+                    if (exportToFile)
+                    {
+                        String fileName = "Izvestaj.txt";
+                        StreamWriter streamWriter = File.CreateText(fileName);
+                        streamWriter.WriteLine("DOLAZAK NA TRENING I UPLATE");
+                        streamWriter.WriteLine("");
+                        List<object[]> items = new DolazakNaTreningMesecniLista(dlg.OdDatum, dlg.DoDatum, false).getItems();
+                        foreach (object[] item in items)
+                        {
+                            streamWriter.WriteLine(item[0].ToString() + '\t' + item[1].ToString() + '\t' + item[2].ToString());
+                        }
+                        streamWriter.Close();
+                    }
+                    else
+                    {
+                        PreviewDialog p = new PreviewDialog();
+                        p.setIzvestaj(new DolazakNaTreningMesecniIzvestaj(dlg.OdDatum, dlg.DoDatum, false));
+                        p.ShowDialog();
+                    }
                 }
             }
             catch (InfrastructureException ex)

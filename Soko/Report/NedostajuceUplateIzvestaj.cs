@@ -84,6 +84,37 @@ namespace Soko.Report
 			fetchItems(from, to, samoNedostajuceUplate);
 		}
 
+        // Koristi se kada je jedino sto zelimo od ove klase to da pozovemo metod getItems.
+        public DolazakNaTreningMesecniLista(DateTime from, DateTime to, bool samoNedostajuceUplate)
+            : base(null, 0, 0.0f, null, null)
+        {
+            this.samoNedostajuceUplate = samoNedostajuceUplate;
+            fetchItems(from, to, samoNedostajuceUplate);
+        }
+
+        // Koristi se za konvertovanje u .txt fajl
+        public List<object[]> getItems()
+        {
+            // Dodaj group headere.
+            int insertedRows = 0;
+            foreach (ReportGrupa g in groups)
+            {
+                int godina = (int)g.Data[0];
+                int mesec = (int)g.Data[1];
+                string godMes = new DateTime(godina, mesec, 1).ToString("MMMM yyyy").ToUpper();
+                items.Insert(g.Start + insertedRows, new object[] { "  " + godMes.ToString(), "", "" });
+                if (g.Start != 0)
+                {
+                    // Prazan red izmedju grupa
+                    items.Insert(g.Start + insertedRows, new object[] { "", "", "" });
+                    ++insertedRows;
+                }
+                ++insertedRows;
+            }
+            
+            return items;
+        }
+
         private void fetchItems(DateTime from, DateTime to, bool samoNedostajuceUplate)
 		{
             items = DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO()
