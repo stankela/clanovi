@@ -52,10 +52,10 @@ namespace Soko.UI
             }
             else
                 format = "d.M.yyyy";
-            this.dtpOd.CustomFormat = format;
-            this.dtpOd.Format = DateTimePickerFormat.Custom;
-            this.dtpDo.CustomFormat = format;
-            this.dtpDo.Format = DateTimePickerFormat.Custom;
+            dtpOd.CustomFormat = format;
+            dtpOd.Format = DateTimePickerFormat.Custom;
+            dtpDo.CustomFormat = format;
+            dtpDo.Format = DateTimePickerFormat.Custom;
 
             DateTime firstDayInMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0);
             dtpOd.Value = firstDayInMonth;

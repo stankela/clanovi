@@ -22,6 +22,9 @@ namespace Soko.UI
         private readonly string DATUM_DOLASKA = "DatumDolaska";
         private readonly string VREME_DOLASKA = "VremeDolaska";
 
+        private DateTime currentDatumOd;
+        private DateTime currentDatumDo;
+        
         private List<Clan> clanovi;
 
         public DolazakNaTreningForm()
@@ -63,11 +66,56 @@ namespace Soko.UI
             this.Size = new Size(Size.Width, 450);
 
             cmbClan.DropDownStyle = ComboBoxStyle.DropDownList;
-            
-            dtpOd.CustomFormat = "d.M.yyyy";
+
+            dtpOd.CustomFormat = "MMMM yyyy";
             dtpOd.Format = DateTimePickerFormat.Custom;
-            dtpDo.CustomFormat = "d.M.yyyy";
+            dtpDo.CustomFormat = "MMMM yyyy";
             dtpDo.Format = DateTimePickerFormat.Custom;
+            dtpOd.ShowUpDown = true;
+            dtpDo.ShowUpDown = true;
+
+            DateTime firstDayInMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0);
+            dtpOd.Value = firstDayInMonth;
+            dtpDo.Value = firstDayInMonth;
+
+            currentDatumOd = dtpOd.Value;
+            currentDatumDo = dtpDo.Value;
+            dtpOd.ValueChanged += new System.EventHandler(dtpDatum_ValueChanged);
+            dtpDo.ValueChanged += new System.EventHandler(dtpDatum_ValueChanged);
+        }
+
+        private void dtpDatum_ValueChanged(object sender, EventArgs e)
+        {
+            // Handle wrapping
+
+            DateTimePicker dateTimePicker = sender as DateTimePicker;
+            bool od = object.ReferenceEquals(dateTimePicker, dtpOd);
+            DateTime currentDatum = od ? currentDatumOd : currentDatumDo;
+
+            int add = 0;
+            if (currentDatum.Month == 12 && dateTimePicker.Value.Month == 1
+                && currentDatum.Year == dateTimePicker.Value.Year)
+            {
+                add = 1;
+
+            }
+            else if (currentDatum.Month == 1 && dateTimePicker.Value.Month == 12
+                && currentDatum.Year == dateTimePicker.Value.Year)
+            {
+                add = -1;
+            }
+
+            if (add != 0)
+            {
+                dateTimePicker.ValueChanged -= new System.EventHandler(dtpDatum_ValueChanged);
+                dateTimePicker.Value = dateTimePicker.Value.AddYears(add);
+                dateTimePicker.ValueChanged += new System.EventHandler(dtpDatum_ValueChanged);
+            }
+
+            if (od)
+                currentDatumOd = dateTimePicker.Value;
+            else
+                currentDatumDo = dateTimePicker.Value;
         }
 
         protected override void addGridColumns()
@@ -86,23 +134,22 @@ namespace Soko.UI
             else
                 SelectedClan = null;
 
-            DateTime from = getFromDate();
-            DateTime to = getToDate();
-            return loadDolasci(SelectedClan, from, to);
+            return loadDolasci(SelectedClan, getFromDate(), getToDate());
         }
 
         private DateTime getFromDate()
         {
+            // return first datetime in month
             DateTime from = dtpOd.Value;
-            return new DateTime(from.Year, from.Month, from.Day);
+            return new DateTime(from.Year, from.Month, 1);
         }
 
         private DateTime getToDate()
         {
-            DateTime to = dtpDo.Value;
-            DateTime result = new DateTime(to.Year, to.Month, to.Day);
-            result = result.AddDays(1).AddSeconds(-1);
-            return result;
+            // return last datetime in month
+            DateTime result = dtpDo.Value;
+            result = result.AddMonths(1);
+            return new DateTime(result.Year, result.Month, 1, 0, 0, 0).AddSeconds(-1);
         }
 
         private List<object> loadDolasci(Clan c, DateTime from, DateTime to)
@@ -152,10 +199,7 @@ namespace Soko.UI
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
-                    DateTime from = getFromDate();
-                    DateTime to = getToDate();
-
-                    setEntities(loadDolasci(SelectedClan, from, to));
+                    setEntities(loadDolasci(SelectedClan, getFromDate(), getToDate()));
                     clearSelection();
                 }
             }
