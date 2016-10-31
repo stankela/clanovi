@@ -1462,7 +1462,21 @@ namespace Soko.UI
             if (dlg.DialogResult != DialogResult.OK)
                 return;
 
-            bool exportToFile = true;
+            PrintOrExportForm form = new PrintOrExportForm();
+            if (form.ShowDialog() != DialogResult.OK)
+                return;
+            bool exportToFile = form.Eksportuj;
+            String fileName = "";
+            if (exportToFile)
+            {
+                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+                saveFileDialog1.Title = "Snimi izvestaj";
+                saveFileDialog1.Filter = "Text Documents (*.txt)|*.txt";
+                saveFileDialog1.FileName = "Nedostajuce uplate.txt";
+                if (saveFileDialog1.ShowDialog() != DialogResult.OK)
+                    return;
+                fileName = saveFileDialog1.FileName;
+            }
 
             Cursor.Current = Cursors.WaitCursor;
             Cursor.Show();
@@ -1474,7 +1488,6 @@ namespace Soko.UI
                     CurrentSessionContext.Bind(session);
                     if (exportToFile)
                     {
-                        String fileName = "Izvestaj.txt";
                         StreamWriter streamWriter = File.CreateText(fileName);
                         streamWriter.WriteLine("NEDOSTAJU\u0106E UPLATE");
                         streamWriter.WriteLine("");
@@ -1537,7 +1550,21 @@ namespace Soko.UI
             if (dlg.DialogResult != DialogResult.OK)
                 return;
 
-            bool exportToFile = true;
+            PrintOrExportForm form = new PrintOrExportForm();
+            if (form.ShowDialog() != DialogResult.OK)
+                return;
+            bool exportToFile = form.Eksportuj;
+            String fileName = "";
+            if (exportToFile)
+            {
+                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+                saveFileDialog1.Title = "Snimi izvestaj";
+                saveFileDialog1.Filter = "Text Documents (*.txt)|*.txt";
+                saveFileDialog1.FileName = "Dolazak na trening i uplate.txt";
+                if (saveFileDialog1.ShowDialog() != DialogResult.OK)
+                    return;
+                fileName = saveFileDialog1.FileName;
+            }
 
             Cursor.Current = Cursors.WaitCursor;
             Cursor.Show();
@@ -1549,7 +1576,6 @@ namespace Soko.UI
                     CurrentSessionContext.Bind(session);
                     if (exportToFile)
                     {
-                        String fileName = "Izvestaj.txt";
                         StreamWriter streamWriter = File.CreateText(fileName);
                         streamWriter.WriteLine("DOLAZAK NA TRENING I UPLATE");
                         streamWriter.WriteLine("");

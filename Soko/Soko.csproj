@@ -375,6 +375,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>PotvrdaDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\PrintOrExportForm.resx">
+      <DependentUpon>PrintOrExportForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\SimulatorCitacaKarticaForm.resx">
       <DependentUpon>SimulatorCitacaKarticaForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -498,6 +501,12 @@
     </Compile>
     <Compile Include="UI\PravljenjeKarticeForm.Designer.cs">
       <DependentUpon>PravljenjeKarticeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\PrintOrExportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\PrintOrExportForm.Designer.cs">
+      <DependentUpon>PrintOrExportForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\SimulatorCitacaKarticaForm.cs">
       <SubType>Form</SubType>
