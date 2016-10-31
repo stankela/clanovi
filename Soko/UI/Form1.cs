@@ -1430,6 +1430,12 @@ namespace Soko.UI
 
         private void mnSimulatorCitacaKartica_Click(object sender, EventArgs e)
         {
+            if (!Options.Instance.JedinstvenProgram)
+            {
+                MessageBox.Show("Simulator citaca kartica radi samo kada citac nije poseban program.\n" +
+                    "Postavite JedinstvenProgram na true u fajlu Options.txt");
+                return;
+            }
             SimulatorCitacaKarticaForm f = new SimulatorCitacaKarticaForm();
             f.ShowDialog();
         }
