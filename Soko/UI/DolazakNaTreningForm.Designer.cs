@@ -42,7 +42,7 @@ namespace Soko.UI
             // btnZatvori
             // 
             this.btnZatvori.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnZatvori.Location = new System.Drawing.Point(283, 328);
+            this.btnZatvori.Location = new System.Drawing.Point(354, 328);
             this.btnZatvori.Name = "btnZatvori";
             this.btnZatvori.Size = new System.Drawing.Size(75, 23);
             this.btnZatvori.TabIndex = 5;
@@ -58,13 +58,13 @@ namespace Soko.UI
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(8, 112);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(359, 208);
+            this.dataGridView1.Size = new System.Drawing.Size(430, 208);
             this.dataGridView1.TabIndex = 6;
             // 
             // dtpDo
             // 
             this.dtpDo.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpDo.Location = new System.Drawing.Point(197, 23);
+            this.dtpDo.Location = new System.Drawing.Point(200, 66);
             this.dtpDo.Name = "dtpDo";
             this.dtpDo.Size = new System.Drawing.Size(104, 20);
             this.dtpDo.TabIndex = 13;
@@ -73,7 +73,7 @@ namespace Soko.UI
             // lblDo
             // 
             this.lblDo.AutoSize = true;
-            this.lblDo.Location = new System.Drawing.Point(170, 27);
+            this.lblDo.Location = new System.Drawing.Point(173, 70);
             this.lblDo.Name = "lblDo";
             this.lblDo.Size = new System.Drawing.Size(21, 13);
             this.lblDo.TabIndex = 15;
@@ -82,7 +82,7 @@ namespace Soko.UI
             // dtpOd
             // 
             this.dtpOd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpOd.Location = new System.Drawing.Point(44, 23);
+            this.dtpOd.Location = new System.Drawing.Point(47, 66);
             this.dtpOd.Name = "dtpOd";
             this.dtpOd.Size = new System.Drawing.Size(104, 20);
             this.dtpOd.TabIndex = 12;
@@ -91,7 +91,7 @@ namespace Soko.UI
             // lblOd
             // 
             this.lblOd.AutoSize = true;
-            this.lblOd.Location = new System.Drawing.Point(17, 27);
+            this.lblOd.Location = new System.Drawing.Point(20, 70);
             this.lblOd.Name = "lblOd";
             this.lblOd.Size = new System.Drawing.Size(21, 13);
             this.lblOd.TabIndex = 14;
@@ -100,23 +100,24 @@ namespace Soko.UI
             // cmbClan
             // 
             this.cmbClan.FormattingEnabled = true;
-            this.cmbClan.Location = new System.Drawing.Point(20, 66);
+            this.cmbClan.Location = new System.Drawing.Point(23, 23);
             this.cmbClan.Name = "cmbClan";
             this.cmbClan.Size = new System.Drawing.Size(240, 21);
             this.cmbClan.TabIndex = 11;
             // 
             // btnPrikazi
             // 
-            this.btnPrikazi.Location = new System.Drawing.Point(283, 66);
+            this.btnPrikazi.Location = new System.Drawing.Point(344, 65);
             this.btnPrikazi.Name = "btnPrikazi";
             this.btnPrikazi.Size = new System.Drawing.Size(75, 23);
             this.btnPrikazi.TabIndex = 16;
             this.btnPrikazi.Text = "Prikazi";
             this.btnPrikazi.UseVisualStyleBackColor = true;
+            this.btnPrikazi.Click += new System.EventHandler(this.btnPrikazi_Click);
             // 
             // DolazakNaTreningForm
             // 
-            this.ClientSize = new System.Drawing.Size(375, 360);
+            this.ClientSize = new System.Drawing.Size(446, 360);
             this.Controls.Add(this.btnPrikazi);
             this.Controls.Add(this.dtpDo);
             this.Controls.Add(this.lblDo);

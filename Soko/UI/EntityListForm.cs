@@ -91,6 +91,13 @@ namespace Soko.UI
             throw new Exception("Derived class should implement this method.");
         }
 
+        public void clearSelection()
+        {
+            DataGridView dgw = getDataGridView();
+            foreach (DataGridViewRow row in dgw.SelectedRows)
+                row.Selected = false;
+        }
+
         private void initalizeGrid()
         {
             DataGridView dgw = getDataGridView();

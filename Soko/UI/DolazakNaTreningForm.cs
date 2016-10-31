@@ -18,6 +18,7 @@ namespace Soko.UI
 {
     public partial class DolazakNaTreningForm : EntityListForm
     {
+        private readonly string CLAN = "PrezimeImeBrojDatumRodj";
         private readonly string DATUM_DOLASKA = "DatumDolaska";
         private readonly string VREME_DOLASKA = "VremeDolaska";
 
@@ -29,8 +30,6 @@ namespace Soko.UI
             initialize(typeof(DolazakNaTrening));
 
             cmbClan.SelectedIndexChanged += new System.EventHandler(cmbClan_SelectedIndexChanged);
-
-            //sortByDatumVreme();
         }
 
         private List<Clan> loadClanovi()
@@ -70,20 +69,9 @@ namespace Soko.UI
             this.dtpDo.Format = DateTimePickerFormat.Custom;
         }
 
-        private void sortByDatumVreme()
-        {
-            PropertyDescriptor propDescDatum =
-                TypeDescriptor.GetProperties(typeof(DolazakNaTrening))["DatumDolaska"];
-            PropertyDescriptor propDescVreme =
-                TypeDescriptor.GetProperties(typeof(DolazakNaTrening))["VremeDolaska"];
-            PropertyDescriptor[] propDesc = new PropertyDescriptor[2] { propDescDatum, propDescVreme };
-            ListSortDirection[] direction = new ListSortDirection[2] { ListSortDirection.Ascending, ListSortDirection.Ascending };
-
-            entities.Sort(new SortComparer<object>(propDesc, direction));
-        }
-
         protected override void addGridColumns()
         {
+            AddColumn("Clan", CLAN, 180);
             AddColumn("Datum dolaska", DATUM_DOLASKA, 105, DataGridViewContentAlignment.MiddleCenter, "{0:dd.MM.yyyy}");
             AddColumn("Vreme dolaska", VREME_DOLASKA, 105, DataGridViewContentAlignment.MiddleCenter, "{0:t}");
         }
@@ -131,20 +119,14 @@ namespace Soko.UI
 
         private void cmbClan_SelectedIndexChanged(object sender, System.EventArgs e)
         {
+            onSelectedClanChanged();
+        }
+
+        private void onSelectedClanChanged()
+        {
             // TODO: Ne bi bilo lose da svi kreirani DAO objekti koji se koriste za realizaciju nekog juz-kejsa budu metodi
             // klase Form. Time se izbegava situacija gde se neki DAO dva puta kreira.
 
-            updateGrid();
-        }
-
-        private void showDolasci(Clan c, DateTime from, DateTime to)
-        {
-            setEntities(loadDolasci(c, from, to));
-            //sortByDatumVreme();
-        }
-
-        private void updateGrid()
-        {
             try
             {
                 using (ISession session = NHibernateHelper.Instance.OpenSession())
@@ -153,7 +135,9 @@ namespace Soko.UI
                     CurrentSessionContext.Bind(session);
                     DateTime from = getFromDate();
                     DateTime to = getToDate();
-                    showDolasci(SelectedClan, from, to);
+
+                    setEntities(loadDolasci(SelectedClan, from, to));
+                    clearSelection();
                 }
             }
             catch (InfrastructureException ex)
@@ -182,12 +166,17 @@ namespace Soko.UI
         private void DolazakNaTreningForm_Shown(object sender, EventArgs e)
         {
             btnZatvori.Focus();
+            clearSelection();
         }
 
         private void dtp_ValueChanged(object sender, EventArgs e)
         {
-            MessageBox.Show("");
-            //updateGrid();
+            onSelectedClanChanged();
+        }
+
+        private void btnPrikazi_Click(object sender, EventArgs e)
+        {
+            onSelectedClanChanged();
         }
     }
 }
