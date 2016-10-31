@@ -301,7 +301,7 @@ namespace Soko.UI
 
         private void txtBrojClana_TextChanged(object sender, System.EventArgs e)
         {
-            listViewPrethodneUplate.Items.Clear();
+            clearListViewPrethodneUplate();
             string text = txtBrojClana.Text;
             Clan clan = null;
             int broj;
@@ -316,6 +316,12 @@ namespace Soko.UI
             SelectedClan = clan;
             ckbPristupnica.Checked = SelectedClan != null && SelectedClan.ImaPristupnicu;
             ckbKartica.Checked = SelectedClan != null && SelectedClan.ImaKarticu;
+        }
+
+        private void clearListViewPrethodneUplate()
+        {
+            listViewPrethodneUplate.Items.Clear();
+            btnNedostajuceUplate.ForeColor = SystemColors.ControlText;
         }
 
         private Clan findClan(int broj)
@@ -359,7 +365,7 @@ namespace Soko.UI
 
         private void cmbClan_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            listViewPrethodneUplate.Items.Clear();
+            clearListViewPrethodneUplate();
             if (SelectedClan != null)
             {
                 txtBrojClana.Text = SelectedClan.Broj.ToString();
@@ -372,6 +378,7 @@ namespace Soko.UI
                 ckbPristupnica.Checked = false;
                 ckbKartica.Checked = false;
             }
+            // TODO2: Ovde bi trebalo apdejtovati i prethodne uplate
         }
         
         private void cmbGrupa_SelectionChangeCommitted(object sender, EventArgs e)
@@ -430,7 +437,7 @@ namespace Soko.UI
             txtBrojClana.Text = broj.ToString();
             findPrethodneUplateAndNeplaceniDolasci(SelectedClan);
             updateGrupaFromUplate(prethodneUplate);
-            showPrethodneUplate(prethodneUplate);
+            showPrethodneUplate(prethodneUplate, neplaceniDolasci);
         }
 
         private void findPrethodneUplateAndNeplaceniDolasci(Clan SelectedClan)
@@ -493,21 +500,21 @@ namespace Soko.UI
             {
                 findPrethodneUplateAndNeplaceniDolasci(SelectedClan);
                 updateGrupaFromUplate(prethodneUplate);
-                showPrethodneUplate(prethodneUplate);
+                showPrethodneUplate(prethodneUplate, neplaceniDolasci);
             }
         }
 
         private void btnPrethodneUplate_Click(object sender, EventArgs e)
         {
             findPrethodneUplateAndNeplaceniDolasci(SelectedClan);
-            showPrethodneUplate(prethodneUplate);
+            showPrethodneUplate(prethodneUplate, neplaceniDolasci);
             if (txtSifraGrupe.Text == String.Empty || SelectedGrupa == null)
             {
                 updateGrupaFromUplate(prethodneUplate);
             }
         }
 
-        private void showPrethodneUplate(List<UplataClanarine> uplate)
+        private void showPrethodneUplate(List<UplataClanarine> uplate, List<DolazakNaTrening> neplaceniDolasci)
         {
             if (neplaceniDolasci.Count > 0)
             {
