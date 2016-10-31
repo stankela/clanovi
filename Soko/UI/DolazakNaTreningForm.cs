@@ -29,7 +29,7 @@ namespace Soko.UI
             InitializeComponent();
             initialize(typeof(DolazakNaTrening));
 
-            cmbClan.SelectedIndexChanged += new System.EventHandler(cmbClan_SelectedIndexChanged);
+            cmbClan.SelectionChangeCommitted += cmbClan_SelectionChangeCommitted;
         }
 
         private List<Clan> loadClanovi()
@@ -41,7 +41,6 @@ namespace Soko.UI
 
         private void setClanovi(List<Clan> clanovi)
         {
-            cmbClan.DropDownStyle = ComboBoxStyle.DropDown;
             cmbClan.DataSource = clanovi;
             cmbClan.DisplayMember = "BrojPrezimeImeDatumRodjenja";
         }
@@ -63,10 +62,12 @@ namespace Soko.UI
             this.Text = "Dolazak na trening";
             this.Size = new Size(Size.Width, 450);
 
-            this.dtpOd.CustomFormat = "d.M.yyyy";
-            this.dtpOd.Format = DateTimePickerFormat.Custom;
-            this.dtpDo.CustomFormat = "d.M.yyyy";
-            this.dtpDo.Format = DateTimePickerFormat.Custom;
+            cmbClan.DropDownStyle = ComboBoxStyle.DropDownList;
+            
+            dtpOd.CustomFormat = "d.M.yyyy";
+            dtpOd.Format = DateTimePickerFormat.Custom;
+            dtpDo.CustomFormat = "d.M.yyyy";
+            dtpDo.Format = DateTimePickerFormat.Custom;
         }
 
         protected override void addGridColumns()
@@ -117,12 +118,30 @@ namespace Soko.UI
                 });
         }
 
-        private void cmbClan_SelectedIndexChanged(object sender, System.EventArgs e)
+        private void cmbClan_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            onSelectedClanChanged();
+            if (SelectedClan != null)
+            {
+                txtSifraClana.Text = SelectedClan.Broj.ToString();
+            }
+            else
+            {
+                txtSifraClana.Text = String.Empty;
+            }
         }
 
-        private void onSelectedClanChanged()
+        private void btnZatvori_Click(object sender, System.EventArgs e)
+        {
+            Close();
+        }
+
+        private void DolazakNaTreningForm_Shown(object sender, EventArgs e)
+        {
+            clearSelection();
+            txtSifraClana.Focus();
+        }
+
+        private void btnPrikazi_Click(object sender, EventArgs e)
         {
             // TODO: Ne bi bilo lose da svi kreirani DAO objekti koji se koriste za realizaciju nekog juz-kejsa budu metodi
             // klase Form. Time se izbegava situacija gde se neki DAO dva puta kreira.
@@ -158,25 +177,42 @@ namespace Soko.UI
             }
         }
 
-        private void btnZatvori_Click(object sender, System.EventArgs e)
+        private void txtSifraClana_TextChanged(object sender, EventArgs e)
         {
-            Close();
+            dataGridView1.DataSource = null;
+            string text = txtSifraClana.Text;
+            Clan clan = null;
+            int broj;
+            if (int.TryParse(text, out broj))
+            {
+                clan = findClan(broj);
+            }
+            else if (text != String.Empty)
+            {
+                clan = searchForClan(text);
+            }
+            SelectedClan = clan;
         }
 
-        private void DolazakNaTreningForm_Shown(object sender, EventArgs e)
+        private Clan findClan(int broj)
         {
-            btnZatvori.Focus();
-            clearSelection();
+            foreach (Clan c in clanovi)
+            {
+                if (c.Broj == broj)
+                    return c;
+            }
+            return null;
         }
 
-        private void dtp_ValueChanged(object sender, EventArgs e)
+        private Clan searchForClan(string text)
         {
-            onSelectedClanChanged();
+            foreach (Clan c in clanovi)
+            {
+                if (c.PrezimeIme.StartsWith(text, StringComparison.OrdinalIgnoreCase))
+                    return c;
+            }
+            return null;
         }
 
-        private void btnPrikazi_Click(object sender, EventArgs e)
-        {
-            onSelectedClanChanged();
-        }
     }
 }

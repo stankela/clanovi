@@ -57,6 +57,10 @@ namespace Soko.UI
             this.dtpDo.CustomFormat = format;
             this.dtpDo.Format = DateTimePickerFormat.Custom;
 
+            DateTime firstDayInMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0);
+            dtpOd.Value = firstDayInMonth;
+            dtpDo.Value = firstDayInMonth;
+
             currentDatumOd = dtpOd.Value;
             currentDatumDo = dtpDo.Value;
             dtpOd.ValueChanged += new System.EventHandler(dtpDatum_ValueChanged);

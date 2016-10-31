@@ -34,8 +34,10 @@ namespace Soko.UI
             this.lblDo = new System.Windows.Forms.Label();
             this.dtpOd = new System.Windows.Forms.DateTimePicker();
             this.lblOd = new System.Windows.Forms.Label();
-            this.cmbClan = new System.Windows.Forms.ComboBox();
             this.btnPrikazi = new System.Windows.Forms.Button();
+            this.cmbClan = new System.Windows.Forms.ComboBox();
+            this.txtSifraClana = new System.Windows.Forms.TextBox();
+            this.lblClan = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -68,7 +70,6 @@ namespace Soko.UI
             this.dtpDo.Name = "dtpDo";
             this.dtpDo.Size = new System.Drawing.Size(104, 20);
             this.dtpDo.TabIndex = 13;
-            this.dtpDo.ValueChanged += new System.EventHandler(this.dtp_ValueChanged);
             // 
             // lblDo
             // 
@@ -86,7 +87,6 @@ namespace Soko.UI
             this.dtpOd.Name = "dtpOd";
             this.dtpOd.Size = new System.Drawing.Size(104, 20);
             this.dtpOd.TabIndex = 12;
-            this.dtpOd.ValueChanged += new System.EventHandler(this.dtp_ValueChanged);
             // 
             // lblOd
             // 
@@ -96,14 +96,6 @@ namespace Soko.UI
             this.lblOd.Size = new System.Drawing.Size(21, 13);
             this.lblOd.TabIndex = 14;
             this.lblOd.Text = "Od";
-            // 
-            // cmbClan
-            // 
-            this.cmbClan.FormattingEnabled = true;
-            this.cmbClan.Location = new System.Drawing.Point(23, 23);
-            this.cmbClan.Name = "cmbClan";
-            this.cmbClan.Size = new System.Drawing.Size(240, 21);
-            this.cmbClan.TabIndex = 11;
             // 
             // btnPrikazi
             // 
@@ -115,15 +107,42 @@ namespace Soko.UI
             this.btnPrikazi.UseVisualStyleBackColor = true;
             this.btnPrikazi.Click += new System.EventHandler(this.btnPrikazi_Click);
             // 
+            // cmbClan
+            // 
+            this.cmbClan.FormattingEnabled = true;
+            this.cmbClan.Location = new System.Drawing.Point(127, 21);
+            this.cmbClan.Name = "cmbClan";
+            this.cmbClan.Size = new System.Drawing.Size(232, 21);
+            this.cmbClan.TabIndex = 19;
+            // 
+            // txtSifraClana
+            // 
+            this.txtSifraClana.Location = new System.Drawing.Point(61, 21);
+            this.txtSifraClana.Name = "txtSifraClana";
+            this.txtSifraClana.Size = new System.Drawing.Size(48, 20);
+            this.txtSifraClana.TabIndex = 17;
+            this.txtSifraClana.TextChanged += new System.EventHandler(this.txtSifraClana_TextChanged);
+            // 
+            // lblClan
+            // 
+            this.lblClan.AutoSize = true;
+            this.lblClan.Location = new System.Drawing.Point(20, 24);
+            this.lblClan.Name = "lblClan";
+            this.lblClan.Size = new System.Drawing.Size(28, 13);
+            this.lblClan.TabIndex = 18;
+            this.lblClan.Text = "Clan";
+            // 
             // DolazakNaTreningForm
             // 
             this.ClientSize = new System.Drawing.Size(446, 360);
+            this.Controls.Add(this.cmbClan);
+            this.Controls.Add(this.txtSifraClana);
+            this.Controls.Add(this.lblClan);
             this.Controls.Add(this.btnPrikazi);
             this.Controls.Add(this.dtpDo);
             this.Controls.Add(this.lblDo);
             this.Controls.Add(this.dtpOd);
             this.Controls.Add(this.lblOd);
-            this.Controls.Add(this.cmbClan);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnZatvori);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -147,7 +166,9 @@ namespace Soko.UI
         private System.Windows.Forms.Label lblDo;
         private System.Windows.Forms.DateTimePicker dtpOd;
         private System.Windows.Forms.Label lblOd;
-        private System.Windows.Forms.ComboBox cmbClan;
         private System.Windows.Forms.Button btnPrikazi;
+        private System.Windows.Forms.ComboBox cmbClan;
+        private System.Windows.Forms.TextBox txtSifraClana;
+        private System.Windows.Forms.Label lblClan;
     }
 }

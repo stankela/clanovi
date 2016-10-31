@@ -810,7 +810,7 @@ namespace Soko.UI
         private void addRow(int god, int mes, int brojDana, List<string[]> items)
         {
             DateTime datum = new DateTime(god, mes, 1);
-            string brojDanaStr = brojDana.ToString() + (brojDana == 1 ? " dan" : " dana");
+            string brojDanaStr = brojDana.ToString() + (brojDana == 1 ? " trening" : " treninga");
             items.Add(new string[] { datum.ToString("MMM"), datum.ToString("yyyy"), brojDanaStr });
         }
     }
