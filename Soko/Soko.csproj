@@ -197,6 +197,12 @@
     <Compile Include="UI\ClanoviKojiNePlacajuForm.Designer.cs">
       <DependentUpon>ClanoviKojiNePlacajuForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\DolazakNaTreningForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\DolazakNaTreningForm.Designer.cs">
+      <DependentUpon>DolazakNaTreningForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\DuplikatiClanovaForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -280,6 +286,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ClanoviKojiNePlacajuForm.resx">
       <DependentUpon>ClanoviKojiNePlacajuForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DolazakNaTreningForm.resx">
+      <DependentUpon>DolazakNaTreningForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DuplikatiClanovaForm.resx">
       <DependentUpon>DuplikatiClanovaForm.cs</DependentUpon>

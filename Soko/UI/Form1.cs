@@ -1707,5 +1707,33 @@ namespace Soko.UI
                 MessageDialogs.showMessage(ex.Message, Form1.Instance.Text);
             }
         }
+
+        private void mnDolazakNaTrening_Click(object sender, EventArgs e)
+        {
+            if (!dozvoliOtvaranjeProzora())
+                return;
+
+            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Show();
+
+            try
+            {
+                DolazakNaTreningForm d = new DolazakNaTreningForm();
+                d.ShowDialog();
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            finally
+            {
+                Cursor.Hide();
+                Cursor.Current = Cursors.Arrow;
+            }
+        }
     }
 }

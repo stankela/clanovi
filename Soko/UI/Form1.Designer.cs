@@ -42,6 +42,7 @@ namespace Soko.UI
             this.mnInstitucije = new System.Windows.Forms.ToolStripMenuItem();
             this.mnUplate = new System.Windows.Forms.ToolStripMenuItem();
             this.mnClanoviKojiNePlacajuClanarinu = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnDolazakNaTrening = new System.Windows.Forms.ToolStripMenuItem();
             this.mnIzvestaji = new System.Windows.Forms.ToolStripMenuItem();
             this.mnPrihodiDnevniKategorije = new System.Windows.Forms.ToolStripMenuItem();
             this.mnPrihodiDnevniGrupe = new System.Windows.Forms.ToolStripMenuItem();
@@ -107,6 +108,7 @@ namespace Soko.UI
             this.mnMesta,
             this.mnInstitucije,
             this.mnUplate,
+            this.mnDolazakNaTrening,
             this.mnClanoviKojiNePlacajuClanarinu});
             this.mnClanovi.Name = "mnClanovi";
             this.mnClanovi.Size = new System.Drawing.Size(59, 20);
@@ -181,6 +183,13 @@ namespace Soko.UI
             this.mnClanoviKojiNePlacajuClanarinu.Size = new System.Drawing.Size(193, 22);
             this.mnClanoviKojiNePlacajuClanarinu.Text = "Clanovi koji ne placaju";
             this.mnClanoviKojiNePlacajuClanarinu.Click += new System.EventHandler(this.mnClanoviKojiNePlacajuClanarinu_Click);
+            // 
+            // mnDolazakNaTrening
+            // 
+            this.mnDolazakNaTrening.Name = "mnDolazakNaTrening";
+            this.mnDolazakNaTrening.Size = new System.Drawing.Size(193, 22);
+            this.mnDolazakNaTrening.Text = "Dolazak na trening";
+            this.mnDolazakNaTrening.Click += new System.EventHandler(this.mnDolazakNaTrening_Click);
             // 
             // mnIzvestaji
             // 
@@ -305,14 +314,14 @@ namespace Soko.UI
             // mnOpcije
             // 
             this.mnOpcije.Name = "mnOpcije";
-            this.mnOpcije.Size = new System.Drawing.Size(152, 22);
+            this.mnOpcije.Size = new System.Drawing.Size(139, 22);
             this.mnOpcije.Text = "Opcije";
             this.mnOpcije.Click += new System.EventHandler(this.mnOpcije_Click);
             // 
             // mnCitacKartica
             // 
             this.mnCitacKartica.Name = "mnCitacKartica";
-            this.mnCitacKartica.Size = new System.Drawing.Size(152, 22);
+            this.mnCitacKartica.Size = new System.Drawing.Size(139, 22);
             this.mnCitacKartica.Text = "Citac kartica";
             this.mnCitacKartica.Click += new System.EventHandler(this.mnCitacKartica_Click);
             // 
@@ -406,6 +415,7 @@ namespace Soko.UI
         private System.Windows.Forms.ToolStripMenuItem mnDolazakNaTreningMesecni;
         private System.Windows.Forms.ToolStripMenuItem mnClanoviKojiNePlacajuClanarinu;
         private System.Windows.Forms.ToolStripMenuItem mnOpcije;
+        private System.Windows.Forms.ToolStripMenuItem mnDolazakNaTrening;
     }
 }
 

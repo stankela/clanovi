@@ -20,6 +20,7 @@ namespace Soko.UI
         public PrintOrExportForm()
         {
             InitializeComponent();
+            Font = Options.Instance.Font;
             Text = "Izvestaj";
             rbtStampaj.Checked = true;
         }
