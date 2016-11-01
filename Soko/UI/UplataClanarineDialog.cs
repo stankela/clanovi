@@ -754,14 +754,32 @@ namespace Soko.UI
 
         private void btnNedostajuceUplate_Click(object sender, EventArgs e)
         {
+            showNeplaceniDolasci(neplaceniDolasci);
+        }
+
+        private void showNeplaceniDolasci(List<DolazakNaTrening> neplaceniDolasci)
+        {
             if (neplaceniDolasci == null || neplaceniDolasci.Count == 0)
             {
                 listViewPrethodneUplate.Items.Clear();
                 return;
             }
 
-            Util.sortByDatumDolaskaDesc(neplaceniDolasci);
+            List<string[]> items = getNeplaceniDolasciGroupByMonth(neplaceniDolasci);
 
+            ListViewItem[] listViewItems = new ListViewItem[items.Count];
+            for (int j = 0; j < items.Count; ++j)
+            {
+                listViewItems[j] = new ListViewItem(items[j]);
+            }
+            listViewPrethodneUplate.Items.Clear();
+            listViewPrethodneUplate.Items.AddRange(listViewItems);
+            listViewPrethodneUplate.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+        }
+
+        private List<string[]> getNeplaceniDolasciGroupByMonth(List<DolazakNaTrening> neplaceniDolasci)
+        {
+            Util.sortByDatumDolaskaDesc(neplaceniDolasci);
             List<string[]> items = new List<string[]>();
             int i = 0;
             int prevGod = -1;
@@ -797,14 +815,7 @@ namespace Soko.UI
             // Add last row
             addRow(prevGod, prevMes, brojDana, items);
 
-            ListViewItem[] listViewItems = new ListViewItem[items.Count];
-            for (int j = 0; j < items.Count; ++j)
-            {
-                listViewItems[j] = new ListViewItem(items[j]);
-            }
-            listViewPrethodneUplate.Items.Clear();
-            listViewPrethodneUplate.Items.AddRange(listViewItems);
-            listViewPrethodneUplate.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            return items;
         }
 
         private void addRow(int god, int mes, int brojDana, List<string[]> items)

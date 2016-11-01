@@ -218,13 +218,14 @@ ORDER BY
 SELECT DISTINCT
     datepart(year, d.datum_vreme_dolaska) god,
     datepart(month, d.datum_vreme_dolaska) mes,
+    datepart(day, d.datum_vreme_dolaska) dan,
     c.clan_id, c.broj, c.ime, c.prezime, c.datum_rodjenja, c.ne_placa_clanarinu,
     g.naziv
 FROM clanovi c INNER JOIN (dolazak_na_trening d LEFT OUTER JOIN grupe g
 	ON d.grupa_id = g.grupa_id)
 	ON c.clan_id = d.clan_id
 WHERE (d.datum_vreme_dolaska BETWEEN '{0}' AND '{1}')
-ORDER BY god, mes, g.naziv, c.prezime, c.ime, c.datum_rodjenja";
+ORDER BY god, mes, g.naziv, c.prezime, c.ime, c.datum_rodjenja, dan";
 
                 dolasciQuery = String.Format(dolasciQuery, from.ToString("yyyy-MM-dd HH:mm:ss"),
                     to.ToString("yyyy-MM-dd HH:mm:ss"));
@@ -289,12 +290,15 @@ WHERE (u.grupa_id = {0}) AND (u.vazi_od BETWEEN '{1}' AND '{2}')";
                 }
 
                 List<object[]> result = new List<object[]>();
+                int prev_id = -1;
+                object[] prevItem = null;
+                int brojDana = 0;
                 foreach (object[] row in dolasci)
                 {
                     int god = (int)row[0];
                     int mes = (int)row[1];
-                    int id = (int)row[2];
-                    bool neplacaClanarinu = (bool)row[7];
+                    int id = (int)row[3];
+                    bool neplacaClanarinu = (bool)row[8];
 
                     bool imaUplatu = uplateSet.Contains(new ClanGodinaMesec(id, god, mes));
                     if (!imaUplatu)
@@ -307,17 +311,17 @@ WHERE (u.grupa_id = {0}) AND (u.vazi_od BETWEEN '{1}' AND '{2}')";
                         continue;
                     }
 
-                    int broj = (int)row[3];
-                    string ime = (string)row[4];
-                    string prezime = (string)row[5];
+                    int broj = (int)row[4];
+                    string ime = (string)row[5];
+                    string prezime = (string)row[6];
 
                     Nullable<DateTime> datumRodjenja = null;
-                    if (row[6] != null)
-                        datumRodjenja = (DateTime)row[6];
+                    if (row[7] != null)
+                        datumRodjenja = (DateTime)row[7];
 
                     string nazivGrupe = String.Empty;
-                    if (row[8] != null)
-                        nazivGrupe = (string)row[8];
+                    if (row[9] != null)
+                        nazivGrupe = (string)row[9];
 
                     string imaUplatuStr = "NE";
                     if (imaUplatu)
@@ -325,8 +329,35 @@ WHERE (u.grupa_id = {0}) AND (u.vazi_od BETWEEN '{1}' AND '{2}')";
 
                     string clan = Clan.formatPrezimeImeBrojDatumRodjAdresaMesto(
                         prezime, ime, broj, datumRodjenja, String.Empty, String.Empty);
-                    result.Add(new object[] { clan, nazivGrupe, imaUplatuStr, god, mes });
+                    object[] item = new object[] { clan, nazivGrupe, imaUplatuStr, god, mes };
+
+                    if (prevItem != null && god == (int)prevItem[3] && mes == (int)prevItem[4]
+                        && id == prev_id && nazivGrupe == (string)prevItem[1])
+                    {
+                        ++brojDana;
+                    }
+                    else
+                    {
+                        if (prevItem != null)
+                        {
+                            if ((string)prevItem[2] == "NE")
+                            {
+                                prevItem[2] += formatBrojTreninga(brojDana);
+                            }
+                            result.Add(prevItem);
+                        }
+                        brojDana = 1;
+                        prev_id = id;
+                        prevItem = item;
+                    }
                 }
+                // Add last item
+                if ((string)prevItem[2] == "NE")
+                {
+                    prevItem[2] += formatBrojTreninga(brojDana);
+                }
+                result.Add(prevItem);
+
                 return result;
             }
             catch (HibernateException ex)
@@ -335,6 +366,11 @@ WHERE (u.grupa_id = {0}) AND (u.vazi_od BETWEEN '{1}' AND '{2}')";
                     "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
                 throw new InfrastructureException(message, ex);
             }
+        }
+
+        private string formatBrojTreninga(int brojDana)
+        {
+            return " (" + brojDana.ToString() + (brojDana == 1 ? " trening)" : " treninga)");
         }
     }
 
