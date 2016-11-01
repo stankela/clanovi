@@ -342,7 +342,7 @@ WHERE (u.grupa_id = {0}) AND (u.vazi_od BETWEEN '{1}' AND '{2}')";
                         {
                             if ((string)prevItem[2] == "NE")
                             {
-                                prevItem[2] += formatBrojTreninga(brojDana);
+                                prevItem[2] = formatBrojTreninga(brojDana, samoNedostajuceUplate);
                             }
                             result.Add(prevItem);
                         }
@@ -354,7 +354,7 @@ WHERE (u.grupa_id = {0}) AND (u.vazi_od BETWEEN '{1}' AND '{2}')";
                 // Add last item
                 if ((string)prevItem[2] == "NE")
                 {
-                    prevItem[2] += formatBrojTreninga(brojDana);
+                    prevItem[2] = formatBrojTreninga(brojDana, samoNedostajuceUplate);
                 }
                 result.Add(prevItem);
 
@@ -368,9 +368,18 @@ WHERE (u.grupa_id = {0}) AND (u.vazi_od BETWEEN '{1}' AND '{2}')";
             }
         }
 
-        private string formatBrojTreninga(int brojDana)
+        private string formatBrojTreninga(int brojDana, bool samoNedostajuceUplate)
         {
-            return " (" + brojDana.ToString() + (brojDana == 1 ? " trening)" : " treninga)");
+            string result;
+            if (samoNedostajuceUplate)
+            {
+                result = brojDana.ToString();
+            }
+            else
+            {
+                result = "NE (" + brojDana.ToString() + ")";
+            }
+            return result;
         }
     }
 

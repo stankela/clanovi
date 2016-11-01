@@ -1494,7 +1494,7 @@ namespace Soko.UI
                         List<object[]> items = new DolazakNaTreningMesecniLista(dlg.OdDatum, dlg.DoDatum, true).getItems();
                         foreach (object[] item in items)
                         {
-                            streamWriter.WriteLine(item[0].ToString() + '\t' + item[1].ToString());
+                            streamWriter.WriteLine(item[0].ToString() + '\t' + item[1].ToString() + '\t' + item[2].ToString());
                         }
                         streamWriter.Close();
                     }

@@ -67,7 +67,7 @@ namespace Soko.Report
 	{
 		private float relClan = 0.0f;
 		private float relGrupa = 9.0f;
-        private float relImaUplatu = 16.5f;
+        private float relImaUplatu = 15.4f;
 		
 		private Font groupTitleFont;
 		private float groupTitleHeight;
@@ -194,19 +194,24 @@ namespace Soko.Report
             float clanWidth = xGrupa - xClan;
             float grupaWidth;
             float imaUplatuWidth = 0.0f;
+            grupaWidth = xImaUplatu - xGrupa;
+            imaUplatuWidth = contentBounds.Right - xImaUplatu;
+
+            StringFormat imaUplatuFormat = new StringFormat();
             if (samoNedostajuceUplate)
-                grupaWidth = contentBounds.Right - xGrupa;
+            {
+                imaUplatuFormat.Alignment = StringAlignment.Center;
+            }
             else
             {
-                grupaWidth = xImaUplatu - xGrupa;
-                imaUplatuWidth = contentBounds.Right - xImaUplatu;
+                imaUplatuFormat.Alignment = StringAlignment.Far;
             }
 
 			columns.Clear();
 			addColumn(xClan, clanWidth);
 			addColumn(xGrupa, grupaWidth);
-            if (!samoNedostajuceUplate)
-                addColumn(xImaUplatu, imaUplatuWidth);
+            ReportColumn col = addColumn(xImaUplatu, imaUplatuWidth);
+            col.ItemRectFormat = imaUplatuFormat;
         }
 		
 		protected override void drawGroupHeader(Graphics g, int groupId, RectangleF groupHeaderRect)
@@ -217,12 +222,18 @@ namespace Soko.Report
             string godMes = new DateTime(godina, mesec, 1).ToString("MMMM yyyy");
             g.DrawString(godMes, groupTitleFont, blackBrush, groupHeaderRect);
 
+            StringFormat fmt = new StringFormat();
+            fmt.Alignment = StringAlignment.Far;
+            string msg;
             if (!samoNedostajuceUplate)
             {
-                StringFormat fmt = new StringFormat();
-                fmt.Alignment = StringAlignment.Far;
-                g.DrawString("Uplata", itemFont, blackBrush, groupHeaderRect, fmt);
+                msg = "Ima uplatu (broj treninga)";
             }
+            else
+            {
+                msg = "Broj treninga";
+            }
+            g.DrawString(msg, itemFont, blackBrush, groupHeaderRect, fmt);
 
             float xClan = columns[0].X;
 			float y = groupHeaderRect.Y + groupTitleFont.GetHeight(g);
