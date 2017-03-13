@@ -419,14 +419,16 @@ namespace Soko
             bool okForTrening = false;
             if (uplata != null)
             {
-                // Najpre proveri godisnju clanarinu.
-                okForTrening = Util.isGodisnjaClanarina(uplata.Grupa.Naziv);
-
-                // Proveri da li postoji uplata za ovaj mesec.
-                if (!okForTrening)
+                // Moguce da je clan uplatio clanarinu npr. pre 3 meseca, a tek ovog meseca mu je promenjen status
+                // u neplaca clanarinu. U tom slucaju treba da svetli zeleno.
+                if (clan.NeplacaClanarinu)
+                    okForTrening = true;
+                else if (Util.isGodisnjaClanarina(uplata.Grupa.Naziv))
+                    okForTrening = uplata.VaziOd.Value.Year == vremeOcitavanja.Year;
+                else
                 {
-                    okForTrening =
-                        uplata.VaziOd.Value.Year == vremeOcitavanja.Year
+                    // Proveri da li postoji uplata za ovaj mesec.
+                    okForTrening = uplata.VaziOd.Value.Year == vremeOcitavanja.Year
                         && uplata.VaziOd.Value.Month == vremeOcitavanja.Month;
                 }
             }
@@ -435,10 +437,16 @@ namespace Soko
                 okForTrening = clan.NeplacaClanarinu;
             }
 
-            // Tolerisi do odredjenog dana u mesecu.
+            // Tolerisi do odredjenog dana u mesecu, ali ne i za godisnje clanarine.
             if (!okForTrening)
             {
-                okForTrening = vremeOcitavanja.Day <= Options.Instance.PoslednjiDanZaUplate;
+                if (uplata != null && Util.isGodisnjaClanarina(uplata.Grupa.Naziv))
+                {
+                    // Tolerisi do 1. Februara
+                    okForTrening = vremeOcitavanja.Month == 1;
+                }
+                else
+                    okForTrening = vremeOcitavanja.Day <= Options.Instance.PoslednjiDanZaUplate;
             }
 
             string grupa = null;

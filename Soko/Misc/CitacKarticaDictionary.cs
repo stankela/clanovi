@@ -24,6 +24,7 @@ namespace Soko.Misc
         private IDictionary<int, List<UplataClanarine>> ovomesecneUplate;
         private IDictionary<int, List<UplataClanarine>> prethodneUplate;
         private IDictionary<int, UplataClanarine> uplateGodisnjaClanarina;
+        private IDictionary<int, UplataClanarine> uplateGodisnjaClanarinaPrethGod;
 
         public const string DODAJ_CLANA = "DodajClana";
         public const string DODAJ_UPLATE = "DodajUplate";
@@ -46,6 +47,7 @@ namespace Soko.Misc
             ovomesecneUplate = new Dictionary<int, List<UplataClanarine>>();
             prethodneUplate = new Dictionary<int, List<UplataClanarine>>();
             uplateGodisnjaClanarina = new Dictionary<int, UplataClanarine>();
+            uplateGodisnjaClanarinaPrethGod = new Dictionary<int, UplataClanarine>();
         }
 
         public void Init()
@@ -131,6 +133,21 @@ namespace Soko.Misc
                             }
                         }
                     }
+
+                    uplateGodisnjaClanarinaPrethGod = new Dictionary<int, UplataClanarine>();
+                    if (godisnjaClanarinaGrupa != null)
+                    {
+                        DateTime firstDateTimeInYear = new DateTime(DateTime.Now.Year  - 1, 1, 1, 0, 0, 0);
+                        DateTime lastDateTimeInYear = new DateTime(DateTime.Now.Year, 1, 1, 0, 0, 0).AddSeconds(-1);
+                        foreach (UplataClanarine u in uplataClanarineDAO.findUplate(godisnjaClanarinaGrupa,
+                            firstDateTimeInYear, lastDateTimeInYear))
+                        {
+                            if (!uplateGodisnjaClanarinaPrethGod.ContainsKey(u.Clan.Id))
+                            {
+                                uplateGodisnjaClanarinaPrethGod.Add(u.Clan.Id, u);
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -157,6 +174,13 @@ namespace Soko.Misc
             if (uplateGodisnjaClanarina.ContainsKey(clan.Id))
             {
                 return uplateGodisnjaClanarina[clan.Id];
+            }
+            // TODO3: Treba razresiti situaciju kada postoji godisnja uplata za prethodnu godinu i obicna uplata za neki
+            // mesec ove godine, tj. koju uplatu vratiti u tom slucaju, tj. da li tretirati clana kao regularnog clana
+            // ili clana sa godisnjom clanarinom. Trenutno prednost ima godisnja clanarina.
+            if (uplateGodisnjaClanarinaPrethGod.ContainsKey(clan.Id))
+            {
+                return uplateGodisnjaClanarinaPrethGod[clan.Id];
             }
             if (ovomesecneUplate.ContainsKey(clan.Id))
             {
