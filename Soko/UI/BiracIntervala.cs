@@ -85,6 +85,7 @@ namespace Soko.UI
                 CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
 
+            checkedListBoxGrupe.CheckOnClick = true;
             sveGrupe.Sort();
             fillCheckedListBoxGrupa(sveGrupe);
             rbtSveGrupe.Checked = true;
