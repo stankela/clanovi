@@ -254,19 +254,19 @@ WHERE (u.vazi_od BETWEEN '{0}' AND '{1}')";
                 DateTime firstDateTimeInYear = new DateTime(from.Year, 1, 1, 0, 0, 0);
                 DateTime lastDateTimeInYear = new DateTime(to.AddYears(1).Year, 1, 1, 0, 0, 0).AddSeconds(-1);
 
-                int godisnjaClanarinaId = -1;
+                List<Grupa> godisnjaClanarinaGrupe = new List<Grupa>();
                 GrupaDAO grupaDAO = DAOFactoryFactory.DAOFactory.GetGrupaDAO();
                 IList<Grupa> grupe = grupaDAO.FindAll();
                 foreach (Grupa g in grupe)
                 {
                     if (Util.isGodisnjaClanarina(g.Naziv))
                     {
-                        godisnjaClanarinaId = g.Id;
-                        break;
+                        godisnjaClanarinaGrupe.Add(g);
                     }
                 }
-                if (godisnjaClanarinaId == -1)
+                if (godisnjaClanarinaGrupe.Count == 0)
                 {
+                    // TODO3: Da li je ovo potrebno?
                     MessageDialogs.showMessage("Ne mogu da pronadjem grupu za godisnju clanarinu", "Greska");
                 }
 
@@ -275,10 +275,16 @@ SELECT DISTINCT
     datepart(year, u.vazi_od) god,
     u.clan_id
 FROM uplate u
-WHERE (u.grupa_id = {0}) AND (u.vazi_od BETWEEN '{1}' AND '{2}')";
-                uplateGodisnjaClanarinaQuery = String.Format(uplateGodisnjaClanarinaQuery, godisnjaClanarinaId.ToString(),
+WHERE (u.vazi_od BETWEEN '{0}' AND '{1}')
+{2}";
+                string filter = String.Empty;
+                if (godisnjaClanarinaGrupe.Count > 0)
+                    filter = " AND " + Util.getGrupeFilter(godisnjaClanarinaGrupe, "u", "grupa_id");
+
+                uplateGodisnjaClanarinaQuery = String.Format(uplateGodisnjaClanarinaQuery,
                     firstDateTimeInYear.ToString("yyyy-MM-dd HH:mm:ss"),
-                    lastDateTimeInYear.ToString("yyyy-MM-dd HH:mm:ss"));
+                    lastDateTimeInYear.ToString("yyyy-MM-dd HH:mm:ss"),
+                    filter);
                 IList<object[]> uplateGodisnjaClanarina = Session.CreateSQLQuery(uplateGodisnjaClanarinaQuery).List<object[]>();
 
                 ISet godisnjeUplateSet = new HashedSet();

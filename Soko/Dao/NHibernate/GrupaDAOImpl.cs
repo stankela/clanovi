@@ -67,20 +67,21 @@ namespace Bilten.Dao.NHibernate
             }
         }
 
-        public virtual Grupa findGodisnjaClanarina()
+        public virtual IList<Grupa> findGodisnjaClanarina()
         {
             try
             {
                 IQuery q = Session.CreateQuery(@"from Grupa g");
                 IList<Grupa> grupe = q.List<Grupa>();
+                IList<Grupa> result = new List<Grupa>();
                 foreach (Grupa g in grupe)
                 {
                     if (Util.isGodisnjaClanarina(g.Naziv))
                     {
-                        return g;
+                        result.Add(g);
                     }
                 }
-                return null;
+                return result;
             }
             catch (HibernateException ex)
             {

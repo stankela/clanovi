@@ -111,18 +111,33 @@ namespace Bilten.Dao.NHibernate
             }
         }
 
-        public virtual IList<UplataClanarine> findUplate(Grupa grupa, DateTime from, DateTime to)
+        public virtual IList<UplataClanarine> findUplate(IList<Grupa> grupe, DateTime from, DateTime to)
         {
             try
             {
-                IQuery q = Session.CreateQuery(@"from UplataClanarine u
-                                                 left join fetch u.Clan 
-                                                 left join fetch u.Grupa
-                                                 where u.Grupa = :grupa 
-                                                 and u.VaziOd >= :from and u.VaziOd <= :to");
-                q.SetEntity("grupa", grupa);
-                q.SetDateTime("from", from);
-                q.SetDateTime("to", to);
+                string query = @"from UplataClanarine u
+                                 left join fetch u.Clan 
+                                 left join fetch u.Grupa
+                                 where u.VaziOd >= ? and u.VaziOd <= ?";
+                if (grupe.Count > 0)
+                {
+                    query += "and u.Grupa in (";
+                    for (int i = 0; i < grupe.Count; i++)
+                    {
+                        if (i == 0)
+                            query += "?";
+                        else
+                            query += ", ?";
+                    }
+                    query += ")";
+                }
+                IQuery q = Session.CreateQuery(query);
+                q.SetDateTime(0, from);
+                q.SetDateTime(1, to);
+                for (int i = 0; i < grupe.Count; i++)
+                {
+                    q.SetEntity(2 + i, grupe[i]);
+                }
                 return q.List<UplataClanarine>();
             }
             catch (HibernateException ex)

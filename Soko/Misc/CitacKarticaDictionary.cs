@@ -68,14 +68,11 @@ namespace Soko.Misc
                     }
 
                     GrupaDAO grupaDAO = DAOFactoryFactory.DAOFactory.GetGrupaDAO();
-                    Grupa godisnjaClanarinaGrupa = grupaDAO.findGodisnjaClanarina();
-                    int godisnjaClanarinaId = -1;
-                    if (godisnjaClanarinaGrupa != null)
+                    IList<Grupa> godisnjaClanarinaGrupe = grupaDAO.findGodisnjaClanarina();
+                    if (godisnjaClanarinaGrupe.Count == 0)
                     {
-                        godisnjaClanarinaId = godisnjaClanarinaGrupa.Id;
-                    }
-                    else
-                    {
+                        // TODO3: Da li je potrebna ova provera? Ako se grupe sa godisnjom clanarinom zadaju
+                        // u programu, trebalo bi da je dozvoljeno da ne bude zadata nijedna grupa.
                         MessageDialogs.showMessage("Ne mogu da pronadjem grupu za godisnju clanarinu", "Greska");
                     }
 
@@ -87,9 +84,12 @@ namespace Soko.Misc
                     UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
                     foreach (UplataClanarine u in uplataClanarineDAO.findUplateVaziOd(from, to))
                     {
-                        if (u.Grupa.Id == godisnjaClanarinaId)
+                        foreach (Grupa g in godisnjaClanarinaGrupe)
                         {
-                            continue;
+                            if (g.Id == u.Grupa.Id)
+                            {
+                                continue;
+                            }
                         }
                         if (u.VaziOd.Value.Month == now.Month && u.VaziOd.Value.Year == now.Year)
                         {
@@ -120,11 +120,11 @@ namespace Soko.Misc
                     }
 
                     uplateGodisnjaClanarina = new Dictionary<int, UplataClanarine>();
-                    if (godisnjaClanarinaGrupa != null)
+                    if (godisnjaClanarinaGrupe.Count > 0)
                     {
                         DateTime firstDateTimeInYear = new DateTime(DateTime.Now.Year, 1, 1, 0, 0, 0);
                         DateTime lastDateTimeInYear = new DateTime(DateTime.Now.Year + 1, 1, 1, 0, 0, 0).AddSeconds(-1);
-                        foreach (UplataClanarine u in uplataClanarineDAO.findUplate(godisnjaClanarinaGrupa,
+                        foreach (UplataClanarine u in uplataClanarineDAO.findUplate(godisnjaClanarinaGrupe,
                             firstDateTimeInYear, lastDateTimeInYear))
                         {
                             if (!uplateGodisnjaClanarina.ContainsKey(u.Clan.Id))
@@ -135,11 +135,11 @@ namespace Soko.Misc
                     }
 
                     uplateGodisnjaClanarinaPrethGod = new Dictionary<int, UplataClanarine>();
-                    if (godisnjaClanarinaGrupa != null)
+                    if (godisnjaClanarinaGrupe.Count > 0)
                     {
                         DateTime firstDateTimeInYear = new DateTime(DateTime.Now.Year  - 1, 1, 1, 0, 0, 0);
                         DateTime lastDateTimeInYear = new DateTime(DateTime.Now.Year, 1, 1, 0, 0, 0).AddSeconds(-1);
-                        foreach (UplataClanarine u in uplataClanarineDAO.findUplate(godisnjaClanarinaGrupa,
+                        foreach (UplataClanarine u in uplataClanarineDAO.findUplate(godisnjaClanarinaGrupe,
                             firstDateTimeInYear, lastDateTimeInYear))
                         {
                             if (!uplateGodisnjaClanarinaPrethGod.ContainsKey(u.Clan.Id))
