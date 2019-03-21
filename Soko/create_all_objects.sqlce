@@ -43,6 +43,7 @@ create table grupe (
     podgrupa nvarchar(5),
     naziv nvarchar(50),
     sort_order int,
+    ima_godisnju_clanarinu bit,
     kategorija_id int references kategorije(kategorija_id)
 );
 GO

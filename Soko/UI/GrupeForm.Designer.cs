@@ -82,18 +82,18 @@ namespace Soko.UI
             // 
             // dataGridView1
             // 
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(8, 8);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(536, 312);
+            this.dataGridView1.Size = new System.Drawing.Size(613, 312);
             this.dataGridView1.TabIndex = 11;
             // 
             // GrupeForm
             // 
-            this.ClientSize = new System.Drawing.Size(554, 360);
+            this.ClientSize = new System.Drawing.Size(631, 360);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnZatvori);
             this.Controls.Add(this.btnBrisi);

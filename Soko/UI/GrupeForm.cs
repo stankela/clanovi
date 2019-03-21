@@ -15,6 +15,7 @@ namespace Soko.UI
         private const string SIFRA = "Sifra";
         private const string NAZIV = "Naziv";
         private const string KATEGORIJA = "Kategorija";
+        private const string IMA_GODISNJU_CLANARINU = "ImaGodisnjuClanarinu";
 
         public GrupeForm()
         {
@@ -33,6 +34,24 @@ namespace Soko.UI
             base.initUI();
             this.Size = new Size(Size.Width, 450);
             this.Text = "Grupe";
+            dataGridView1.CellFormatting += new DataGridViewCellFormattingEventHandler(dataGridView1_CellFormatting);
+        }
+
+        void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            // This method formats only boolean columns. Additional formating can be
+            // specified in the AddColumn method.
+            DataGridView dgw = (DataGridView)sender;
+            if (e.Value == null)
+                return;
+            if (e.Value.GetType() == typeof(bool))
+            {
+                if ((bool)e.Value == true)
+                    e.Value = "Da";
+                else
+                    e.Value = "";
+                e.FormattingApplied = true;
+            }
         }
 
         protected override void addGridColumns()
@@ -40,6 +59,7 @@ namespace Soko.UI
             AddColumn("Sifra grupe", SIFRA, 50);
             AddColumn("Naziv grupe", NAZIV, 200);
             AddColumn("Naziv kategorije", KATEGORIJA, 170);
+            AddColumn("Ima godisnju clanarinu", IMA_GODISNJU_CLANARINU, 100);
         }
 
         protected override List<object> loadEntities()

@@ -13,6 +13,7 @@
     </component>
     <property name="Naziv" column="naziv" />
     <property name="SortOrder" column="sort_order" />
+    <property name="ImaGodisnjuClanarinu" column="ima_godisnju_clanarinu" />
     <many-to-one name="Kategorija" class="Kategorija" column="kategorija_id" />
   </class>
 

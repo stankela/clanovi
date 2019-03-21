@@ -56,6 +56,7 @@ namespace Soko.UI
             this.txtSifra.MaxLength = Grupa.SIFRA_MAX_LENGTH;
             txtSifra.Text = String.Empty;
             txtNaziv.Text = String.Empty;
+            chbImaGodisnjuClanarinu.Checked = false;
 
             setKategorije(kategorije);
             SelectedKategorija = null;
@@ -100,6 +101,7 @@ namespace Soko.UI
             Grupa g = (Grupa)entity;
             txtSifra.Text = g.Sifra.Value;
             txtNaziv.Text = g.Naziv;
+            chbImaGodisnjuClanarinu.Checked = g.ImaGodisnjuClanarinu;
             SelectedKategorija = g.Kategorija;
         }
 
@@ -162,6 +164,7 @@ namespace Soko.UI
             g.Sifra = SifraGrupe.Parse(txtSifra.Text.Trim());
             g.Naziv = txtNaziv.Text.Trim();
             g.Kategorija = SelectedKategorija;
+            g.ImaGodisnjuClanarinu = chbImaGodisnjuClanarinu.Checked;
         }
 
         protected override void checkBusinessRulesOnAdd(DomainObject entity)

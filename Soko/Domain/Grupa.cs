@@ -38,6 +38,13 @@ namespace Soko.Domain
 			set { sortOrder = value; }
 		}
 
+        private bool imaGodisnjuClanarinu;
+        public virtual bool ImaGodisnjuClanarinu
+        {
+            get { return imaGodisnjuClanarinu; }
+            set { imaGodisnjuClanarinu = value; }
+        }
+
 		public Grupa()
 		{
 

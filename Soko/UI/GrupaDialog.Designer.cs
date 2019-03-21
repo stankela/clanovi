@@ -37,11 +37,13 @@ namespace Soko.UI
             this.lblSifra = new System.Windows.Forms.Label();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnOdustani = new System.Windows.Forms.Button();
+            this.chbImaGodisnjuClanarinu = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chbImaGodisnjuClanarinu);
             this.groupBox1.Controls.Add(this.cmbKategorija);
             this.groupBox1.Controls.Add(this.lblKategorija);
             this.groupBox1.Controls.Add(this.txtNaziv);
@@ -50,7 +52,7 @@ namespace Soko.UI
             this.groupBox1.Controls.Add(this.lblSifra);
             this.groupBox1.Location = new System.Drawing.Point(8, 8);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(320, 114);
+            this.groupBox1.Size = new System.Drawing.Size(320, 159);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             // 
@@ -106,7 +108,7 @@ namespace Soko.UI
             // btnOk
             // 
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(160, 128);
+            this.btnOk.Location = new System.Drawing.Point(163, 184);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 6;
@@ -117,7 +119,7 @@ namespace Soko.UI
             // btnOdustani
             // 
             this.btnOdustani.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnOdustani.Location = new System.Drawing.Point(248, 128);
+            this.btnOdustani.Location = new System.Drawing.Point(251, 184);
             this.btnOdustani.Name = "btnOdustani";
             this.btnOdustani.Size = new System.Drawing.Size(75, 23);
             this.btnOdustani.TabIndex = 7;
@@ -125,13 +127,23 @@ namespace Soko.UI
             this.btnOdustani.UseVisualStyleBackColor = true;
             this.btnOdustani.Click += new System.EventHandler(this.btnOdustani_Click);
             // 
+            // chbImaGodisnjuClanarinu
+            // 
+            this.chbImaGodisnjuClanarinu.AutoSize = true;
+            this.chbImaGodisnjuClanarinu.Location = new System.Drawing.Point(11, 122);
+            this.chbImaGodisnjuClanarinu.Name = "chbImaGodisnjuClanarinu";
+            this.chbImaGodisnjuClanarinu.Size = new System.Drawing.Size(131, 17);
+            this.chbImaGodisnjuClanarinu.TabIndex = 11;
+            this.chbImaGodisnjuClanarinu.Text = "Ima godisnju clanarinu";
+            this.chbImaGodisnjuClanarinu.UseVisualStyleBackColor = true;
+            // 
             // GrupaDialog
             // 
             this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnOdustani;
-            this.ClientSize = new System.Drawing.Size(338, 160);
+            this.ClientSize = new System.Drawing.Size(338, 219);
             this.Controls.Add(this.btnOdustani);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.groupBox1);
@@ -160,5 +172,6 @@ namespace Soko.UI
         private System.Windows.Forms.ComboBox cmbKategorija;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnOdustani;
+        private System.Windows.Forms.CheckBox chbImaGodisnjuClanarinu;
     }
 }
