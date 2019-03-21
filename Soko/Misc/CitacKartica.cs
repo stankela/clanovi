@@ -423,7 +423,7 @@ namespace Soko
                 // u neplaca clanarinu. U tom slucaju treba da svetli zeleno.
                 if (clan.NeplacaClanarinu)
                     okForTrening = true;
-                else if (Util.isGodisnjaClanarina(uplata.Grupa.Naziv))
+                else if (uplata.Grupa.ImaGodisnjuClanarinu)
                     okForTrening = uplata.VaziOd.Value.Year == vremeOcitavanja.Year;
                 else
                 {
@@ -440,8 +440,9 @@ namespace Soko
             // Tolerisi do odredjenog dana u mesecu, ali ne i za godisnje clanarine.
             if (!okForTrening)
             {
-                if (uplata != null && Util.isGodisnjaClanarina(uplata.Grupa.Naziv))
+                if (uplata != null && uplata.Grupa.ImaGodisnjuClanarinu)
                 {
+                    // TODO3: Dodaj mogucnost menjanja ove opcije.
                     // Tolerisi do 1. Februara
                     okForTrening = vremeOcitavanja.Month == 1;
                 }

@@ -259,7 +259,7 @@ WHERE (u.vazi_od BETWEEN '{0}' AND '{1}')";
                 IList<Grupa> grupe = grupaDAO.FindAll();
                 foreach (Grupa g in grupe)
                 {
-                    if (Util.isGodisnjaClanarina(g.Naziv))
+                    if (g.ImaGodisnjuClanarinu)
                     {
                         godisnjaClanarinaGrupe.Add(g);
                     }

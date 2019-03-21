@@ -16,6 +16,7 @@ namespace Soko.UI
         private SifraGrupe oldSifra;
         private string oldNaziv;
         private List<Kategorija> kategorije;
+        private bool oldImaGodisnjuClanarinu;
 
         public GrupaDialog(Nullable<int> entityId)
         {
@@ -94,6 +95,7 @@ namespace Soko.UI
             Grupa g = (Grupa)entity;
             oldSifra = g.Sifra;
             oldNaziv = g.Naziv;
+            oldImaGodisnjuClanarinu = g.ImaGodisnjuClanarinu;
         }
 
         protected override void updateUIFromEntity(DomainObject entity)
@@ -113,6 +115,14 @@ namespace Soko.UI
         private void btnOk_Click(object sender, System.EventArgs e)
         {
             handleOkClick();
+            Grupa g = (Grupa)entity;
+            bool ImaGodisnjuClanarinuChanged = (editMode && g.ImaGodisnjuClanarinu != oldImaGodisnjuClanarinu)
+                || !editMode && g.ImaGodisnjuClanarinu;
+            if (ImaGodisnjuClanarinuChanged)
+            {
+                MessageDialogs.showMessage("Promenili ste godisnju clanarinu za grupu. Morate da restartujete "
+                    + "program da bi izmene bile vidljive prilikom ocitavanja kartica.", "");
+            }
         }
 
         protected override void requiredFieldsAndFormatValidation(Notification notification)

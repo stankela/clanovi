@@ -216,7 +216,7 @@ namespace Soko.Misc
             {
                 foreach (UplataClanarine u in uplate)
                 {
-                    if (Util.isGodisnjaClanarina(u.Grupa.Naziv) && u.VaziOd.Value.Year == DateTime.Now.Year)
+                    if (u.Grupa.ImaGodisnjuClanarinu && u.VaziOd.Value.Year == DateTime.Now.Year)
                     {
                         if (!uplateGodisnjaClanarina.ContainsKey(u.Clan.Id))
                         {

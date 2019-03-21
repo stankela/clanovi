@@ -20,8 +20,16 @@ namespace Soko.UI
         public GrupeForm()
         {
             InitializeComponent();
+            this.Shown += GrupeForm_Shown;
             initialize(typeof(Grupa));
             sort(SIFRA);
+        }
+
+        void GrupeForm_Shown(object sender, EventArgs e)
+        {
+            // Ponisti selekciju za prvo prikazivanje
+            // TODO3: Uradi ovo i na ostalim mestima.
+            clearSelection();
         }
 
         protected override DataGridView getDataGridView()

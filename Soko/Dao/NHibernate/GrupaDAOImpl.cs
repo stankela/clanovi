@@ -76,7 +76,7 @@ namespace Bilten.Dao.NHibernate
                 IList<Grupa> result = new List<Grupa>();
                 foreach (Grupa g in grupe)
                 {
-                    if (Util.isGodisnjaClanarina(g.Naziv))
+                    if (g.ImaGodisnjuClanarinu)
                     {
                         result.Add(g);
                     }

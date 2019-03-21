@@ -1,7 +1,7 @@
 Ako je sve jedinstven program:
 
 1) U direktorijumu glavnog programa, u fajlu Options.txt postaviti opciju
-   JedinstvenProgram na false (vrednosti ostalih opcija se ignorisu)
+   JedinstvenProgram na true (vrednosti ostalih opcija se ignorisu)
 
 Ako je citac kartica poseban program:
 
