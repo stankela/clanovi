@@ -67,6 +67,13 @@ namespace Soko
             set { poslednjiDanZaUplate = value; }
         }
 
+        private int poslednjiMesecZaGodisnjeClanarine = 2;
+        public int PoslednjiMesecZaGodisnjeClanarine
+        {
+            get { return poslednjiMesecZaGodisnjeClanarine; }
+            set { poslednjiMesecZaGodisnjeClanarine = value; }
+        }
+
         private bool prikaziBrojClanaKodOcitavanjaKartice = true;
         public bool PrikaziBrojClanaKodOcitavanjaKartice
         {

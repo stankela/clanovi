@@ -442,9 +442,7 @@ namespace Soko
             {
                 if (uplata != null && uplata.Grupa.ImaGodisnjuClanarinu)
                 {
-                    // TODO3: Dodaj mogucnost menjanja ove opcije.
-                    // Tolerisi do marta.
-                    okForTrening = vremeOcitavanja.Month == 1 || vremeOcitavanja.Month == 2;
+                    okForTrening = vremeOcitavanja.Month <= Options.Instance.PoslednjiMesecZaGodisnjeClanarine;
                 }
                 else
                     okForTrening = vremeOcitavanja.Day <= Options.Instance.PoslednjiDanZaUplate;

@@ -15,12 +15,26 @@ namespace Soko.UI
         {
             InitializeComponent();
             Font = Options.Instance.Font;
+            cmbPoslednjiMesecZaGodisnjeClanarine.Items.AddRange(new object[] {
+            "Januar",
+            "Februar",
+            "Mart",
+            "April",
+            "Maj",
+            "Jun",
+            "Jul",
+            "Avgust",
+            "Septembar",
+            "Oktobar",
+            "Novembar",
+            "Decembar"});
         }
 
         private void CitacKarticaDialog_Load(object sender, EventArgs e)
         {
             cmbCOMPortReader.SelectedIndex = Options.Instance.COMPortReader - 1;
             cmbCOMPortWriter.SelectedIndex = Options.Instance.COMPortWriter - 1;
+            cmbPoslednjiMesecZaGodisnjeClanarine.SelectedIndex = Options.Instance.PoslednjiMesecZaGodisnjeClanarine - 1;
             txtPoslednjiDanZaUplate.Text = Options.Instance.PoslednjiDanZaUplate.ToString();
             txtVelicinaSlova.Text = Options.Instance.VelicinaSlovaZaCitacKartica.ToString();
             ckbPrikaziBoje.Checked = Options.Instance.PrikaziBojeKodOcitavanja;
@@ -64,6 +78,7 @@ namespace Soko.UI
             
             Options.Instance.COMPortReader = cmbCOMPortReader.SelectedIndex + 1;
             Options.Instance.COMPortWriter = cmbCOMPortWriter.SelectedIndex + 1;
+            Options.Instance.PoslednjiMesecZaGodisnjeClanarine = cmbPoslednjiMesecZaGodisnjeClanarine.SelectedIndex + 1;
             Options.Instance.PoslednjiDanZaUplate = Int32.Parse(txtPoslednjiDanZaUplate.Text);
             Options.Instance.VelicinaSlovaZaCitacKartica = Int32.Parse(txtVelicinaSlova.Text);
             Options.Instance.PrikaziBojeKodOcitavanja = ckbPrikaziBoje.Checked;
@@ -81,6 +96,7 @@ namespace Soko.UI
                 msg += " COMPortReader " + Options.Instance.COMPortReader.ToString();
                 msg += " COMPortWriter " + Options.Instance.COMPortWriter.ToString();
                 msg += " PoslednjiDanZaUplate " + Options.Instance.PoslednjiDanZaUplate.ToString();
+                msg += " PoslednjiMesecZaGodisnjeClanarine " + Options.Instance.PoslednjiMesecZaGodisnjeClanarine.ToString();
                 msg += " VelicinaSlovaZaCitacKartica " + Options.Instance.VelicinaSlovaZaCitacKartica.ToString();
                 msg += " PrikaziBojeKodOcitavanja " + Options.Instance.PrikaziBojeKodOcitavanja.ToString();
                 msg += " PrikaziImeClanaKodOcitavanjaKartice " + Options.Instance.PrikaziImeClanaKodOcitavanjaKartice.ToString();

@@ -30,6 +30,7 @@ namespace Soko.UI
         const string COMPortReaderRegKey = "COMPortReader";
         const string COMPortWriterRegKey = "COMPortWriter";
         const string PoslednjiDanZaUplateRegKey = "PoslednjiDanZaUplate";
+        const string PoslednjiMesecZaGodisnjeClanarineRegKey = "PoslednjiMesecZaGodisnjeClanarine";
         const string VelicinaSlovaNaDisplejuRegKey = "VelicinaSlovaNaDispleju";
         const string PrikaziBojeKodOcitavanjaRegKey = "PrikaziBojeKodOcitavanja";
         const string PrikaziImeClanaKodOcitavanjaRegKey = "PrikaziImeClanaKodOcitavanja";
@@ -103,6 +104,8 @@ namespace Soko.UI
                     Options.Instance.COMPortWriter = int.Parse((string)regkey.GetValue(COMPortWriterRegKey));
                 if (regkey.GetValue(PoslednjiDanZaUplateRegKey) != null)
                     Options.Instance.PoslednjiDanZaUplate = int.Parse((string)regkey.GetValue(PoslednjiDanZaUplateRegKey));
+                if (regkey.GetValue(PoslednjiMesecZaGodisnjeClanarineRegKey) != null)
+                    Options.Instance.PoslednjiMesecZaGodisnjeClanarine = int.Parse((string)regkey.GetValue(PoslednjiMesecZaGodisnjeClanarineRegKey));
                 if (regkey.GetValue(VelicinaSlovaNaDisplejuRegKey) != null)
                     Options.Instance.VelicinaSlovaZaCitacKartica = int.Parse((string)regkey.GetValue(VelicinaSlovaNaDisplejuRegKey));
                 if (regkey.GetValue(PrikaziBojeKodOcitavanjaRegKey) != null)
@@ -163,6 +166,7 @@ namespace Soko.UI
             regkey.SetValue(COMPortReaderRegKey, Options.Instance.COMPortReader.ToString());
             regkey.SetValue(COMPortWriterRegKey, Options.Instance.COMPortWriter.ToString());
             regkey.SetValue(PoslednjiDanZaUplateRegKey, Options.Instance.PoslednjiDanZaUplate.ToString());
+            regkey.SetValue(PoslednjiMesecZaGodisnjeClanarineRegKey, Options.Instance.PoslednjiMesecZaGodisnjeClanarine.ToString());
             regkey.SetValue(VelicinaSlovaNaDisplejuRegKey, Options.Instance.VelicinaSlovaZaCitacKartica.ToString());
             regkey.SetValue(PrikaziBojeKodOcitavanjaRegKey, Options.Instance.PrikaziBojeKodOcitavanja.ToString());
             regkey.SetValue(PrikaziImeClanaKodOcitavanjaRegKey, Options.Instance.PrikaziImeClanaKodOcitavanjaKartice.ToString());
@@ -1277,6 +1281,7 @@ namespace Soko.UI
                             string COMPortReader = String.Empty;
                             string COMPortWriter = String.Empty;
                             string PoslednjiDanZaUplate = String.Empty;
+                            string PoslednjiMesecZaGodisnjeClanarine = String.Empty;
                             string VelicinaSlovaZaCitacKartica = String.Empty;
                             string PrikaziBojeKodOcitavanja = String.Empty;
                             string PrikaziImeClanaKodOcitavanjaKartice = String.Empty;
@@ -1298,6 +1303,10 @@ namespace Soko.UI
                                 else if (parts[i].ToUpper() == "PoslednjiDanZaUplate".ToUpper())
                                 {
                                     PoslednjiDanZaUplate = parts[i + 1];
+                                }
+                                else if (parts[i].ToUpper() == "PoslednjiMesecZaGodisnjeClanarine".ToUpper())
+                                {
+                                    PoslednjiMesecZaGodisnjeClanarine = parts[i + 1];
                                 }
                                 else if (parts[i].ToUpper() == "VelicinaSlovaZaCitacKartica".ToUpper())
                                 {
@@ -1328,6 +1337,7 @@ namespace Soko.UI
                             Options.Instance.COMPortReader = int.Parse(COMPortReader);
                             Options.Instance.COMPortWriter = int.Parse(COMPortWriter);
                             Options.Instance.PoslednjiDanZaUplate = int.Parse(PoslednjiDanZaUplate);
+                            Options.Instance.PoslednjiMesecZaGodisnjeClanarine = int.Parse(PoslednjiMesecZaGodisnjeClanarine);
                             Options.Instance.VelicinaSlovaZaCitacKartica = int.Parse(VelicinaSlovaZaCitacKartica);
                             Options.Instance.PrikaziBojeKodOcitavanja = bool.Parse(PrikaziBojeKodOcitavanja);
                             Options.Instance.PrikaziImeClanaKodOcitavanjaKartice = bool.Parse(PrikaziImeClanaKodOcitavanjaKartice);

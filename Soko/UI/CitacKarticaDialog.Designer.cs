@@ -45,6 +45,8 @@
             this.lblVisinaDispleja = new System.Windows.Forms.Label();
             this.txtSirinaDispleja = new System.Windows.Forms.TextBox();
             this.txtVisinaDispleja = new System.Windows.Forms.TextBox();
+            this.lblPoslednjiMesecZaGodisnjeClanarine = new System.Windows.Forms.Label();
+            this.cmbPoslednjiMesecZaGodisnjeClanarine = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // cmbCOMPortReader
@@ -82,7 +84,7 @@
             "COM 28",
             "COM 29",
             "COM 30"});
-            this.cmbCOMPortReader.Location = new System.Drawing.Point(21, 120);
+            this.cmbCOMPortReader.Location = new System.Drawing.Point(21, 182);
             this.cmbCOMPortReader.Name = "cmbCOMPortReader";
             this.cmbCOMPortReader.Size = new System.Drawing.Size(132, 21);
             this.cmbCOMPortReader.TabIndex = 0;
@@ -90,7 +92,7 @@
             // lblCOMPortReader
             // 
             this.lblCOMPortReader.AutoSize = true;
-            this.lblCOMPortReader.Location = new System.Drawing.Point(18, 104);
+            this.lblCOMPortReader.Location = new System.Drawing.Point(18, 166);
             this.lblCOMPortReader.Name = "lblCOMPortReader";
             this.lblCOMPortReader.Size = new System.Drawing.Size(127, 13);
             this.lblCOMPortReader.TabIndex = 1;
@@ -99,7 +101,7 @@
             // btnOK
             // 
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(90, 400);
+            this.btnOK.Location = new System.Drawing.Point(147, 395);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 2;
@@ -110,7 +112,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(180, 400);
+            this.btnCancel.Location = new System.Drawing.Point(237, 395);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 3;
@@ -152,7 +154,7 @@
             "COM 28",
             "COM 29",
             "COM 30"});
-            this.cmbCOMPortWriter.Location = new System.Drawing.Point(21, 174);
+            this.cmbCOMPortWriter.Location = new System.Drawing.Point(180, 182);
             this.cmbCOMPortWriter.Name = "cmbCOMPortWriter";
             this.cmbCOMPortWriter.Size = new System.Drawing.Size(132, 21);
             this.cmbCOMPortWriter.TabIndex = 4;
@@ -160,7 +162,7 @@
             // lblCOMPortWriter
             // 
             this.lblCOMPortWriter.AutoSize = true;
-            this.lblCOMPortWriter.Location = new System.Drawing.Point(18, 158);
+            this.lblCOMPortWriter.Location = new System.Drawing.Point(177, 166);
             this.lblCOMPortWriter.Name = "lblCOMPortWriter";
             this.lblCOMPortWriter.Size = new System.Drawing.Size(129, 13);
             this.lblCOMPortWriter.TabIndex = 5;
@@ -185,7 +187,7 @@
             // lblVelicinaSlova
             // 
             this.lblVelicinaSlova.AutoSize = true;
-            this.lblVelicinaSlova.Location = new System.Drawing.Point(18, 63);
+            this.lblVelicinaSlova.Location = new System.Drawing.Point(18, 125);
             this.lblVelicinaSlova.Name = "lblVelicinaSlova";
             this.lblVelicinaSlova.Size = new System.Drawing.Size(125, 13);
             this.lblVelicinaSlova.TabIndex = 9;
@@ -193,7 +195,7 @@
             // 
             // txtVelicinaSlova
             // 
-            this.txtVelicinaSlova.Location = new System.Drawing.Point(189, 60);
+            this.txtVelicinaSlova.Location = new System.Drawing.Point(189, 122);
             this.txtVelicinaSlova.Name = "txtVelicinaSlova";
             this.txtVelicinaSlova.Size = new System.Drawing.Size(45, 20);
             this.txtVelicinaSlova.TabIndex = 10;
@@ -261,13 +263,33 @@
             this.txtVisinaDispleja.Size = new System.Drawing.Size(42, 20);
             this.txtVisinaDispleja.TabIndex = 17;
             // 
+            // lblPoslednjiMesecZaGodisnjeClanarine
+            // 
+            this.lblPoslednjiMesecZaGodisnjeClanarine.AutoSize = true;
+            this.lblPoslednjiMesecZaGodisnjeClanarine.Location = new System.Drawing.Point(18, 66);
+            this.lblPoslednjiMesecZaGodisnjeClanarine.Name = "lblPoslednjiMesecZaGodisnjeClanarine";
+            this.lblPoslednjiMesecZaGodisnjeClanarine.Size = new System.Drawing.Size(185, 13);
+            this.lblPoslednjiMesecZaGodisnjeClanarine.TabIndex = 18;
+            this.lblPoslednjiMesecZaGodisnjeClanarine.Text = "Poslednji mesec za godisnje clanarine";
+            // 
+            // cmbPoslednjiMesecZaGodisnjeClanarine
+            // 
+            this.cmbPoslednjiMesecZaGodisnjeClanarine.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbPoslednjiMesecZaGodisnjeClanarine.FormattingEnabled = true;
+            this.cmbPoslednjiMesecZaGodisnjeClanarine.Location = new System.Drawing.Point(21, 82);
+            this.cmbPoslednjiMesecZaGodisnjeClanarine.Name = "cmbPoslednjiMesecZaGodisnjeClanarine";
+            this.cmbPoslednjiMesecZaGodisnjeClanarine.Size = new System.Drawing.Size(121, 21);
+            this.cmbPoslednjiMesecZaGodisnjeClanarine.TabIndex = 19;
+            // 
             // CitacKarticaDialog
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(273, 441);
+            this.ClientSize = new System.Drawing.Size(339, 441);
+            this.Controls.Add(this.cmbPoslednjiMesecZaGodisnjeClanarine);
+            this.Controls.Add(this.lblPoslednjiMesecZaGodisnjeClanarine);
             this.Controls.Add(this.txtVisinaDispleja);
             this.Controls.Add(this.txtSirinaDispleja);
             this.Controls.Add(this.lblVisinaDispleja);
@@ -316,5 +338,7 @@
         private System.Windows.Forms.Label lblVisinaDispleja;
         private System.Windows.Forms.TextBox txtSirinaDispleja;
         private System.Windows.Forms.TextBox txtVisinaDispleja;
+        private System.Windows.Forms.Label lblPoslednjiMesecZaGodisnjeClanarine;
+        private System.Windows.Forms.ComboBox cmbPoslednjiMesecZaGodisnjeClanarine;
     }
 }
