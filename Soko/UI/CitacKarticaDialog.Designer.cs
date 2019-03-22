@@ -268,9 +268,9 @@
             this.lblPoslednjiMesecZaGodisnjeClanarine.AutoSize = true;
             this.lblPoslednjiMesecZaGodisnjeClanarine.Location = new System.Drawing.Point(18, 66);
             this.lblPoslednjiMesecZaGodisnjeClanarine.Name = "lblPoslednjiMesecZaGodisnjeClanarine";
-            this.lblPoslednjiMesecZaGodisnjeClanarine.Size = new System.Drawing.Size(185, 13);
+            this.lblPoslednjiMesecZaGodisnjeClanarine.Size = new System.Drawing.Size(233, 13);
             this.lblPoslednjiMesecZaGodisnjeClanarine.TabIndex = 18;
-            this.lblPoslednjiMesecZaGodisnjeClanarine.Text = "Poslednji mesec za godisnje clanarine";
+            this.lblPoslednjiMesecZaGodisnjeClanarine.Text = "Poslednji dozvoljen mesec za godisnje clanarine";
             // 
             // cmbPoslednjiMesecZaGodisnjeClanarine
             // 
