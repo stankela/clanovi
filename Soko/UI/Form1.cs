@@ -559,10 +559,29 @@ namespace Soko.UI
 
         private void mnPrihodiDnevniGrupe_Click(object sender, EventArgs e)
         {
+            BiracKategorije dlg2;
+            try
+            {
+                dlg2 = new BiracKategorije();
+                dlg2.ShowDialog();
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            if (dlg2.DialogResult != DialogResult.OK)
+                return;
+            
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Izvestaj o dnevnim prihodima", true, false, false);
+                dlg = new BiracIntervala("Izvestaj o dnevnim prihodima", true, false, false, dlg2.SelKategorija);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -611,10 +630,29 @@ namespace Soko.UI
 
         private void mnPrihodiDnevniClanovi_Click(object sender, EventArgs e)
         {
+            BiracKategorije dlg2;
+            try
+            {
+                dlg2 = new BiracKategorije();
+                dlg2.ShowDialog();
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            if (dlg2.DialogResult != DialogResult.OK)
+                return;
+
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Izvestaj o dnevnim prihodima", true, false, false);
+                dlg = new BiracIntervala("Izvestaj o dnevnim prihodima", true, false, false, dlg2.SelKategorija);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -663,10 +701,29 @@ namespace Soko.UI
 
         private void mnPrihodiPeriodicni_Click(object sender, EventArgs e)
         {
+            BiracKategorije dlg2;
+            try
+            {
+                dlg2 = new BiracKategorije();
+                dlg2.ShowDialog();
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            if (dlg2.DialogResult != DialogResult.OK)
+                return;
+
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Izvestaj o prihodima", true, false, false);
+                dlg = new BiracIntervala("Izvestaj o prihodima", true, false, false, dlg2.SelKategorija);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -715,10 +772,29 @@ namespace Soko.UI
 
         private void mnPrihodiPeriodicniClanovi_Click(object sender, EventArgs e)
         {
+            BiracKategorije dlg2;
+            try
+            {
+                dlg2 = new BiracKategorije();
+                dlg2.ShowDialog();
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            if (dlg2.DialogResult != DialogResult.OK)
+                return;
+
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Izvestaj o prihodima", true, false, false);
+                dlg = new BiracIntervala("Izvestaj o prihodima", true, false, false, dlg2.SelKategorija);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -770,7 +846,7 @@ namespace Soko.UI
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Izvestaj o mesecnim prihodima", false, false, true);
+                dlg = new BiracIntervala("Izvestaj o mesecnim prihodima", false, false, true, null);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -905,10 +981,29 @@ namespace Soko.UI
 
         private void mnAktivniClanoviGrupe_Click(object sender, EventArgs e)
         {
+            BiracKategorije dlg2;
+            try
+            {
+                dlg2 = new BiracKategorije();
+                dlg2.ShowDialog();
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            if (dlg2.DialogResult != DialogResult.OK)
+                return;
+
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Aktivni clanovi - grupe", true, false, false);
+                dlg = new BiracIntervala("Aktivni clanovi - grupe", true, false, false, dlg2.SelKategorija);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -960,7 +1055,7 @@ namespace Soko.UI
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Aktivni clanovi", false, false, false);
+                dlg = new BiracIntervala("Aktivni clanovi", false, false, false, null);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -1359,7 +1454,7 @@ namespace Soko.UI
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Dolazak na trening", true, true, false);
+                dlg = new BiracIntervala("Dolazak na trening", true, true, false, null);
                 dlg.DateTimePickerFrom.CustomFormat = "dd.MM.yyyy HH:mm";
                 dlg.DateTimePickerTo.CustomFormat = "dd.MM.yyyy HH:mm";
                 dlg.ShowDialog();
@@ -1455,7 +1550,7 @@ namespace Soko.UI
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Nedostajuce uplate", false, false, true);
+                dlg = new BiracIntervala("Nedostajuce uplate", false, false, true, null);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -1543,7 +1638,7 @@ namespace Soko.UI
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Dolazak na trening - mesecni", false, false, true);
+                dlg = new BiracIntervala("Dolazak na trening - mesecni", false, false, true, null);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)

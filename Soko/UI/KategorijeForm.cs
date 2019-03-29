@@ -17,8 +17,13 @@ namespace Soko.UI
         public KategorijeForm()
         {
             InitializeComponent();
+            this.Shown += KategorijeForm_Shown;
             initialize(typeof(Kategorija));
-            sort(NAZIV);
+        }
+
+        void KategorijeForm_Shown(object sender, EventArgs e)
+        {
+            clearSelection();
         }
 
         protected override DataGridView getDataGridView()
@@ -41,7 +46,7 @@ namespace Soko.UI
         protected override List<object> loadEntities()
         {
             KategorijaDAO kategorijaDAO = DAOFactoryFactory.DAOFactory.GetKategorijaDAO();
-            return new List<Kategorija>(kategorijaDAO.FindAll()).ConvertAll<object>(
+            return new List<Kategorija>(kategorijaDAO.FindAllSortById()).ConvertAll<object>(
                 delegate(Kategorija kat)
                 {
                     return kat;

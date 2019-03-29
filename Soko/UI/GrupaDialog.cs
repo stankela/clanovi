@@ -41,11 +41,8 @@ namespace Soko.UI
 
         private List<Kategorija> loadKategorije()
         {
-            List<Kategorija> result = new List<Kategorija>(DAOFactoryFactory.DAOFactory.GetKategorijaDAO().FindAll());
-
-            PropertyDescriptor propDesc = TypeDescriptor.GetProperties(typeof(Kategorija))["Naziv"];
-            result.Sort(new SortComparer<Kategorija>(propDesc, ListSortDirection.Ascending));
-
+            List<Kategorija> result = new List<Kategorija>(
+                DAOFactoryFactory.DAOFactory.GetKategorijaDAO().FindAllSortById());
             return result;
         }
 
@@ -53,6 +50,7 @@ namespace Soko.UI
         {
             base.initUI();
             this.Text = "Grupa";
+            cmbKategorija.DropDownStyle = ComboBoxStyle.DropDownList;
 
             this.txtSifra.MaxLength = Grupa.SIFRA_MAX_LENGTH;
             txtSifra.Text = String.Empty;
@@ -144,6 +142,12 @@ namespace Soko.UI
             {
                 notification.RegisterMessage(
                     "Naziv", "Naziv grupe je obavezan.");
+            }
+
+            if (SelectedKategorija == null && kategorije.Count > 0)
+            {
+                notification.RegisterMessage(
+                    "Kategorija", "Kategorija je obavezna.");
             }
         }
 
