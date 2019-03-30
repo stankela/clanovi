@@ -31,7 +31,14 @@ namespace Soko.Domain
 			set { kategorija = value; }
 		}
 
-		private int sortOrder;
+        private FinansijskaCelina finansijskaCelina;
+        public virtual FinansijskaCelina FinansijskaCelina
+        {
+            get { return finansijskaCelina; }
+            set { finansijskaCelina = value; }
+        }
+
+        private int sortOrder;
 		public virtual int SortOrder
 		{
 			get { return sortOrder; }
@@ -50,11 +57,12 @@ namespace Soko.Domain
 
 		}
 
-		public Grupa(SifraGrupe sifra, string naziv, Kategorija kategorija)
+        public Grupa(SifraGrupe sifra, string naziv, Kategorija kategorija, FinansijskaCelina finansijskaCelina)
 		{
 			this.sifra = sifra;
 			this.naziv = naziv;
 			this.kategorija = kategorija;
+            this.finansijskaCelina = finansijskaCelina;
 		}
 
 		public virtual string SifraNaziv

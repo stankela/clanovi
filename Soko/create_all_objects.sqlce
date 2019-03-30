@@ -37,6 +37,12 @@ create table kategorije (
 );
 GO
 
+create table finansijske_celine (
+    finansijska_celina_id int identity(1,1) primary key,
+    naziv nvarchar(50)
+);
+GO
+
 create table grupe (
     grupa_id int identity(1,1) primary key,
     broj_grupe int,
@@ -44,7 +50,8 @@ create table grupe (
     naziv nvarchar(50),
     sort_order int,
     ima_godisnju_clanarinu bit,
-    kategorija_id int references kategorije(kategorija_id)
+    kategorija_id int references kategorije(kategorija_id),
+    finansijska_celina_id int references finansijske_celine(finansijska_celina_id)
 );
 GO
 

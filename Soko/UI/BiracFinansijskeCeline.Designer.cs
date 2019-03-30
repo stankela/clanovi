@@ -1,6 +1,6 @@
 ﻿namespace Soko.UI
 {
-    partial class BiracKategorije
+    partial class BiracFinansijskeCeline
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.lblKategorija = new System.Windows.Forms.Label();
-            this.cmbKategorija = new System.Windows.Forms.ComboBox();
+            this.cmbFinCelina = new System.Windows.Forms.ComboBox();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -45,11 +45,11 @@
             // 
             // cmbKategorija
             // 
-            this.cmbKategorija.FormattingEnabled = true;
-            this.cmbKategorija.Location = new System.Drawing.Point(30, 51);
-            this.cmbKategorija.Name = "cmbKategorija";
-            this.cmbKategorija.Size = new System.Drawing.Size(207, 21);
-            this.cmbKategorija.TabIndex = 1;
+            this.cmbFinCelina.FormattingEnabled = true;
+            this.cmbFinCelina.Location = new System.Drawing.Point(30, 51);
+            this.cmbFinCelina.Name = "cmbKategorija";
+            this.cmbFinCelina.Size = new System.Drawing.Size(207, 21);
+            this.cmbFinCelina.TabIndex = 1;
             // 
             // btnOK
             // 
@@ -72,7 +72,7 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // BiracKategorije
+            // BiracFinansijskeCeline
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -81,15 +81,15 @@
             this.ClientSize = new System.Drawing.Size(268, 152);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.cmbKategorija);
+            this.Controls.Add(this.cmbFinCelina);
             this.Controls.Add(this.lblKategorija);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "BiracKategorije";
+            this.Name = "BiracFinansijskeCeline";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "BiracKategorije";
+            this.Text = "BiracFinansijskeCeline";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -98,7 +98,7 @@
         #endregion
 
         private System.Windows.Forms.Label lblKategorija;
-        private System.Windows.Forms.ComboBox cmbKategorija;
+        private System.Windows.Forms.ComboBox cmbFinCelina;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
     }

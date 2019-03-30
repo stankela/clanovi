@@ -37,7 +37,7 @@ namespace Soko.UI
         // TODO2: Biranje clana se pojavljuje na vise mesta u programu. Probaj da napravis kontrolu
         // koja to radi, i koja moze da se stavlja na form.
 
-        public BiracIntervala(string naslov, bool izborGrupa, bool izborClana, bool months, Kategorija kategorija)
+        public BiracIntervala(string naslov, bool izborGrupa, bool izborClana, bool months, FinansijskaCelina finCelina)
         {
             InitializeComponent();
             this.Text = naslov;

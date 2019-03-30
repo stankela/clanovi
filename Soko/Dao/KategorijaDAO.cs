@@ -11,6 +11,5 @@ namespace Bilten.Dao
     public interface KategorijaDAO : GenericDAO<Kategorija, int>
     {
         bool existsKategorijaNaziv(string naziv);
-        IList<Kategorija> FindAllSortById();
     }
 }

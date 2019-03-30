@@ -27,8 +27,12 @@ UPDATE clanovi SET ne_placa_clanarinu = 0;
 ALTER TABLE grupe ADD COLUMN ima_godisnju_clanarinu bit;
 UPDATE grupe SET ima_godisnju_clanarinu = 0;
 
-28-Mar-2019
+30-Mar-2019
 
-UPDATE kategorije SET naziv = 'SOKOLSKO DRUŠTVO' WHERE kategorija_id = 1;
-UPDATE grupe SET kategorija_id = 1;
-DELETE FROM kategorije WHERE kategorija_id > 1;
+create table finansijske_celine (
+    finansijska_celina_id int identity(1,1) primary key,
+    naziv nvarchar(50)
+);
+ALTER TABLE grupe ADD COLUMN finansijska_celina_id int references finansijske_celine(finansijska_celina_id);
+INSERT INTO finansijske_celine(naziv) VALUES ('SOKOLSKO DRUŠTVO');
+UPDATE grupe SET finansijska_celina_id = 1;

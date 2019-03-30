@@ -9,6 +9,7 @@ namespace Bilten.Dao
         public abstract InstitucijaDAO GetInstitucijaDAO();
         public abstract UplataClanarineDAO GetUplataClanarineDAO();
         public abstract KategorijaDAO GetKategorijaDAO();
+        public abstract FinansijskaCelinaDAO GetFinansijskaCelinaDAO();
         public abstract GrupaDAO GetGrupaDAO();
         public abstract MesecnaClanarinaDAO GetMesecnaClanarinaDAO();
         public abstract DolazakNaTreningDAO GetDolazakNaTreningDAO();

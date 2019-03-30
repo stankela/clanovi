@@ -15,6 +15,7 @@
     <property name="SortOrder" column="sort_order" />
     <property name="ImaGodisnjuClanarinu" column="ima_godisnju_clanarinu" />
     <many-to-one name="Kategorija" class="Kategorija" column="kategorija_id" />
+    <many-to-one name="FinansijskaCelina" class="FinansijskaCelina" column="finansijska_celina_id" />
   </class>
 
 </hibernate-mapping>

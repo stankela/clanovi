@@ -41,8 +41,8 @@ namespace Soko.UI
             this.mnMesta = new System.Windows.Forms.ToolStripMenuItem();
             this.mnInstitucije = new System.Windows.Forms.ToolStripMenuItem();
             this.mnUplate = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnClanoviKojiNePlacajuClanarinu = new System.Windows.Forms.ToolStripMenuItem();
             this.mnDolazakNaTrening = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnClanoviKojiNePlacajuClanarinu = new System.Windows.Forms.ToolStripMenuItem();
             this.mnIzvestaji = new System.Windows.Forms.ToolStripMenuItem();
             this.mnPrihodiDnevniKategorije = new System.Windows.Forms.ToolStripMenuItem();
             this.mnPrihodiDnevniGrupe = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,6 +64,7 @@ namespace Soko.UI
             this.mnDuplikatiClanova = new System.Windows.Forms.ToolStripMenuItem();
             this.mnSimulatorCitacaKartica = new System.Windows.Forms.ToolStripMenuItem();
             this.mnAdminOpcije = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnFinansijskeCeline = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -105,6 +106,7 @@ namespace Soko.UI
             this.mnCenovnik,
             this.mnGrupe,
             this.mnKategorije,
+            this.mnFinansijskeCeline,
             this.mnMesta,
             this.mnInstitucije,
             this.mnUplate,
@@ -177,19 +179,19 @@ namespace Soko.UI
             this.mnUplate.Text = "Uplate";
             this.mnUplate.Click += new System.EventHandler(this.mnUplate_Click);
             // 
-            // mnClanoviKojiNePlacajuClanarinu
-            // 
-            this.mnClanoviKojiNePlacajuClanarinu.Name = "mnClanoviKojiNePlacajuClanarinu";
-            this.mnClanoviKojiNePlacajuClanarinu.Size = new System.Drawing.Size(193, 22);
-            this.mnClanoviKojiNePlacajuClanarinu.Text = "Clanovi koji ne placaju";
-            this.mnClanoviKojiNePlacajuClanarinu.Click += new System.EventHandler(this.mnClanoviKojiNePlacajuClanarinu_Click);
-            // 
             // mnDolazakNaTrening
             // 
             this.mnDolazakNaTrening.Name = "mnDolazakNaTrening";
             this.mnDolazakNaTrening.Size = new System.Drawing.Size(193, 22);
             this.mnDolazakNaTrening.Text = "Dolazak na trening";
             this.mnDolazakNaTrening.Click += new System.EventHandler(this.mnDolazakNaTrening_Click);
+            // 
+            // mnClanoviKojiNePlacajuClanarinu
+            // 
+            this.mnClanoviKojiNePlacajuClanarinu.Name = "mnClanoviKojiNePlacajuClanarinu";
+            this.mnClanoviKojiNePlacajuClanarinu.Size = new System.Drawing.Size(193, 22);
+            this.mnClanoviKojiNePlacajuClanarinu.Text = "Clanovi koji ne placaju";
+            this.mnClanoviKojiNePlacajuClanarinu.Click += new System.EventHandler(this.mnClanoviKojiNePlacajuClanarinu_Click);
             // 
             // mnIzvestaji
             // 
@@ -356,6 +358,13 @@ namespace Soko.UI
             this.mnAdminOpcije.Text = "Opcije";
             this.mnAdminOpcije.Click += new System.EventHandler(this.mnAdminOpcije_Click);
             // 
+            // mnFinansijskeCeline
+            // 
+            this.mnFinansijskeCeline.Name = "mnFinansijskeCeline";
+            this.mnFinansijskeCeline.Size = new System.Drawing.Size(193, 22);
+            this.mnFinansijskeCeline.Text = "Finansijske celine";
+            this.mnFinansijskeCeline.Click += new System.EventHandler(this.mnFinansijskeCeline_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -416,6 +425,7 @@ namespace Soko.UI
         private System.Windows.Forms.ToolStripMenuItem mnClanoviKojiNePlacajuClanarinu;
         private System.Windows.Forms.ToolStripMenuItem mnOpcije;
         private System.Windows.Forms.ToolStripMenuItem mnDolazakNaTrening;
+        private System.Windows.Forms.ToolStripMenuItem mnFinansijskeCeline;
     }
 }
 

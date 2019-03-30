@@ -10,15 +10,20 @@ using Bilten.Dao;
 
 namespace Soko.UI
 {
-    public partial class KategorijeForm : EntityListForm
+    public partial class FinansijskeCelineForm : EntityListForm
     {
         private const string NAZIV = "Naziv";
 
-        public KategorijeForm()
+        public FinansijskeCelineForm()
         {
             InitializeComponent();
-            initialize(typeof(Kategorija));
-            sort(NAZIV);
+            this.Shown += FinansijskeCelineForm_Shown;
+            initialize(typeof(FinansijskaCelina));
+        }
+
+        void FinansijskeCelineForm_Shown(object sender, EventArgs e)
+        {
+            clearSelection();
         }
 
         protected override DataGridView getDataGridView()
@@ -30,27 +35,27 @@ namespace Soko.UI
         {
             base.initUI();
             this.Size = new Size(Size.Width, 350);
-            this.Text = "Kategorije";
+            this.Text = "Finansijske celine";
         }
 
         protected override void addGridColumns()
         {
-            AddColumn("Naziv kategorije", NAZIV, 170);
+            AddColumn("Naziv finansijske celine", NAZIV, 170);
         }
 
         protected override List<object> loadEntities()
         {
-            KategorijaDAO kategorijaDAO = DAOFactoryFactory.DAOFactory.GetKategorijaDAO();
-            return new List<Kategorija>(kategorijaDAO.FindAll()).ConvertAll<object>(
-                delegate(Kategorija kat)
+            FinansijskaCelinaDAO finansijskaCelinaDAO = DAOFactoryFactory.DAOFactory.GetFinansijskaCelinaDAO();
+            return new List<FinansijskaCelina>(finansijskaCelinaDAO.FindAllSortById()).ConvertAll<object>(
+                delegate(FinansijskaCelina f)
                 {
-                    return kat;
+                    return f;
                 });
         }
 
         protected override EntityDetailForm createEntityDetailForm(Nullable<int> entityId)
         {
-            return new KategorijaDialog(entityId);
+            return new FinansijskaCelinaDialog(entityId);
         }
 
         private void btnDodaj_Click(object sender, System.EventArgs e)
@@ -70,25 +75,25 @@ namespace Soko.UI
 
         protected override string deleteConfirmationMessage(DomainObject entity)
         {
-            return String.Format("Da li zelite da izbrisete kategoriju \"{0}\"?", entity);
+            return String.Format("Da li zelite da izbrisete finansijsku celinu \"{0}\"?", entity);
         }
 
         protected override bool refIntegrityDeleteDlg(DomainObject entity)
         {
-            Kategorija k = (Kategorija)entity;
+            FinansijskaCelina f = (FinansijskaCelina)entity;
             GrupaDAO grupaDao = DAOFactoryFactory.DAOFactory.GetGrupaDAO();
 
-            if (grupaDao.existsGrupa(k))
+            if (grupaDao.existsGrupa(f))
             {
-                string msg = "Kategoriju '{0}' nije moguce izbrisati zato sto postoje " +
-                    "grupe za datu kategoriju. \n\nDa bi neka kategorija mogla da se " +
-                    "izbrise, uslov je da ne postoje grupe za tu kategoriju. To " +
+                string msg = "Finansijsku celinu '{0}' nije moguce izbrisati zato sto postoje " +
+                    "grupe za datu finansijsku celinu. \n\nDa bi neka finansijska celina mogla da se " +
+                    "izbrise, uslov je da ne postoje grupe za tu finansijsku celinu. To " +
                     "znaci da morate najpre da pronadjete sve grupe za datu " +
-                    "kategoriju, i da zatim, u prozoru u kome " +
-                    "se menjaju podaci o grupi, polje za kategoriju promenite ili ga ostavite prazno. " +
+                    "finansijsku celinu, i da zatim, u prozoru u kome " +
+                    "se menjaju podaci o grupi, promenite finansijsku celinu za datu grupu. " +
                     "Nakon sto ste ovo uradili za sve " +
-                    "grupe za datu kategoriju, moci cete da izbrisete kategoriju. ";
-                MessageDialogs.showMessage(String.Format(msg, k), this.Text);
+                    "grupe za datu finansijsku celinu, moci cete da izbrisete finansijsku celinu. ";
+                MessageDialogs.showMessage(String.Format(msg, f), this.Text);
                 return false;
             }
             return true;
@@ -96,12 +101,12 @@ namespace Soko.UI
 
         protected override void delete(DomainObject entity)
         {
-            DAOFactoryFactory.DAOFactory.GetKategorijaDAO().MakeTransient((Kategorija)entity);
+            DAOFactoryFactory.DAOFactory.GetFinansijskaCelinaDAO().MakeTransient((FinansijskaCelina)entity);
         }
 
         protected override string deleteErrorMessage(DomainObject entity)
         {
-            return "Greska prilikom brisanja kategorije.";
+            return "Greska prilikom brisanja finansijske celine.";
         }
 
         private void btnZatvori_Click(object sender, System.EventArgs e)

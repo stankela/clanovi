@@ -28,46 +28,24 @@ namespace Soko.UI
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnDodaj = new System.Windows.Forms.Button();
-            this.btnPromeni = new System.Windows.Forms.Button();
-            this.btnBrisi = new System.Windows.Forms.Button();
-            this.btnZatvori = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.btnZatvori = new System.Windows.Forms.Button();
+            this.btnBrisi = new System.Windows.Forms.Button();
+            this.btnPromeni = new System.Windows.Forms.Button();
+            this.btnDodaj = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
-            // btnDodaj
+            // dataGridView1
             // 
-            this.btnDodaj.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnDodaj.Location = new System.Drawing.Point(8, 328);
-            this.btnDodaj.Name = "btnDodaj";
-            this.btnDodaj.Size = new System.Drawing.Size(75, 23);
-            this.btnDodaj.TabIndex = 6;
-            this.btnDodaj.Text = "Dodaj...";
-            this.btnDodaj.UseVisualStyleBackColor = true;
-            this.btnDodaj.Click += new System.EventHandler(this.btnDodaj_Click);
-            // 
-            // btnPromeni
-            // 
-            this.btnPromeni.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnPromeni.Location = new System.Drawing.Point(96, 328);
-            this.btnPromeni.Name = "btnPromeni";
-            this.btnPromeni.Size = new System.Drawing.Size(75, 23);
-            this.btnPromeni.TabIndex = 7;
-            this.btnPromeni.Text = "Promeni...";
-            this.btnPromeni.UseVisualStyleBackColor = true;
-            this.btnPromeni.Click += new System.EventHandler(this.btnPromeni_Click);
-            // 
-            // btnBrisi
-            // 
-            this.btnBrisi.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnBrisi.Location = new System.Drawing.Point(184, 328);
-            this.btnBrisi.Name = "btnBrisi";
-            this.btnBrisi.Size = new System.Drawing.Size(75, 23);
-            this.btnBrisi.TabIndex = 10;
-            this.btnBrisi.Text = "Brisi";
-            this.btnBrisi.UseVisualStyleBackColor = true;
-            this.btnBrisi.Click += new System.EventHandler(this.btnBrisi_Click);
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(8, 8);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(705, 312);
+            this.dataGridView1.TabIndex = 11;
             // 
             // btnZatvori
             // 
@@ -80,26 +58,47 @@ namespace Soko.UI
             this.btnZatvori.UseVisualStyleBackColor = true;
             this.btnZatvori.Click += new System.EventHandler(this.btnZatvori_Click);
             // 
-            // dataGridView1
+            // btnBrisi
             // 
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(8, 8);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(613, 312);
-            this.dataGridView1.TabIndex = 11;
+            this.btnBrisi.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnBrisi.Location = new System.Drawing.Point(184, 328);
+            this.btnBrisi.Name = "btnBrisi";
+            this.btnBrisi.Size = new System.Drawing.Size(75, 23);
+            this.btnBrisi.TabIndex = 10;
+            this.btnBrisi.Text = "Brisi";
+            this.btnBrisi.UseVisualStyleBackColor = true;
+            this.btnBrisi.Click += new System.EventHandler(this.btnBrisi_Click);
+            // 
+            // btnPromeni
+            // 
+            this.btnPromeni.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnPromeni.Location = new System.Drawing.Point(96, 328);
+            this.btnPromeni.Name = "btnPromeni";
+            this.btnPromeni.Size = new System.Drawing.Size(75, 23);
+            this.btnPromeni.TabIndex = 7;
+            this.btnPromeni.Text = "Promeni...";
+            this.btnPromeni.UseVisualStyleBackColor = true;
+            this.btnPromeni.Click += new System.EventHandler(this.btnPromeni_Click);
+            // 
+            // btnDodaj
+            // 
+            this.btnDodaj.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnDodaj.Location = new System.Drawing.Point(8, 328);
+            this.btnDodaj.Name = "btnDodaj";
+            this.btnDodaj.Size = new System.Drawing.Size(75, 23);
+            this.btnDodaj.TabIndex = 6;
+            this.btnDodaj.Text = "Dodaj...";
+            this.btnDodaj.UseVisualStyleBackColor = true;
+            this.btnDodaj.Click += new System.EventHandler(this.btnDodaj_Click);
             // 
             // GrupeForm
             // 
-            this.ClientSize = new System.Drawing.Size(631, 360);
+            this.ClientSize = new System.Drawing.Size(723, 360);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnZatvori);
             this.Controls.Add(this.btnBrisi);
             this.Controls.Add(this.btnPromeni);
             this.Controls.Add(this.btnDodaj);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "GrupeForm";

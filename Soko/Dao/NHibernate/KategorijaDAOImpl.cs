@@ -47,20 +47,5 @@ namespace Bilten.Dao.NHibernate
             }
         }
 
-        public IList<Kategorija> FindAllSortById()
-        {
-            try
-            {
-                IQuery q = Session.CreateQuery(@"from Kategorija k order by k.Id asc");
-                return q.List<Kategorija>();
-            }
-            catch (HibernateException ex)
-            {
-                string message = String.Format(
-                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
-                throw new InfrastructureException(message, ex);
-            }
-        }
-
     }
 }

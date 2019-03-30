@@ -559,10 +559,10 @@ namespace Soko.UI
 
         private void mnPrihodiDnevniGrupe_Click(object sender, EventArgs e)
         {
-            BiracKategorije dlg2;
+            BiracFinansijskeCeline dlg2;
             try
             {
-                dlg2 = new BiracKategorije();
+                dlg2 = new BiracFinansijskeCeline();
                 dlg2.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -581,7 +581,7 @@ namespace Soko.UI
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Izvestaj o dnevnim prihodima", true, false, false, dlg2.SelKategorija);
+                dlg = new BiracIntervala("Izvestaj o dnevnim prihodima", true, false, false, dlg2.SelFinCelina);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -630,10 +630,10 @@ namespace Soko.UI
 
         private void mnPrihodiDnevniClanovi_Click(object sender, EventArgs e)
         {
-            BiracKategorije dlg2;
+            BiracFinansijskeCeline dlg2;
             try
             {
-                dlg2 = new BiracKategorije();
+                dlg2 = new BiracFinansijskeCeline();
                 dlg2.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -652,7 +652,7 @@ namespace Soko.UI
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Izvestaj o dnevnim prihodima", true, false, false, dlg2.SelKategorija);
+                dlg = new BiracIntervala("Izvestaj o dnevnim prihodima", true, false, false, dlg2.SelFinCelina);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -701,10 +701,10 @@ namespace Soko.UI
 
         private void mnPrihodiPeriodicni_Click(object sender, EventArgs e)
         {
-            BiracKategorije dlg2;
+            BiracFinansijskeCeline dlg2;
             try
             {
-                dlg2 = new BiracKategorije();
+                dlg2 = new BiracFinansijskeCeline();
                 dlg2.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -723,7 +723,7 @@ namespace Soko.UI
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Izvestaj o prihodima", true, false, false, dlg2.SelKategorija);
+                dlg = new BiracIntervala("Izvestaj o prihodima", true, false, false, dlg2.SelFinCelina);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -772,10 +772,10 @@ namespace Soko.UI
 
         private void mnPrihodiPeriodicniClanovi_Click(object sender, EventArgs e)
         {
-            BiracKategorije dlg2;
+            BiracFinansijskeCeline dlg2;
             try
             {
-                dlg2 = new BiracKategorije();
+                dlg2 = new BiracFinansijskeCeline();
                 dlg2.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -794,7 +794,7 @@ namespace Soko.UI
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Izvestaj o prihodima", true, false, false, dlg2.SelKategorija);
+                dlg = new BiracIntervala("Izvestaj o prihodima", true, false, false, dlg2.SelFinCelina);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -981,10 +981,10 @@ namespace Soko.UI
 
         private void mnAktivniClanoviGrupe_Click(object sender, EventArgs e)
         {
-            BiracKategorije dlg2;
+            BiracFinansijskeCeline dlg2;
             try
             {
-                dlg2 = new BiracKategorije();
+                dlg2 = new BiracFinansijskeCeline();
                 dlg2.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -1003,7 +1003,7 @@ namespace Soko.UI
             BiracIntervala dlg;
             try
             {
-                dlg = new BiracIntervala("Aktivni clanovi - grupe", true, false, false, dlg2.SelKategorija);
+                dlg = new BiracIntervala("Aktivni clanovi - grupe", true, false, false, dlg2.SelFinCelina);
                 dlg.ShowDialog();
             }
             catch (InfrastructureException ex)
@@ -1838,6 +1838,26 @@ namespace Soko.UI
             {
                 Cursor.Hide();
                 Cursor.Current = Cursors.Arrow;
+            }
+        }
+
+        private void mnFinansijskeCeline_Click(object sender, EventArgs e)
+        {
+            if (!dozvoliOtvaranjeProzora())
+                return;
+
+            try
+            {
+                FinansijskeCelineForm f = new FinansijskeCelineForm();
+                f.ShowDialog();
+            }
+            catch (InfrastructureException ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
             }
         }
     }

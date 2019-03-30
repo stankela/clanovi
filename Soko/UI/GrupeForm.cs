@@ -15,6 +15,7 @@ namespace Soko.UI
         private const string SIFRA = "Sifra";
         private const string NAZIV = "Naziv";
         private const string KATEGORIJA = "Kategorija";
+        private const string FINANSIJSKA_CELINA = "FinansijskaCelina";
         private const string IMA_GODISNJU_CLANARINU = "ImaGodisnjuClanarinu";
 
         public GrupeForm()
@@ -66,7 +67,8 @@ namespace Soko.UI
         {
             AddColumn("Sifra grupe", SIFRA, 50);
             AddColumn("Naziv grupe", NAZIV, 200);
-            AddColumn("Naziv kategorije", KATEGORIJA, 170);
+            AddColumn("Kategorija", KATEGORIJA, 170);
+            AddColumn("Finansijska celina", FINANSIJSKA_CELINA, 170);
             AddColumn("Ima godisnju clanarinu", IMA_GODISNJU_CLANARINU, 100);
         }
 

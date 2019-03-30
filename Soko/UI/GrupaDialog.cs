@@ -16,6 +16,7 @@ namespace Soko.UI
         private SifraGrupe oldSifra;
         private string oldNaziv;
         private List<Kategorija> kategorije;
+        private List<FinansijskaCelina> finansijskeCeline;
         private bool oldImaGodisnjuClanarinu;
 
         public GrupaDialog(Nullable<int> entityId)
@@ -37,12 +38,23 @@ namespace Soko.UI
         protected override void loadData()
         {
             kategorije = loadKategorije();
+            finansijskeCeline = loadFinansijskeCeline();
         }
 
         private List<Kategorija> loadKategorije()
         {
-            List<Kategorija> result = new List<Kategorija>(
-                DAOFactoryFactory.DAOFactory.GetKategorijaDAO().FindAllSortById());
+            List<Kategorija> result = new List<Kategorija>(DAOFactoryFactory.DAOFactory.GetKategorijaDAO().FindAll());
+
+            PropertyDescriptor propDesc = TypeDescriptor.GetProperties(typeof(Kategorija))["Naziv"];
+            result.Sort(new SortComparer<Kategorija>(propDesc, ListSortDirection.Ascending));
+
+            return result;
+        }
+
+        private List<FinansijskaCelina> loadFinansijskeCeline()
+        {
+            List<FinansijskaCelina> result = new List<FinansijskaCelina>(
+                DAOFactoryFactory.DAOFactory.GetFinansijskaCelinaDAO().FindAllSortById());
             return result;
         }
 
@@ -50,7 +62,7 @@ namespace Soko.UI
         {
             base.initUI();
             this.Text = "Grupa";
-            cmbKategorija.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbFinansijskaCelina.DropDownStyle = ComboBoxStyle.DropDownList;
 
             this.txtSifra.MaxLength = Grupa.SIFRA_MAX_LENGTH;
             txtSifra.Text = String.Empty;
@@ -59,6 +71,9 @@ namespace Soko.UI
 
             setKategorije(kategorije);
             SelectedKategorija = null;
+
+            setFinCeline(finansijskeCeline);
+            SelectedFinCelina = null;
         }
 
         private void setKategorije(List<Kategorija> kategorije)
@@ -88,6 +103,33 @@ namespace Soko.UI
             }
         }
 
+        private void setFinCeline(List<FinansijskaCelina> finCeline)
+        {
+            cmbFinansijskaCelina.Items.Clear();
+            foreach (FinansijskaCelina f in finCeline)
+            {
+                cmbFinansijskaCelina.Items.Add(f.Naziv);
+            }
+        }
+
+        private FinansijskaCelina SelectedFinCelina
+        {
+            get
+            {
+                if (cmbFinansijskaCelina.SelectedIndex >= 0)
+                    return finansijskeCeline[cmbFinansijskaCelina.SelectedIndex];
+                else
+                    return null;
+            }
+            set
+            {
+                if (value == null || finansijskeCeline.IndexOf(value) == -1)
+                    cmbFinansijskaCelina.SelectedIndex = -1;
+                else
+                    cmbFinansijskaCelina.SelectedIndex = finansijskeCeline.IndexOf(value);
+            }
+        }
+
         protected override void saveOriginalData(DomainObject entity)
         {
             Grupa g = (Grupa)entity;
@@ -103,6 +145,7 @@ namespace Soko.UI
             txtNaziv.Text = g.Naziv;
             chbImaGodisnjuClanarinu.Checked = g.ImaGodisnjuClanarinu;
             SelectedKategorija = g.Kategorija;
+            SelectedFinCelina = g.FinansijskaCelina;
         }
 
         private void GrupaDialog_Shown(object sender, EventArgs e)
@@ -144,10 +187,10 @@ namespace Soko.UI
                     "Naziv", "Naziv grupe je obavezan.");
             }
 
-            if (SelectedKategorija == null && kategorije.Count > 0)
+            if (SelectedFinCelina == null && finansijskeCeline.Count > 0)
             {
                 notification.RegisterMessage(
-                    "Kategorija", "Kategorija je obavezna.");
+                    "FinansijskaCelina", "Finansijska celina je obavezna.");
             }
         }
 
@@ -167,6 +210,10 @@ namespace Soko.UI
                     cmbKategorija.Focus();
                     break;
 
+                case "FinansijskaCelina":
+                    cmbFinansijskaCelina.Focus();
+                    break;
+
                 default:
                     throw new ArgumentException();
             }
@@ -178,6 +225,7 @@ namespace Soko.UI
             g.Sifra = SifraGrupe.Parse(txtSifra.Text.Trim());
             g.Naziv = txtNaziv.Text.Trim();
             g.Kategorija = SelectedKategorija;
+            g.FinansijskaCelina = SelectedFinCelina;
             g.ImaGodisnjuClanarinu = chbImaGodisnjuClanarinu.Checked;
         }
 

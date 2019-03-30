@@ -31,6 +31,22 @@ namespace Bilten.Dao.NHibernate
             }
         }
 
+        public virtual bool existsGrupa(FinansijskaCelina f)
+        {
+            try
+            {
+                IQuery q = Session.CreateQuery("select count(*) from Grupa g where g.FinansijskaCelina = :f");
+                q.SetEntity("f", f);
+                return (long)q.UniqueResult() > 0;
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
         public virtual bool existsGrupaSifra(SifraGrupe sifra)
         {
             try
@@ -97,7 +113,9 @@ namespace Bilten.Dao.NHibernate
         {
             try
             {
-                IQuery q = Session.CreateQuery(@"from Grupa g left join fetch g.Kategorija");
+                IQuery q = Session.CreateQuery(@"from Grupa g
+                                                 left join fetch g.Kategorija
+                                                 left join fetch g.FinansijskaCelina");
                 return q.List<Grupa>();
             }
             catch (HibernateException ex)

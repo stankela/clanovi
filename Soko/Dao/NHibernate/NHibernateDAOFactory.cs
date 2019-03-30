@@ -34,6 +34,11 @@ namespace Bilten.Dao.NHibernate
             return new KategorijaDAOImpl();
         }
 
+        public override FinansijskaCelinaDAO GetFinansijskaCelinaDAO()
+        {
+            return new FinansijskaCelinaDAOImpl();
+        }
+
         public override GrupaDAO GetGrupaDAO()
         {
             return new GrupaDAOImpl();
