@@ -107,6 +107,25 @@ namespace Bilten.Dao.NHibernate
             }
         }
 
+        public virtual IList<Grupa> findForFinansijskaCelina(FinansijskaCelina f)
+        {
+            try
+            {
+                IQuery q = Session.CreateQuery(@"from Grupa g
+                                                 left join fetch g.Kategorija
+                                                 left join fetch g.FinansijskaCelina f
+                                                 where f = :f");
+                q.SetEntity("f", f);
+                return q.List<Grupa>();
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
         #endregion
 
         public override IList<Grupa> FindAll()

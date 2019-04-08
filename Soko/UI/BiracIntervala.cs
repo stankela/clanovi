@@ -16,13 +16,14 @@ namespace Soko.UI
 {
     public partial class BiracIntervala : Form
     {
-        private List<Grupa> grupe = null;
+        private List<Grupa> grupe;
         private List<Grupa> sveGrupe;
         private List<Clan> clanovi;
         private bool izborClana;
         private DateTime currentDatumOd;
         private DateTime currentDatumDo;
         private bool months;
+        private FinansijskaCelina finCelina;
 
         public DateTimePicker DateTimePickerFrom
         {
@@ -42,6 +43,7 @@ namespace Soko.UI
             InitializeComponent();
             this.Text = naslov;
             this.months = months;
+            this.finCelina = finCelina;
 
             string format;
             if (months)
@@ -76,7 +78,15 @@ namespace Soko.UI
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
-                    sveGrupe = new List<Grupa>(DAOFactoryFactory.DAOFactory.GetGrupaDAO().FindAll());
+                    if (finCelina != null)
+                    {
+                        sveGrupe = new List<Grupa>(DAOFactoryFactory.DAOFactory.GetGrupaDAO()
+                            .findForFinansijskaCelina(finCelina));
+                    }
+                    else
+                    {
+                        sveGrupe = new List<Grupa>(DAOFactoryFactory.DAOFactory.GetGrupaDAO().FindAll());
+                    }
                     clanovi = loadClanovi();
                 }
             }
@@ -279,7 +289,12 @@ namespace Soko.UI
         {
             if (rbtSveGrupe.Checked)
             {
-                grupe = null;
+                //grupe = null;
+                grupe = new List<Grupa>();
+                for (int i = 0; i < sveGrupe.Count; i++)
+                {
+                    grupe.Add(sveGrupe[i]);
+                }
             }
             else
             {

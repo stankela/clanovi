@@ -15,5 +15,6 @@ namespace Bilten.Dao
         bool existsGrupaSifra(SifraGrupe sifra);
         bool existsGrupaNaziv(string naziv);
         IList<Grupa> findGodisnjaClanarina();
+        IList<Grupa> findForFinansijskaCelina(FinansijskaCelina f);
     }
 }
