@@ -23,10 +23,11 @@ namespace Soko.Report
 		private Font ukupnoClanovaBrojFont;
 
         public PeriodicniClanoviIzvestaj(DateTime from, DateTime to, 
-            List<Grupa> grupe)
+            List<Grupa> grupe, FinansijskaCelina finCelina)
 		{
 			this.fromDate = from.Date;
 			this.toDate = to.Date;
+            this.finCelina = finCelina;
 
 			Title = "Uplate po grupama";
 			SubTitle = fromDate.ToShortDateString() + " - " + toDate.ToShortDateString();

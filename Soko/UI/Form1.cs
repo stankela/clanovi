@@ -510,7 +510,7 @@ namespace Soko.UI
                     CurrentSessionContext.Bind(session);
                     PreviewDialog p = new PreviewDialog();
                     p.setIzvestaj(new DnevniPrihodiKategorijeIzvestaj(dlg.Datum.Date,
-                        getGrupeForFinCelina(dlg2.SelFinCelina)));
+                        getGrupeForFinCelina(dlg2.SelFinCelina), dlg2.SelFinCelina));
                     p.ShowDialog();
                 }
             }
@@ -567,7 +567,7 @@ namespace Soko.UI
                     CurrentSessionContext.Bind(session);
                     PreviewDialog p = new PreviewDialog();
                     p.setIzvestaj(new DnevniPrihodiGrupeIzvestaj(dlg.OdDatum.Date,
-                        dlg.DoDatum.Date, dlg.Grupe));
+                        dlg.DoDatum.Date, dlg.Grupe, dlg2.SelFinCelina));
                     p.ShowDialog();
                 }
             }
@@ -624,7 +624,7 @@ namespace Soko.UI
                     CurrentSessionContext.Bind(session);
                     PreviewDialog p = new PreviewDialog();
                     p.setIzvestaj(new DnevniPrihodiIzvestaj(dlg.OdDatum.Date,
-                        dlg.DoDatum.Date, dlg.Grupe));
+                        dlg.DoDatum.Date, dlg.Grupe, dlg2.SelFinCelina));
                     p.ShowDialog();
                 }
             }
@@ -681,7 +681,7 @@ namespace Soko.UI
                     CurrentSessionContext.Bind(session);
                     PreviewDialog p = new PreviewDialog();
                     p.setIzvestaj(new PeriodicniPrihodiIzvestaj(dlg.OdDatum.Date,
-                        dlg.DoDatum.Date, dlg.Grupe));
+                        dlg.DoDatum.Date, dlg.Grupe, dlg2.SelFinCelina));
                     p.ShowDialog();
                 }
             }
@@ -738,7 +738,7 @@ namespace Soko.UI
                     CurrentSessionContext.Bind(session);
                     PreviewDialog p = new PreviewDialog();
                     p.setIzvestaj(new PeriodicniClanoviIzvestaj(dlg.OdDatum.Date,
-                        dlg.DoDatum.Date, dlg.Grupe));
+                        dlg.DoDatum.Date, dlg.Grupe, dlg2.SelFinCelina));
                     p.ShowDialog();
                 }
             }
@@ -795,7 +795,7 @@ namespace Soko.UI
                     CurrentSessionContext.Bind(session);
                     PreviewDialog p = new PreviewDialog();
                     p.setIzvestaj(new MesecniPrihodiIzvestaj(dlg.OdDatum, dlg.DoDatum,
-                        getGrupeForFinCelina(dlg2.SelFinCelina)));
+                        getGrupeForFinCelina(dlg2.SelFinCelina), dlg2.SelFinCelina));
                     p.ShowDialog();
                 }
             }
@@ -946,7 +946,7 @@ namespace Soko.UI
                     CurrentSessionContext.Bind(session);
                     PreviewDialog p = new PreviewDialog();
                     p.setIzvestaj(new AktivniClanoviGrupeIzvestaj(dlg.OdDatum.Date,
-                        dlg.DoDatum.Date, dlg.Grupe));
+                        dlg.DoDatum.Date, dlg.Grupe, dlg2.SelFinCelina));
                     p.ShowDialog();
                 }
             }
@@ -1003,7 +1003,7 @@ namespace Soko.UI
                     CurrentSessionContext.Bind(session);
                     PreviewDialog p = new PreviewDialog();
                     p.setIzvestaj(new AktivniClanoviIzvestaj(dlg.OdDatum.Date,
-                        dlg.DoDatum.Date, getGrupeForFinCelina(dlg2.SelFinCelina)));
+                        dlg.DoDatum.Date, getGrupeForFinCelina(dlg2.SelFinCelina), dlg2.SelFinCelina));
                     p.ShowDialog();
                 }
             }

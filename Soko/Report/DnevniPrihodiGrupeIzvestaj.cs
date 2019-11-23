@@ -27,11 +27,12 @@ namespace Soko.Report
 		private List<Grupa> grupe;
 
         public DnevniPrihodiGrupeIzvestaj(DateTime from, DateTime to, 
-            List<Grupa> grupe)
+            List<Grupa> grupe, FinansijskaCelina finCelina)
 		{
 			this.fromDate = from.Date;
 			this.toDate = to.Date;
 			this.grupe = grupe;
+            this.finCelina = finCelina;
 
 			System.Resources.ResourceManager resourceManager = new 
 				System.Resources.ResourceManager("Soko.Resources.PreviewResursi", this.GetType().Assembly);

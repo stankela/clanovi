@@ -1,3 +1,4 @@
+using Soko.Domain;
 using System;
 using System.Drawing;
 
@@ -27,6 +28,8 @@ namespace Soko.Report
 		protected RectangleF headerBounds;
 		protected RectangleF contentBounds;
         protected RectangleF pageBounds;
+
+        protected FinansijskaCelina finCelina;
 
 		protected int lastPageNum;
 		public int LastPageNum
@@ -182,8 +185,18 @@ namespace Soko.Report
 			Image sokoImage = (Image)resourceManager.GetObject("slika_soko");
 			resourceManager = new 
 				System.Resources.ResourceManager("Soko.Resources.PreviewResursi", this.GetType().Assembly);
-			string sokDruVoj = resourceManager.GetString("izvestaj_header_sok_dru_voj");
-			string adresa = resourceManager.GetString("izvestaj_header_adresa");
+     
+            bool sokolskiCentar = finCelina != null && finCelina.Naziv.ToLower() == "sokolski centar";
+            string sokDruVoj;
+            if (!sokolskiCentar)
+            {
+                sokDruVoj = resourceManager.GetString("izvestaj_header_sok_dru_voj");
+            }
+            else
+            {
+                sokDruVoj = "SOKOLSKI CENTAR";
+            }
+            string adresa = resourceManager.GetString("izvestaj_header_adresa");
 
 			float ySokDruVoj = pictureBounds.Y + 0.7f * pictureBounds.Height;
 			float yAdresa = pictureBounds.Y + 0.85f * pictureBounds.Height;
@@ -192,15 +205,23 @@ namespace Soko.Report
 			RectangleF adresaBounds = new RectangleF(pictureBounds.X, yAdresa, 
 				pictureBounds.Width, pictureBounds.Y + pictureBounds.Height - yAdresa);
 
-			using(Pen pen = new Pen(Color.Black, 1/72f * 0.25f))
-			{
-				//			g.DrawRectangle(pen, pictureBounds.X, pictureBounds.Y, pictureBounds.Width, pictureBounds.Height);
-			}
 			float sokoHeight = 0.7f * pictureBounds.Height;
 			float sokoWidth = sokoHeight;
 			float sokoX = pictureBounds.X + (pictureBounds.Width - sokoWidth) / 2;
 			RectangleF sokoBounds = new RectangleF(sokoX, pictureBounds.Y, sokoWidth, sokoHeight);
-			g.DrawImage(sokoImage, sokoBounds);
+
+            if (!sokolskiCentar)
+            {
+                g.DrawImage(sokoImage, sokoBounds);
+            }
+            else
+            {
+                // TODO3: Crtanje okvira je potrebno samo dok se ne napravi slika za "sokolski centar"
+                using (Pen pen = new Pen(Color.Black, 1 / 72f * 0.25f))
+                {
+                    g.DrawRectangle(pen, pictureBounds.X, pictureBounds.Y, pictureBounds.Width, pictureBounds.Height);
+                }
+            }
 			g.DrawString(sokDruVoj, sokDruVojFont, blackBrush, sokDruVojBounds, titleFormat); 
 			g.DrawString(adresa, adresaFont, blackBrush, adresaBounds, titleFormat); 
 		}

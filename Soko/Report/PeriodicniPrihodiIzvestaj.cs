@@ -24,11 +24,12 @@ namespace Soko.Report
 		private Font ukupanPrihodIznosFont;
 
         public PeriodicniPrihodiIzvestaj(DateTime from, DateTime to, 
-            List<Grupa> grupe)
+            List<Grupa> grupe, FinansijskaCelina finCelina)
 		{
 			this.fromDate = from.Date;
 			this.toDate = to.Date;
 			this.grupe = grupe;
+            this.finCelina = finCelina;
 
 			Title = "Uplate po grupama";
 			SubTitle = fromDate.ToShortDateString() + " - " + toDate.ToShortDateString();

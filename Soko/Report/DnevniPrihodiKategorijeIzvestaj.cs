@@ -37,10 +37,11 @@ namespace Soko.Report
 		public float summaryY;
 		public int summaryPageNum;
 
-        public DnevniPrihodiKategorijeIzvestaj(DateTime dat, List<Grupa> grupe)
+        public DnevniPrihodiKategorijeIzvestaj(DateTime dat, List<Grupa> grupe, FinansijskaCelina finCelina)
 		{
 			datum = dat.Date;
             this.grupe = grupe;
+            this.finCelina = finCelina;
 
 			System.Resources.ResourceManager resourceManager = new 
 				System.Resources.ResourceManager("Soko.Resources.PreviewResursi", this.GetType().Assembly);
@@ -166,12 +167,32 @@ namespace Soko.Report
 			float pictureWidth = pictureHeight * 1.2f;
 			RectangleF pictureBounds = new RectangleF(headerBounds.X, headerBounds.Y, pictureWidth, pictureHeight);
 			pictureBounds.Inflate(- 0.05f * pictureWidth, - 0.05f * pictureHeight);
-			g.DrawImage(sokoImage, pictureBounds);
+            bool sokolskiCentar = finCelina != null && finCelina.Naziv.ToLower() == "sokolski centar";
+            if (!sokolskiCentar)
+            {
+                g.DrawImage(sokoImage, pictureBounds);
+            }
+            else
+            {
+                // TODO3: Crtanje okvira je potrebno samo dok se ne napravi slika za "sokolski centar"
+                using (Pen pen = new Pen(Color.Black, 1 / 72f * 0.25f))
+                {
+                    g.DrawRectangle(pen, pictureBounds.X, pictureBounds.Y, pictureBounds.Width, pictureBounds.Height);
+                }
+            }
 
 			resourceManager = new 
 				System.Resources.ResourceManager("Soko.Resources.PreviewResursi", this.GetType().Assembly);
-
-			string sokDruVoj = resourceManager.GetString("izvestaj_header_sok_dru_voj");
+            
+            string sokDruVoj;
+            if (!sokolskiCentar)
+            {
+                sokDruVoj = resourceManager.GetString("izvestaj_header_sok_dru_voj");
+            }
+            else
+            {
+                sokDruVoj = "SOKOLSKI CENTAR";
+            }
 			float sokDruVojHeight = sokDruVojFont.GetHeight(g);
 			RectangleF sokDruVojRect = new RectangleF(headerBounds.X + pictureWidth,
 				headerBounds.Y, headerBounds.Width - pictureWidth, sokDruVojHeight);

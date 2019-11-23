@@ -20,10 +20,11 @@ namespace Soko.Report
         private DateTime fromDate;
         private DateTime toDate;
 
-        public AktivniClanoviIzvestaj(DateTime from, DateTime to, List<Grupa> grupe)
+        public AktivniClanoviIzvestaj(DateTime from, DateTime to, List<Grupa> grupe, FinansijskaCelina finCelina)
 		{
             fromDate = from.Date;
             toDate = to.Date;
+            this.finCelina = finCelina;
             
             System.Resources.ResourceManager resourceManager = new 
 				System.Resources.ResourceManager("Soko.Resources.PreviewResursi", this.GetType().Assembly);

@@ -358,11 +358,14 @@ WHERE (u.vazi_od BETWEEN '{0}' AND '{1}')
                     }
                 }
                 // Add last item
-                if ((string)prevItem[2] == "NE")
+                if (prevItem != null)
                 {
-                    prevItem[2] = formatBrojTreninga(brojDana, samoNedostajuceUplate);
+                    if ((string)prevItem[2] == "NE")
+                    {
+                        prevItem[2] = formatBrojTreninga(brojDana, samoNedostajuceUplate);
+                    }
+                    result.Add(prevItem);
                 }
-                result.Add(prevItem);
 
                 return result;
             }
