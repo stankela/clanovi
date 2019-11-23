@@ -258,7 +258,7 @@ order by god desc, mes desc, dan desc, g.broj_grupe, g. podgrupa
             }
         }
 
-        public virtual List<object[]> getDnevniPrihodiKategorijeReportItems(DateTime datum)
+        public virtual List<object[]> getDnevniPrihodiKategorijeReportItems(DateTime datum, List<Grupa> grupe)
         {
             try
             {
@@ -272,10 +272,15 @@ FROM uplate u INNER JOIN (grupe g INNER JOIN kategorije k
 WHERE datepart(year,u.datum_vreme_uplate) = {0}
     and datepart(month,u.datum_vreme_uplate) = {1}
     and datepart(day,u.datum_vreme_uplate) = {2}
+{3}
 GROUP BY k.kategorija_id, k.naziv
 ORDER BY k.kategorija_id
 ";
-                query = String.Format(query, datum.Year, datum.Month, datum.Day);
+                bool filterGrupe = grupe != null && grupe.Count > 0;
+                string filter = String.Empty;
+                if (filterGrupe)
+                    filter = " AND " + Util.getGrupeFilter(grupe, "g", "grupa_id");
+                query = String.Format(query, datum.Year, datum.Month, datum.Day, filter);
                 ISQLQuery q = Session.CreateSQLQuery(query);
                 IList result = q.List();
                 List<object[]> result2 = new List<object[]>();
@@ -727,7 +732,7 @@ ORDER BY g.broj_grupe, g.podgrupa
         }
 
         public virtual List<object[]> getAktivniClanoviReportItems(DateTime from, DateTime to,
-            IDictionary<int, Mesto> mestaMap)
+            List<Grupa> grupe, IDictionary<int, Mesto> mestaMap)
         {
             from = from.Date;
             to = to.Date.AddDays(1);
@@ -742,10 +747,15 @@ FROM grupe g INNER JOIN (uplate u INNER JOIN clanovi c
 	ON g.grupa_id = u.grupa_id
 WHERE
     (u.datum_vreme_uplate BETWEEN '{0}' AND '{1}')
+{2}
 ORDER BY
     c.prezime, c.ime, c.broj
 ";
-                query = String.Format(query, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"));
+                bool filterGrupe = grupe != null && grupe.Count > 0;
+                string filter = String.Empty;
+                if (filterGrupe)
+                    filter = " AND " + Util.getGrupeFilter(grupe, "g", "grupa_id");
+                query = String.Format(query, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"), filter);
 
                 ISQLQuery q = Session.CreateSQLQuery(query);
                 IList<object[]> result = q.List<object[]>();
@@ -798,7 +808,7 @@ ORDER BY
             }
         }
 
-        public virtual List<object[]> getMesecniPrihodiReportItems(DateTime from, DateTime to)
+        public virtual List<object[]> getMesecniPrihodiReportItems(DateTime from, DateTime to, List<Grupa> grupe)
         {
             from = from.Date;
             to = to.Date.AddDays(1);
@@ -812,12 +822,17 @@ SELECT
 FROM uplate u INNER JOIN grupe g
 	ON u.grupa_id = g.grupa_id
 WHERE (u.datum_vreme_uplate BETWEEN '{0}' AND '{1}')
+{2}
 GROUP BY
     datepart(year,u.datum_vreme_uplate),
     datepart(month,u.datum_vreme_uplate),
     g.broj_grupe, g.podgrupa, g.naziv
 ORDER BY god DESC, mes DESC, g.broj_grupe, g.podgrupa";
-                query = String.Format(query, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"));
+                bool filterGrupe = grupe != null && grupe.Count > 0;
+                string filter = String.Empty;
+                if (filterGrupe)
+                    filter = " AND " + Util.getGrupeFilter(grupe, "g", "grupa_id");
+                query = String.Format(query, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"), filter);
 
                 ISQLQuery q = Session.CreateSQLQuery(query);
                 IList<object[]> result = q.List<object[]>();

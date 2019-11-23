@@ -3,6 +3,7 @@ using System.Drawing;
 using Soko.Exceptions;
 using System.Collections.Generic;
 using Bilten.Dao;
+using Soko.Domain;
 
 namespace Soko.Report
 {
@@ -12,6 +13,7 @@ namespace Soko.Report
 	public class DnevniPrihodiKategorijeIzvestaj : Izvestaj
 	{
 		private DateTime datum;
+        private List<Grupa> grupe;
 
 		DnevniPrihodiKategorijeLista lista;
 
@@ -35,9 +37,10 @@ namespace Soko.Report
 		public float summaryY;
 		public int summaryPageNum;
 
-		public DnevniPrihodiKategorijeIzvestaj(DateTime dat)
+        public DnevniPrihodiKategorijeIzvestaj(DateTime dat, List<Grupa> grupe)
 		{
 			datum = dat.Date;
+            this.grupe = grupe;
 
 			System.Resources.ResourceManager resourceManager = new 
 				System.Resources.ResourceManager("Soko.Resources.PreviewResursi", this.GetType().Assembly);
@@ -47,7 +50,7 @@ namespace Soko.Report
 	
 			Font itemFont = new Font("Times New Roman", 15);
 			Font itemsHeaderFont = new Font("Times New Roman", 12);
-			lista = new DnevniPrihodiKategorijeLista(datum,
+			lista = new DnevniPrihodiKategorijeLista(datum, grupe,
 				this, 1, 0f, itemFont, itemsHeaderFont);
 
 			createFormats();
@@ -237,7 +240,7 @@ namespace Soko.Report
 			g.DrawString(svega, summaryFontLower, blackBrush, svegaLocation);
 
 			//decimal ukupanIznos = ((DnevniPrihodiKategorijeGrupa)groups[0]).UkupanIznos;
-            decimal ukupanIznos = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO().getUkupanPrihod(datum, datum, null);
+            decimal ukupanIznos = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO().getUkupanPrihod(datum, datum, grupe);
             float ukupanIznosX = svegaLocation.X + g.MeasureString(svega + "99", summaryFontLower).Width;
 			float ukupanIznosBottom = svegaLocation.Y + g.MeasureString(svega, summaryFontLower).Height;
 			PointF ukupanIznosBottomLeft = new PointF(ukupanIznosX, ukupanIznosBottom);
@@ -265,21 +268,17 @@ namespace Soko.Report
 
 	public class DnevniPrihodiKategorijeLista : ReportLista
 	{
-		DateTime datum;
-
-		public DnevniPrihodiKategorijeLista(DateTime datum, Izvestaj izvestaj, 
+		public DnevniPrihodiKategorijeLista(DateTime datum, List<Grupa> grupe, Izvestaj izvestaj, 
 			int pageNum, float y, Font itemFont, Font itemsHeaderFont) 
 				: base(izvestaj, pageNum, y, itemFont, itemsHeaderFont)
 		{
-			this.datum = datum;
-		
-			fetchItems();
+			fetchItems(datum, grupe);
 		}
 
-		private void fetchItems()
+        private void fetchItems(DateTime datum, List<Grupa> grupe)
 		{
 			items = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO()
-				.getDnevniPrihodiKategorijeReportItems(datum);
+				.getDnevniPrihodiKategorijeReportItems(datum, grupe);
 		
 			groups = new List<ReportGrupa>();
 			groups.Add(new ReportGrupa(0, items.Count));

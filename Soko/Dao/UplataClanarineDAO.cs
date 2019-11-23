@@ -20,7 +20,7 @@ namespace Bilten.Dao
         IList<Grupa> getGrupeBezKategorija(DateTime datumUplate);
         List<object[]> getDnevniPrihodiGrupeReportItems(DateTime from, DateTime to, List<Grupa> grupe);
         decimal getUkupanPrihod(DateTime from, DateTime to, List<Grupa> grupe);
-        List<object[]> getDnevniPrihodiKategorijeReportItems(DateTime datum);
+        List<object[]> getDnevniPrihodiKategorijeReportItems(DateTime datum, List<Grupa> grupe);
         List<object[]> getDnevniPrihodiClanoviReportItems(DateTime from, DateTime to, List<Grupa> grupe,
             IDictionary<int, Mesto> mestaMap);
         List<ReportGrupa> getDnevniPrihodiClanoviReportGrupeDanGrupa(DateTime from, DateTime to, List<Grupa> grupe);
@@ -32,8 +32,9 @@ namespace Bilten.Dao
             IDictionary<int, Mesto> mestaMap, IDictionary<SifraGrupe, int> duplikati);
         List<ReportGrupa> getAktivniClanoviPoGrupamaReportGrupe(DateTime from, DateTime to, List<Grupa> grupe,
             IDictionary<SifraGrupe, int> duplikati);
-        List<object[]> getAktivniClanoviReportItems(DateTime from, DateTime to, IDictionary<int, Mesto> mestaMap);
-        List<object[]> getMesecniPrihodiReportItems(DateTime from, DateTime to);
+        List<object[]> getAktivniClanoviReportItems(DateTime from, DateTime to, List<Grupa> grupe,
+            IDictionary<int, Mesto> mestaMap);
+        List<object[]> getMesecniPrihodiReportItems(DateTime from, DateTime to, List<Grupa> grupe);
         List<object[]> getUplateClanovaReportItems(int idClana);
         List<ReportGrupa> getUplateClanovaReportGroups(int idClana, IDictionary<int, Mesto> mestaMap);
     }

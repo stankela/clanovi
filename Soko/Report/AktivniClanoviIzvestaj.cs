@@ -20,7 +20,7 @@ namespace Soko.Report
         private DateTime fromDate;
         private DateTime toDate;
 
-        public AktivniClanoviIzvestaj(DateTime from, DateTime to)
+        public AktivniClanoviIzvestaj(DateTime from, DateTime to, List<Grupa> grupe)
 		{
             fromDate = from.Date;
             toDate = to.Date;
@@ -34,7 +34,7 @@ namespace Soko.Report
 		
 			Font itemFont = new Font("Courier New", 9);
 			Font itemsHeaderFont = new Font("Courier New", 9);
-            lista = new AktivniClanoviLista(fromDate, toDate, this, 1, 0f, itemFont, itemsHeaderFont);
+            lista = new AktivniClanoviLista(fromDate, toDate, grupe, this, 1, 0f, itemFont, itemsHeaderFont);
 		}
 
 		protected override void doSetupContent(Graphics g)
@@ -59,21 +59,21 @@ namespace Soko.Report
         private DateTime fromDate;
         private DateTime toDate;
 
-        public AktivniClanoviLista(DateTime from, DateTime to, Izvestaj izvestaj, int pageNum, float y,
+        public AktivniClanoviLista(DateTime from, DateTime to, List<Grupa> grupe, Izvestaj izvestaj, int pageNum, float y,
 			Font itemFont, Font itemsHeaderFont) : base(izvestaj, pageNum, y, itemFont,
 			itemsHeaderFont)
 		{
             this.fromDate = from;
             this.toDate = to;
 
-            fetchItems();
+            fetchItems(grupe);
 		}
 
-		private void fetchItems()
+		private void fetchItems(List<Grupa> grupe)
 		{
             IDictionary<int, Mesto> mestaMap = DAOFactoryFactory.DAOFactory.GetMestoDAO().getMestaMap();
             items = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO()
-                .getAktivniClanoviReportItems(fromDate, toDate, mestaMap);
+                .getAktivniClanoviReportItems(fromDate, toDate, grupe, mestaMap);
 		
 			groups = new List<ReportGrupa>();
 			groups.Add(new ReportGrupa(0, items.Count));

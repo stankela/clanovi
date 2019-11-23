@@ -289,11 +289,17 @@ namespace Soko.UI
         {
             if (rbtSveGrupe.Checked)
             {
-                //grupe = null;
-                grupe = new List<Grupa>();
-                for (int i = 0; i < sveGrupe.Count; i++)
+                if (finCelina != null)
                 {
-                    grupe.Add(sveGrupe[i]);
+                    grupe = new List<Grupa>();
+                    for (int i = 0; i < sveGrupe.Count; i++)
+                    {
+                        grupe.Add(sveGrupe[i]);
+                    }
+                }
+                else
+                {
+                    grupe = null;
                 }
             }
             else

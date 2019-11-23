@@ -3,6 +3,7 @@ using System.Drawing;
 using Soko.Exceptions;
 using System.Collections.Generic;
 using Bilten.Dao;
+using Soko.Domain;
 
 namespace Soko.Report
 {
@@ -20,11 +21,13 @@ namespace Soko.Report
 
 		private DateTime fromDate;
 		private DateTime toDate;
+        private List<Grupa> grupe;
 
-		public MesecniPrihodiIzvestaj(DateTime from, DateTime to)
+        public MesecniPrihodiIzvestaj(DateTime from, DateTime to, List<Grupa> grupe)
 		{
             fromDate = from;
             toDate = to;
+            this.grupe = grupe;
 
 			System.Resources.ResourceManager resourceManager = new 
 				System.Resources.ResourceManager("Soko.Resources.PreviewResursi", this.GetType().Assembly);
@@ -39,7 +42,7 @@ namespace Soko.Report
 			Font itemFont = new Font("Courier New", 9);
 			Font itemsHeaderFont = new Font("Courier New", 9);
 			Font groupTitleFont = new Font("Courier New", 10, FontStyle.Bold);
-			lista = new MesecniPrihodiLista(fromDate, toDate, this, 1, 0f, 
+			lista = new MesecniPrihodiLista(fromDate, toDate, grupe, this, 1, 0f, 
 				itemFont, itemsHeaderFont, groupTitleFont);
 		}
 
@@ -49,7 +52,8 @@ namespace Soko.Report
 			ukupanPrihodText += fromDate.ToShortDateString() + " - "
 				+ toDate.ToShortDateString();
 
-            decimal ukupanPrihod = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO().getUkupanPrihod(fromDate, toDate, null);
+            decimal ukupanPrihod = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO()
+                .getUkupanPrihod(fromDate, toDate, grupe);
 			string ukupanPrihodIznos = "   " + ukupanPrihod.ToString("F2");
 
 			StringFormat format = new StringFormat();
@@ -93,19 +97,19 @@ namespace Soko.Report
 
 	public class MesecniPrihodiLista : GrupniPrihodiLista
 	{
-		public MesecniPrihodiLista(DateTime from, DateTime to,
+		public MesecniPrihodiLista(DateTime from, DateTime to, List<Grupa> grupe,
 			Izvestaj izvestaj, int pageNum, float y,
 			Font itemFont, Font itemsHeaderFont, Font groupTitleFont) 
 			: base(from, to, null, izvestaj, pageNum, y, itemFont, itemsHeaderFont,
 			groupTitleFont)
 		{
-			fetchItems();
+			fetchItems(grupe);
 		}
 
-		private void fetchItems()
+        private void fetchItems(List<Grupa> grupe)
 		{
             items = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO()
-				.getMesecniPrihodiReportItems(fromDate, toDate);
+				.getMesecniPrihodiReportItems(fromDate, toDate, grupe);
 			createGroups();
 		}
 

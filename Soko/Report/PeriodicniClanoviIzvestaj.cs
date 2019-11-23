@@ -14,7 +14,6 @@ namespace Soko.Report
 	{
 		private DateTime fromDate;
 		private DateTime toDate;
-        private List<Grupa> grupe;
 
 		private ReportText ukupnoClanovaBrojReportText;
 		private ReportText ukupnoClanovaCaptionReportText;
@@ -28,7 +27,6 @@ namespace Soko.Report
 		{
 			this.fromDate = from.Date;
 			this.toDate = to.Date;
-			this.grupe = grupe;
 
 			Title = "Uplate po grupama";
 			SubTitle = fromDate.ToShortDateString() + " - " + toDate.ToShortDateString();

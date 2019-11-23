@@ -18,6 +18,7 @@ namespace Soko.UI
     {
         private List<FinansijskaCelina> finansijskeCeline;
         public FinansijskaCelina SelFinCelina = null;
+        private static readonly string SVE = "SVE";
 
         public BiracFinansijskeCeline()
         {
@@ -43,7 +44,7 @@ namespace Soko.UI
             if (finansijskeCeline.Count > 0)
                 SelectedFinCelina = finansijskeCeline[0];
             else
-                SelectedFinCelina = null;
+                cmbFinCelina.SelectedIndex = cmbFinCelina.Items.IndexOf(SVE);
         }
 
         private List<FinansijskaCelina> loadFinCeline()
@@ -60,13 +61,14 @@ namespace Soko.UI
             {
                 cmbFinCelina.Items.Add(f.Naziv);
             }
+            cmbFinCelina.Items.Add(SVE);
         }
 
         private FinansijskaCelina SelectedFinCelina
         {
             get
             {
-                if (cmbFinCelina.SelectedIndex >= 0)
+                if (cmbFinCelina.SelectedIndex >= 0 && cmbFinCelina.SelectedItem.ToString() != SVE)
                     return finansijskeCeline[cmbFinCelina.SelectedIndex];
                 else
                     return null;

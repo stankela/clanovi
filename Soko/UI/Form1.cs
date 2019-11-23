@@ -263,11 +263,6 @@ namespace Soko.UI
                 dlg = new UplataClanarineDialog(null);
                 dlg.ShowDialog();
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-                return;
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -301,10 +296,6 @@ namespace Soko.UI
 
                     p.printWithoutPreview(new PotvrdaIzvestaj(idList));
                 }
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
             }
             catch (Exception ex)
             {
@@ -351,10 +342,6 @@ namespace Soko.UI
                 ClanoviForm f = new ClanoviForm();
                 f.ShowDialog();
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -370,10 +357,6 @@ namespace Soko.UI
             {
                 MesecneClanarineForm d = new MesecneClanarineForm();
                 d.ShowDialog();
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
             }
             catch (Exception ex)
             {
@@ -391,10 +374,6 @@ namespace Soko.UI
                 GrupeForm d = new GrupeForm();
                 d.ShowDialog();
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -410,10 +389,6 @@ namespace Soko.UI
             {
                 KategorijeForm f = new KategorijeForm();
                 f.ShowDialog();
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
             }
             catch (Exception ex)
             {
@@ -431,10 +406,6 @@ namespace Soko.UI
                 MestaForm form = new MestaForm();
                 form.ShowDialog();
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -450,10 +421,6 @@ namespace Soko.UI
             {
                 InstitucijeForm d = new InstitucijeForm();
                 d.ShowDialog();
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
             }
             catch (Exception ex)
             {
@@ -474,10 +441,6 @@ namespace Soko.UI
                 UplateClanarineForm d = new UplateClanarineForm();
                 d.ShowDialog();
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -491,6 +454,20 @@ namespace Soko.UI
 
         private void mnPrihodiDnevniKategorije_Click(object sender, EventArgs e)
         {
+            BiracFinansijskeCeline dlg2;
+            try
+            {
+                dlg2 = new BiracFinansijskeCeline();
+                dlg2.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            if (dlg2.DialogResult != DialogResult.OK)
+                return;
+            
             BiracDana dlg = new BiracDana("Izvestaj o prihodima");
             if (dlg.ShowDialog() != DialogResult.OK)
                 return;
@@ -505,11 +482,6 @@ namespace Soko.UI
                     grupeBezKategorija = new List<Grupa>(DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO().
                         getGrupeBezKategorija(dlg.Datum.Date));
                 }
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-                return;
             }
             catch (Exception ex)
             {
@@ -537,13 +509,10 @@ namespace Soko.UI
                 {
                     CurrentSessionContext.Bind(session);
                     PreviewDialog p = new PreviewDialog();
-                    p.setIzvestaj(new DnevniPrihodiKategorijeIzvestaj(dlg.Datum.Date));
+                    p.setIzvestaj(new DnevniPrihodiKategorijeIzvestaj(dlg.Datum.Date,
+                        getGrupeForFinCelina(dlg2.SelFinCelina)));
                     p.ShowDialog();
                 }
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
             }
             catch (Exception ex)
             {
@@ -565,11 +534,6 @@ namespace Soko.UI
                 dlg2 = new BiracFinansijskeCeline();
                 dlg2.ShowDialog();
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-                return;
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -583,11 +547,6 @@ namespace Soko.UI
             {
                 dlg = new BiracIntervala("Izvestaj o dnevnim prihodima", true, false, false, dlg2.SelFinCelina);
                 dlg.ShowDialog();
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-                return;
             }
             catch (Exception ex)
             {
@@ -612,10 +571,6 @@ namespace Soko.UI
                     p.ShowDialog();
                 }
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -636,11 +591,6 @@ namespace Soko.UI
                 dlg2 = new BiracFinansijskeCeline();
                 dlg2.ShowDialog();
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-                return;
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -654,11 +604,6 @@ namespace Soko.UI
             {
                 dlg = new BiracIntervala("Izvestaj o dnevnim prihodima", true, false, false, dlg2.SelFinCelina);
                 dlg.ShowDialog();
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-                return;
             }
             catch (Exception ex)
             {
@@ -683,10 +628,6 @@ namespace Soko.UI
                     p.ShowDialog();
                 }
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -707,11 +648,6 @@ namespace Soko.UI
                 dlg2 = new BiracFinansijskeCeline();
                 dlg2.ShowDialog();
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-                return;
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -725,11 +661,6 @@ namespace Soko.UI
             {
                 dlg = new BiracIntervala("Izvestaj o prihodima", true, false, false, dlg2.SelFinCelina);
                 dlg.ShowDialog();
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-                return;
             }
             catch (Exception ex)
             {
@@ -754,10 +685,6 @@ namespace Soko.UI
                     p.ShowDialog();
                 }
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -778,11 +705,6 @@ namespace Soko.UI
                 dlg2 = new BiracFinansijskeCeline();
                 dlg2.ShowDialog();
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-                return;
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -796,11 +718,6 @@ namespace Soko.UI
             {
                 dlg = new BiracIntervala("Izvestaj o prihodima", true, false, false, dlg2.SelFinCelina);
                 dlg.ShowDialog();
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-                return;
             }
             catch (Exception ex)
             {
@@ -825,10 +742,6 @@ namespace Soko.UI
                     p.ShowDialog();
                 }
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -843,16 +756,25 @@ namespace Soko.UI
 
         private void mnPrihodiMesecni_Click(object sender, EventArgs e)
         {
+            BiracFinansijskeCeline dlg2;
+            try
+            {
+                dlg2 = new BiracFinansijskeCeline();
+                dlg2.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            if (dlg2.DialogResult != DialogResult.OK)
+                return;
+            
             BiracIntervala dlg;
             try
             {
                 dlg = new BiracIntervala("Izvestaj o mesecnim prihodima", false, false, true, null);
                 dlg.ShowDialog();
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-                return;
             }
             catch (Exception ex)
             {
@@ -872,13 +794,10 @@ namespace Soko.UI
                 {
                     CurrentSessionContext.Bind(session);
                     PreviewDialog p = new PreviewDialog();
-                    p.setIzvestaj(new MesecniPrihodiIzvestaj(dlg.OdDatum, dlg.DoDatum));
+                    p.setIzvestaj(new MesecniPrihodiIzvestaj(dlg.OdDatum, dlg.DoDatum,
+                        getGrupeForFinCelina(dlg2.SelFinCelina)));
                     p.ShowDialog();
                 }
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
             }
             catch (Exception ex)
             {
@@ -907,10 +826,6 @@ namespace Soko.UI
                     p.ShowDialog();
                 }
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -930,11 +845,6 @@ namespace Soko.UI
             {
                 dlg = new BiracClana("Izvestaj o uplatama clanova");
                 dlg.ShowDialog();
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-                return;
             }
             catch (Exception ex)
             {
@@ -963,10 +873,6 @@ namespace Soko.UI
                     p.ShowDialog();
                 }
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -979,6 +885,26 @@ namespace Soko.UI
             }
         }
 
+        private List<Grupa> getGrupeForFinCelina(FinansijskaCelina finCelina)
+        {
+            List<Grupa> result;
+            using (ISession session = NHibernateHelper.Instance.OpenSession())
+            using (session.BeginTransaction())
+            {
+                if (finCelina != null)
+                {
+                    result = new List<Grupa>(DAOFactoryFactory.DAOFactory.GetGrupaDAO()
+                        .findForFinansijskaCelina(finCelina));
+                }
+                else
+                {
+                    result = null;
+                    //result = new List<Grupa>(DAOFactoryFactory.DAOFactory.GetGrupaDAO().FindAll());
+                }
+            }
+            return result;
+        }
+
         private void mnAktivniClanoviGrupe_Click(object sender, EventArgs e)
         {
             BiracFinansijskeCeline dlg2;
@@ -986,11 +912,6 @@ namespace Soko.UI
             {
                 dlg2 = new BiracFinansijskeCeline();
                 dlg2.ShowDialog();
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-                return;
             }
             catch (Exception ex)
             {
@@ -1005,11 +926,6 @@ namespace Soko.UI
             {
                 dlg = new BiracIntervala("Aktivni clanovi - grupe", true, false, false, dlg2.SelFinCelina);
                 dlg.ShowDialog();
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-                return;
             }
             catch (Exception ex)
             {
@@ -1034,10 +950,6 @@ namespace Soko.UI
                     p.ShowDialog();
                 }
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -1052,16 +964,25 @@ namespace Soko.UI
 
         private void mnAktivniClanovi_Click(object sender, EventArgs e)
         {
+            BiracFinansijskeCeline dlg2;
+            try
+            {
+                dlg2 = new BiracFinansijskeCeline();
+                dlg2.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            if (dlg2.DialogResult != DialogResult.OK)
+                return;
+
             BiracIntervala dlg;
             try
             {
                 dlg = new BiracIntervala("Aktivni clanovi", false, false, false, null);
                 dlg.ShowDialog();
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-                return;
             }
             catch (Exception ex)
             {
@@ -1082,13 +1003,9 @@ namespace Soko.UI
                     CurrentSessionContext.Bind(session);
                     PreviewDialog p = new PreviewDialog();
                     p.setIzvestaj(new AktivniClanoviIzvestaj(dlg.OdDatum.Date,
-                        dlg.DoDatum.Date));
+                        dlg.DoDatum.Date, getGrupeForFinCelina(dlg2.SelFinCelina)));
                     p.ShowDialog();
                 }
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
             }
             catch (Exception ex)
             {
@@ -1112,11 +1029,6 @@ namespace Soko.UI
             {
                 dlg = new PravljenjeKarticeForm();
                 dlg.ShowDialog();
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-                return;
             }
             catch (Exception ex)
             {
@@ -1449,6 +1361,8 @@ namespace Soko.UI
             }
         }
 
+        // TODO3: Razmisli da li treba biranje fin. celine i za 3 izvestaja vezana za evidenciju na treningu.
+
         private void mnEvidencijaPrisustvaNaTreningu_Click(object sender, EventArgs e)
         {
             BiracIntervala dlg;
@@ -1458,11 +1372,6 @@ namespace Soko.UI
                 dlg.DateTimePickerFrom.CustomFormat = "dd.MM.yyyy HH:mm";
                 dlg.DateTimePickerTo.CustomFormat = "dd.MM.yyyy HH:mm";
                 dlg.ShowDialog();
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-                return;
             }
             catch (Exception ex)
             {
@@ -1487,10 +1396,6 @@ namespace Soko.UI
                     p.ShowDialog();
                 }
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -1509,10 +1414,6 @@ namespace Soko.UI
             {
                 DuplikatiClanovaForm f = new DuplikatiClanovaForm();
                 f.ShowDialog();
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
             }
             catch (Exception ex)
             {
@@ -1552,11 +1453,6 @@ namespace Soko.UI
             {
                 dlg = new BiracIntervala("Nedostajuce uplate", false, false, true, null);
                 dlg.ShowDialog();
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-                return;
             }
             catch (Exception ex)
             {
@@ -1611,10 +1507,6 @@ namespace Soko.UI
                     }
                 }
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -1640,11 +1532,6 @@ namespace Soko.UI
             {
                 dlg = new BiracIntervala("Dolazak na trening - mesecni", false, false, true, null);
                 dlg.ShowDialog();
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-                return;
             }
             catch (Exception ex)
             {
@@ -1698,10 +1585,6 @@ namespace Soko.UI
                         p.ShowDialog();
                     }
                 }
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
             }
             catch (Exception ex)
             {
@@ -1771,10 +1654,6 @@ namespace Soko.UI
                 ClanoviKojiNePlacajuForm f = new ClanoviKojiNePlacajuForm();
                 f.ShowDialog();
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -1826,10 +1705,6 @@ namespace Soko.UI
                 DolazakNaTreningForm d = new DolazakNaTreningForm();
                 d.ShowDialog();
             }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
-            }
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
@@ -1850,10 +1725,6 @@ namespace Soko.UI
             {
                 FinansijskeCelineForm f = new FinansijskeCelineForm();
                 f.ShowDialog();
-            }
-            catch (InfrastructureException ex)
-            {
-                MessageDialogs.showError(ex.Message, this.Text);
             }
             catch (Exception ex)
             {
