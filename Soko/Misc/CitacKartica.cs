@@ -399,6 +399,26 @@ namespace Soko
                         DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO() as DolazakNaTreningDAOImpl;
                     dolazakNaTreningDAO.Session = session;
                     dolazakNaTreningDAO.MakePersistent(dolazak);
+
+                    DolazakNaTreningMesecniDAOImpl dolazakNaTreningMesecniDAO
+                        = DAOFactoryFactory.DAOFactory.GetDolazakNaTreningMesecniDAO() as DolazakNaTreningMesecniDAOImpl;
+                    dolazakNaTreningMesecniDAO.Session = session;
+                    DolazakNaTreningMesecni dolazakMesecni = dolazakNaTreningMesecniDAO.getDolazakNaTrening(dolazak.Clan,
+                        dolazak.DatumDolaska.Value.Year, dolazak.DatumDolaska.Value.Month);
+                    if (dolazakMesecni == null)
+                    {
+                        dolazakMesecni = new DolazakNaTreningMesecni();
+                        dolazakMesecni.Clan = clan;
+                        dolazakMesecni.Godina = vremeOcitavanja.Year;
+                        dolazakMesecni.Mesec = vremeOcitavanja.Month;
+                        dolazakMesecni.BrojDolazaka = 1;
+                    }
+                    else
+                    {
+                        ++dolazakMesecni.BrojDolazaka;
+                    }
+                    dolazakNaTreningMesecniDAO.MakePersistent(dolazakMesecni);
+
                     session.Transaction.Commit();
                 }
             }

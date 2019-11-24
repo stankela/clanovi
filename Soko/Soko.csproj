@@ -84,6 +84,7 @@
   <ItemGroup>
     <Compile Include="Dao\ClanDAO.cs" />
     <Compile Include="Dao\DolazakNaTreningDAO.cs" />
+    <Compile Include="Dao\DolazakNaTreningMesecniDAO.cs" />
     <Compile Include="Dao\FinansijskaCelinaDAO.cs" />
     <Compile Include="Dao\GrupaDAO.cs" />
     <Compile Include="Dao\InstitucijaDAO.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Dao\MesecnaClanarinaDAO.cs" />
     <Compile Include="Dao\NHibernate\ClanDAOImpl.cs" />
     <Compile Include="Dao\NHibernate\DolazakNaTreningDAOImpl.cs" />
+    <Compile Include="Dao\NHibernate\DolazakNaTreningMesecniDAOImpl.cs" />
     <Compile Include="Dao\NHibernate\FinansijskaCelinaDAOImpl.cs" />
     <Compile Include="Dao\NHibernate\GrupaDAOImpl.cs" />
     <Compile Include="Dao\NHibernate\InstitucijaDAOImpl.cs" />
@@ -125,6 +127,7 @@
     <Compile Include="Data\TransactionException.cs" />
     <Compile Include="Domain\Clan.cs" />
     <Compile Include="Domain\DolazakNaTrening.cs" />
+    <Compile Include="Domain\DolazakNaTreningMesecni.cs" />
     <Compile Include="Domain\DomainObject.cs" />
     <Compile Include="Domain\FinansijskaCelina.cs" />
     <Compile Include="Domain\Grupa.cs" />
@@ -580,6 +583,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Data\NHibernate\Mappings\FinansijskaCelina.hbm.xml" />
+    <EmbeddedResource Include="Data\NHibernate\Mappings\DolazakNaTreningMesecni.hbm.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Content Include="TODO.txt" />
     <Content Include="UPUTSTVO_ZA_DVA_PROGRAMA.txt" />
     <EmbeddedResource Include="Data\NHibernate\Mappings\Mesto.hbm.xml">

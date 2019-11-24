@@ -82,3 +82,12 @@ create table dolazak_na_trening (
     grupa_id int references grupe(grupa_id)
 );
 GO
+
+create table dolazak_na_trening_mesecni (
+    dolazak_mesecni_id int identity(1,1) primary key,
+    godina int,
+    mesec int,
+	broj_dolazaka int,
+    clan_id int references clanovi(clan_id)
+);
+GO

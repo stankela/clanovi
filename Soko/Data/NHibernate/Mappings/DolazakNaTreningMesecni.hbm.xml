@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="Soko"
+                   namespace="Soko.Domain">
+
+  <class name="DolazakNaTreningMesecni" table="dolazak_na_trening_mesecni" lazy="true">
+    <id name="Id" column="dolazak_mesecni_id" access="nosetter.camelcase">
+      <generator class="identity" />
+    </id>
+    <property name="Godina" column="godina" />
+    <property name="Mesec" column="mesec" />
+    <property name="BrojDolazaka" column="broj_dolazaka" />
+    <many-to-one name="Clan" class="Clan" column="clan_id" />
+  </class>
+
+</hibernate-mapping>

@@ -210,7 +210,7 @@ namespace Soko.Misc
             }
         }
 
-        public void DodajUplate(List<UplataClanarine> uplate)
+        public void DodajUplate(IList<UplataClanarine> uplate)
         {
             if (Options.Instance.JedinstvenProgram || !Options.Instance.IsProgramZaClanarinu)
             {

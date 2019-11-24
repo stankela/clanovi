@@ -53,5 +53,10 @@ namespace Bilten.Dao.NHibernate
         {
             return new DolazakNaTreningDAOImpl();
         }
+
+        public override DolazakNaTreningMesecniDAO GetDolazakNaTreningMesecniDAO()
+        {
+            return new DolazakNaTreningMesecniDAOImpl();
+        }
     }
 }

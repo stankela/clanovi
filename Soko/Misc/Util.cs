@@ -29,11 +29,16 @@ namespace Soko.Misc
         }
 
         // Pretpostavlja se da lista sadrzi samo dolaske za jednog clana
-        public static void sortByDatumDolaskaDesc(List<DolazakNaTrening> dolasci)
+        public static void sortByGodinaMesecDesc(List<DolazakNaTreningMesecni> dolasci)
         {
-            PropertyDescriptor propDesc =
-                TypeDescriptor.GetProperties(typeof(DolazakNaTrening))["DatumDolaska"];
-            dolasci.Sort(new SortComparer<DolazakNaTrening>(propDesc, ListSortDirection.Descending));
+            PropertyDescriptor propDescGodina =
+                TypeDescriptor.GetProperties(typeof(DolazakNaTreningMesecni))["Godina"];
+            PropertyDescriptor propDescMesec =
+                TypeDescriptor.GetProperties(typeof(DolazakNaTreningMesecni))["Mesec"];
+            PropertyDescriptor[] propDesc = new PropertyDescriptor[2] { propDescGodina, propDescMesec };
+            ListSortDirection[] direction = new ListSortDirection[2] { 
+                ListSortDirection.Descending, ListSortDirection.Descending };
+            dolasci.Sort(new SortComparer<DolazakNaTreningMesecni>(propDesc, direction));
         }
 
         public static string getGrupeFilter(List<Grupa> grupe, string table, string grupaColumn)

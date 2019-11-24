@@ -24,14 +24,14 @@ namespace Soko.UI
         private List<Grupa> grupe;
         private DateTime currentDatumClanarine;
 
-        private List<UplataClanarine> uplateList = new List<UplataClanarine>();
-        public List<UplataClanarine> Uplate
+        private IList<UplataClanarine> uplateList = new List<UplataClanarine>();
+        public IList<UplataClanarine> Uplate
         {
             get { return uplateList; }
         }
 
-        private List<UplataClanarine> prethodneUplate;
-        private List<DolazakNaTrening> neplaceniDolasci;
+        private IList<UplataClanarine> prethodneUplate;
+        private List<DolazakNaTreningMesecni> neplaceniDolasciMesecni;
         
         public UplataClanarineDialog(Nullable<int> entityId)
         {
@@ -437,7 +437,7 @@ namespace Soko.UI
             txtBrojClana.Text = broj.ToString();
             findPrethodneUplateAndNeplaceniDolasci(SelectedClan);
             updateGrupaFromUplate(prethodneUplate);
-            showPrethodneUplate(prethodneUplate, neplaceniDolasci);
+            showPrethodneUplate(prethodneUplate, neplaceniDolasciMesecni.Count > 0);
         }
 
         private void findPrethodneUplateAndNeplaceniDolasci(Clan SelectedClan)
@@ -446,12 +446,10 @@ namespace Soko.UI
 
             DateTime from = Options.Instance.NedostajuceUplateStartDate;
             DateTime to = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1, 0, 0, 0).AddSeconds(-1);
-            List<DolazakNaTrening> dolasci = getDolasci(SelectedClan, from, to);
-
-            neplaceniDolasci = findNeplaceniDolasci(dolasci, from, to, prethodneUplate);
+            neplaceniDolasciMesecni = findNeplaceniDolasciMesecni(from, to, prethodneUplate);
         }
 
-        private void updateGrupaFromUplate(List<UplataClanarine> uplate)
+        private void updateGrupaFromUplate(IList<UplataClanarine> uplate)
         {
             if (uplate != null && uplate.Count > 0)
             {
@@ -500,23 +498,23 @@ namespace Soko.UI
             {
                 findPrethodneUplateAndNeplaceniDolasci(SelectedClan);
                 updateGrupaFromUplate(prethodneUplate);
-                showPrethodneUplate(prethodneUplate, neplaceniDolasci);
+                showPrethodneUplate(prethodneUplate, neplaceniDolasciMesecni.Count > 0);
             }
         }
 
         private void btnPrethodneUplate_Click(object sender, EventArgs e)
         {
             findPrethodneUplateAndNeplaceniDolasci(SelectedClan);
-            showPrethodneUplate(prethodneUplate, neplaceniDolasci);
+            showPrethodneUplate(prethodneUplate, neplaceniDolasciMesecni.Count > 0);
             if (txtSifraGrupe.Text == String.Empty || SelectedGrupa == null)
             {
                 updateGrupaFromUplate(prethodneUplate);
             }
         }
 
-        private void showPrethodneUplate(List<UplataClanarine> uplate, List<DolazakNaTrening> neplaceniDolasci)
+        private void showPrethodneUplate(IList<UplataClanarine> uplate, bool hasNeplaceniDolasci)
         {
-            if (neplaceniDolasci.Count > 0)
+            if (hasNeplaceniDolasci)
             {
                 btnNedostajuceUplate.ForeColor = Color.Red;
             }
@@ -700,20 +698,21 @@ namespace Soko.UI
             }
         }
 
-        private List<DolazakNaTrening> getDolasci(Clan c, DateTime from, DateTime to)
+        private IList<DolazakNaTreningMesecni> getDolasciMesecni(Clan c, DateTime from, DateTime to)
         {
             if (c == null || c.Broj == CitacKartica.TEST_KARTICA_BROJ)
-                return new List<DolazakNaTrening>();
+                return new List<DolazakNaTreningMesecni>();
 
-            List<DolazakNaTrening> result = null;
+            IList<DolazakNaTreningMesecni> result = null;
             try
             {
                 using (ISession session = NHibernateHelper.Instance.OpenSession())
                 using (session.BeginTransaction())
                 {
                     CurrentSessionContext.Bind(session);
-                    DolazakNaTreningDAO dolazakNaTreningDAO = DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO();
-                    result = new List<DolazakNaTrening>(dolazakNaTreningDAO.getDolazakNaTrening(c, from, to));
+                    DolazakNaTreningMesecniDAO dolazakNaTreningMesecniDAO
+                        = DAOFactoryFactory.DAOFactory.GetDolazakNaTreningMesecniDAO();
+                    result = dolazakNaTreningMesecniDAO.getDolazakNaTrening(c, from.Year, from.Month, to.Year, to.Month);
                 }
             }
             catch (Exception ex)
@@ -725,12 +724,12 @@ namespace Soko.UI
                 CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
             if (result == null)
-                result = new List<DolazakNaTrening>();
+                result = new List<DolazakNaTreningMesecni>();
             return result;
         }
 
-        List<DolazakNaTrening> findNeplaceniDolasci(List<DolazakNaTrening> dolasci, DateTime from, DateTime to,
-            List<UplataClanarine> uplate)
+        List<DolazakNaTreningMesecni> findNeplaceniDolasciMesecni(DateTime from, DateTime to,
+            IList<UplataClanarine> uplate)
         {
             ISet uplateSet = new HashedSet();
             foreach (UplataClanarine u in uplate)
@@ -741,31 +740,32 @@ namespace Soko.UI
                 }
             }
 
-            List<DolazakNaTrening> result = new List<DolazakNaTrening>();
-            foreach (DolazakNaTrening d in dolasci)
+            List<DolazakNaTreningMesecni> result = new List<DolazakNaTreningMesecni>();
+            IList<DolazakNaTreningMesecni> dolasci = getDolasciMesecni(SelectedClan, from, to);
+            foreach (DolazakNaTreningMesecni d in dolasci)
             {
-                if (!uplateSet.Contains(new ClanGodinaMesec(d.Clan.Id, d.DatumDolaska.Value.Year, d.DatumDolaska.Value.Month)))
+                if (!uplateSet.Contains(new ClanGodinaMesec(d.Clan.Id, d.Godina, d.Mesec)))
                 {
                     result.Add(d);
-                }       
+                }
             }
             return result;
         }
 
         private void btnNedostajuceUplate_Click(object sender, EventArgs e)
         {
-            showNeplaceniDolasci(neplaceniDolasci);
+            showNeplaceniDolasci();
         }
 
-        private void showNeplaceniDolasci(List<DolazakNaTrening> neplaceniDolasci)
+        private void showNeplaceniDolasci()
         {
-            if (neplaceniDolasci == null || neplaceniDolasci.Count == 0)
+            if (neplaceniDolasciMesecni == null || neplaceniDolasciMesecni.Count == 0)
             {
                 listViewPrethodneUplate.Items.Clear();
                 return;
             }
 
-            List<string[]> items = getNeplaceniDolasciGroupByMonth(neplaceniDolasci);
+            List<string[]> items = getNeplaceniDolasciGroupByMonth();
 
             ListViewItem[] listViewItems = new ListViewItem[items.Count];
             for (int j = 0; j < items.Count; ++j)
@@ -777,52 +777,17 @@ namespace Soko.UI
             listViewPrethodneUplate.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
-        private List<string[]> getNeplaceniDolasciGroupByMonth(List<DolazakNaTrening> neplaceniDolasci)
+        private List<string[]> getNeplaceniDolasciGroupByMonth()
         {
-            Util.sortByDatumDolaskaDesc(neplaceniDolasci);
+            Util.sortByGodinaMesecDesc(neplaceniDolasciMesecni);
             List<string[]> items = new List<string[]>();
-            int i = 0;
-            int prevGod = -1;
-            int prevMes = -1;
-            int prevDan = -1;
-            int brojDana = 0;
-            while (i < neplaceniDolasci.Count)
+            foreach (DolazakNaTreningMesecni d in neplaceniDolasciMesecni)
             {
-                int god = neplaceniDolasci[i].DatumDolaska.Value.Year;
-                int mes = neplaceniDolasci[i].DatumDolaska.Value.Month;
-                int dan = neplaceniDolasci[i].DatumDolaska.Value.Day;
-                if (god == prevGod && mes == prevMes)
-                {
-                    if (dan != prevDan)
-                    {
-                        ++brojDana;
-                        prevDan = dan;
-                    }
-                }
-                else
-                {
-                    if (prevGod != -1)
-                    {
-                        addRow(prevGod, prevMes, brojDana, items);
-                    }
-                    brojDana = 1;
-                    prevGod = god;
-                    prevMes = mes;
-                    prevDan = dan;
-                }
-                ++i;
+                DateTime datum = new DateTime(d.Godina, d.Mesec, 1);
+                string brojDanaStr = d.BrojDolazaka.ToString() + (d.BrojDolazaka == 1 ? " trening" : " treninga");
+                items.Add(new string[] { datum.ToString("MMM"), datum.ToString("yyyy"), brojDanaStr });
             }
-            // Add last row
-            addRow(prevGod, prevMes, brojDana, items);
-
             return items;
-        }
-
-        private void addRow(int god, int mes, int brojDana, List<string[]> items)
-        {
-            DateTime datum = new DateTime(god, mes, 1);
-            string brojDanaStr = brojDana.ToString() + (brojDana == 1 ? " trening" : " treninga");
-            items.Add(new string[] { datum.ToString("MMM"), datum.ToString("yyyy"), brojDanaStr });
         }
     }
 }
