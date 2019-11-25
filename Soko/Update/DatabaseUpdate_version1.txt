@@ -1,0 +1,11 @@
+-- 23-Nov-2019 (VERZIJA = 1)
+
+create table verzija_baze (
+	verzija_id int primary key,
+	broj_verzije int
+);
+GO
+INSERT INTO verzija_baze (verzija_id, broj_verzije) VALUES (1, 0);
+GO
+UPDATE verzija_baze SET broj_verzije = broj_verzije + 1 WHERE verzija_id = 1;
+GO

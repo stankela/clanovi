@@ -12,6 +12,8 @@ namespace Soko
 {
     static class Program
     {
+        public static int VERZIJA_PROGRAMA = 2;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -23,7 +25,7 @@ namespace Soko
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 
             // Kreiranje prazne baze
-            //new SqlCeUtilities().CreateDatabase(@"..\..\clanovi_podaci2.sdf", "sdv");
+            //new SqlCeUtilities().CreateDatabase(ConfigurationParameters.DatabaseFile, ConfigurationParameters.Password);
 
 
             Application.EnableVisualStyles();

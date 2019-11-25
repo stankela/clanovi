@@ -1,0 +1,22 @@
+-- 24-Nov-2019 (VERZIJA = 2)
+
+create table finansijske_celine (
+    finansijska_celina_id int identity(1,1) primary key,
+    naziv nvarchar(50)
+);
+GO
+ALTER TABLE grupe ADD COLUMN finansijska_celina_id int references finansijske_celine(finansijska_celina_id);
+GO
+INSERT INTO finansijske_celine(naziv) VALUES ('SOKOLSKO DRUŠTVO');
+GO
+UPDATE grupe SET finansijska_celina_id = 1;
+GO
+
+create table dolazak_na_trening_mesecni (
+    dolazak_mesecni_id int identity(1,1) primary key,
+    godina int,
+    mesec int,
+	broj_dolazaka int,
+    clan_id int references clanovi(clan_id)
+);
+GO

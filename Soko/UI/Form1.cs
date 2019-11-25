@@ -1097,11 +1097,26 @@ namespace Soko.UI
             // This creates singleton instance of NHibernateHelper and builds session factory
             NHibernateHelper nh = NHibernateHelper.Instance;
 
+            // TODO3: Probaj da ucitavanje opcija i apdejt baze prebacis u klasu Program.
             loadOptions();
-
             if (Options.Instance.JedinstvenProgram || Options.Instance.IsProgramZaClanarinu)
-            { 
-                UpdateDolazakNaTreningMesecni();
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                Cursor.Show();
+                try
+                {
+                    new VersionUpdater().update();
+                }
+                catch (Exception ex)
+                {
+                    MessageDialogs.showError(ex.Message, this.Text);
+                    // TODO3: Prekini program.
+                }
+                finally
+                {
+                    Cursor.Hide();
+                    Cursor.Current = Cursors.Arrow;
+                }
             }
 
             if (Options.Instance.JedinstvenProgram)
@@ -1157,65 +1172,6 @@ namespace Soko.UI
                 initCitacKarticaDictionary();
                 pokreniCitacKartica();
                 pokreniPipeClientThread();
-            }
-        }
-
-        // TODO3: Izbrisi ovaj metod nakon sto je apdejtovano.
-        private void UpdateDolazakNaTreningMesecni()
-        {
-            Cursor.Current = Cursors.WaitCursor;
-            Cursor.Show();
-            try
-            {
-                using (ISession session = NHibernateHelper.Instance.OpenSession())
-                using (session.BeginTransaction())
-                {
-                    CurrentSessionContext.Bind(session);
-                    DolazakNaTreningMesecniDAO dolazakNaTreningMesecniDAO
-                        = DAOFactoryFactory.DAOFactory.GetDolazakNaTreningMesecniDAO();
-                    List<DolazakNaTreningMesecni> dolasciMesecni
-                        = new List<DolazakNaTreningMesecni>(dolazakNaTreningMesecniDAO.FindAll());
-                    if (dolasciMesecni.Count > 0)
-                        return;
-
-                    DolazakNaTreningDAO dolazakNaTreningDAO = DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO();
-                    IList<DolazakNaTrening> dolasci = dolazakNaTreningDAO.FindAll();
-                    IDictionary<ClanGodinaMesec, DolazakNaTreningMesecni> dolasciMap
-                        = new Dictionary<ClanGodinaMesec, DolazakNaTreningMesecni>();
-                    foreach (DolazakNaTrening d in dolasci)
-                    {
-                        ClanGodinaMesec key = new ClanGodinaMesec(d.Clan.Id, d.DatumDolaska.Value.Year,
-                            d.DatumDolaska.Value.Month);
-                        if (!dolasciMap.ContainsKey(key))
-                        {
-                            DolazakNaTreningMesecni dolazak = new DolazakNaTreningMesecni();
-                            dolazak.Clan = d.Clan;
-                            dolazak.Godina = d.DatumDolaska.Value.Year;
-                            dolazak.Mesec = d.DatumDolaska.Value.Month;
-                            dolazak.BrojDolazaka = 1;
-                            dolasciMap.Add(key, dolazak);
-                        }
-                        else
-                        {
-                            ++(dolasciMap[key].BrojDolazaka);
-                        }
-                    }
-                    foreach (KeyValuePair<ClanGodinaMesec, DolazakNaTreningMesecni> entry in dolasciMap)
-                    {
-                        dolazakNaTreningMesecniDAO.MakePersistent(entry.Value);
-                    }
-                    session.Transaction.Commit();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageDialogs.showMessage(ex.Message, "UpdateDolazakNaTreningMesecni");
-            }
-            finally
-            {
-                Cursor.Hide();
-                Cursor.Current = Cursors.Arrow;
-                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
         }
 

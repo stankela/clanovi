@@ -1,3 +1,5 @@
+Novije verzije nalaze se u posebnim fajlovima DatabaseUpdate_version{BROJ_VERZIJE}.txt
+
 29-AVG-2015
 
 ALTER TABLE clanovi ADD COLUMN broj_kartice int;
@@ -26,23 +28,3 @@ UPDATE clanovi SET ne_placa_clanarinu = 0;
 
 ALTER TABLE grupe ADD COLUMN ima_godisnju_clanarinu bit;
 UPDATE grupe SET ima_godisnju_clanarinu = 0;
-
-30-Mar-2019
-
-create table finansijske_celine (
-    finansijska_celina_id int identity(1,1) primary key,
-    naziv nvarchar(50)
-);
-ALTER TABLE grupe ADD COLUMN finansijska_celina_id int references finansijske_celine(finansijska_celina_id);
-INSERT INTO finansijske_celine(naziv) VALUES ('SOKOLSKO DRUŠTVO');
-UPDATE grupe SET finansijska_celina_id = 1;
-
-23-Nov-2019
-
-create table dolazak_na_trening_mesecni (
-    dolazak_mesecni_id int identity(1,1) primary key,
-    godina int,
-    mesec int,
-	broj_dolazaka int,
-    clan_id int references clanovi(clan_id)
-);
