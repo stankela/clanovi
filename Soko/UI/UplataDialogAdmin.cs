@@ -13,6 +13,8 @@ namespace Soko.UI
 {
     public partial class UplataDialogAdmin : EntityDetailForm
     {
+        private List<Grupa> grupe;
+
         public UplataDialogAdmin(Nullable<int> entityId)
         {
             InitializeComponent();
@@ -26,27 +28,50 @@ namespace Soko.UI
             return DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO().FindById(id);
         }
 
+        protected override void loadData()
+        {
+            grupe = loadGrupe();
+        }
+
+        private List<Grupa> loadGrupe()
+        {
+            List<Grupa> result = new List<Grupa>(DAOFactoryFactory.DAOFactory.GetGrupaDAO().FindAll());
+
+            PropertyDescriptor propDesc = TypeDescriptor.GetProperties(typeof(Grupa))["Naziv"];
+            result.Sort(new SortComparer<Grupa>(propDesc, ListSortDirection.Ascending));
+
+            return result;
+        }
+
+        private void setGrupe(List<Grupa> grupe)
+        {
+            cmbGrupa.DataSource = grupe;
+            cmbGrupa.DisplayMember = "SifraNaziv";
+        }
+
+        private Grupa SelectedGrupa
+        {
+            get { return cmbGrupa.SelectedItem as Grupa; }
+            set { cmbGrupa.SelectedItem = value; }
+        }
+
         protected override void initUI()
         {
             base.initUI();
             this.Text = "Promeni uplatu";
-
-            txtClan.ReadOnly = true;
-            txtIznos.ReadOnly = true;
-            txtDatumUplate.ReadOnly = true;
-            txtGrupa.ReadOnly = true;
-            txtNapomena.ReadOnly = true;
+            cmbGrupa.DropDownStyle = ComboBoxStyle.DropDownList;
+            setGrupe(grupe);
+            SelectedGrupa = null;
         }
 
         protected override void updateUIFromEntity(DomainObject entity)
         {
             UplataClanarine uplata = (UplataClanarine)entity;
-            txtClan.Text = uplata.PrezimeImeBrojDatumRodj;
-            txtIznos.Text = uplata.IznosDin;
-            txtDatumUplate.Text = uplata.DatumVremeUplate.Value.ToString("dd.MM.yyyy HH:mm:ss");
-            txtGrupa.Text = uplata.SifraGrupeCrtaNazivGrupe;
-            txtZaMesec.Text = uplata.VaziOd.Value.ToString("dd.MM.yyyy");
-            txtNapomena.Text = uplata.Napomena;
+            SelectedGrupa = uplata.Grupa;
+            lblSummary.Text = uplata.PrezimeImeBrojDatumRodj
+                + "\n" + uplata.SifraGrupeCrtaNazivGrupe
+                + "\n" + uplata.VaziOd.Value.ToString("dd.MM.yyyy")
+                + "\n" + uplata.IznosDin;
         }
 
         private void UplataDialogAdmin_Shown(object sender, EventArgs e)
@@ -66,15 +91,9 @@ namespace Soko.UI
 
         protected override void requiredFieldsAndFormatValidation(Notification notification)
         {
-            DateTime dummy;
-            if (txtZaMesec.Text.Trim() == String.Empty)
+            if (SelectedGrupa == null)
             {
-                notification.RegisterMessage("ZaMesec", "Unesite od kada vazi uplata.");
-            }
-            else if (!DateTime.TryParse(txtZaMesec.Text, out dummy))
-            {
-                notification.RegisterMessage(
-                    "ZaMesec", "Nepravilan datum. Datum se unosi u formatu dd-mm-gggg ili dd.mm.gggg");
+                notification.RegisterMessage("Grupa", "Grupa je obavezna.");
             }
         }
 
@@ -82,8 +101,8 @@ namespace Soko.UI
         {
             switch (propertyName)
             {
-                case "ZaMesec":
-                    txtZaMesec.Focus();
+                case "Grupa":
+                    cmbGrupa.Focus();
                     break;
 
                 default:
@@ -94,7 +113,7 @@ namespace Soko.UI
         protected override void updateEntityFromUI(DomainObject entity)
         {
             UplataClanarine uplata = (UplataClanarine)entity;
-            uplata.VaziOd = DateTime.Parse(txtZaMesec.Text);
+            uplata.Grupa = SelectedGrupa;
         }
 
         protected override void updateEntity(DomainObject entity)
@@ -102,5 +121,31 @@ namespace Soko.UI
             DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO().MakePersistent((UplataClanarine)entity);
         }
 
+        private void cmbGrupa_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (SelectedGrupa != null)
+                txtSifraGrupe.Text = SelectedGrupa.Sifra.Value;
+            else
+                txtSifraGrupe.Text = String.Empty;
+        }
+
+        private void txtSifraGrupe_TextChanged(object sender, System.EventArgs e)
+        {
+            SifraGrupe sifra;
+            if (SifraGrupe.TryParse(txtSifraGrupe.Text.Trim(), out sifra))
+                SelectedGrupa = findGrupa(sifra);
+            else
+                SelectedGrupa = null;
+        }
+
+        private Grupa findGrupa(SifraGrupe sifra)
+        {
+            foreach (Grupa g in grupe)
+            {
+                if (g.Sifra == sifra)
+                    return g;
+            }
+            return null;
+        }
     }
 }

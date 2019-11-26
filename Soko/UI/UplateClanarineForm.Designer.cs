@@ -139,7 +139,7 @@ namespace Soko.UI
             // btnZatvori
             // 
             this.btnZatvori.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnZatvori.Location = new System.Drawing.Point(120, 328);
+            this.btnZatvori.Location = new System.Drawing.Point(583, 328);
             this.btnZatvori.Name = "btnZatvori";
             this.btnZatvori.Size = new System.Drawing.Size(75, 23);
             this.btnZatvori.TabIndex = 5;
@@ -161,11 +161,11 @@ namespace Soko.UI
             // btnPromeni
             // 
             this.btnPromeni.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPromeni.Location = new System.Drawing.Point(579, 328);
+            this.btnPromeni.Location = new System.Drawing.Point(130, 328);
             this.btnPromeni.Name = "btnPromeni";
-            this.btnPromeni.Size = new System.Drawing.Size(75, 23);
+            this.btnPromeni.Size = new System.Drawing.Size(100, 23);
             this.btnPromeni.TabIndex = 7;
-            this.btnPromeni.Text = "Promeni";
+            this.btnPromeni.Text = "Promeni grupu";
             this.btnPromeni.UseVisualStyleBackColor = true;
             this.btnPromeni.Click += new System.EventHandler(this.btnPromeni_Click);
             // 
