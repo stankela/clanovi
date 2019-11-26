@@ -13,6 +13,7 @@ using System.Data.SqlServerCe;
 using System.IO;
 using System.Windows.Forms;
 using Bilten.Dao.NHibernate;
+using Iesi.Collections;
 
 public class VersionUpdater
 {
@@ -31,6 +32,7 @@ public class VersionUpdater
         if (verzijaBaze > Program.VERZIJA_PROGRAMA)
             throw new Exception("Greska u programu. Verzija baze je veca od verzije programa.");
 
+        int staraVerzijaBaze = verzijaBaze;
         bool converted = false;
 
         if (verzijaBaze == -1 /*baza ne postoji*/)
@@ -52,9 +54,18 @@ public class VersionUpdater
             converted = true;
         }
 
+        if (verzijaBaze == 2 && Program.VERZIJA_PROGRAMA > 2)
+        {
+            SqlCeUtilities.updateDatabaseVersionNumber(3);
+            UpdateDolazakNaTreningMesecniJedanDnevniTrening();
+            verzijaBaze = 3;
+            converted = true;
+        }
+
         if (converted)
         {
-            string msg = String.Format("Baza podataka je konvertovana u verziju {0}.", verzijaBaze);
+            string msg = String.Format("Baza podataka je konvertovana iz verzije {0} u verziju {1}.", staraVerzijaBaze,
+                verzijaBaze);
             MessageBox.Show(msg, "Bilten");
 
             if (File.Exists("NHibernateConfig"))
@@ -119,4 +130,99 @@ public class VersionUpdater
         }
     }
 
+    private IDictionary<ClanGodinaMesec, ISet> getDolasciMapJedanDnevniTrening()
+    {
+        ISession session = null;
+        try
+        {
+            using (session = NHibernateHelper.Instance.OpenSession())
+            using (session.BeginTransaction())
+            {
+                CurrentSessionContext.Bind(session);
+                IDictionary<ClanGodinaMesec, ISet> dolasciMap = new Dictionary<ClanGodinaMesec, ISet>();
+                foreach (DolazakNaTrening d in DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO().FindAll())
+                {
+                    ClanGodinaMesec key = new ClanGodinaMesec(d.Clan.Id, d.DatumDolaska.Value.Year,
+                        d.DatumDolaska.Value.Month);
+                    if (!dolasciMap.ContainsKey(key))
+                    {
+                        ISet daniSet = new HashedSet();
+                        daniSet.Add(d.DatumDolaska.Value.Day);
+                        dolasciMap.Add(key, daniSet);
+                    }
+                    else
+                    {
+                        ISet daniSet = dolasciMap[key];
+                        if (!daniSet.Contains(d.DatumDolaska.Value.Day))
+                        {
+                            daniSet.Add(d.DatumDolaska.Value.Day);
+                        }
+                    }
+                }
+                return dolasciMap;
+            }
+        }
+        catch (Exception ex)
+        {
+            if (session != null && session.Transaction != null && session.Transaction.IsActive)
+                session.Transaction.Rollback();
+            throw new InfrastructureException(ex.Message, ex);
+        }
+        finally
+        {
+            CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
+        }
+    }
+
+    private void UpdateDolazakNaTreningMesecniJedanDnevniTrening()
+    {
+        IDictionary<ClanGodinaMesec, ISet> dolasciMap = getDolasciMapJedanDnevniTrening();
+        ISession session = null;
+        try
+        {
+            using (session = NHibernateHelper.Instance.OpenSession())
+            using (session.BeginTransaction())
+            {
+                CurrentSessionContext.Bind(session);
+                DolazakNaTreningMesecniDAO dolazakNaTreningMesecniDAO
+                    = DAOFactoryFactory.DAOFactory.GetDolazakNaTreningMesecniDAO();
+
+                IDictionary<ClanGodinaMesec, DolazakNaTreningMesecni> dolasciMesecniMap
+                    = new Dictionary<ClanGodinaMesec, DolazakNaTreningMesecni>();
+                foreach (DolazakNaTreningMesecni d in dolazakNaTreningMesecniDAO.FindAll())
+                {
+                    ClanGodinaMesec key = new ClanGodinaMesec(d.Clan.Id, d.Godina, d.Mesec);
+                    if (!dolasciMesecniMap.ContainsKey(key))
+                    {
+                        dolasciMesecniMap.Add(key, d);
+                    }
+                    else
+                    {
+                        throw new Exception("Greska prilikom azuriranja programa");
+                    }
+                }
+                foreach (KeyValuePair<ClanGodinaMesec, ISet> entry in dolasciMap)
+                {
+                    if (!dolasciMesecniMap.ContainsKey(entry.Key))
+                    {
+                        throw new Exception("Greska prilikom azuriranja programa");
+                    }
+                    DolazakNaTreningMesecni dolazakMesecni = dolasciMesecniMap[entry.Key];
+                    dolazakMesecni.BrojDolazaka = entry.Value.Count;
+                    dolazakNaTreningMesecniDAO.MakePersistent(dolazakMesecni);
+                }
+                session.Transaction.Commit();
+            }
+        }
+        catch (Exception ex)
+        {
+            if (session != null && session.Transaction != null && session.Transaction.IsActive)
+                session.Transaction.Rollback();
+            throw new InfrastructureException(ex.Message, ex);
+        }
+        finally
+        {
+            CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
+        }
+    }
 }

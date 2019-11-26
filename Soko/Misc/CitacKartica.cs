@@ -400,25 +400,27 @@ namespace Soko
                     dolazakNaTreningDAO.Session = session;
                     dolazakNaTreningDAO.MakePersistent(dolazak);
 
-                    DolazakNaTreningMesecniDAOImpl dolazakNaTreningMesecniDAO
-                        = DAOFactoryFactory.DAOFactory.GetDolazakNaTreningMesecniDAO() as DolazakNaTreningMesecniDAOImpl;
-                    dolazakNaTreningMesecniDAO.Session = session;
-                    DolazakNaTreningMesecni dolazakMesecni = dolazakNaTreningMesecniDAO.getDolazakNaTrening(dolazak.Clan,
-                        dolazak.DatumDolaska.Value.Year, dolazak.DatumDolaska.Value.Month);
-                    if (dolazakMesecni == null)
+                    if (CitacKarticaDictionary.Instance.DanasnjaOcitavanja.Add(clan.Id))
                     {
-                        dolazakMesecni = new DolazakNaTreningMesecni();
-                        dolazakMesecni.Clan = clan;
-                        dolazakMesecni.Godina = vremeOcitavanja.Year;
-                        dolazakMesecni.Mesec = vremeOcitavanja.Month;
-                        dolazakMesecni.BrojDolazaka = 1;
+                        DolazakNaTreningMesecniDAOImpl dolazakNaTreningMesecniDAO
+                            = DAOFactoryFactory.DAOFactory.GetDolazakNaTreningMesecniDAO() as DolazakNaTreningMesecniDAOImpl;
+                        dolazakNaTreningMesecniDAO.Session = session;
+                        DolazakNaTreningMesecni dolazakMesecni = dolazakNaTreningMesecniDAO.getDolazakNaTrening(dolazak.Clan,
+                            dolazak.DatumDolaska.Value.Year, dolazak.DatumDolaska.Value.Month);
+                        if (dolazakMesecni == null)
+                        {
+                            dolazakMesecni = new DolazakNaTreningMesecni();
+                            dolazakMesecni.Clan = clan;
+                            dolazakMesecni.Godina = vremeOcitavanja.Year;
+                            dolazakMesecni.Mesec = vremeOcitavanja.Month;
+                            dolazakMesecni.BrojDolazaka = 1;
+                        }
+                        else
+                        {
+                            ++dolazakMesecni.BrojDolazaka;
+                        }
+                        dolazakNaTreningMesecniDAO.MakePersistent(dolazakMesecni);
                     }
-                    else
-                    {
-                        ++dolazakMesecni.BrojDolazaka;
-                    }
-                    dolazakNaTreningMesecniDAO.MakePersistent(dolazakMesecni);
-
                     session.Transaction.Commit();
                 }
             }

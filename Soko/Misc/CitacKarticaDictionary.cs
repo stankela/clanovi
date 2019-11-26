@@ -1,4 +1,5 @@
 ﻿using Bilten.Dao;
+using Iesi.Collections;
 using NHibernate;
 using NHibernate.Context;
 using Soko.Data;
@@ -25,6 +26,12 @@ namespace Soko.Misc
         private IDictionary<int, List<UplataClanarine>> prethodneUplate;
         private IDictionary<int, UplataClanarine> uplateGodisnjaClanarina;
         private IDictionary<int, UplataClanarine> uplateGodisnjaClanarinaPrethGod;
+        private ISet danasnjaOcitavanja;
+
+        public ISet DanasnjaOcitavanja
+        {
+            get { return danasnjaOcitavanja; }
+        }
 
         public const string DODAJ_CLANA = "DodajClana";
         public const string DODAJ_UPLATE = "DodajUplate";
@@ -48,6 +55,7 @@ namespace Soko.Misc
             prethodneUplate = new Dictionary<int, List<UplataClanarine>>();
             uplateGodisnjaClanarina = new Dictionary<int, UplataClanarine>();
             uplateGodisnjaClanarinaPrethGod = new Dictionary<int, UplataClanarine>();
+            danasnjaOcitavanja = new HashedSet();
         }
 
         public void Init()
@@ -147,6 +155,18 @@ namespace Soko.Misc
                                 uplateGodisnjaClanarinaPrethGod.Add(u.Clan.Id, u);
                             }
                         }
+                    }
+
+                    DateTime pocetakDana = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 0, 0, 0);
+                    DateTime sutra = pocetakDana.AddDays(1);
+                    DateTime krajDana = new DateTime(sutra.Year, sutra.Month, sutra.Day, 0, 0, 0).AddSeconds(-1);
+                    DolazakNaTreningDAO dolazakDAO = DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO();
+                    IList<DolazakNaTrening> danasnjiDolasci =
+                        DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO().getDolazakNaTrening(pocetakDana, krajDana);
+                    danasnjaOcitavanja = new HashedSet();
+                    foreach (DolazakNaTrening d in danasnjiDolasci)
+                    {
+                        danasnjaOcitavanja.Add(d.Clan.Id);
                     }
                 }
             }
