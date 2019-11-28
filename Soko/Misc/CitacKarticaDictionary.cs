@@ -23,13 +23,6 @@ namespace Soko.Misc
 
         private IDictionary<int, Clan> clanoviSaKarticom;
         private IDictionary<int, List<UplataClanarine>> ovomesecneUplate;
-        
-        // Uplate za sledeci mesec su potrebne zbog sledece situacije: Dolazi potpuno novi clan (prvi put se upisuje
-        // u sokolsko drustvo), i placa clanarinu za sledeci mesec (da pocinje od sledeceg meseca da vezba). Tada je
-        // jedina uplate koja postoji uplata za sledeci mesec (i treba da svetli zeleno, i da se grupa za tu uplatu
-        // prikazije na ekranu, i da se ta grupa veze za DolazakNaTrening).
-        private IDictionary<int, List<UplataClanarine>> sledeciMesecUplate;
-
         private IDictionary<int, List<UplataClanarine>> prethodneUplate;
         private IDictionary<int, UplataClanarine> uplateGodisnjaClanarina;
         private IDictionary<int, UplataClanarine> uplateGodisnjaClanarinaPrethGod;
@@ -59,7 +52,6 @@ namespace Soko.Misc
         {
             clanoviSaKarticom = new Dictionary<int, Clan>();
             ovomesecneUplate = new Dictionary<int, List<UplataClanarine>>();
-            sledeciMesecUplate = new Dictionary<int, List<UplataClanarine>>();
             prethodneUplate = new Dictionary<int, List<UplataClanarine>>();
             uplateGodisnjaClanarina = new Dictionary<int, UplataClanarine>();
             uplateGodisnjaClanarinaPrethGod = new Dictionary<int, UplataClanarine>();
@@ -93,14 +85,19 @@ namespace Soko.Misc
                     }
 
                     ovomesecneUplate = new Dictionary<int, List<UplataClanarine>>();
-                    sledeciMesecUplate = new Dictionary<int, List<UplataClanarine>>();
                     prethodneUplate = new Dictionary<int, List<UplataClanarine>>();
                     DateTime now = DateTime.Now;
                     DateTime from = now.AddMonths(-6);
-                    DateTime to = now;
-                    DateTime sledeciMesec = DateTime.Now.AddMonths(1);
+
+                    // Kao krajnji datum za uplate se uzima sledeci mesec zbog sledece situacije: Dolazi potpuno novi clan
+                    // (prvi put se upisuje u sokolsko drustvo), i placa clanarinu za sledeci mesec (da pocinje od
+                    // sledeceg meseca da vezba). Tada je jedina uplate koja postoji uplata za sledeci mesec (i treba
+                    // da svetli zeleno, i da se grupa za tu uplatu prikazije na ekranu, i da se ta grupa veze za
+                    // DolazakNaTrening).
+                    DateTime sledeciMesec = now.AddMonths(1);
+
                     UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
-                    foreach (UplataClanarine u in uplataClanarineDAO.findUplateVaziOd(from, to))
+                    foreach (UplataClanarine u in uplataClanarineDAO.findUplateVaziOd(from, sledeciMesec))
                     {
                         foreach (Grupa g in godisnjaClanarinaGrupe)
                         {
@@ -122,21 +119,11 @@ namespace Soko.Misc
                                 ovomesecneUplate.Add(u.Clan.Id, uplate);
                             }
                         }
-                        else if (u.VaziOd.Value.Month == sledeciMesec.Month && u.VaziOd.Value.Year == sledeciMesec.Year)
-                        {
-                            if (sledeciMesecUplate.ContainsKey(u.Clan.Id))
-                            {
-                                sledeciMesecUplate[u.Clan.Id].Add(u);
-                            }
-                            else
-                            {
-                                List<UplataClanarine> uplate = new List<UplataClanarine>();
-                                uplate.Add(u);
-                                sledeciMesecUplate.Add(u.Clan.Id, uplate);
-                            }
-                        }
                         else
                         {
+                            // Ako ne postoji uplata za ovaj mesec ali postoji uplata za sledeci mesec, ta uplata ce biti
+                            // stavljena u prethodneUplate. Ta uplata ce biti izabrana u metodu findUplata zato sto
+                            // findUplata sortira prethodne uplate opadajuce po datumu vazenja.
                             if (prethodneUplate.ContainsKey(u.Clan.Id))
                             {
                                 prethodneUplate[u.Clan.Id].Add(u);
@@ -229,14 +216,11 @@ namespace Soko.Misc
             {
                 return ovomesecneUplate[clan.Id][0];
             }
-            if (sledeciMesecUplate.ContainsKey(clan.Id))
-            {
-                return sledeciMesecUplate[clan.Id][0];
-            }
             if (prethodneUplate.ContainsKey(clan.Id))
             {
                 List<UplataClanarine> uplate = prethodneUplate[clan.Id];
                 Util.sortByVaziOdDesc(uplate);
+                // Ako ne postoji uplata za ovaj mesec ali postoji uplata za sledeci mesec, ta uplata ce biti u uplate[0].
                 return uplate[0];
             }
             return null;
@@ -283,19 +267,6 @@ namespace Soko.Misc
                             List<UplataClanarine> uplate2 = new List<UplataClanarine>();
                             uplate2.Add(u);
                             ovomesecneUplate.Add(u.Clan.Id, uplate2);
-                        }
-                    }
-                    else if (u.VaziOd.Value.Month == sledeciMesec.Month && u.VaziOd.Value.Year == sledeciMesec.Year)
-                    {
-                        if (sledeciMesecUplate.ContainsKey(u.Clan.Id))
-                        {
-                            sledeciMesecUplate[u.Clan.Id].Add(u);
-                        }
-                        else
-                        {
-                            List<UplataClanarine> uplate2 = new List<UplataClanarine>();
-                            uplate2.Add(u);
-                            sledeciMesecUplate.Add(u.Clan.Id, uplate2);
                         }
                     }
                     else
