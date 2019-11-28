@@ -23,6 +23,13 @@ namespace Soko.Misc
 
         private IDictionary<int, Clan> clanoviSaKarticom;
         private IDictionary<int, List<UplataClanarine>> ovomesecneUplate;
+        
+        // Uplate za sledeci mesec su potrebne zbog sledece situacije: Dolazi potpuno novi clan (prvi put se upisuje
+        // u sokolsko drustvo), i placa clanarinu za sledeci mesec (da pocinje od sledeceg meseca da vezba). Tada je
+        // jedina uplate koja postoji uplata za sledeci mesec (i treba da svetli zeleno, i da se grupa za tu uplatu
+        // prikazije na ekranu, i da se ta grupa veze za DolazakNaTrening).
+        private IDictionary<int, List<UplataClanarine>> sledeciMesecUplate;
+
         private IDictionary<int, List<UplataClanarine>> prethodneUplate;
         private IDictionary<int, UplataClanarine> uplateGodisnjaClanarina;
         private IDictionary<int, UplataClanarine> uplateGodisnjaClanarinaPrethGod;
@@ -52,6 +59,7 @@ namespace Soko.Misc
         {
             clanoviSaKarticom = new Dictionary<int, Clan>();
             ovomesecneUplate = new Dictionary<int, List<UplataClanarine>>();
+            sledeciMesecUplate = new Dictionary<int, List<UplataClanarine>>();
             prethodneUplate = new Dictionary<int, List<UplataClanarine>>();
             uplateGodisnjaClanarina = new Dictionary<int, UplataClanarine>();
             uplateGodisnjaClanarinaPrethGod = new Dictionary<int, UplataClanarine>();
@@ -85,10 +93,12 @@ namespace Soko.Misc
                     }
 
                     ovomesecneUplate = new Dictionary<int, List<UplataClanarine>>();
+                    sledeciMesecUplate = new Dictionary<int, List<UplataClanarine>>();
                     prethodneUplate = new Dictionary<int, List<UplataClanarine>>();
                     DateTime now = DateTime.Now;
                     DateTime from = now.AddMonths(-6);
                     DateTime to = now;
+                    DateTime sledeciMesec = DateTime.Now.AddMonths(1);
                     UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
                     foreach (UplataClanarine u in uplataClanarineDAO.findUplateVaziOd(from, to))
                     {
@@ -110,6 +120,19 @@ namespace Soko.Misc
                                 List<UplataClanarine> uplate = new List<UplataClanarine>();
                                 uplate.Add(u);
                                 ovomesecneUplate.Add(u.Clan.Id, uplate);
+                            }
+                        }
+                        else if (u.VaziOd.Value.Month == sledeciMesec.Month && u.VaziOd.Value.Year == sledeciMesec.Year)
+                        {
+                            if (sledeciMesecUplate.ContainsKey(u.Clan.Id))
+                            {
+                                sledeciMesecUplate[u.Clan.Id].Add(u);
+                            }
+                            else
+                            {
+                                List<UplataClanarine> uplate = new List<UplataClanarine>();
+                                uplate.Add(u);
+                                sledeciMesecUplate.Add(u.Clan.Id, uplate);
                             }
                         }
                         else
@@ -206,6 +229,10 @@ namespace Soko.Misc
             {
                 return ovomesecneUplate[clan.Id][0];
             }
+            if (sledeciMesecUplate.ContainsKey(clan.Id))
+            {
+                return sledeciMesecUplate[clan.Id][0];
+            }
             if (prethodneUplate.ContainsKey(clan.Id))
             {
                 List<UplataClanarine> uplate = prethodneUplate[clan.Id];
@@ -234,8 +261,10 @@ namespace Soko.Misc
         {
             if (Options.Instance.JedinstvenProgram || !Options.Instance.IsProgramZaClanarinu)
             {
+                DateTime sledeciMesec = DateTime.Now.AddMonths(1);
                 foreach (UplataClanarine u in uplate)
                 {
+
                     if (u.Grupa.ImaGodisnjuClanarinu && u.VaziOd.Value.Year == DateTime.Now.Year)
                     {
                         if (!uplateGodisnjaClanarina.ContainsKey(u.Clan.Id))
@@ -254,6 +283,19 @@ namespace Soko.Misc
                             List<UplataClanarine> uplate2 = new List<UplataClanarine>();
                             uplate2.Add(u);
                             ovomesecneUplate.Add(u.Clan.Id, uplate2);
+                        }
+                    }
+                    else if (u.VaziOd.Value.Month == sledeciMesec.Month && u.VaziOd.Value.Year == sledeciMesec.Year)
+                    {
+                        if (sledeciMesecUplate.ContainsKey(u.Clan.Id))
+                        {
+                            sledeciMesecUplate[u.Clan.Id].Add(u);
+                        }
+                        else
+                        {
+                            List<UplataClanarine> uplate2 = new List<UplataClanarine>();
+                            uplate2.Add(u);
+                            sledeciMesecUplate.Add(u.Clan.Id, uplate2);
                         }
                     }
                     else
