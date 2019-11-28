@@ -449,9 +449,15 @@ namespace Soko
                     okForTrening = uplata.VaziOd.Value.Year == vremeOcitavanja.Year;
                 else
                 {
-                    // Proveri da li postoji uplata za ovaj mesec.
+                    // Proveri da li postoji uplata za ovaj ili sledeci mesec.
                     okForTrening = uplata.VaziOd.Value.Year == vremeOcitavanja.Year
                         && uplata.VaziOd.Value.Month == vremeOcitavanja.Month;
+                    if (!okForTrening)
+                    {
+                        DateTime sledeciMesec = DateTime.Now.AddMonths(1);
+                        okForTrening = uplata.VaziOd.Value.Year == sledeciMesec.Year
+                            && uplata.VaziOd.Value.Month == sledeciMesec.Month;
+                    }
                 }
             }
             else
