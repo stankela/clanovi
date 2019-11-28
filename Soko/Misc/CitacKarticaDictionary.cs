@@ -22,7 +22,6 @@ namespace Soko.Misc
         }
 
         private IDictionary<int, Clan> clanoviSaKarticom;
-        private IDictionary<int, List<UplataClanarine>> ovomesecneUplate;
         private IDictionary<int, List<UplataClanarine>> prethodneUplate;
         private IDictionary<int, UplataClanarine> uplateGodisnjaClanarina;
         private IDictionary<int, UplataClanarine> uplateGodisnjaClanarinaPrethGod;
@@ -51,7 +50,6 @@ namespace Soko.Misc
         protected CitacKarticaDictionary()
         {
             clanoviSaKarticom = new Dictionary<int, Clan>();
-            ovomesecneUplate = new Dictionary<int, List<UplataClanarine>>();
             prethodneUplate = new Dictionary<int, List<UplataClanarine>>();
             uplateGodisnjaClanarina = new Dictionary<int, UplataClanarine>();
             uplateGodisnjaClanarinaPrethGod = new Dictionary<int, UplataClanarine>();
@@ -84,7 +82,6 @@ namespace Soko.Misc
                         MessageDialogs.showMessage("Ne mogu da pronadjem grupu za godisnju clanarinu", "Greska");
                     }
 
-                    ovomesecneUplate = new Dictionary<int, List<UplataClanarine>>();
                     prethodneUplate = new Dictionary<int, List<UplataClanarine>>();
                     DateTime now = DateTime.Now;
                     DateTime from = now.AddMonths(-6);
@@ -106,34 +103,18 @@ namespace Soko.Misc
                                 continue;
                             }
                         }
-                        if (u.VaziOd.Value.Month == now.Month && u.VaziOd.Value.Year == now.Year)
+                        // Ako ne postoji uplata za ovaj mesec ali postoji uplata za sledeci mesec, ta uplata ce biti
+                        // stavljena u prethodneUplate. Ta uplata ce biti izabrana u metodu findUplata zato sto
+                        // findUplata sortira prethodne uplate opadajuce po datumu vazenja.
+                        if (prethodneUplate.ContainsKey(u.Clan.Id))
                         {
-                            if (ovomesecneUplate.ContainsKey(u.Clan.Id))
-                            {
-                                ovomesecneUplate[u.Clan.Id].Add(u);
-                            }
-                            else
-                            {
-                                List<UplataClanarine> uplate = new List<UplataClanarine>();
-                                uplate.Add(u);
-                                ovomesecneUplate.Add(u.Clan.Id, uplate);
-                            }
+                            prethodneUplate[u.Clan.Id].Add(u);
                         }
                         else
                         {
-                            // Ako ne postoji uplata za ovaj mesec ali postoji uplata za sledeci mesec, ta uplata ce biti
-                            // stavljena u prethodneUplate. Ta uplata ce biti izabrana u metodu findUplata zato sto
-                            // findUplata sortira prethodne uplate opadajuce po datumu vazenja.
-                            if (prethodneUplate.ContainsKey(u.Clan.Id))
-                            {
-                                prethodneUplate[u.Clan.Id].Add(u);
-                            }
-                            else
-                            {
-                                List<UplataClanarine> uplate = new List<UplataClanarine>();
-                                uplate.Add(u);
-                                prethodneUplate.Add(u.Clan.Id, uplate);
-                            }
+                            List<UplataClanarine> uplate = new List<UplataClanarine>();
+                            uplate.Add(u);
+                            prethodneUplate.Add(u.Clan.Id, uplate);
                         }
                     }
 
@@ -212,15 +193,12 @@ namespace Soko.Misc
             {
                 return uplateGodisnjaClanarinaPrethGod[clan.Id];
             }
-            if (ovomesecneUplate.ContainsKey(clan.Id))
-            {
-                return ovomesecneUplate[clan.Id][0];
-            }
             if (prethodneUplate.ContainsKey(clan.Id))
             {
                 List<UplataClanarine> uplate = prethodneUplate[clan.Id];
                 Util.sortByVaziOdDesc(uplate);
                 // Ako ne postoji uplata za ovaj mesec ali postoji uplata za sledeci mesec, ta uplata ce biti u uplate[0].
+                // TODO3: Ako postoje uplate i za ovaj i za sledeci mesec, izaberi uplatu za ovaj mesec.
                 return uplate[0];
             }
             return null;
@@ -254,19 +232,6 @@ namespace Soko.Misc
                         if (!uplateGodisnjaClanarina.ContainsKey(u.Clan.Id))
                         {
                             uplateGodisnjaClanarina.Add(u.Clan.Id, u);
-                        }
-                    }
-                    else if (u.VaziOd.Value.Month == DateTime.Now.Month && u.VaziOd.Value.Year == DateTime.Now.Year)
-                    {
-                        if (ovomesecneUplate.ContainsKey(u.Clan.Id))
-                        {
-                            ovomesecneUplate[u.Clan.Id].Add(u);
-                        }
-                        else
-                        {
-                            List<UplataClanarine> uplate2 = new List<UplataClanarine>();
-                            uplate2.Add(u);
-                            ovomesecneUplate.Add(u.Clan.Id, uplate2);
                         }
                     }
                     else
