@@ -38,6 +38,7 @@ namespace Soko.UI
             this.mnCenovnik = new System.Windows.Forms.ToolStripMenuItem();
             this.mnGrupe = new System.Windows.Forms.ToolStripMenuItem();
             this.mnKategorije = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnFinansijskeCeline = new System.Windows.Forms.ToolStripMenuItem();
             this.mnMesta = new System.Windows.Forms.ToolStripMenuItem();
             this.mnInstitucije = new System.Windows.Forms.ToolStripMenuItem();
             this.mnUplate = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,7 +65,7 @@ namespace Soko.UI
             this.mnDuplikatiClanova = new System.Windows.Forms.ToolStripMenuItem();
             this.mnSimulatorCitacaKartica = new System.Windows.Forms.ToolStripMenuItem();
             this.mnAdminOpcije = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnFinansijskeCeline = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnBrisiPrethodneUplate = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -157,6 +158,13 @@ namespace Soko.UI
             this.mnKategorije.Size = new System.Drawing.Size(193, 22);
             this.mnKategorije.Text = "Kategorije";
             this.mnKategorije.Click += new System.EventHandler(this.mnKategorije_Click);
+            // 
+            // mnFinansijskeCeline
+            // 
+            this.mnFinansijskeCeline.Name = "mnFinansijskeCeline";
+            this.mnFinansijskeCeline.Size = new System.Drawing.Size(193, 22);
+            this.mnFinansijskeCeline.Text = "Finansijske celine";
+            this.mnFinansijskeCeline.Click += new System.EventHandler(this.mnFinansijskeCeline_Click);
             // 
             // mnMesta
             // 
@@ -308,7 +316,8 @@ namespace Soko.UI
             // 
             this.mnPodesavanja.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnOpcije,
-            this.mnCitacKartica});
+            this.mnCitacKartica,
+            this.mnBrisiPrethodneUplate});
             this.mnPodesavanja.Name = "mnPodesavanja";
             this.mnPodesavanja.Size = new System.Drawing.Size(85, 20);
             this.mnPodesavanja.Text = "Podesavanja";
@@ -316,14 +325,14 @@ namespace Soko.UI
             // mnOpcije
             // 
             this.mnOpcije.Name = "mnOpcije";
-            this.mnOpcije.Size = new System.Drawing.Size(139, 22);
+            this.mnOpcije.Size = new System.Drawing.Size(210, 22);
             this.mnOpcije.Text = "Opcije";
             this.mnOpcije.Click += new System.EventHandler(this.mnOpcije_Click);
             // 
             // mnCitacKartica
             // 
             this.mnCitacKartica.Name = "mnCitacKartica";
-            this.mnCitacKartica.Size = new System.Drawing.Size(139, 22);
+            this.mnCitacKartica.Size = new System.Drawing.Size(210, 22);
             this.mnCitacKartica.Text = "Citac kartica";
             this.mnCitacKartica.Click += new System.EventHandler(this.mnCitacKartica_Click);
             // 
@@ -358,12 +367,12 @@ namespace Soko.UI
             this.mnAdminOpcije.Text = "Opcije";
             this.mnAdminOpcije.Click += new System.EventHandler(this.mnAdminOpcije_Click);
             // 
-            // mnFinansijskeCeline
+            // mnBrisiPrethodneUplate
             // 
-            this.mnFinansijskeCeline.Name = "mnFinansijskeCeline";
-            this.mnFinansijskeCeline.Size = new System.Drawing.Size(193, 22);
-            this.mnFinansijskeCeline.Text = "Finansijske celine";
-            this.mnFinansijskeCeline.Click += new System.EventHandler(this.mnFinansijskeCeline_Click);
+            this.mnBrisiPrethodneUplate.Name = "mnBrisiPrethodneUplate";
+            this.mnBrisiPrethodneUplate.Size = new System.Drawing.Size(190, 22);
+            this.mnBrisiPrethodneUplate.Text = "Brisi prethodne uplate";
+            this.mnBrisiPrethodneUplate.Click += new System.EventHandler(this.mnBrisiPrethodneUplate_Click);
             // 
             // Form1
             // 
@@ -426,6 +435,7 @@ namespace Soko.UI
         private System.Windows.Forms.ToolStripMenuItem mnOpcije;
         private System.Windows.Forms.ToolStripMenuItem mnDolazakNaTrening;
         private System.Windows.Forms.ToolStripMenuItem mnFinansijskeCeline;
+        private System.Windows.Forms.ToolStripMenuItem mnBrisiPrethodneUplate;
     }
 }
 

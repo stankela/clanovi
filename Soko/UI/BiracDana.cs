@@ -14,7 +14,7 @@ namespace Soko.UI
         {
             InitializeComponent();
             this.Text = caption;
-            this.dtpDatum.CustomFormat = "d.M.yyyy";
+            this.dtpDatum.CustomFormat = "dd.MM.yyyy";
             this.dtpDatum.Format = DateTimePickerFormat.Custom;
             Font = Options.Instance.Font;
         }

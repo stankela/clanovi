@@ -998,5 +998,38 @@ ORDER BY c.broj
             }
         }
 
+        public virtual void deleteUplateVaziOd(DateTime from, DateTime to)
+        {
+            try
+            {
+                string query = @"
+DELETE FROM uplate WHERE vazi_od BETWEEN '{0}' AND '{1}'";
+                query = String.Format(query, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"));
+                Session.CreateSQLQuery(query).UniqueResult();
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
+        public virtual int countUplateVaziOd(DateTime from, DateTime to)
+        {
+            try
+            {
+                string query = @"
+SELECT COUNT(*) FROM uplate WHERE vazi_od BETWEEN '{0}' AND '{1}'";
+                query = String.Format(query, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"));
+                return (int)Session.CreateSQLQuery(query).UniqueResult();
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
     }
 }

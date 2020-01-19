@@ -19,6 +19,7 @@ using System.IO.Pipes;
 using System.IO;
 using System.Diagnostics;
 using Bilten.Dao.NHibernate;
+using Iesi.Collections;
 
 namespace Soko.UI
 {
@@ -1750,6 +1751,84 @@ namespace Soko.UI
             catch (Exception ex)
             {
                 MessageDialogs.showError(ex.Message, this.Text);
+            }
+        }
+
+        private void mnBrisiPrethodneUplate_Click(object sender, EventArgs e)
+        {
+            BrisiPrethodneUplateForm dlg = new BrisiPrethodneUplateForm("Brisi prethodne uplate");
+            if (dlg.ShowDialog() != DialogResult.OK)
+                return;
+
+            DateTime from = new DateTime(1970, 1, 1);
+            DateTime toFirstDayInMonth = new DateTime(dlg.Datum.Date.Year, dlg.Datum.Date.Month, 1, 0, 0, 0);
+            DateTime to = toFirstDayInMonth.AddSeconds(-1);
+            try
+            {
+                using (ISession session = NHibernateHelper.Instance.OpenSession())
+                using (session.BeginTransaction())
+                {
+                    CurrentSessionContext.Bind(session);
+                    UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
+                    DolazakNaTreningDAO dolazakDAO = DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO();
+                    DolazakNaTreningMesecniDAO dolazakMesecniDAO
+                        = DAOFactoryFactory.DAOFactory.GetDolazakNaTreningMesecniDAO();
+                    int brojUplata = uplataClanarineDAO.countUplateVaziOd(from, to);
+                    // TODO3: Ispisi ime meseca a ne broj.
+                    bool ok = MessageDialogs.queryConfirmation("Bice izbrisano " + brojUplata
+                        + " uplata, uplacenih pre datuma '" + toFirstDayInMonth.Date.ToString("dd-MMMM-yyyy")
+                        + "'. Da li zelite da nastavite?", "Brisi uplate");
+                    if (ok)
+                    {
+                        List<object[]> dolasci = dolazakDAO.getNeplacenDolazakNaTrening(from, to);
+                        uplataClanarineDAO.deleteUplateVaziOd(from, to);
+                        dolazakDAO.deleteDolasci(from, to);
+                        dolazakMesecniDAO.deleteDolasci(from, to);
+
+                        IDictionary<ClanGodinaMesec, ISet> dolasciMap = new Dictionary<ClanGodinaMesec, ISet>();
+                        foreach (object[] row in dolasci)
+                        {
+                            DateTime datum_vreme_dolaska = (DateTime)row[0];
+                            int clan_id = (int)row[1];
+                            int grupa_id = (row[2] != null) ? (int)row[2] : -1;
+                            dolazakDAO.insertDolazak(datum_vreme_dolaska, clan_id, grupa_id);
+
+                            ClanGodinaMesec key = new ClanGodinaMesec(clan_id, datum_vreme_dolaska.Year,
+                                datum_vreme_dolaska.Month);
+                            if (!dolasciMap.ContainsKey(key))
+                            {
+                                ISet daniSet = new HashedSet();
+                                daniSet.Add(datum_vreme_dolaska.Day);
+                                dolasciMap.Add(key, daniSet);
+                            }
+                            else
+                            {
+                                ISet daniSet = dolasciMap[key];
+                                if (!daniSet.Contains(datum_vreme_dolaska.Day))
+                                {
+                                    daniSet.Add(datum_vreme_dolaska.Day);
+                                }
+                            }
+                        }
+                        foreach (KeyValuePair<ClanGodinaMesec, ISet> entry in dolasciMap)
+                        {
+                            ClanGodinaMesec key = entry.Key;
+                            int brojDolazaka = entry.Value.Count;
+                            dolazakMesecniDAO.insertDolazak(key.godina, key.mesec, brojDolazaka, key.clan_id);
+                        }
+                        // TODO3: Prikazi uplate koje vaze od npr. januara 2020 a uplacene su u decembru 2019 ili ranije.
+                        session.Transaction.Commit();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                return;
+            }
+            finally
+            {
+                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
         }
     }

@@ -390,14 +390,172 @@ WHERE (u.vazi_od BETWEEN '{0}' AND '{1}')
             }
             return result;
         }
+
+        public virtual List<object[]> getNeplacenDolazakNaTrening(DateTime from, DateTime to)
+        {
+            try
+            {
+                string dolasciQuery = @"
+SELECT DISTINCT
+    d.datum_vreme_dolaska,
+    c.clan_id, c.ne_placa_clanarinu,
+    g.grupa_id
+FROM clanovi c INNER JOIN (dolazak_na_trening d LEFT OUTER JOIN grupe g
+	ON d.grupa_id = g.grupa_id)
+	ON c.clan_id = d.clan_id
+WHERE (d.datum_vreme_dolaska BETWEEN '{0}' AND '{1}')";
+
+                dolasciQuery = String.Format(dolasciQuery, from.ToString("yyyy-MM-dd HH:mm:ss"),
+                    to.ToString("yyyy-MM-dd HH:mm:ss"));
+                IList<object[]> dolasci = Session.CreateSQLQuery(dolasciQuery).List<object[]>();
+
+                string uplateQuery = @"
+SELECT DISTINCT
+    datepart(year, u.vazi_od) god,
+    datepart(month, u.vazi_od) mes,
+    u.clan_id
+FROM uplate u
+WHERE (u.vazi_od BETWEEN '{0}' AND '{1}')";
+                uplateQuery = String.Format(uplateQuery, from.ToString("yyyy-MM-dd HH:mm:ss"),
+                    to.ToString("yyyy-MM-dd HH:mm:ss"));
+                IList<object[]> uplate = Session.CreateSQLQuery(uplateQuery).List<object[]>();
+
+                ISet uplateSet = new HashedSet();
+                foreach (object[] row in uplate)
+                {
+                    int god = (int)row[0];
+                    int mes = (int)row[1];
+                    int id = (int)row[2];
+                    uplateSet.Add(new ClanGodinaMesec(id, god, mes));
+                }
+
+                DateTime firstDateTimeInYear = new DateTime(from.Year, 1, 1, 0, 0, 0);
+                DateTime lastDateTimeInYear = new DateTime(to.AddYears(1).Year, 1, 1, 0, 0, 0).AddSeconds(-1);
+
+                List<Grupa> godisnjaClanarinaGrupe = new List<Grupa>();
+                GrupaDAO grupaDAO = DAOFactoryFactory.DAOFactory.GetGrupaDAO();
+                IList<Grupa> grupe = grupaDAO.FindAll();
+                foreach (Grupa g in grupe)
+                {
+                    if (g.ImaGodisnjuClanarinu)
+                    {
+                        godisnjaClanarinaGrupe.Add(g);
+                    }
+                }
+                if (godisnjaClanarinaGrupe.Count == 0)
+                {
+                    // TODO3: Da li je ovo potrebno?
+                    MessageDialogs.showMessage("Ne mogu da pronadjem grupu za godisnju clanarinu", "Greska");
+                }
+
+                string uplateGodisnjaClanarinaQuery = @"
+SELECT DISTINCT
+    datepart(year, u.vazi_od) god,
+    u.clan_id
+FROM uplate u
+WHERE (u.vazi_od BETWEEN '{0}' AND '{1}')
+{2}";
+                string filter = String.Empty;
+                if (godisnjaClanarinaGrupe.Count > 0)
+                    filter = " AND " + Util.getGrupeFilter(godisnjaClanarinaGrupe, "u", "grupa_id");
+
+                uplateGodisnjaClanarinaQuery = String.Format(uplateGodisnjaClanarinaQuery,
+                    firstDateTimeInYear.ToString("yyyy-MM-dd HH:mm:ss"),
+                    lastDateTimeInYear.ToString("yyyy-MM-dd HH:mm:ss"),
+                    filter);
+                IList<object[]> uplateGodisnjaClanarina = Session.CreateSQLQuery(uplateGodisnjaClanarinaQuery).List<object[]>();
+
+                ISet godisnjeUplateSet = new HashedSet();
+                foreach (object[] row in uplateGodisnjaClanarina)
+                {
+                    int god = (int)row[0];
+                    int id = (int)row[1];
+                    godisnjeUplateSet.Add(new ClanGodinaMesec(id, god, 1));
+                }
+
+                List<object[]> result = new List<object[]>();
+                foreach (object[] row in dolasci)
+                {
+                    DateTime datum_vreme_dolaska = (DateTime)row[0];
+                    int clan_id = (int)row[1];
+                    bool neplacaClanarinu = (bool)row[2];
+                    object grupa_id = row[3];
+
+                    bool imaUplatu = uplateSet.Contains(
+                        new ClanGodinaMesec(clan_id, datum_vreme_dolaska.Year, datum_vreme_dolaska.Month));
+                    if (!imaUplatu)
+                        imaUplatu = godisnjeUplateSet.Contains(new ClanGodinaMesec(clan_id, datum_vreme_dolaska.Year, 1));
+                    if (!imaUplatu)
+                        imaUplatu = neplacaClanarinu;
+
+                    if (imaUplatu)
+                    {
+                        continue;
+                    }
+                    object[] item = new object[] { datum_vreme_dolaska, clan_id, grupa_id };
+                    result.Add(item);
+                }
+                return result;
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
+        public virtual void deleteDolasci(DateTime from, DateTime to)
+        {
+            try
+            {
+                string query = @"
+DELETE FROM dolazak_na_trening WHERE datum_vreme_dolaska BETWEEN '{0}' AND '{1}'";
+                query = String.Format(query, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"));
+                Session.CreateSQLQuery(query).UniqueResult();
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
+        public virtual void insertDolazak(DateTime datum_vreme_dolaska, int clan_id, int grupa_id)
+        { 
+            try
+            {
+                string query1 = @"
+INSERT INTO dolazak_na_trening (datum_vreme_dolaska, clan_id, grupa_id) VALUES ('{0}', {1}, {2})";
+                string query2 = @"
+INSERT INTO dolazak_na_trening (datum_vreme_dolaska, clan_id) VALUES ('{0}', {1})";
+                string query;
+                if (grupa_id != -1)
+                {
+                    query = String.Format(query1, datum_vreme_dolaska.ToString("yyyy-MM-dd HH:mm:ss"), clan_id, grupa_id);
+                }
+                else
+                {
+                    query = String.Format(query2, datum_vreme_dolaska.ToString("yyyy-MM-dd HH:mm:ss"), clan_id);
+                }
+                Session.CreateSQLQuery(query).UniqueResult();
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
     }
 
     // TODO2: Prebaci ovu klasu na drugo mesto.
     public class ClanGodinaMesec
     {
-        private int clan_id;
-        private int godina;
-        private int mesec;
+        public int clan_id;
+        public int godina;
+        public int mesec;
 
         public ClanGodinaMesec(int clan_id, int godina, int mesec)
         {

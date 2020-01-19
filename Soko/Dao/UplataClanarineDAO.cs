@@ -37,5 +37,7 @@ namespace Bilten.Dao
         List<object[]> getMesecniPrihodiReportItems(DateTime from, DateTime to, List<Grupa> grupe);
         List<object[]> getUplateClanovaReportItems(int idClana);
         List<ReportGrupa> getUplateClanovaReportGroups(int idClana, IDictionary<int, Mesto> mestaMap);
+        int countUplateVaziOd(DateTime from, DateTime to);
+        void deleteUplateVaziOd(DateTime from, DateTime to);
     }
 }

@@ -192,6 +192,12 @@
     <Compile Include="UI\BiracIntervala.Designer.cs">
       <DependentUpon>BiracIntervala.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\BrisiPrethodneUplateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\BrisiPrethodneUplateForm.Designer.cs">
+      <DependentUpon>BrisiPrethodneUplateForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\CitacKarticaDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -303,7 +309,6 @@
       <DependentUpon>BiracClanaDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\BiracDana.resx">
-      <SubType>Designer</SubType>
       <DependentUpon>BiracDana.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\BiracFinansijskeCeline.resx">
@@ -312,6 +317,9 @@
     <EmbeddedResource Include="UI\BiracIntervala.resx">
       <SubType>Designer</SubType>
       <DependentUpon>BiracIntervala.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\BrisiPrethodneUplateForm.resx">
+      <DependentUpon>BrisiPrethodneUplateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ClanoviKojiNePlacajuForm.resx">
       <DependentUpon>ClanoviKojiNePlacajuForm.cs</DependentUpon>

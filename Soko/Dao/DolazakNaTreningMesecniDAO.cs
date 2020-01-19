@@ -13,5 +13,7 @@ namespace Bilten.Dao
     {
         DolazakNaTreningMesecni getDolazakNaTrening(Clan c, int god, int mes);
         IList<DolazakNaTreningMesecni> getDolazakNaTrening(Clan c, int fromYear, int fromMonth, int toYear, int toMonth);
+        void deleteDolasci(DateTime from, DateTime to);
+        void insertDolazak(int godina, int mesec, int brojDolazaka, int clan_id);
     }
 }

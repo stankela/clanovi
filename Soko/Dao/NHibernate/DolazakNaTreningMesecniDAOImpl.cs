@@ -69,5 +69,44 @@ namespace Bilten.Dao.NHibernate
             }
         }
 
+        public virtual void deleteDolasci(DateTime from, DateTime to)
+        {
+            int fromYear = from.Year;
+            int fromMonth = from.Month;
+            int toYear = to.Year;
+            int toMonth = to.Month;
+            try
+            {
+                string query = @"
+DELETE FROM dolazak_na_trening_mesecni
+WHERE (godina > {0} or (godina = {0} and mesec >= {1}))
+and (godina < {2} or (godina = {2} and mesec <= {3}))";
+                query = String.Format(query, fromYear, fromMonth, toYear, toMonth);
+                Session.CreateSQLQuery(query).UniqueResult();
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
+        public virtual void insertDolazak(int godina, int mesec, int brojDolazaka, int clan_id)
+        {
+            try
+            {
+                string query = @"
+INSERT INTO dolazak_na_trening_mesecni (godina, mesec, broj_dolazaka, clan_id) VALUES ({0}, {1}, {2}, {3})";
+                query = String.Format(query, godina, mesec, brojDolazaka, clan_id);
+                Session.CreateSQLQuery(query).UniqueResult();
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
     }
 }
