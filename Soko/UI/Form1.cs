@@ -1773,17 +1773,40 @@ namespace Soko.UI
                     DolazakNaTreningDAO dolazakDAO = DAOFactoryFactory.DAOFactory.GetDolazakNaTreningDAO();
                     DolazakNaTreningMesecniDAO dolazakMesecniDAO
                         = DAOFactoryFactory.DAOFactory.GetDolazakNaTreningMesecniDAO();
-                    int brojUplata = uplataClanarineDAO.countUplateVaziOd(from, to);
+                    int brojUplata = uplataClanarineDAO.countUplateDatumVremeUplate(from, to);
                     // TODO3: Ispisi ime meseca a ne broj.
                     bool ok = MessageDialogs.queryConfirmation("Bice izbrisano " + brojUplata
                         + " uplata, uplacenih pre datuma '" + toFirstDayInMonth.Date.ToString("dd-MMMM-yyyy")
                         + "'. Da li zelite da nastavite?", "Brisi uplate");
                     if (ok)
                     {
+                        // Pronadji uplate koje su placene unapred, npr. placeno u decembru a vazi u januaru. One ce biti
+                        // izbrisane u uplataClanarineDAO.deleteUplateDatumVremeUplate pa zato moramo ponovo da ih dodamo.
+                        // Ove uplate ne smeju da se brisu jer inace ne bi znali da je clan vec platio za isti mesec.
+                        DateTime from2 = toFirstDayInMonth;
+                        DateTime to2 = new DateTime(2099, 1, 1);
+                        List<object[]> uplate = uplataClanarineDAO.findUplateVaziOdPlacenoUnapred(from2, to2);
+
+                        // Pronadji neplacene dolaske. Oni ce biti izbrisani u dolazakDAO.deleteDolasci pa zato moramo
+                        // ponovo da ih dodamo. Neplaceni dolasci su bitni jer tako zadrzavamo evidenciju koje uplate fale.
                         List<object[]> dolasci = dolazakDAO.getNeplacenDolazakNaTrening(from, to);
-                        uplataClanarineDAO.deleteUplateVaziOd(from, to);
+
+                        uplataClanarineDAO.deleteUplateDatumVremeUplate(from, to);
                         dolazakDAO.deleteDolasci(from, to);
                         dolazakMesecniDAO.deleteDolasci(from, to);
+
+                        foreach (object[] row in uplate)
+                        {
+                            // SELECT datum_vreme_uplate, vazi_od, iznos, napomena, korisnik, clan_id, grupa_id
+                            DateTime datum_vreme_uplate = (DateTime)row[0];
+                            DateTime vazi_od = (DateTime)row[1];
+                            decimal iznos = (decimal)row[2];
+                            string napomena = (string)row[3];
+                            string korisnik = (string)row[4];
+                            int clan_id = (int)row[5];
+                            int grupa_id = (row[6] != null) ? (int)row[6] : -1;
+                            //TODO3
+                        }
 
                         IDictionary<ClanGodinaMesec, ISet> dolasciMap = new Dictionary<ClanGodinaMesec, ISet>();
                         foreach (object[] row in dolasci)
@@ -1817,6 +1840,7 @@ namespace Soko.UI
                             dolazakMesecniDAO.insertDolazak(key.godina, key.mesec, brojDolazaka, key.clan_id);
                         }
                         // TODO3: Prikazi uplate koje vaze od npr. januara 2020 a uplacene su u decembru 2019 ili ranije.
+                        // TODO3: Zatvori program.
                         session.Transaction.Commit();
                     }
                 }

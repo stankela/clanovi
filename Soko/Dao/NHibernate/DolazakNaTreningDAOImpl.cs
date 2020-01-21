@@ -511,7 +511,7 @@ WHERE (u.vazi_od BETWEEN '{0}' AND '{1}')
             {
                 string query = @"
 DELETE FROM dolazak_na_trening WHERE datum_vreme_dolaska BETWEEN '{0}' AND '{1}'";
-                query = String.Format(query, from.ToString("yyyy-MM-dd"), to.ToString("yyyy-MM-dd"));
+                query = String.Format(query, from.ToString("yyyy-MM-dd HH:mm:ss"), to.ToString("yyyy-MM-dd HH:mm:ss"));
                 Session.CreateSQLQuery(query).UniqueResult();
             }
             catch (HibernateException ex)
