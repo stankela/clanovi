@@ -40,5 +40,7 @@ namespace Bilten.Dao
         int countUplateDatumVremeUplate(DateTime from, DateTime to);
         void deleteUplateDatumVremeUplate(DateTime from, DateTime to);
         List<object[]> findUplateVaziOdPlacenoUnapred(DateTime from, DateTime to);
+        void insertUplata(DateTime datum_vreme_uplate, DateTime vazi_od, decimal iznos, string napomena,
+            string korisnik, int clan_id, int grupa_id);
     }
 }

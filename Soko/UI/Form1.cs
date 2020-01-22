@@ -1756,6 +1756,7 @@ namespace Soko.UI
 
         private void mnBrisiPrethodneUplate_Click(object sender, EventArgs e)
         {
+            // TODO3: Biraj samo godinu.
             BrisiPrethodneUplateForm dlg = new BrisiPrethodneUplateForm("Brisi prethodne uplate");
             if (dlg.ShowDialog() != DialogResult.OK)
                 return;
@@ -1763,6 +1764,11 @@ namespace Soko.UI
             DateTime from = new DateTime(1970, 1, 1);
             DateTime toFirstDayInMonth = new DateTime(dlg.Datum.Date.Year, dlg.Datum.Date.Month, 1, 0, 0, 0);
             DateTime to = toFirstDayInMonth.AddSeconds(-1);
+            bool ok;
+
+            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Show();
+
             try
             {
                 using (ISession session = NHibernateHelper.Instance.OpenSession())
@@ -1774,8 +1780,7 @@ namespace Soko.UI
                     DolazakNaTreningMesecniDAO dolazakMesecniDAO
                         = DAOFactoryFactory.DAOFactory.GetDolazakNaTreningMesecniDAO();
                     int brojUplata = uplataClanarineDAO.countUplateDatumVremeUplate(from, to);
-                    // TODO3: Ispisi ime meseca a ne broj.
-                    bool ok = MessageDialogs.queryConfirmation("Bice izbrisano " + brojUplata
+                    ok = MessageDialogs.queryConfirmation("Bice izbrisano " + brojUplata
                         + " uplata, uplacenih pre datuma '" + toFirstDayInMonth.Date.ToString("dd-MMMM-yyyy")
                         + "'. Da li zelite da nastavite?", "Brisi uplate");
                     if (ok)
@@ -1804,8 +1809,9 @@ namespace Soko.UI
                             string napomena = (string)row[3];
                             string korisnik = (string)row[4];
                             int clan_id = (int)row[5];
-                            int grupa_id = (row[6] != null) ? (int)row[6] : -1;
-                            //TODO3
+                            int grupa_id = (int)row[6];
+                            uplataClanarineDAO.insertUplata(datum_vreme_uplate, vazi_od, iznos, napomena, korisnik,
+                                clan_id, grupa_id);
                         }
 
                         IDictionary<ClanGodinaMesec, ISet> dolasciMap = new Dictionary<ClanGodinaMesec, ISet>();
@@ -1840,7 +1846,6 @@ namespace Soko.UI
                             dolazakMesecniDAO.insertDolazak(key.godina, key.mesec, brojDolazaka, key.clan_id);
                         }
                         // TODO3: Prikazi uplate koje vaze od npr. januara 2020 a uplacene su u decembru 2019 ili ranije.
-                        // TODO3: Zatvori program.
                         session.Transaction.Commit();
                     }
                 }
@@ -1852,7 +1857,15 @@ namespace Soko.UI
             }
             finally
             {
+                Cursor.Hide();
+                Cursor.Current = Cursors.Arrow;
                 CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
+            }
+
+            if (ok)
+            {
+                MessageDialogs.showMessage("Zatvaram program. Izmene ce biti vidljive kada sledeci put pokrenete program.", "Uplate clanova");
+                Close();
             }
         }
     }

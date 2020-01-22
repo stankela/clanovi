@@ -1061,5 +1061,25 @@ FROM uplate WHERE vazi_od BETWEEN '{0}' AND '{1}'";
                 throw new InfrastructureException(message, ex);
             }
         }
+
+        public virtual void insertUplata(DateTime datum_vreme_uplate, DateTime vazi_od, decimal iznos, string napomena,
+            string korisnik, int clan_id, int grupa_id)
+        {
+            try
+            {
+                string query = @"
+INSERT INTO uplate (datum_vreme_uplate, vazi_od, iznos, napomena, korisnik, clan_id, grupa_id) 
+VALUES ('{0}', '{1}', {2}, '{3}', '{4}', {5}, {6})";
+                query = String.Format(query, datum_vreme_uplate.ToString("yyyy-MM-dd HH:mm:ss"),
+                    vazi_od.ToString("yyyy-MM-dd HH:mm:ss"), iznos, napomena, korisnik, clan_id, grupa_id);
+                Session.CreateSQLQuery(query).UniqueResult();
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
     }
 }
