@@ -60,6 +60,13 @@ namespace Soko.UI
 
         private void btnOk_Click(object sender, EventArgs e)
         {
+            // TODO3: Ponudi samo godinu za biranje, i onda ukloni ovaj workaround.
+            if (dateTimePicker1.Value.Month != 1)
+            {
+                MessageDialogs.showMessage("Izaberite januar mesec. Jedino to je trenutno podrzano.", this.Text);
+                this.DialogResult = DialogResult.None;
+            }
+
             datum = dateTimePicker1.Value;
         }
     }

@@ -1756,7 +1756,6 @@ namespace Soko.UI
 
         private void mnBrisiPrethodneUplate_Click(object sender, EventArgs e)
         {
-            // TODO3: Biraj samo godinu.
             BrisiPrethodneUplateForm dlg = new BrisiPrethodneUplateForm("Brisi prethodne uplate");
             if (dlg.ShowDialog() != DialogResult.OK)
                 return;
@@ -1845,7 +1844,6 @@ namespace Soko.UI
                             int brojDolazaka = entry.Value.Count;
                             dolazakMesecniDAO.insertDolazak(key.godina, key.mesec, brojDolazaka, key.clan_id);
                         }
-                        // TODO3: Prikazi uplate koje vaze od npr. januara 2020 a uplacene su u decembru 2019 ili ranije.
                         session.Transaction.Commit();
                     }
                 }
