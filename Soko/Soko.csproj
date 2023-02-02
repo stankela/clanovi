@@ -148,6 +148,8 @@
     <Compile Include="Misc\CitacKartica.cs" />
     <Compile Include="Misc\CitacKarticaDictionary.cs" />
     <Compile Include="Misc\ConfigurationParameters.cs" />
+    <Compile Include="Misc\Log.cs" />
+    <Compile Include="Misc\RFIDReader.cs" />
     <Compile Include="Misc\Sesija.cs" />
     <Compile Include="Misc\SqlCeUtilities.cs" />
     <Compile Include="Misc\SingleInstanceApplication.cs" />

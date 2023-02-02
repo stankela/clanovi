@@ -16,6 +16,8 @@ using Soko.Misc;
 using System.Diagnostics;
 using Soko.Exceptions;
 using Bilten.Dao.NHibernate;
+using RFID.NativeInterface;
+using RFID.Utils;
 
 namespace Soko
 {
@@ -35,10 +37,12 @@ namespace Soko
         // Volatile is used as hint to the compiler that this data 
         // member will be accessed by multiple threads. 
         private volatile bool _shouldStop = false;
-        
+
+        private RFIDReader mReader;
+
         private CitacKartica()
         {
-
+            mReader = RFIDReader.OpenRFIDReader();
         }
 
         private static CitacKartica instance;
@@ -71,6 +75,147 @@ namespace Soko
         public static readonly int TEST_KARTICA_BROJ = 100000;
         public static readonly string TEST_KARTICA_NAME = "TEST KARTICA";
 
+        private void LogSector(int sectorNo, RFIDReader.RFIDSectorData data)
+        {
+            Log.Info("", sectorNo.ToString() + "----------------------------");
+            Log.Info("", data.Block0);
+            Log.Info("", data.Block1);
+            Log.Info("", data.Block2);
+            Log.Info("", data.PasswordA + " " + data.Control + " " + data.PasswordB);
+        }
+
+        private string DecodeID1(string encodedID1)
+        {
+            return DecodeName(encodedID1);
+        }
+
+        // Name is a string which is encoded hexadecimally, so "SDV" -> "53445600" and "SDV2" -> "5344563200"
+        private string DecodeName(string encodedName)
+        {
+            String res = String.Empty;
+            for (int i = 0; i < encodedName.Length - 1; i = i + 2)
+            {
+                if (encodedName[i] == '0' && encodedName[i + 1] == '0')
+                    break;
+                int index = 0;
+                res += Uri.HexUnescape("%" + encodedName.Substring(i, 2), ref index);
+                if (index == 123)
+                    break;
+            }
+            return res;
+        }
+
+        private ulong NewReadDataCard(int comport, ref string sID1, ref string sName)
+        {
+            if (!mReader.ConnectDevice(comport) || !mReader.BindCard(false))
+                return 0;
+
+            //setCardNo(mReader.CurrentCardNo);
+
+            string PASSWORD = "13072004abcd";
+            int sectorNo = 5;
+            RFIDReader.RFIDSectorData data = mReader.ReadData(sectorNo, false, PASSWORD);
+            if (data == null)
+                return 3;  // nova neformatirana kartica
+            LogSector(sectorNo, data);
+            sName = DecodeName(data.Block0);
+            Log.Info("sName", sName);
+            if (sName == "SDV")
+                return 2;  // stara kartica
+
+            sectorNo = 1;
+            data = mReader.ReadData(sectorNo, false, PASSWORD);
+            if (data == null)
+                return 0;
+            LogSector(sectorNo, data);
+            sID1 = DecodeID1(data.Block2);
+            Log.Info("sID1", sID1);
+      
+            return 1;
+        }
+
+        private ulong MyReadDataCard(int comport, ref string sType, ref string sID1, ref string sID2, ref string sName)
+        {
+            bool useNew = true;  // TODO4: Izbaci ovo kada zavrsis prelazak na novi format kartica. Isto i u
+                                 // MyWriteDataCard.
+            if (useNew)
+            {
+                return NewReadDataCard(comport, ref sID1, ref sName);
+            }
+            else 
+            {
+                return ReadDataCard(comport, ref sType, ref sID1, ref sID2, ref sName) & 0xFFFFFFFF;
+            }
+        }
+
+        private ulong NewWriteDataCard(int comport, string sID1, string sName)
+        {
+            //mReader.EnableCheck = false;
+            //RFIDReader.Sleep(200);
+
+            if (!mReader.ConnectDevice(comport) || !mReader.BindCard(false))
+                return 0;
+
+            // sID1
+
+            // write key "13072004abcd" to block 7
+            string value = "13072004abcdFF078069FFFFFFFFFFFF";
+            Log.Info("Write key to block 7:", value);
+            if (!mReader.WriteDataToBlock(1, 3, false, "FFFFFFFFFFFF", value))
+                return 0;
+
+            // TODO4: Encrypt ID1
+            // write sID1 to block 6
+            value = "00000000000000000000000000000000";
+            char[] value2 = value.ToCharArray();
+            for (int i = 0; i < sID1.Length; ++i)
+            {
+                string hex = Uri.HexEscape(sID1[i]);
+                // hex[0] contains "%"
+                value2[2 * i] = hex[1];
+                value2[2 * i + 1] = hex[2];
+            }
+            value = new String(value2);
+            Log.Info("Write data to block 6:", value);
+            if (!mReader.WriteDataToBlock(1, 2, false, "13072004abcd", value))
+                return 0;
+
+            // sName
+
+            // write key "13072004abcd" to block 23
+            value = "13072004abcdFF078069FFFFFFFFFFFF";
+            Log.Info("Write key to block 23:", value);
+            if (!mReader.WriteDataToBlock(5, 3, false, "FFFFFFFFFFFF", value))
+                return 0;
+
+            // write sName to block 20
+            if (sName == "SDV")
+                value = "53445600000000000000000000000000";
+            else if (sName == "SDV2")
+                value = "53445632000000000000000000000000";
+            else
+                value = "00000000000000000000000000000000";
+            Log.Info("Write data to block 20:", value);
+            if (!mReader.WriteDataToBlock(5, 0, false, "13072004abcd", value))
+                return 0;
+
+            //mReader.EnableCheck = true;  // TODO4: RAII ?
+            return 1;
+        }
+
+        private ulong MyWriteDataCard(int comport, string sType, string sID1, string sID2, string sName)
+        {
+            bool useNew = true;
+            if (useNew)
+            {
+                return NewWriteDataCard(comport, sID1, sName);
+            }
+            else
+            {
+                return WriteDataCard(comport, sType, sID1, sID2, sName) & 0xFFFFFFFF;
+            }
+        }
+
         public void readCard(int comPort, out int broj)
         {
             string sType = " ";
@@ -93,12 +238,12 @@ namespace Soko
             {
                 lock (readAndWriteLock)
                 {
-                    retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+                    retval = MyReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name);
                 }
             }
             else
             {
-                retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+                retval = MyReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name);
             }
             
             if (measureTime)
@@ -113,6 +258,18 @@ namespace Soko
                 {
                     throw new ReadCardException("Lose formatirana kartica.");
                 }
+            }
+            else if (retval == 2)
+            {
+                string msg = "Kartica je u starom formatu. " +
+                    "Idite u meni 'Pravljenje kartice' i ponovo napravite karticu.";
+                throw new ReadCardException(msg);
+            }
+            else if (retval == 3)
+            {
+                string msg = "Kartica je prazna. " +
+                    "Idite u meni 'Pravljenje kartice' i napravite karticu.";
+                throw new ReadCardException(msg);
             }
             else
             {
@@ -135,12 +292,12 @@ namespace Soko
             {
                 lock (readAndWriteLock)
                 {
-                    retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+                    retval = MyReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name);
                 }
             }
             else
             {
-                retval = ReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
+                retval = MyReadDataCard(comPort, ref sType, ref sID1, ref sID2, ref name);
             }
 
             // Sesija.Instance.Log("C READ: " + retval.ToString());
@@ -173,12 +330,12 @@ namespace Soko
             {
                 lock (readAndWriteLock)
                 {
-                    retval = WriteDataCard(comPort, sType, sID1, sID2, sName) & 0xFFFFFFFF;
+                    retval = MyWriteDataCard(comPort, sType, sID1, sID2, sName);
                 }
             }
             else
             {
-                retval = WriteDataCard(comPort, sType, sID1, sID2, sName) & 0xFFFFFFFF;
+                retval = MyWriteDataCard(comPort, sType, sID1, sID2, sName);
             }
 
             if (measureTime)
