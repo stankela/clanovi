@@ -263,5 +263,34 @@ namespace Soko
             get { return nedostajuceUplateStartDate; }
             set { nedostajuceUplateStartDate = value; }
         }
+
+        private bool useCardReaderLog = false;
+        public bool UseCardReaderLog
+        {
+            get { return useCardReaderLog; }
+            set { useCardReaderLog = value; }
+        }
+
+        // TODO4: Izbaci ovo kada zavrsis prelazak na novi format kartica.
+        // Moguce vrednosti za (UseNewCardFormat, WritePanonitDataCard)
+        // (true, false) - Kada hocu karticu citam i pisem u NovomFormatu. Kartica moze da bude u bilo kojem formatu
+        //                 (Prazna, Panonit, NoviFormat).
+        // (true, true) - Kada hocu da napravim karticu u starom Panonit formatu. Kartica mora da bude u NovomFormatu.
+        // (false, false) - Kada hocu da karticu koja je u starom Panonit formatu citam i pisem u PanonitFormatu
+
+        private bool useNewCardFormat = true;
+        public bool UseNewCardFormat
+        {
+            get { return useNewCardFormat; }
+            set { useNewCardFormat = value; }
+        }
+
+        // TODO4: Izbaci ovo kada zavrsis prelazak na novi format kartica.
+        private bool writePanonitDataCard = false;
+        public bool WritePanonitDataCard
+        {
+            get { return writePanonitDataCard; }
+            set { writePanonitDataCard = value; }
+        }
     }
 }

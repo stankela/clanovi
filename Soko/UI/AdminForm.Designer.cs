@@ -58,6 +58,12 @@
             this.lblBrojSekundiWaitAndRead = new System.Windows.Forms.Label();
             this.txtBrojSekundiWaitAndRead = new System.Windows.Forms.TextBox();
             this.btnPromeniBrojSekundiWaitAndRead = new System.Windows.Forms.Button();
+            this.lblUseNewCardFormat = new System.Windows.Forms.Label();
+            this.txtUseNewCardFormat = new System.Windows.Forms.TextBox();
+            this.btnUseNewCardFormat = new System.Windows.Forms.Button();
+            this.lblWritePanonitDataCard = new System.Windows.Forms.Label();
+            this.txtWritePanonitDataCard = new System.Windows.Forms.TextBox();
+            this.btnWritePanonitDataCard = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lstCitacKarticeElapsedMs
@@ -114,7 +120,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(382, 53);
+            this.label1.Location = new System.Drawing.Point(418, 94);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(136, 13);
             this.label1.TabIndex = 10;
@@ -123,7 +129,7 @@
             // lstWriteDataCardReturnValue
             // 
             this.lstWriteDataCardReturnValue.FormattingEnabled = true;
-            this.lstWriteDataCardReturnValue.Location = new System.Drawing.Point(385, 71);
+            this.lstWriteDataCardReturnValue.Location = new System.Drawing.Point(421, 112);
             this.lstWriteDataCardReturnValue.Name = "lstWriteDataCardReturnValue";
             this.lstWriteDataCardReturnValue.Size = new System.Drawing.Size(120, 95);
             this.lstWriteDataCardReturnValue.TabIndex = 11;
@@ -131,7 +137,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(382, 196);
+            this.label2.Location = new System.Drawing.Point(418, 237);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(137, 13);
             this.label2.TabIndex = 12;
@@ -140,7 +146,7 @@
             // lstReadDataCardReturnValue
             // 
             this.lstReadDataCardReturnValue.FormattingEnabled = true;
-            this.lstReadDataCardReturnValue.Location = new System.Drawing.Point(385, 212);
+            this.lstReadDataCardReturnValue.Location = new System.Drawing.Point(421, 253);
             this.lstReadDataCardReturnValue.Name = "lstReadDataCardReturnValue";
             this.lstReadDataCardReturnValue.Size = new System.Drawing.Size(120, 95);
             this.lstReadDataCardReturnValue.TabIndex = 13;
@@ -158,7 +164,7 @@
             // 
             // btnProveriOcitavanja
             // 
-            this.btnProveriOcitavanja.Location = new System.Drawing.Point(584, 52);
+            this.btnProveriOcitavanja.Location = new System.Drawing.Point(620, 93);
             this.btnProveriOcitavanja.Name = "btnProveriOcitavanja";
             this.btnProveriOcitavanja.Size = new System.Drawing.Size(105, 23);
             this.btnProveriOcitavanja.TabIndex = 16;
@@ -169,9 +175,9 @@
             // lstLogFiles
             // 
             this.lstLogFiles.FormattingEnabled = true;
-            this.lstLogFiles.Location = new System.Drawing.Point(584, 81);
+            this.lstLogFiles.Location = new System.Drawing.Point(620, 122);
             this.lstLogFiles.Name = "lstLogFiles";
-            this.lstLogFiles.Size = new System.Drawing.Size(221, 316);
+            this.lstLogFiles.Size = new System.Drawing.Size(221, 212);
             this.lstLogFiles.TabIndex = 17;
             // 
             // ckbTraziLozinkuPreOtvaranjaProzora
@@ -326,11 +332,69 @@
             this.btnPromeniBrojSekundiWaitAndRead.UseVisualStyleBackColor = true;
             this.btnPromeniBrojSekundiWaitAndRead.Click += new System.EventHandler(this.btnPromeniBrojSekundiWaitAndRead_Click);
             // 
+            // lblUseNewCardFormat
+            // 
+            this.lblUseNewCardFormat.AutoSize = true;
+            this.lblUseNewCardFormat.Location = new System.Drawing.Point(277, 12);
+            this.lblUseNewCardFormat.Name = "lblUseNewCardFormat";
+            this.lblUseNewCardFormat.Size = new System.Drawing.Size(105, 13);
+            this.lblUseNewCardFormat.TabIndex = 36;
+            this.lblUseNewCardFormat.Text = "Use new card format";
+            // 
+            // txtUseNewCardFormat
+            // 
+            this.txtUseNewCardFormat.Location = new System.Drawing.Point(416, 9);
+            this.txtUseNewCardFormat.Name = "txtUseNewCardFormat";
+            this.txtUseNewCardFormat.Size = new System.Drawing.Size(72, 20);
+            this.txtUseNewCardFormat.TabIndex = 37;
+            // 
+            // btnUseNewCardFormat
+            // 
+            this.btnUseNewCardFormat.Location = new System.Drawing.Point(533, 9);
+            this.btnUseNewCardFormat.Name = "btnUseNewCardFormat";
+            this.btnUseNewCardFormat.Size = new System.Drawing.Size(75, 23);
+            this.btnUseNewCardFormat.TabIndex = 38;
+            this.btnUseNewCardFormat.Text = "Promeni";
+            this.btnUseNewCardFormat.UseVisualStyleBackColor = true;
+            this.btnUseNewCardFormat.Click += new System.EventHandler(this.btnUseNewCardFormat_Click);
+            // 
+            // lblWritePanonitDataCard
+            // 
+            this.lblWritePanonitDataCard.AutoSize = true;
+            this.lblWritePanonitDataCard.Location = new System.Drawing.Point(277, 50);
+            this.lblWritePanonitDataCard.Name = "lblWritePanonitDataCard";
+            this.lblWritePanonitDataCard.Size = new System.Drawing.Size(119, 13);
+            this.lblWritePanonitDataCard.TabIndex = 39;
+            this.lblWritePanonitDataCard.Text = "Write Panonit data card";
+            // 
+            // txtWritePanonitDataCard
+            // 
+            this.txtWritePanonitDataCard.Location = new System.Drawing.Point(416, 47);
+            this.txtWritePanonitDataCard.Name = "txtWritePanonitDataCard";
+            this.txtWritePanonitDataCard.Size = new System.Drawing.Size(72, 20);
+            this.txtWritePanonitDataCard.TabIndex = 40;
+            // 
+            // btnWritePanonitDataCard
+            // 
+            this.btnWritePanonitDataCard.Location = new System.Drawing.Point(533, 45);
+            this.btnWritePanonitDataCard.Name = "btnWritePanonitDataCard";
+            this.btnWritePanonitDataCard.Size = new System.Drawing.Size(75, 23);
+            this.btnWritePanonitDataCard.TabIndex = 41;
+            this.btnWritePanonitDataCard.Text = "Promeni";
+            this.btnWritePanonitDataCard.UseVisualStyleBackColor = true;
+            this.btnWritePanonitDataCard.Click += new System.EventHandler(this.btnWritePanonitDataCard_Click);
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(869, 525);
+            this.Controls.Add(this.btnWritePanonitDataCard);
+            this.Controls.Add(this.txtWritePanonitDataCard);
+            this.Controls.Add(this.lblWritePanonitDataCard);
+            this.Controls.Add(this.btnUseNewCardFormat);
+            this.Controls.Add(this.txtUseNewCardFormat);
+            this.Controls.Add(this.lblUseNewCardFormat);
             this.Controls.Add(this.btnPromeniBrojSekundiWaitAndRead);
             this.Controls.Add(this.txtBrojSekundiWaitAndRead);
             this.Controls.Add(this.lblBrojSekundiWaitAndRead);
@@ -400,5 +464,11 @@
         private System.Windows.Forms.Label lblBrojSekundiWaitAndRead;
         private System.Windows.Forms.TextBox txtBrojSekundiWaitAndRead;
         private System.Windows.Forms.Button btnPromeniBrojSekundiWaitAndRead;
+        private System.Windows.Forms.Label lblUseNewCardFormat;
+        private System.Windows.Forms.TextBox txtUseNewCardFormat;
+        private System.Windows.Forms.Button btnUseNewCardFormat;
+        private System.Windows.Forms.Label lblWritePanonitDataCard;
+        private System.Windows.Forms.TextBox txtWritePanonitDataCard;
+        private System.Windows.Forms.Button btnWritePanonitDataCard;
     }
 }

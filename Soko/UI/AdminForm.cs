@@ -26,6 +26,8 @@ namespace Soko.UI
             txtCitacKarticaThreadPauzaZaBrisanje.Text = Options.Instance.CitacKarticaThreadPauzaZaBrisanje.ToString();
             ckbUseWaitAndReadLoop.Checked = Options.Instance.UseWaitAndReadLoop;
             txtBrojSekundiWaitAndRead.Text = Options.Instance.NumSecondsWaitAndRead.ToString();
+            txtUseNewCardFormat.Text = Options.Instance.UseNewCardFormat.ToString();
+            txtWritePanonitDataCard.Text = Options.Instance.WritePanonitDataCard.ToString();
 
             lstLogFiles.SelectionMode = SelectionMode.MultiExtended;
             string[] files = Directory.GetFiles(Sesija.LOG_DIR);
@@ -151,6 +153,22 @@ namespace Soko.UI
             {
                 Options.Instance.NumSecondsWaitAndRead = newValue;
             }
+        }
+
+        private void btnUseNewCardFormat_Click(object sender, EventArgs e)
+        {
+            bool newValue = false;
+            if (txtUseNewCardFormat.Text == "True" || txtUseNewCardFormat.Text == "true")
+                newValue = true;
+            Options.Instance.UseNewCardFormat = newValue;
+        }
+
+        private void btnWritePanonitDataCard_Click(object sender, EventArgs e)
+        {
+            bool newValue = false;
+            if (txtWritePanonitDataCard.Text == "True" || txtWritePanonitDataCard.Text == "true")
+                newValue = true;
+            Options.Instance.WritePanonitDataCard = newValue;
         }
     }
 }

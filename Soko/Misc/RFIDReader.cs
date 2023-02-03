@@ -255,27 +255,32 @@ namespace RFID.NativeInterface
                 }
                 mCurrentLight = value;
 
-                rf_light(icdev, (char)0);
+                //rf_light(icdev, (char)0);
                 switch (mCurrentLight)
                 {
                     case ReaderLight.Close:
                         break;
                     case ReaderLight.Red:
-                        rf_light(icdev, (char)1);
+                        //rf_light(icdev, (char)1);
                         break;
                     case ReaderLight.Green:
-                        rf_light(icdev, (char)2);
+                        //rf_light(icdev, (char)2);
                         break;
                     case ReaderLight.RedAndGreen:
-                        rf_light(icdev, (char)1);
-                        rf_light(icdev, (char)2);
+                        //rf_light(icdev, (char)1);
+                        //rf_light(icdev, (char)2);
                         break;
                     default:
                         break;
                 }
                 Sleep(10);
-                rf_beep(icdev, (char)1);
+                //rf_beep(icdev, (char)1);
             }
+        }
+
+        public void Beep()
+        {
+            rf_beep(icdev, (char)1);
         }
 
         private bool IsCardBinded
