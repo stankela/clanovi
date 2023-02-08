@@ -61,11 +61,11 @@ namespace Soko.UI
             this.mnPodesavanja = new System.Windows.Forms.ToolStripMenuItem();
             this.mnOpcije = new System.Windows.Forms.ToolStripMenuItem();
             this.mnCitacKartica = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnBrisiPrethodneUplate = new System.Windows.Forms.ToolStripMenuItem();
             this.mnAdmin = new System.Windows.Forms.ToolStripMenuItem();
             this.mnDuplikatiClanova = new System.Windows.Forms.ToolStripMenuItem();
             this.mnSimulatorCitacaKartica = new System.Windows.Forms.ToolStripMenuItem();
             this.mnAdminOpcije = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnBrisiPrethodneUplate = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -325,16 +325,23 @@ namespace Soko.UI
             // mnOpcije
             // 
             this.mnOpcije.Name = "mnOpcije";
-            this.mnOpcije.Size = new System.Drawing.Size(210, 22);
+            this.mnOpcije.Size = new System.Drawing.Size(190, 22);
             this.mnOpcije.Text = "Opcije";
             this.mnOpcije.Click += new System.EventHandler(this.mnOpcije_Click);
             // 
             // mnCitacKartica
             // 
             this.mnCitacKartica.Name = "mnCitacKartica";
-            this.mnCitacKartica.Size = new System.Drawing.Size(210, 22);
+            this.mnCitacKartica.Size = new System.Drawing.Size(190, 22);
             this.mnCitacKartica.Text = "Citac kartica";
             this.mnCitacKartica.Click += new System.EventHandler(this.mnCitacKartica_Click);
+            // 
+            // mnBrisiPrethodneUplate
+            // 
+            this.mnBrisiPrethodneUplate.Name = "mnBrisiPrethodneUplate";
+            this.mnBrisiPrethodneUplate.Size = new System.Drawing.Size(190, 22);
+            this.mnBrisiPrethodneUplate.Text = "Brisi prethodne uplate";
+            this.mnBrisiPrethodneUplate.Click += new System.EventHandler(this.mnBrisiPrethodneUplate_Click);
             // 
             // mnAdmin
             // 
@@ -366,13 +373,6 @@ namespace Soko.UI
             this.mnAdminOpcije.Size = new System.Drawing.Size(197, 22);
             this.mnAdminOpcije.Text = "Opcije";
             this.mnAdminOpcije.Click += new System.EventHandler(this.mnAdminOpcije_Click);
-            // 
-            // mnBrisiPrethodneUplate
-            // 
-            this.mnBrisiPrethodneUplate.Name = "mnBrisiPrethodneUplate";
-            this.mnBrisiPrethodneUplate.Size = new System.Drawing.Size(190, 22);
-            this.mnBrisiPrethodneUplate.Text = "Brisi prethodne uplate";
-            this.mnBrisiPrethodneUplate.Click += new System.EventHandler(this.mnBrisiPrethodneUplate_Click);
             // 
             // Form1
             // 

@@ -93,11 +93,6 @@ namespace Soko
             Log.Info("", data.PasswordA + " " + data.Control + " " + data.PasswordB);
         }
 
-        private string DecodeID1(string encodedID1)
-        {
-            return DecodeName(encodedID1);
-        }
-
         // Name is a string which is encoded hexadecimally, so "SDV" -> "53445600"
         private string DecodeName(string encodedName)
         {
@@ -114,17 +109,9 @@ namespace Soko
             return res;
         }
 
-        TipKartice GetTipKartice()
+        private string DecodeID1(string encodedID1)
         {
-            int sectorNo = 3;
-            RFIDReader.RFIDSectorData data = mReader.ReadData(sectorNo, false, KEY);
-            if (data == null)
-                return TipKartice.Prazna;  // nova neformatirana kartica
-            LogSector(sectorNo, data);  // TODO4: Iskljuci Log od readera kada sve podesis
-            if (data.Block0 == "00000000000000000000000000000000")
-                return TipKartice.NoviFormat;
-            else
-                return TipKartice.Panonit;
+            return DecodeName(encodedID1);
         }
 
         private ulong NewReadDataCard(int comport, ref string sID1, ref string sName)
@@ -134,16 +121,27 @@ namespace Soko
 
             //setCardNo(mReader.CurrentCardNo);
 
-            TipKartice tipKartice = GetTipKartice();
-            if (tipKartice == TipKartice.Prazna)
-                return 3;
-            else if (tipKartice == TipKartice.Panonit)
+            TipKartice tipKartice;
+            int sectorNo = 3;
+            RFIDReader.RFIDSectorData data = mReader.ReadData(sectorNo, false, KEY);
+            if (data == null)
+                tipKartice = TipKartice.Prazna;
+            else
+            {
+                LogSector(sectorNo, data);
+                if (data.Block0 == "53445632303233000000000000000000")
+                    tipKartice = TipKartice.NoviFormat;
+                else
+                    tipKartice = TipKartice.Panonit;
+            }
+
+            if (tipKartice == TipKartice.Prazna || tipKartice == TipKartice.Panonit)
                 return 2;
 
             // TipKartice je NoviFormat
 
-            int sectorNo = 5;
-            RFIDReader.RFIDSectorData data = mReader.ReadData(sectorNo, false, KEY);
+            sectorNo = 5;
+            data = mReader.ReadData(sectorNo, false, KEY);
             if (data == null)
                 return 0;
             LogSector(sectorNo, data);
@@ -155,7 +153,9 @@ namespace Soko
             if (data == null)
                 return 0;
             LogSector(sectorNo, data);
-            sID1 = DecodeID1(data.Block2);
+            byte[] encryptedBytes = RFIDReader.ToDigitsBytes(data.Block2);
+            byte[] decryptedBytes = EncryptionHelper.Decrypt(encryptedBytes);
+            sID1 = DecodeID1(RFIDReader.ToHexString(decryptedBytes));
             Log.Info("sID1", sID1);
       
             return 1;
@@ -174,6 +174,67 @@ namespace Soko
                 return ReadDataCard(comport, ref sType, ref sID1, ref sID2, ref sName) & 0xFFFFFFFF;
         }
 
+        private ulong SetKeys()
+        {
+            // write key to blocks 7, 15 and 23
+            string keyBlock = KEY + "FF078069" + DEFAULT_KEY;
+            if (!mReader.WriteDataToBlock(1, 3, false, DEFAULT_KEY, keyBlock))
+                return 0;
+            Log.Info("Write key to block 7:", keyBlock);
+            if (!mReader.WriteDataToBlock(3, 3, false, DEFAULT_KEY, keyBlock))
+                return 0;
+            Log.Info("Write key to block 15:", keyBlock);
+            if (!mReader.WriteDataToBlock(5, 3, false, DEFAULT_KEY, keyBlock))
+                return 0;
+            Log.Info("Write key to block 23:", keyBlock);
+            return 1;
+        }
+
+        private string EncryptID1(string sID1)
+        {
+            string value = "00000000000000000000000000000000";
+            char[] value2 = value.ToCharArray();
+            for (int i = 0; i < sID1.Length; ++i)
+            {
+                string hex = Uri.HexEscape(sID1[i]);
+                // hex[0] contains "%"
+                value2[2 * i] = hex[1];
+                value2[2 * i + 1] = hex[2];
+            }
+            byte[] hexUnescapedBytes = RFIDReader.ToDigitsBytes(new String(value2));
+            byte[] encryptedBytes = EncryptionHelper.Encrypt(hexUnescapedBytes);
+            return RFIDReader.ToHexString(encryptedBytes);
+        }
+
+        private ulong SetData(string sID1, string sName)
+        {
+            // sID1
+
+            // write encrypted sID1 to block 6
+            string encryptedValue = EncryptID1(sID1);
+            Log.Info("Write data to block 6:", encryptedValue);
+            if (!mReader.WriteDataToBlock(1, 2, false, KEY, encryptedValue))
+                return 0;
+
+            // sName
+
+            // write "SDV" to block 20
+            if (sName != "SDV")
+                throw new Exception("Greska u programu.");
+            string value = "53445600000000000000000000000000";
+            Log.Info("Write data to block 20:", value);
+            if (!mReader.WriteDataToBlock(5, 0, false, KEY, value))
+                return 0;
+
+            // Napravi da kartica bude u formatu TipKartice.NoviFormat - write "SDV2023" to block 12
+            value = "53445632303233000000000000000000";
+            Log.Info("Write data to block 12:", value);
+            if (!mReader.WriteDataToBlock(3, 0, false, KEY, value))
+                return 0;
+
+            return 1;
+        }
+
         private ulong NewWriteDataCard(int comport, string sID1, string sName)
         {
             //mReader.EnableCheck = false;
@@ -183,75 +244,26 @@ namespace Soko
                 return 0;
 
             if (Options.Instance.WritePanonitDataCard)
-                return WritePanonitDataCard(comport, sID1, sName);
+                return WritePanonitDataCard();
+            else if (Options.Instance.WritePraznaDataCard)
+                return WritePraznaDataCard();
 
-            TipKartice tipKartice = GetTipKartice();
+            if (SetKeys() == 1)  // Prazna kartica
+                return SetData(sID1, sName);
 
-            string value = "";
-            if (tipKartice == TipKartice.Prazna)
-            {
-                // write key to blocks 7, 15 and 23
-                string keyBlock = KEY + "FF078069" + DEFAULT_KEY;
-                if (!mReader.WriteDataToBlock(1, 3, false, DEFAULT_KEY, keyBlock))
-                    return 0;
-                Log.Info("Write key to block 7:", keyBlock);
-                if (!mReader.WriteDataToBlock(3, 3, false, DEFAULT_KEY, keyBlock))
-                    return 0;
-                Log.Info("Write key to block 15:", keyBlock);
-                if (!mReader.WriteDataToBlock(5, 3, false, DEFAULT_KEY, keyBlock))
-                    return 0;
-                Log.Info("Write key to block 23:", keyBlock);
-            }
+            // NoviFormat ili Panonit kartica.
 
-            if (tipKartice == TipKartice.Prazna || tipKartice == TipKartice.Panonit)
-            {
-                // Napravi da kartica bude u formatu TipKartice.NoviFormat
-                // write "0" to block 12
-                value = "00000000000000000000000000000000";
-                Log.Info("Write data to block 12:", value);
-                if (!mReader.WriteDataToBlock(3, 0, false, KEY, value))
-                    return 0;
-            }
-
-            // sID1
-
-            // TODO4: Encrypt ID1
-            // write sID1 to block 6
-            value = "00000000000000000000000000000000";
-            char[] value2 = value.ToCharArray();
-            for (int i = 0; i < sID1.Length; ++i)
-            {
-                string hex = Uri.HexEscape(sID1[i]);
-                // hex[0] contains "%"
-                value2[2 * i] = hex[1];
-                value2[2 * i + 1] = hex[2];
-            }
-            value = new String(value2);
-            Log.Info("Write data to block 6:", value);
-            if (!mReader.WriteDataToBlock(1, 2, false, KEY, value))
+            RFIDReader.Sleep(200);
+            if (!mReader.ConnectDevice(comport) || !mReader.BindCard(false))
                 return 0;
-
-            // sName
-
-            // write "SDV" to block 20
-            if (sName != "SDV")
-                throw new Exception("Greska u programu.");
-            value = "53445600000000000000000000000000";
-            Log.Info("Write data to block 20:", value);
-            if (!mReader.WriteDataToBlock(5, 0, false, KEY, value))
-                return 0;
+            return SetData(sID1, sName);
 
             //mReader.EnableCheck = true;  // TODO4: RAII ?
-            return 1;
         }
 
         // Konvertuje iz TipKartice.NoviFormat u TipKartice.Panonit
-        private ulong WritePanonitDataCard(int comport, string sID1, string sName)
+        private ulong WritePanonitDataCard()
         {
-            TipKartice tipKartice = GetTipKartice();
-            if (tipKartice != TipKartice.NoviFormat)
-                return 0;
-
             string value = "0000000EBA0A74770000000000000000";
             Log.Info("Write data to block 6:", value);
             if (!mReader.WriteDataToBlock(1, 2, false, KEY, value))
@@ -265,6 +277,37 @@ namespace Soko
             value = "53445600000000000000000000000000";
             Log.Info("Write data to block 20:", value);
             if (!mReader.WriteDataToBlock(5, 0, false, KEY, value))
+                return 0;
+
+            //mReader.EnableCheck = true;  // TODO4: RAII ?
+            return 1;
+        }
+
+        // Konvertuje iz TipKartice.NoviFormat u TipKartice.Prazna
+        private ulong WritePraznaDataCard()
+        {
+            // write default key to blocks 7, 15 and 23
+            string keyBlock = DEFAULT_KEY + "FF078069" + DEFAULT_KEY;
+            if (!mReader.WriteDataToBlock(1, 3, false, KEY, keyBlock))
+                return 0;
+            Log.Info("Write key to block 7:", keyBlock);
+            if (!mReader.WriteDataToBlock(3, 3, false, KEY, keyBlock))
+                return 0;
+            Log.Info("Write key to block 15:", keyBlock);
+            if (!mReader.WriteDataToBlock(5, 3, false, KEY, keyBlock))
+                return 0;
+            Log.Info("Write key to block 23:", keyBlock);
+
+            // write zero data to blocks 6, 12 and 20
+            string value = "00000000000000000000000000000000";
+            Log.Info("Write data to block 6:", value);
+            if (!mReader.WriteDataToBlock(1, 2, false, DEFAULT_KEY, value))
+                return 0;
+            Log.Info("Write data to block 12:", value);
+            if (!mReader.WriteDataToBlock(3, 0, false, DEFAULT_KEY, value))
+                return 0;
+            Log.Info("Write data to block 20:", value);
+            if (!mReader.WriteDataToBlock(5, 0, false, DEFAULT_KEY, value))
                 return 0;
 
             //mReader.EnableCheck = true;  // TODO4: RAII ?
@@ -329,13 +372,7 @@ namespace Soko
             }
             else if (retval == 2)
             {
-                string msg = "Kartica je u starom formatu. " +
-                    "Idite u meni 'Pravljenje kartice' i ponovo napravite karticu.";
-                throw new ReadCardException(msg);
-            }
-            else if (retval == 3)
-            {
-                string msg = "Kartica je prazna. " +
+                string msg = "Kartica je ili prazna ili u starom formatu. " +
                     "Idite u meni 'Pravljenje kartice' i napravite karticu.";
                 throw new ReadCardException(msg);
             }

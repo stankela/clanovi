@@ -28,6 +28,7 @@ namespace Soko.UI
             txtBrojSekundiWaitAndRead.Text = Options.Instance.NumSecondsWaitAndRead.ToString();
             txtUseNewCardFormat.Text = Options.Instance.UseNewCardFormat.ToString();
             txtWritePanonitDataCard.Text = Options.Instance.WritePanonitDataCard.ToString();
+            txtWritePraznaDataCard.Text = Options.Instance.WritePraznaDataCard.ToString();
 
             lstLogFiles.SelectionMode = SelectionMode.MultiExtended;
             string[] files = Directory.GetFiles(Sesija.LOG_DIR);
@@ -169,6 +170,14 @@ namespace Soko.UI
             if (txtWritePanonitDataCard.Text == "True" || txtWritePanonitDataCard.Text == "true")
                 newValue = true;
             Options.Instance.WritePanonitDataCard = newValue;
+        }
+
+        private void btnWritePraznaDataCard_Click(object sender, EventArgs e)
+        {
+            bool newValue = false;
+            if (txtWritePraznaDataCard.Text == "True" || txtWritePraznaDataCard.Text == "true")
+                newValue = true;
+            Options.Instance.WritePraznaDataCard = newValue;
         }
     }
 }

@@ -153,7 +153,7 @@ namespace RFID.NativeInterface
 
         }
 
-        private static string ToHexString(byte[] bytes)
+        public static string ToHexString(byte[] bytes)
         {
             String hexString = String.Empty;
             for (int i = 0; i < bytes.Length; i++)
@@ -274,13 +274,13 @@ namespace RFID.NativeInterface
                         break;
                 }
                 Sleep(10);
-                //rf_beep(icdev, (char)1);
+                //rf_beep(icdev, (char)5);
             }
         }
 
         public void Beep()
         {
-            rf_beep(icdev, (char)1);
+            rf_beep(icdev, (char)5);
         }
 
         private bool IsCardBinded

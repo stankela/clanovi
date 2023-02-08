@@ -10,6 +10,11 @@ namespace Soko.UI
 {
     public partial class PotvrdaDialog : Form
     {
+        public void SetDaText(string daText)
+        {
+            btnDa.Text = daText;
+        }
+
         public PotvrdaDialog(string naslov, string pitanje)
         {
             InitializeComponent();

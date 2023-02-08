@@ -67,6 +67,7 @@ namespace Soko.UI
             Font = Options.Instance.Font;
 
             ckbKartica.Checked = false;
+            ckbKartica.Visible = false;
             cmbClan.DropDownStyle = ComboBoxStyle.DropDownList;
 
             setClanovi(clanovi);
@@ -105,6 +106,7 @@ namespace Soko.UI
             }
             SelectedClan = clan;
             ckbKartica.Checked = SelectedClan != null && SelectedClan.ImaKarticu;
+            ckbKartica.Visible = ckbKartica.Checked;
         }
 
         private Clan findClan(int broj)
@@ -139,6 +141,7 @@ namespace Soko.UI
                 txtSifraClana.Text = String.Empty;
                 ckbKartica.Checked = false;
             }
+            ckbKartica.Visible = ckbKartica.Checked;
         }
 
         private bool napraviKarticuDlg(Clan c, bool testKartica)
@@ -166,7 +169,23 @@ namespace Soko.UI
                 return;
             }
 
-            if (napraviKarticuDlg(SelectedClan, testKartica))
+            bool napraviKarticu;
+            if (SelectedClan != null && ckbKartica.Checked)
+            {
+                string naslov = "Duplikat kartice";
+                string pitanje = String.Format("Clan \"{0}\" vec ima karticu. Da li zelite da napravite duplikat?",
+                    SelectedClan.BrojPrezimeImeDatumRodjenja);
+                PotvrdaDialog dlg2 = new PotvrdaDialog(naslov, pitanje);
+                dlg2.Width += 100;
+                dlg2.SetDaText("Duplikat");
+                napraviKarticu = (dlg2.ShowDialog() == DialogResult.Yes);
+            }
+            else
+            {
+                napraviKarticu = napraviKarticuDlg(SelectedClan, testKartica);
+            }
+
+            if (napraviKarticu)
             {
                 MessageDialogs.showMessage("Prislonite karticu na citac i kliknite OK.", "Pravljenje kartice");
                 string msg;
@@ -214,8 +233,7 @@ namespace Soko.UI
             okMsg = String.Empty;
 
             // TODO2: Prvo proveri da li je kartica vazeca, i prikazi upozorenje ako jeste (isto i u WriteClanKartica).
-            if (CitacKartica.Instance.writeCard(Options.Instance.COMPortWriter,
-                CitacKartica.TEST_KARTICA_BROJ.ToString()))
+            if (CitacKartica.Instance.writeCard(Options.Instance.COMPortWriter, CitacKartica.TEST_KARTICA_BROJ.ToString()))
             {
                 okMsg = OK_MSG_WRITE_TEST;
                 return;
@@ -231,8 +249,7 @@ namespace Soko.UI
         {
             okMsg = String.Empty;
 
-            if (!CitacKartica.Instance.writeCard(Options.Instance.COMPortWriter,
-                brojKartice.ToString()))
+            if (!CitacKartica.Instance.writeCard(Options.Instance.COMPortWriter, brojKartice.ToString()))
             {
                 throw new WriteCardException(ERROR_MSG_WRITE);
             }
@@ -249,6 +266,7 @@ namespace Soko.UI
                     DAOFactoryFactory.DAOFactory.GetClanDAO().MakePersistent(clan);
                     session.Transaction.Commit();
                     ckbKartica.Checked = true;
+                    ckbKartica.Visible = true;
 
                     okMsg = String.Format(OK_MSG_WRITE, brojKartice.ToString(), clan.BrojPrezimeImeDatumRodjenja);
                 }

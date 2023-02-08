@@ -271,7 +271,7 @@ namespace Soko
             set { useCardReaderLog = value; }
         }
 
-        // TODO4: Izbaci ovo kada zavrsis prelazak na novi format kartica.
+        // TODO4: Izbaci ovu opciju kada zavrsis prelazak na novi format kartica (takodje i sledece dve opcije)
         // Moguce vrednosti za (UseNewCardFormat, WritePanonitDataCard)
         // (true, false) - Kada hocu karticu citam i pisem u NovomFormatu. Kartica moze da bude u bilo kojem formatu
         //                 (Prazna, Panonit, NoviFormat).
@@ -285,12 +285,18 @@ namespace Soko
             set { useNewCardFormat = value; }
         }
 
-        // TODO4: Izbaci ovo kada zavrsis prelazak na novi format kartica.
         private bool writePanonitDataCard = false;
         public bool WritePanonitDataCard
         {
             get { return writePanonitDataCard; }
             set { writePanonitDataCard = value; }
+        }
+
+        private bool writePraznaDataCard = false;
+        public bool WritePraznaDataCard
+        {
+            get { return writePraznaDataCard; }
+            set { writePraznaDataCard = value; }
         }
     }
 }
