@@ -603,6 +603,7 @@
     <Content Include="Update\DatabaseUpdate.txt" />
     <EmbeddedResource Include="Update\DatabaseUpdate_version1.txt" />
     <EmbeddedResource Include="Update\DatabaseUpdate_version2.txt" />
+    <EmbeddedResource Include="Update\DatabaseUpdate_version4.txt" />
     <Content Include="UPUTSTVO_ZA_DVA_PROGRAMA.txt" />
     <EmbeddedResource Include="Data\NHibernate\Mappings\Mesto.hbm.xml">
       <SubType>Designer</SubType>

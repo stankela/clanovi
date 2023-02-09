@@ -1,0 +1,6 @@
+-- 09-Feb-2023 (VERZIJA = 4)
+
+ALTER TABLE clanovi ADD COLUMN serijski_broj_kartice bigint;
+GO
+UPDATE clanovi SET serijski_broj_kartice = 0;
+GO

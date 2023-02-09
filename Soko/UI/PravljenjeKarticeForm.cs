@@ -67,7 +67,6 @@ namespace Soko.UI
             Font = Options.Instance.Font;
 
             ckbKartica.Checked = false;
-            ckbKartica.Visible = false;
             cmbClan.DropDownStyle = ComboBoxStyle.DropDownList;
 
             setClanovi(clanovi);
@@ -106,7 +105,6 @@ namespace Soko.UI
             }
             SelectedClan = clan;
             ckbKartica.Checked = SelectedClan != null && SelectedClan.ImaKarticu;
-            ckbKartica.Visible = ckbKartica.Checked;
         }
 
         private Clan findClan(int broj)
@@ -141,7 +139,6 @@ namespace Soko.UI
                 txtSifraClana.Text = String.Empty;
                 ckbKartica.Checked = false;
             }
-            ckbKartica.Visible = ckbKartica.Checked;
         }
 
         private bool napraviKarticuDlg(Clan c, bool testKartica)
@@ -233,7 +230,9 @@ namespace Soko.UI
             okMsg = String.Empty;
 
             // TODO2: Prvo proveri da li je kartica vazeca, i prikazi upozorenje ako jeste (isto i u WriteClanKartica).
-            if (CitacKartica.Instance.writeCard(Options.Instance.COMPortWriter, CitacKartica.TEST_KARTICA_BROJ.ToString()))
+            Int64 serialCardNo;
+            if (CitacKartica.Instance.writeCard(Options.Instance.COMPortWriter, CitacKartica.TEST_KARTICA_BROJ.ToString(),
+                out serialCardNo))
             {
                 okMsg = OK_MSG_WRITE_TEST;
                 return;
@@ -249,7 +248,8 @@ namespace Soko.UI
         {
             okMsg = String.Empty;
 
-            if (!CitacKartica.Instance.writeCard(Options.Instance.COMPortWriter, brojKartice.ToString()))
+            Int64 serialCardNo;
+            if (!CitacKartica.Instance.writeCard(Options.Instance.COMPortWriter, brojKartice.ToString(), out serialCardNo))
             {
                 throw new WriteCardException(ERROR_MSG_WRITE);
             }
@@ -263,10 +263,10 @@ namespace Soko.UI
                     CurrentSessionContext.Bind(session);
                     clan = session.Load<Clan>(clanId);
                     clan.BrojKartice = brojKartice;
+                    clan.SerijskiBrojKartice = serialCardNo;
                     DAOFactoryFactory.DAOFactory.GetClanDAO().MakePersistent(clan);
                     session.Transaction.Commit();
                     ckbKartica.Checked = true;
-                    ckbKartica.Visible = true;
 
                     okMsg = String.Format(OK_MSG_WRITE, brojKartice.ToString(), clan.BrojPrezimeImeDatumRodjenja);
                 }

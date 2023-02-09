@@ -18,6 +18,7 @@
     <property name="Napomena" column="napomena" />
     <property name="ImaPristupnicu" column="ima_pristupnicu" />
     <property name="NeplacaClanarinu" column="ne_placa_clanarinu" />
+    <property name="SerijskiBrojKartice" column="serijski_broj_kartice" />
     <many-to-one name="Mesto" class="Mesto" column="mesto_id" />
     <many-to-one name="Institucija" class="Institucija" column="institucija_id" />
   </class>

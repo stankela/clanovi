@@ -109,17 +109,55 @@ namespace Soko
             return res;
         }
 
-        private string DecodeID1(string encodedID1)
+        private string DecodeID1(string encryptedID1, string CurrentCardNo)
         {
-            return DecodeName(encodedID1);
+            byte[] encryptedBytes = RFIDReader.ToDigitsBytes(encryptedID1);
+            byte[] decryptedBytes = EncryptionHelper.Decrypt(encryptedBytes);
+            string encodedID1 = RFIDReader.ToHexString(decryptedBytes);
+
+            // Format je "n6 n1 n5 id1 n7 n0 id0 n2 n4 n3" + ostatak id
+            char[] cardNo = new char[8];
+            cardNo[6] = encodedID1[0];
+            cardNo[1] = encodedID1[1];
+            cardNo[5] = encodedID1[2];
+            cardNo[7] = encodedID1[4];
+            cardNo[0] = encodedID1[5];
+            cardNo[2] = encodedID1[7];
+            cardNo[4] = encodedID1[8];
+            cardNo[3] = encodedID1[9];
+            if (new String(cardNo) != CurrentCardNo.Substring(0, 8))
+                throw new ReadCardException("Lose formatirana kartica.");
+
+            String hex_encoded_id_digit = String.Empty;
+            hex_encoded_id_digit += encodedID1[6];
+            hex_encoded_id_digit += encodedID1[3];
+            String res = String.Empty;
+            int index = 0;
+            res += Uri.HexUnescape("%" + hex_encoded_id_digit, ref index);
+            for (int i = 10; i < encodedID1.Length - 1; i += 2)
+            {
+                if (encodedID1[i] == '0' && encodedID1[i + 1] == '0')
+                    break;
+                if ((i / 2) % 2 == 0)
+                {
+                    hex_encoded_id_digit = encodedID1.Substring(i, 2);
+                }
+                else
+                {
+                    hex_encoded_id_digit = String.Empty;
+                    hex_encoded_id_digit += encodedID1[i + 1];
+                    hex_encoded_id_digit += encodedID1[i];
+                }
+                index = 0;
+                res += Uri.HexUnescape("%" + hex_encoded_id_digit, ref index);
+            }
+            return res;
         }
 
         private ulong NewReadDataCard(int comport, ref string sID1, ref string sName)
         {
             if (!mReader.ConnectDevice(comport) || !mReader.BindCard(false))
                 return 0;
-
-            //setCardNo(mReader.CurrentCardNo);
 
             TipKartice tipKartice;
             int sectorNo = 3;
@@ -153,9 +191,10 @@ namespace Soko
             if (data == null)
                 return 0;
             LogSector(sectorNo, data);
-            byte[] encryptedBytes = RFIDReader.ToDigitsBytes(data.Block2);
-            byte[] decryptedBytes = EncryptionHelper.Decrypt(encryptedBytes);
-            sID1 = DecodeID1(RFIDReader.ToHexString(decryptedBytes));
+
+            // TODO4: Upisuj i cardNo u bazu podataka (da budes spreman da koristis citac koji moze samo da procita
+            // card uid).
+            sID1 = DecodeID1(data.Block2, mReader.CurrentCardNo);
             Log.Info("sID1", sID1);
       
             return 1;
@@ -190,30 +229,54 @@ namespace Soko
             return 1;
         }
 
-        private string EncryptID1(string sID1)
+        private string EncodeID1(string sID1, string CurrentCardNo)
         {
             string value = "00000000000000000000000000000000";
             char[] value2 = value.ToCharArray();
-            for (int i = 0; i < sID1.Length; ++i)
+
+            // Format je "n6 n1 n5 id1 n7 n0 id0 n2 n4 n3" + ostatak id
+            string hex = Uri.HexEscape(sID1[0]);
+            value2[0] = CurrentCardNo[6];
+            value2[1] = CurrentCardNo[1];
+            value2[2] = CurrentCardNo[5];
+            value2[3] = hex[2];
+            value2[4] = CurrentCardNo[7];
+            value2[5] = CurrentCardNo[0];
+            value2[6] = hex[1];
+            value2[7] = CurrentCardNo[2];
+            value2[8] = CurrentCardNo[4];
+            value2[9] = CurrentCardNo[3];
+
+            int j = 10;
+            for (int i = 1; i < sID1.Length; ++i, j += 2)
             {
-                string hex = Uri.HexEscape(sID1[i]);
+                hex = Uri.HexEscape(sID1[i]);
                 // hex[0] contains "%"
-                value2[2 * i] = hex[1];
-                value2[2 * i + 1] = hex[2];
+                if (i % 2 == 0)
+                {
+                    value2[j] = hex[1];
+                    value2[j + 1] = hex[2];
+                }
+                else
+                {
+                    value2[j] = hex[2];
+                    value2[j + 1] = hex[1];
+                }
             }
+            // Encrypt the value
             byte[] hexUnescapedBytes = RFIDReader.ToDigitsBytes(new String(value2));
             byte[] encryptedBytes = EncryptionHelper.Encrypt(hexUnescapedBytes);
             return RFIDReader.ToHexString(encryptedBytes);
         }
 
-        private ulong SetData(string sID1, string sName)
+        private ulong SetData(string sID1, string sName, string CurrentCardNo)
         {
             // sID1
 
             // write encrypted sID1 to block 6
-            string encryptedValue = EncryptID1(sID1);
-            Log.Info("Write data to block 6:", encryptedValue);
-            if (!mReader.WriteDataToBlock(1, 2, false, KEY, encryptedValue))
+            string value = EncodeID1(sID1, CurrentCardNo);
+            Log.Info("Write data to block 6:", value);
+            if (!mReader.WriteDataToBlock(1, 2, false, KEY, value))
                 return 0;
 
             // sName
@@ -221,7 +284,7 @@ namespace Soko
             // write "SDV" to block 20
             if (sName != "SDV")
                 throw new Exception("Greska u programu.");
-            string value = "53445600000000000000000000000000";
+            value = "53445600000000000000000000000000";
             Log.Info("Write data to block 20:", value);
             if (!mReader.WriteDataToBlock(5, 0, false, KEY, value))
                 return 0;
@@ -235,10 +298,12 @@ namespace Soko
             return 1;
         }
 
-        private ulong NewWriteDataCard(int comport, string sID1, string sName)
+        private ulong NewWriteDataCard(int comport, string sID1, string sName, out Int64 serialCardNo)
         {
             //mReader.EnableCheck = false;
             //RFIDReader.Sleep(200);
+
+            serialCardNo = 0;
 
             if (!mReader.ConnectDevice(comport) || !mReader.BindCard(false))
                 return 0;
@@ -248,15 +313,17 @@ namespace Soko
             else if (Options.Instance.WritePraznaDataCard)
                 return WritePraznaDataCard();
 
+            serialCardNo = Convert.ToInt64(mReader.CurrentCardNo, 16);
+
             if (SetKeys() == 1)  // Prazna kartica
-                return SetData(sID1, sName);
+                return SetData(sID1, sName, mReader.CurrentCardNo);
 
             // NoviFormat ili Panonit kartica.
 
             RFIDReader.Sleep(200);
             if (!mReader.ConnectDevice(comport) || !mReader.BindCard(false))
                 return 0;
-            return SetData(sID1, sName);
+            return SetData(sID1, sName, mReader.CurrentCardNo);
 
             //mReader.EnableCheck = true;  // TODO4: RAII ?
         }
@@ -314,11 +381,13 @@ namespace Soko
             return 1;
         }
 
-        private ulong MyWriteDataCard(int comport, string sType, string sID1, string sID2, string sName)
+        private ulong MyWriteDataCard(int comport, string sType, string sID1, string sID2, string sName,
+            out Int64 serialCardNo)
         {
+            serialCardNo = 0;
             if (Options.Instance.UseNewCardFormat)
             {
-                ulong retval = NewWriteDataCard(comport, sID1, sName);
+                ulong retval = NewWriteDataCard(comport, sID1, sName, out serialCardNo);
                 if (retval == 1)
                     mReader.Beep();
                 return retval;
@@ -415,7 +484,7 @@ namespace Soko
             return Int32.TryParse(sID1, out broj) && broj > 0 && name == NAME_FIELD;
         }
 
-        public bool writeCard(int comPort, string sID1)
+        public bool writeCard(int comPort, string sID1, out Int64 serialCardNo)
         {
             string sType = "";
             string sID2 = "";
@@ -435,12 +504,12 @@ namespace Soko
             {
                 lock (readAndWriteLock)
                 {
-                    retval = MyWriteDataCard(comPort, sType, sID1, sID2, sName);
+                    retval = MyWriteDataCard(comPort, sType, sID1, sID2, sName, out serialCardNo);
                 }
             }
             else
             {
-                retval = MyWriteDataCard(comPort, sType, sID1, sID2, sName);
+                retval = MyWriteDataCard(comPort, sType, sID1, sID2, sName, out serialCardNo);
             }
 
             if (measureTime)

@@ -86,10 +86,10 @@ namespace Soko.UI
             // ckbKartica
             // 
             this.ckbKartica.AutoSize = true;
-            this.ckbKartica.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ckbKartica.Location = new System.Drawing.Point(15, 67);
+            this.ckbKartica.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ckbKartica.Location = new System.Drawing.Point(15, 74);
             this.ckbKartica.Name = "ckbKartica";
-            this.ckbKartica.Size = new System.Drawing.Size(117, 24);
+            this.ckbKartica.Size = new System.Drawing.Size(78, 17);
             this.ckbKartica.TabIndex = 15;
             this.ckbKartica.Text = "Ima karticu";
             this.ckbKartica.UseVisualStyleBackColor = true;

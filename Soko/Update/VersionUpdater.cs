@@ -62,6 +62,15 @@ public class VersionUpdater
             converted = true;
         }
 
+        if (verzijaBaze == 3 && Program.VERZIJA_PROGRAMA > 3)
+        {
+            SqlCeUtilities.ExecuteScript(ConfigurationParameters.DatabaseFile, ConfigurationParameters.Password,
+                "Soko.Update.DatabaseUpdate_version4.txt", true);
+            SqlCeUtilities.updateDatabaseVersionNumber(4);
+            verzijaBaze = 4;
+            converted = true;
+        }
+
         if (converted)
         {
             string msg = String.Format("Baza podataka je konvertovana iz verzije {0} u verziju {1}.", staraVerzijaBaze,

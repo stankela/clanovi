@@ -32,9 +32,16 @@ namespace Soko.Domain
             set { brojKartice = value; }
         }
 
+        private Nullable<Int64> serijskiBrojKartice;
+        public virtual Nullable<Int64> SerijskiBrojKartice
+        {
+            get { return serijskiBrojKartice; }
+            set { serijskiBrojKartice = value; }
+        }
+
         public virtual bool ImaKarticu
         {
-            get { return BrojKartice != null && BrojKartice.Value > 0; }
+            get { return SerijskiBrojKartice != null && SerijskiBrojKartice.Value > 0; }
         }
 
         private string ime;
