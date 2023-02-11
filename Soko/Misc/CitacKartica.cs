@@ -23,15 +23,6 @@ namespace Soko
 {
     public class CitacKartica
     {
-        [DllImport("PanReaderIf.dll")]
-        private static extern ulong ReadDataCard(int comport, ref string sType, ref string sID1, ref string sID2, ref string sName);
-        [DllImport("PanReaderIf.dll")]
-        private static extern ulong WriteDataCard(int comport, string sType, string sID1, string sID2, string sName);
-        [DllImport("PanReaderIf.dll")]
-        private static extern ulong WaitDataCard(int comport, int nSecs);
-        [DllImport("PanReaderIf.dll")]
-        private static extern ulong WaitAndReadDataCard(int comport, int nSecs, ref string sType, ref string sID1, ref string sID2, ref string sName);
-
         private Object readAndWriteLock = new Object();
 
         // Volatile is used as hint to the compiler that this data 
@@ -202,15 +193,10 @@ namespace Soko
 
         private ulong MyReadDataCard(int comport, ref string sType, ref string sID1, ref string sID2, ref string sName)
         {
-            if (Options.Instance.UseNewCardFormat)
-            {
-                ulong retval = NewReadDataCard(comport, ref sID1, ref sName);
-                if (retval == 1)
-                    mReader.Beep();
-                return retval;
-            }
-            else
-                return ReadDataCard(comport, ref sType, ref sID1, ref sID2, ref sName) & 0xFFFFFFFF;
+            ulong retval = NewReadDataCard(comport, ref sID1, ref sName);
+            if (retval == 1)
+                mReader.Beep();
+            return retval;
         }
 
         private ulong SetKeys()
@@ -308,9 +294,7 @@ namespace Soko
             if (!mReader.ConnectDevice(comport) || !mReader.BindCard(false))
                 return 0;
 
-            if (Options.Instance.WritePanonitDataCard)
-                return WritePanonitDataCard();
-            else if (Options.Instance.WritePraznaDataCard)
+            if (Options.Instance.WritePraznaDataCard)
                 return WritePraznaDataCard();
 
             serialCardNo = Convert.ToInt64(mReader.CurrentCardNo, 16);
@@ -326,28 +310,6 @@ namespace Soko
             return SetData(sID1, sName, mReader.CurrentCardNo);
 
             //mReader.EnableCheck = true;  // TODO4: RAII ?
-        }
-
-        // Konvertuje iz TipKartice.NoviFormat u TipKartice.Panonit
-        private ulong WritePanonitDataCard()
-        {
-            string value = "0000000EBA0A74770000000000000000";
-            Log.Info("Write data to block 6:", value);
-            if (!mReader.WriteDataToBlock(1, 2, false, KEY, value))
-                return 0;
-
-            value = "6FB602642150981F9ADAECC8713CDC07";
-            Log.Info("Write data to block 12:", value);
-            if (!mReader.WriteDataToBlock(3, 0, false, KEY, value))
-                return 0;
-
-            value = "53445600000000000000000000000000";
-            Log.Info("Write data to block 20:", value);
-            if (!mReader.WriteDataToBlock(5, 0, false, KEY, value))
-                return 0;
-
-            //mReader.EnableCheck = true;  // TODO4: RAII ?
-            return 1;
         }
 
         // Konvertuje iz TipKartice.NoviFormat u TipKartice.Prazna
@@ -385,15 +347,10 @@ namespace Soko
             out Int64 serialCardNo)
         {
             serialCardNo = 0;
-            if (Options.Instance.UseNewCardFormat)
-            {
-                ulong retval = NewWriteDataCard(comport, sID1, sName, out serialCardNo);
-                if (retval == 1)
-                    mReader.Beep();
-                return retval;
-            }
-            else
-                return WriteDataCard(comport, sType, sID1, sID2, sName) & 0xFFFFFFFF;
+            ulong retval = NewWriteDataCard(comport, sID1, sName, out serialCardNo);
+            if (retval == 1)
+                mReader.Beep();
+            return retval;
         }
 
         public void readCard(int comPort, out int broj)
@@ -542,68 +499,6 @@ namespace Soko
             }
 
             return result && handleOcitavanjeKarticeTrening(broj, DateTime.Now, obrisiPrePrikazivanja);
-        }
-
-        public void WaitAndReadLoop()
-        {
-            // TODO2: Proveri da li je sve u ovom metodu thread safe.
-            while (!_shouldStop)
-            {
-                // NOTE: Izabran je mali vremenski interval 2 sec (a ne recimo 10 sec), zato sto kada se program zatvori
-                // WaitAndReadDataCard je i dalje aktivan dok ne istekne interval, a samim tim i proces je i dalje
-                // aktivan, i nije moguce ponovo restartovanje programa (ili je moguce ali imamo istovremeno dva
-                // procesa).
-
-                int nSecs = Options.Instance.NumSecondsWaitAndRead;
-
-                string sType = " ";
-                string sID1 = "          ";
-                string sID2 = "          ";
-
-                string name = "                                ";
-                int broj = -1;
-
-                ulong retval;
-                if (Options.Instance.JedinstvenProgram)
-                {
-                    lock (readAndWriteLock)
-                    {
-                        retval = WaitAndReadDataCard(Options.Instance.COMPortReader, nSecs,
-                           ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
-                    }
-                }
-                else
-                {
-                    retval = WaitAndReadDataCard(Options.Instance.COMPortReader, nSecs,
-                       ref sType, ref sID1, ref sID2, ref name) & 0xFFFFFFFF;
-                }
-
-                /*retval = 2;
-                sID1 = "5504";
-                name = NAME_FIELD;*/
-
-                if (retval > 1)
-                {
-                    if (dobroFormatiranaKartica(sID1, name, out broj) && handleOcitavanjeKarticeTrening(broj, DateTime.Now, false))
-                    {
-                        CitacKarticaForm citacKarticaForm = Form1.Instance.CitacKarticaForm;
-                        if (citacKarticaForm != null)
-                        {
-                            Thread.Sleep(Options.Instance.CitacKarticaThreadVisibleCount 
-                                * Options.Instance.CitacKarticaThreadInterval);
-                            citacKarticaForm.Clear();
-                        }
-                    }
-                }
-                else if (retval == 1)
-                {
-                    // Waiting time elapsed
-                }
-                else
-                {
-                    // Wrong card
-                }
-            }
         }
 
         public void ReadLoop()

@@ -24,10 +24,6 @@ namespace Soko.UI
             txtCitacKarticaThreadSkipCount.Text = Options.Instance.CitacKarticaThreadSkipCount.ToString();
             txtCitacKarticaThreadVisibleCount.Text = Options.Instance.CitacKarticaThreadVisibleCount.ToString();
             txtCitacKarticaThreadPauzaZaBrisanje.Text = Options.Instance.CitacKarticaThreadPauzaZaBrisanje.ToString();
-            ckbUseWaitAndReadLoop.Checked = Options.Instance.UseWaitAndReadLoop;
-            txtBrojSekundiWaitAndRead.Text = Options.Instance.NumSecondsWaitAndRead.ToString();
-            txtUseNewCardFormat.Text = Options.Instance.UseNewCardFormat.ToString();
-            txtWritePanonitDataCard.Text = Options.Instance.WritePanonitDataCard.ToString();
             txtWritePraznaDataCard.Text = Options.Instance.WritePraznaDataCard.ToString();
 
             lstLogFiles.SelectionMode = SelectionMode.MultiExtended;
@@ -140,36 +136,6 @@ namespace Soko.UI
             {
                 Options.Instance.CitacKarticaThreadPauzaZaBrisanje = newValue;
             }
-        }
-
-        private void ckbUseWaitAndReadLoop_CheckedChanged(object sender, EventArgs e)
-        {
-            Options.Instance.UseWaitAndReadLoop = ckbUseWaitAndReadLoop.Checked;
-        }
-
-        private void btnPromeniBrojSekundiWaitAndRead_Click(object sender, EventArgs e)
-        {
-            int newValue;
-            if (int.TryParse(txtBrojSekundiWaitAndRead.Text, out newValue))
-            {
-                Options.Instance.NumSecondsWaitAndRead = newValue;
-            }
-        }
-
-        private void btnUseNewCardFormat_Click(object sender, EventArgs e)
-        {
-            bool newValue = false;
-            if (txtUseNewCardFormat.Text == "True" || txtUseNewCardFormat.Text == "true")
-                newValue = true;
-            Options.Instance.UseNewCardFormat = newValue;
-        }
-
-        private void btnWritePanonitDataCard_Click(object sender, EventArgs e)
-        {
-            bool newValue = false;
-            if (txtWritePanonitDataCard.Text == "True" || txtWritePanonitDataCard.Text == "true")
-                newValue = true;
-            Options.Instance.WritePanonitDataCard = newValue;
         }
 
         private void btnWritePraznaDataCard_Click(object sender, EventArgs e)

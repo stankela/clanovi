@@ -47,8 +47,6 @@ namespace Soko.UI
         const string CitacKarticaThreadSkipCountRegKey = "CitacKarticaThreadSkipCount";
         const string CitacKarticaThreadVisibleCountRegKey = "CitacKarticaThreadVisibleCount";
         const string CitacKarticaThreadPauzaZaBrisanjeRegKey = "CitacKarticaThreadPauzaZaBrisanje";
-        const string UseWaitAndReadLoopRegKey = "UseWaitAndReadLoop";
-        const string NumSecondsWaitAndReadRegKey = "NumSecondsWaitAndRead";
         const string NedostajuceUplateStartDateRegKey = "NedostajuceUplateStartDate";
 
         private FormWindowState lastWindowState = FormWindowState.Normal;
@@ -136,10 +134,6 @@ namespace Soko.UI
                     Options.Instance.CitacKarticaThreadVisibleCount = int.Parse((string)regkey.GetValue(CitacKarticaThreadVisibleCountRegKey));
                 if (regkey.GetValue(CitacKarticaThreadPauzaZaBrisanjeRegKey) != null)
                     Options.Instance.CitacKarticaThreadPauzaZaBrisanje = int.Parse((string)regkey.GetValue(CitacKarticaThreadPauzaZaBrisanjeRegKey));
-                if (regkey.GetValue(UseWaitAndReadLoopRegKey) != null)
-                    Options.Instance.UseWaitAndReadLoop = bool.Parse((string)regkey.GetValue(UseWaitAndReadLoopRegKey));
-                if (regkey.GetValue(NumSecondsWaitAndReadRegKey) != null)
-                    Options.Instance.NumSecondsWaitAndRead = int.Parse((string)regkey.GetValue(NumSecondsWaitAndReadRegKey));
                 if (regkey.GetValue(NedostajuceUplateStartDateRegKey) != null)
                     Options.Instance.NedostajuceUplateStartDate = DateTime.Parse((string)regkey.GetValue(NedostajuceUplateStartDateRegKey));
                 regkey.Close();
@@ -183,8 +177,6 @@ namespace Soko.UI
             regkey.SetValue(CitacKarticaThreadSkipCountRegKey, Options.Instance.CitacKarticaThreadSkipCount.ToString());
             regkey.SetValue(CitacKarticaThreadVisibleCountRegKey, Options.Instance.CitacKarticaThreadVisibleCount.ToString());
             regkey.SetValue(CitacKarticaThreadPauzaZaBrisanjeRegKey, Options.Instance.CitacKarticaThreadPauzaZaBrisanje.ToString());
-            regkey.SetValue(UseWaitAndReadLoopRegKey, Options.Instance.UseWaitAndReadLoop.ToString());
-            regkey.SetValue(NumSecondsWaitAndReadRegKey, Options.Instance.NumSecondsWaitAndRead.ToString());
             regkey.SetValue(NedostajuceUplateStartDateRegKey, Options.Instance.NedostajuceUplateStartDate.ToString("dd-MM-yyyy"));
       
             regkey.Close();
@@ -221,19 +213,7 @@ namespace Soko.UI
                 Sesija.Instance.EndSession();
                 saveOptions();
 
-                if (Options.Instance.UseWaitAndReadLoop)
-                {
-                    // NOTE: Moram da pozivam Kill jer ako se client program regularno zatvori (slanjem "Exit" poruke)
-                    // WaitAndReadDataCard je i dalje aktivan dok ne istekne interval, a samim tim i proces je i dalje
-                    // aktivan, i nije moguce ponovo restartovanje programa (ili je moguce ali imamo istovremeno dva
-                    // procesa).
-                    if (clientStarted)
-                        clientProcess.Kill();
-                }
-                else
-                {
-                    sendToPipeClient("Exit");
-                }
+                sendToPipeClient("Exit");
 
                 clientProcess.Close();
                 if (pipeServerStreamWriter != null)
@@ -1251,15 +1231,7 @@ namespace Soko.UI
             CitacKarticaForm citacKarticaForm = new CitacKarticaForm();
             citacKarticaForm.Show();
 
-            Thread citacKarticaThread;
-            if (Options.Instance.UseWaitAndReadLoop)
-            {
-                citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.WaitAndReadLoop));
-            }
-            else
-            {
-                citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.ReadLoop));
-            }
+            Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.ReadLoop));
             citacKarticaThread.Start();
         }
 

@@ -243,20 +243,6 @@ namespace Soko
             set { pipeHandle = value; }
         }
 
-        private bool useWaitAndReadLoop = false;
-        public bool UseWaitAndReadLoop
-        {
-            get { return useWaitAndReadLoop; }
-            set { useWaitAndReadLoop = value; }
-        }
-
-        private int numSecondsWaitAndRead = 3600;
-        public int NumSecondsWaitAndRead
-        {
-            get { return numSecondsWaitAndRead; }
-            set { numSecondsWaitAndRead = value; }
-        }
-
         private DateTime nedostajuceUplateStartDate = new DateTime(2016, 9, 1, 0, 0, 0);
         public DateTime NedostajuceUplateStartDate
         {
@@ -278,26 +264,7 @@ namespace Soko
             set { useCardReaderLog = value; }
         }
 
-        // TODO4: Izbaci ovu opciju kada zavrsis prelazak na novi format kartica (takodje i sledece dve opcije)
-        // Moguce vrednosti za (UseNewCardFormat, WritePanonitDataCard)
-        // (true, false) - Kada hocu karticu citam i pisem u NovomFormatu. Kartica moze da bude u bilo kojem formatu
-        //                 (Prazna, Panonit, NoviFormat).
-        // (true, true) - Kada hocu da napravim karticu u starom Panonit formatu. Kartica mora da bude u NovomFormatu.
-        // (false, false) - Kada hocu da karticu koja je u starom Panonit formatu citam i pisem u PanonitFormatu
-
-        private bool useNewCardFormat = true;
-        public bool UseNewCardFormat
-        {
-            get { return useNewCardFormat; }
-            set { useNewCardFormat = value; }
-        }
-
-        private bool writePanonitDataCard = false;
-        public bool WritePanonitDataCard
-        {
-            get { return writePanonitDataCard; }
-            set { writePanonitDataCard = value; }
-        }
+        // TODO4: Izbaci ovu opciju kada zavrsis prelazak na novi format kartica
 
         private bool writePraznaDataCard = false;
         public bool WritePraznaDataCard

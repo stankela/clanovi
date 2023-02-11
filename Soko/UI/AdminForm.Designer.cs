@@ -54,16 +54,6 @@
             this.lblCitacKarticaThreadPauzaZaBrisanje = new System.Windows.Forms.Label();
             this.txtCitacKarticaThreadPauzaZaBrisanje = new System.Windows.Forms.TextBox();
             this.btnPromeniCitacKarticaThreadPauzaZaBrisanje = new System.Windows.Forms.Button();
-            this.ckbUseWaitAndReadLoop = new System.Windows.Forms.CheckBox();
-            this.lblBrojSekundiWaitAndRead = new System.Windows.Forms.Label();
-            this.txtBrojSekundiWaitAndRead = new System.Windows.Forms.TextBox();
-            this.btnPromeniBrojSekundiWaitAndRead = new System.Windows.Forms.Button();
-            this.lblUseNewCardFormat = new System.Windows.Forms.Label();
-            this.txtUseNewCardFormat = new System.Windows.Forms.TextBox();
-            this.btnUseNewCardFormat = new System.Windows.Forms.Button();
-            this.lblWritePanonitDataCard = new System.Windows.Forms.Label();
-            this.txtWritePanonitDataCard = new System.Windows.Forms.TextBox();
-            this.btnWritePanonitDataCard = new System.Windows.Forms.Button();
             this.lblWritePraznaDataCard = new System.Windows.Forms.Label();
             this.txtWritePraznaDataCard = new System.Windows.Forms.TextBox();
             this.btnWritePraznaDataCard = new System.Windows.Forms.Button();
@@ -298,95 +288,6 @@
             this.btnPromeniCitacKarticaThreadPauzaZaBrisanje.UseVisualStyleBackColor = true;
             this.btnPromeniCitacKarticaThreadPauzaZaBrisanje.Click += new System.EventHandler(this.btnPromeniCitacKarticaThreadPauzaZaBrisanje_Click);
             // 
-            // ckbUseWaitAndReadLoop
-            // 
-            this.ckbUseWaitAndReadLoop.AutoSize = true;
-            this.ckbUseWaitAndReadLoop.Location = new System.Drawing.Point(12, 301);
-            this.ckbUseWaitAndReadLoop.Name = "ckbUseWaitAndReadLoop";
-            this.ckbUseWaitAndReadLoop.Size = new System.Drawing.Size(142, 17);
-            this.ckbUseWaitAndReadLoop.TabIndex = 32;
-            this.ckbUseWaitAndReadLoop.Text = "Use WaitAndRead Loop";
-            this.ckbUseWaitAndReadLoop.UseVisualStyleBackColor = true;
-            this.ckbUseWaitAndReadLoop.CheckedChanged += new System.EventHandler(this.ckbUseWaitAndReadLoop_CheckedChanged);
-            // 
-            // lblBrojSekundiWaitAndRead
-            // 
-            this.lblBrojSekundiWaitAndRead.AutoSize = true;
-            this.lblBrojSekundiWaitAndRead.Location = new System.Drawing.Point(15, 503);
-            this.lblBrojSekundiWaitAndRead.Name = "lblBrojSekundiWaitAndRead";
-            this.lblBrojSekundiWaitAndRead.Size = new System.Drawing.Size(135, 13);
-            this.lblBrojSekundiWaitAndRead.TabIndex = 33;
-            this.lblBrojSekundiWaitAndRead.Text = "Broj sekundi WaitAndRead";
-            // 
-            // txtBrojSekundiWaitAndRead
-            // 
-            this.txtBrojSekundiWaitAndRead.Location = new System.Drawing.Point(208, 496);
-            this.txtBrojSekundiWaitAndRead.Name = "txtBrojSekundiWaitAndRead";
-            this.txtBrojSekundiWaitAndRead.Size = new System.Drawing.Size(75, 20);
-            this.txtBrojSekundiWaitAndRead.TabIndex = 34;
-            // 
-            // btnPromeniBrojSekundiWaitAndRead
-            // 
-            this.btnPromeniBrojSekundiWaitAndRead.Location = new System.Drawing.Point(302, 494);
-            this.btnPromeniBrojSekundiWaitAndRead.Name = "btnPromeniBrojSekundiWaitAndRead";
-            this.btnPromeniBrojSekundiWaitAndRead.Size = new System.Drawing.Size(75, 23);
-            this.btnPromeniBrojSekundiWaitAndRead.TabIndex = 35;
-            this.btnPromeniBrojSekundiWaitAndRead.Text = "Promeni";
-            this.btnPromeniBrojSekundiWaitAndRead.UseVisualStyleBackColor = true;
-            this.btnPromeniBrojSekundiWaitAndRead.Click += new System.EventHandler(this.btnPromeniBrojSekundiWaitAndRead_Click);
-            // 
-            // lblUseNewCardFormat
-            // 
-            this.lblUseNewCardFormat.AutoSize = true;
-            this.lblUseNewCardFormat.Location = new System.Drawing.Point(277, 12);
-            this.lblUseNewCardFormat.Name = "lblUseNewCardFormat";
-            this.lblUseNewCardFormat.Size = new System.Drawing.Size(105, 13);
-            this.lblUseNewCardFormat.TabIndex = 36;
-            this.lblUseNewCardFormat.Text = "Use new card format";
-            // 
-            // txtUseNewCardFormat
-            // 
-            this.txtUseNewCardFormat.Location = new System.Drawing.Point(416, 9);
-            this.txtUseNewCardFormat.Name = "txtUseNewCardFormat";
-            this.txtUseNewCardFormat.Size = new System.Drawing.Size(72, 20);
-            this.txtUseNewCardFormat.TabIndex = 37;
-            // 
-            // btnUseNewCardFormat
-            // 
-            this.btnUseNewCardFormat.Location = new System.Drawing.Point(509, 7);
-            this.btnUseNewCardFormat.Name = "btnUseNewCardFormat";
-            this.btnUseNewCardFormat.Size = new System.Drawing.Size(75, 23);
-            this.btnUseNewCardFormat.TabIndex = 38;
-            this.btnUseNewCardFormat.Text = "Promeni";
-            this.btnUseNewCardFormat.UseVisualStyleBackColor = true;
-            this.btnUseNewCardFormat.Click += new System.EventHandler(this.btnUseNewCardFormat_Click);
-            // 
-            // lblWritePanonitDataCard
-            // 
-            this.lblWritePanonitDataCard.AutoSize = true;
-            this.lblWritePanonitDataCard.Location = new System.Drawing.Point(277, 50);
-            this.lblWritePanonitDataCard.Name = "lblWritePanonitDataCard";
-            this.lblWritePanonitDataCard.Size = new System.Drawing.Size(119, 13);
-            this.lblWritePanonitDataCard.TabIndex = 39;
-            this.lblWritePanonitDataCard.Text = "Write Panonit data card";
-            // 
-            // txtWritePanonitDataCard
-            // 
-            this.txtWritePanonitDataCard.Location = new System.Drawing.Point(416, 47);
-            this.txtWritePanonitDataCard.Name = "txtWritePanonitDataCard";
-            this.txtWritePanonitDataCard.Size = new System.Drawing.Size(72, 20);
-            this.txtWritePanonitDataCard.TabIndex = 40;
-            // 
-            // btnWritePanonitDataCard
-            // 
-            this.btnWritePanonitDataCard.Location = new System.Drawing.Point(509, 43);
-            this.btnWritePanonitDataCard.Name = "btnWritePanonitDataCard";
-            this.btnWritePanonitDataCard.Size = new System.Drawing.Size(75, 23);
-            this.btnWritePanonitDataCard.TabIndex = 41;
-            this.btnWritePanonitDataCard.Text = "Promeni";
-            this.btnWritePanonitDataCard.UseVisualStyleBackColor = true;
-            this.btnWritePanonitDataCard.Click += new System.EventHandler(this.btnWritePanonitDataCard_Click);
-            // 
             // lblWritePraznaDataCard
             // 
             this.lblWritePraznaDataCard.AutoSize = true;
@@ -421,16 +322,6 @@
             this.Controls.Add(this.btnWritePraznaDataCard);
             this.Controls.Add(this.txtWritePraznaDataCard);
             this.Controls.Add(this.lblWritePraznaDataCard);
-            this.Controls.Add(this.btnWritePanonitDataCard);
-            this.Controls.Add(this.txtWritePanonitDataCard);
-            this.Controls.Add(this.lblWritePanonitDataCard);
-            this.Controls.Add(this.btnUseNewCardFormat);
-            this.Controls.Add(this.txtUseNewCardFormat);
-            this.Controls.Add(this.lblUseNewCardFormat);
-            this.Controls.Add(this.btnPromeniBrojSekundiWaitAndRead);
-            this.Controls.Add(this.txtBrojSekundiWaitAndRead);
-            this.Controls.Add(this.lblBrojSekundiWaitAndRead);
-            this.Controls.Add(this.ckbUseWaitAndReadLoop);
             this.Controls.Add(this.btnPromeniCitacKarticaThreadPauzaZaBrisanje);
             this.Controls.Add(this.txtCitacKarticaThreadPauzaZaBrisanje);
             this.Controls.Add(this.lblCitacKarticaThreadPauzaZaBrisanje);
@@ -492,16 +383,6 @@
         private System.Windows.Forms.Label lblCitacKarticaThreadPauzaZaBrisanje;
         private System.Windows.Forms.TextBox txtCitacKarticaThreadPauzaZaBrisanje;
         private System.Windows.Forms.Button btnPromeniCitacKarticaThreadPauzaZaBrisanje;
-        private System.Windows.Forms.CheckBox ckbUseWaitAndReadLoop;
-        private System.Windows.Forms.Label lblBrojSekundiWaitAndRead;
-        private System.Windows.Forms.TextBox txtBrojSekundiWaitAndRead;
-        private System.Windows.Forms.Button btnPromeniBrojSekundiWaitAndRead;
-        private System.Windows.Forms.Label lblUseNewCardFormat;
-        private System.Windows.Forms.TextBox txtUseNewCardFormat;
-        private System.Windows.Forms.Button btnUseNewCardFormat;
-        private System.Windows.Forms.Label lblWritePanonitDataCard;
-        private System.Windows.Forms.TextBox txtWritePanonitDataCard;
-        private System.Windows.Forms.Button btnWritePanonitDataCard;
         private System.Windows.Forms.Label lblWritePraznaDataCard;
         private System.Windows.Forms.TextBox txtWritePraznaDataCard;
         private System.Windows.Forms.Button btnWritePraznaDataCard;
