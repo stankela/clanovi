@@ -86,7 +86,6 @@ namespace Soko.UI
             // ckbKartica
             // 
             this.ckbKartica.AutoSize = true;
-            this.ckbKartica.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ckbKartica.Location = new System.Drawing.Point(15, 74);
             this.ckbKartica.Name = "ckbKartica";
             this.ckbKartica.Size = new System.Drawing.Size(78, 17);

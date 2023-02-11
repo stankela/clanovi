@@ -95,6 +95,10 @@ namespace Soko
                     {
                         Options.Instance.ClientPath = lines[i].Split(' ')[1].Trim();
                     }
+                    else if (lines[i].ToUpper().Contains("PokreniCitacKartica".ToUpper()))
+                    {
+                        Options.Instance.PokreniCitacKartica = bool.Parse(lines[i].Split(' ')[1].Trim());
+                    }
                 }
             }
             catch (FileNotFoundException)

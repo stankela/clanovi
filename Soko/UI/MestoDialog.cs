@@ -55,7 +55,10 @@ namespace Soko.UI
 
         private void MestoDialog_Shown(object sender, EventArgs e)
         {
-            btnOdustani.Focus();
+            if (!editMode)
+                txtPostanskiBroj.Focus();
+            else
+                btnOdustani.Focus();
         }
 
         private void btnOk_Click(object sender, System.EventArgs e)

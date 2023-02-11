@@ -150,7 +150,10 @@ namespace Soko.UI
 
         private void GrupaDialog_Shown(object sender, EventArgs e)
         {
-            btnOdustani.Focus();
+            if (!editMode)
+                txtSifra.Focus();
+            else
+                btnOdustani.Focus();
         }
 
         private void btnOk_Click(object sender, System.EventArgs e)

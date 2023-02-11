@@ -1,0 +1,5 @@
+-- (VERZIJA = 0) - Prazna baza
+
+INSERT INTO verzija_baze (verzija_id, broj_verzije) VALUES (1, 0);
+GO
+

@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Soko</RootNamespace>
-    <AssemblyName>Soko</AssemblyName>
+    <AssemblyName>Program_za_clanarinu</AssemblyName>
     <StartupObject>
     </StartupObject>
     <FileUpgradeFlags>
@@ -458,6 +458,7 @@
     </Compile>
     <None Include="App.config" />
     <EmbeddedResource Include="create_all_objects.sqlce" />
+    <EmbeddedResource Include="create_all_objects_new.sqlce" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -604,6 +605,7 @@
     <EmbeddedResource Include="Update\DatabaseUpdate_version1.txt" />
     <EmbeddedResource Include="Update\DatabaseUpdate_version2.txt" />
     <EmbeddedResource Include="Update\DatabaseUpdate_version4.txt" />
+    <EmbeddedResource Include="Update\DatabaseUpdate_version0.txt" />
     <Content Include="UPUTSTVO_ZA_DVA_PROGRAMA.txt" />
     <EmbeddedResource Include="Data\NHibernate\Mappings\Mesto.hbm.xml">
       <SubType>Designer</SubType>

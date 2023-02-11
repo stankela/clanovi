@@ -70,7 +70,7 @@ namespace Soko.UI
 
         private string getMaxGrupa()
         {
-            string result = "Grupa";
+            string result = "";
             try
             {
                 using (ISession session = NHibernateHelper.Instance.OpenSession())
@@ -96,6 +96,8 @@ namespace Soko.UI
             {
                 CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
             }
+            if (result == "")
+                result = "GrupaGrupaGrupaGrupa";
             return result;
         }
 

@@ -264,6 +264,13 @@ namespace Soko
             set { nedostajuceUplateStartDate = value; }
         }
 
+        private bool pokreniCitacKartica = true;
+        public bool PokreniCitacKartica
+        {
+            get { return pokreniCitacKartica; }
+            set { pokreniCitacKartica = value; }
+        }
+
         private bool useCardReaderLog = false;
         public bool UseCardReaderLog
         {

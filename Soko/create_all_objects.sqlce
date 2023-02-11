@@ -1,7 +1,14 @@
+-- Ovaj fajl moguce je takodje dobiti koristeci tool exportsqlce (imam ga u VS2010). Komanda je:
+-- ExportSqlCE.exe "Data Source=C:\Users\sale\Documents\Visual Studio 2012\Projects\
+--                  Clanovi\Soko\bin\Release\clanovi_podaci.sdf;Password=sdv" clanovi_podaci.sql
+-- Primeri koriscenja se dobijaju kada se pokrene bez ikakvih opcija. Npr, moguce je generisati
+-- samo semu, samo podatke, i semu i podatke, itd.
+
 create table verzija_baze (
 	verzija_id int primary key,
 	broj_verzije int
 );
+GO
 
 create table mesta (
 	mesto_id int identity(1,1) primary key,
@@ -30,8 +37,9 @@ create table clanovi (
     telefon2 nvarchar(20),
     ima_pristupnicu bit,
 	ne_placa_clanarinu bit,
-    institucija_id int references institucije(institucija_id),
+	serijski_broj_kartice bigint,
     napomena nvarchar(255),
+    institucija_id int references institucije(institucija_id),
     mesto_id int references mesta(mesto_id)
 );
 GO

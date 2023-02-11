@@ -79,7 +79,12 @@ namespace Bilten.Dao.NHibernate
             try
             {
                 IQuery q = Session.CreateQuery("select max(c.Broj) from Clan c");
-                return (int)q.UniqueResult();
+                object result = q.UniqueResult();
+                // Mora da se proverava null zato sto max() nije definisan kada ne postoji nijedan clan.
+                if (result == null)
+                    return 0;
+                else
+                    return (int)result;
             }
             catch (HibernateException ex)
             {

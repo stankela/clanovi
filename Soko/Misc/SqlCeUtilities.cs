@@ -173,9 +173,11 @@ public class SqlCeUtilities
 
         string errMsg = "Greska prilikom citanja podataka iz baze.";
         SqlCeDataReader rdr = SqlCeUtilities.executeReader(cmd, errMsg);
-        int result = -1;
+        int result;
         if (rdr.Read())
             result = rdr.GetInt32(0);
+        else
+            result = 0;  // Prazna baza
         rdr.Close();
         return result;
     }

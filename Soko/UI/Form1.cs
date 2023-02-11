@@ -1095,11 +1095,35 @@ namespace Soko.UI
 
         private void init()
         {
+            // TODO3: Probaj da ucitavanje opcija i apdejt baze prebacis u klasu Program.
+            loadOptions();
+
+            if (Options.Instance.JedinstvenProgram || Options.Instance.IsProgramZaClanarinu)
+            {
+                if (!File.Exists(ConfigurationParameters.DatabaseFile))
+                {
+                    string programName = "Program za clanarinu";
+                    if (MessageDialogs.queryConfirmation("Ne postoji baza podataka '"
+                        + ConfigurationParameters.DatabaseFile + "'. Da li zelite da kreirate novu praznu bazu "
+                        + "podataka?", programName))
+                    {
+                        new SqlCeUtilities().CreateDatabase(ConfigurationParameters.DatabaseFile,
+                            ConfigurationParameters.Password);
+                        // Update broj verzije baze
+                        SqlCeUtilities.ExecuteScript(ConfigurationParameters.DatabaseFile, ConfigurationParameters.Password,
+                            "Soko.Update.DatabaseUpdate_version0.txt", true);
+                        SqlCeUtilities.updateDatabaseVersionNumber(Program.VERZIJA_PROGRAMA);
+
+                        MessageDialogs.showMessage("Kreirana nova prazna baza podataka.", programName);
+                        if (File.Exists("NHibernateConfig"))
+                            File.Delete("NHibernateConfig");
+                    }
+                }
+            }
+            
             // This creates singleton instance of NHibernateHelper and builds session factory
             NHibernateHelper nh = NHibernateHelper.Instance;
 
-            // TODO3: Probaj da ucitavanje opcija i apdejt baze prebacis u klasu Program.
-            loadOptions();
             if (Options.Instance.JedinstvenProgram || Options.Instance.IsProgramZaClanarinu)
             {
                 Cursor.Current = Cursors.WaitCursor;
@@ -1130,8 +1154,11 @@ namespace Soko.UI
 
                 initlozinkaTimer();
 
-                initCitacKarticaDictionary();
-                pokreniCitacKartica();
+                if (Options.Instance.PokreniCitacKartica)
+                {
+                    initCitacKarticaDictionary();
+                    pokreniCitacKartica();
+                }
             }
             else if (Options.Instance.IsProgramZaClanarinu)
             {
@@ -1143,36 +1170,42 @@ namespace Soko.UI
 
                 initlozinkaTimer();
 
-                pipeServer = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
-                clientProcess = new Process();
-                clientProcess.StartInfo.FileName = Options.Instance.ClientPath;
-                // Pass the client process a handle to the server.
-                clientProcess.StartInfo.Arguments = pipeServer.GetClientHandleAsString();
-                clientProcess.StartInfo.UseShellExecute = false;
+                if (Options.Instance.PokreniCitacKartica)
+                {
+                    pipeServer = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
+                    clientProcess = new Process();
+                    clientProcess.StartInfo.FileName = Options.Instance.ClientPath;
+                    // Pass the client process a handle to the server.
+                    clientProcess.StartInfo.Arguments = pipeServer.GetClientHandleAsString();
+                    clientProcess.StartInfo.UseShellExecute = false;
 
-                clientStarted = true;
-                try
-                {
-                    clientProcess.Start();
-                }
-                catch (Exception)
-                {
-                    clientStarted = false;
-                    MessageDialogs.showMessage("GRESKA: Ne mogu da pokrenem citac kartica '" + Options.Instance.ClientPath + "'",
-                        Form1.Instance.Text);
-                }
-                pipeServer.DisposeLocalCopyOfClientHandle();
+                    clientStarted = true;
+                    try
+                    {
+                        clientProcess.Start();
+                    }
+                    catch (Exception)
+                    {
+                        clientStarted = false;
+                        MessageDialogs.showMessage("GRESKA: Ne mogu da pokrenem citac kartica '" + Options.Instance.ClientPath + "'",
+                            Form1.Instance.Text);
+                    }
+                    pipeServer.DisposeLocalCopyOfClientHandle();
 
-                if (clientStarted)
-                {
-                    pipeServerStreamWriter = new StreamWriter(pipeServer);
+                    if (clientStarted)
+                    {
+                        pipeServerStreamWriter = new StreamWriter(pipeServer);
+                    }
                 }
             }
             else
             {
-                initCitacKarticaDictionary();
-                pokreniCitacKartica();
-                pokreniPipeClientThread();
+                if (Options.Instance.PokreniCitacKartica)
+                {
+                    initCitacKarticaDictionary();
+                    pokreniCitacKartica();
+                    pokreniPipeClientThread();
+                }
             }
         }
 

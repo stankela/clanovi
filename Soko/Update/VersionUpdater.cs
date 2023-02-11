@@ -35,7 +35,7 @@ public class VersionUpdater
         int staraVerzijaBaze = verzijaBaze;
         bool converted = false;
 
-        if (verzijaBaze == -1 /*baza ne postoji*/)
+        if (verzijaBaze == -1)  // ne postoji tabela 'verzija_baze'
         {           
             SqlCeUtilities.ExecuteScript(ConfigurationParameters.DatabaseFile, ConfigurationParameters.Password,
                 "Soko.Update.DatabaseUpdate_version1.txt", true);
