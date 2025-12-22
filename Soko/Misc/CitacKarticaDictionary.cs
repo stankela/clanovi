@@ -186,20 +186,33 @@ namespace Soko.Misc
             {
                 return uplateGodisnjaClanarina[clan.Id];
             }
-            // TODO3: Treba razresiti situaciju kada postoji godisnja uplata za prethodnu godinu i obicna uplata za neki
-            // mesec ove godine, tj. koju uplatu vratiti u tom slucaju, tj. da li tretirati clana kao regularnog clana
-            // ili clana sa godisnjom clanarinom. Trenutno prednost ima godisnja clanarina.
+            UplataClanarine godisnjaClanarinaPrethGod = null;
             if (uplateGodisnjaClanarinaPrethGod.ContainsKey(clan.Id))
             {
-                return uplateGodisnjaClanarinaPrethGod[clan.Id];
+                godisnjaClanarinaPrethGod = uplateGodisnjaClanarinaPrethGod[clan.Id];
             }
+            UplataClanarine regularnaClanarina = null;
             if (prethodneUplate.ContainsKey(clan.Id))
             {
                 List<UplataClanarine> uplate = prethodneUplate[clan.Id];
                 Util.sortByVaziOdDesc(uplate);
                 // Ako ne postoji uplata za ovaj mesec ali postoji uplata za sledeci mesec, ta uplata ce biti u uplate[0].
                 // TODO3: Ako postoje uplate i za ovaj i za sledeci mesec, izaberi uplatu za ovaj mesec.
-                return uplate[0];
+                regularnaClanarina = uplate[0];
+            }
+            if (godisnjaClanarinaPrethGod != null && regularnaClanarina != null)
+            {
+                // Postoji godisnja uplata za prethodnu godinu i obicna uplata za neki
+                // mesec ove godine. U ovom slucaju tretiramo clana kao regularnog clana.
+                return regularnaClanarina;
+            }
+            else if (godisnjaClanarinaPrethGod != null)
+            {
+                return godisnjaClanarinaPrethGod;
+            }
+            else if (regularnaClanarina != null)
+            {
+                return regularnaClanarina;
             }
             return null;
         }
