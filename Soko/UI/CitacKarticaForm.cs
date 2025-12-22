@@ -60,6 +60,8 @@ namespace Soko.UI
                 if (Options.Instance.PrikaziDisplejPrekoCelogEkrana)
                 {
                     this.Size = new Size(screens[1].Bounds.Width, screens[1].Bounds.Height);
+                    this.FormBorderStyle = FormBorderStyle.None;
+                    this.WindowState = FormWindowState.Maximized;
                 }
                 else
                 {
