@@ -169,6 +169,12 @@ namespace Soko.UI
             bool napraviKarticu;
             if (SelectedClan != null && ckbKartica.Checked)
             {
+                // TODO4: Ispitaj da li ovde treba proveravati i SerijskiBrojKartice (ako je serijski broj na kartici isti
+                // kao i serijski broj koji je u bazi upisan za ovog clana, onda verovatno kartica nije duplikat, i
+                // trebalo bi dozvoliti pisanje (koje u stvari ne radi nista, vec ce ponovo upisati iste podatke i na
+                // karticu i u bazu, ali se izbegava dijalog za "Duplikat kartice")).
+                // TODO4: Umesto dva dijaloga kod pravljenja kartice ("Da li zelite da napravite karticu ..." i
+                // "Prislonite karticu ...", prikazuj samo prvi dijalog.
                 string naslov = "Duplikat kartice";
                 string pitanje = String.Format("Clan \"{0}\" vec ima karticu. Da li zelite da napravite duplikat?",
                     SelectedClan.BrojPrezimeImeDatumRodjenja);
