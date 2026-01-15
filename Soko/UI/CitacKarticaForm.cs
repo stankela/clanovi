@@ -45,7 +45,7 @@ namespace Soko.UI
             Screen[] screens = Screen.AllScreens;
             if (screens.Length == 1)
             {
-                string msg = CitacKartica.Instance.FormatMessage(12345, null, maxGrupa);
+                string msg = CitacKartica.FormatMessage(12345, null, maxGrupa);
                 Graphics g = this.CreateGraphics();
                 Font font = new Font(FONT_NAME, 28, FontStyle.Bold);
                 SizeF size = g.MeasureString(msg, font);

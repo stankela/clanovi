@@ -237,8 +237,7 @@ namespace Soko.UI
 
             // TODO2: Prvo proveri da li je kartica vazeca, i prikazi upozorenje ako jeste (isto i u WriteClanKartica).
             Int64 serialCardNo;
-            if (CitacKartica.Instance.writeCard(Options.Instance.COMPortWriter, CitacKartica.TEST_KARTICA_BROJ.ToString(),
-                out serialCardNo))
+            if (CitacKartica.UplateInstance.writeCard(CitacKartica.TEST_KARTICA_BROJ.ToString(), out serialCardNo))
             {
                 okMsg = OK_MSG_WRITE_TEST;
                 return;
@@ -255,7 +254,7 @@ namespace Soko.UI
             okMsg = String.Empty;
 
             Int64 serialCardNo;
-            if (!CitacKartica.Instance.writeCard(Options.Instance.COMPortWriter, brojKartice.ToString(), out serialCardNo))
+            if (!CitacKartica.UplateInstance.writeCard(brojKartice.ToString(), out serialCardNo))
             {
                 throw new WriteCardException(ERROR_MSG_WRITE);
             }

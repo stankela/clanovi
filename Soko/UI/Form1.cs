@@ -231,7 +231,7 @@ namespace Soko.UI
 
         public void zaustaviCitacKartica()
         {
-            CitacKartica.Instance.RequestStop();
+            CitacKartica.TreningInstance.RequestStop();
         }
 
         private void mnUplataClanarine_Click(object sender, EventArgs e)
@@ -1092,6 +1092,8 @@ namespace Soko.UI
                         // Update broj verzije baze
                         SqlCeUtilities.ExecuteScript(ConfigurationParameters.DatabaseFile, ConfigurationParameters.Password,
                             "Soko.Update.DatabaseUpdate_version0.txt", true);
+                        // TODO4: Da li ovde treba da se prosledi 0 ili 1 umesto Program.VERZIJA_PROGRAMA?
+                        // Preostali apdejti ce se izvrsiti dole u new VersionUpdater().update()
                         SqlCeUtilities.updateDatabaseVersionNumber(Program.VERZIJA_PROGRAMA);
 
                         MessageDialogs.showMessage("Kreirana nova prazna baza podataka.", programName);
@@ -1231,7 +1233,7 @@ namespace Soko.UI
             CitacKarticaForm citacKarticaForm = new CitacKarticaForm();
             citacKarticaForm.Show();
 
-            Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.Instance.ReadLoop));
+            Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.TreningInstance.ReadLoop));
             citacKarticaThread.Start();
         }
 
@@ -1378,6 +1380,9 @@ namespace Soko.UI
                             Options.Instance.PrikaziDisplejPrekoCelogEkrana = bool.Parse(PrikaziDisplejPrekoCelogEkrana);
                             Options.Instance.SirinaDispleja = int.Parse(SirinaDispleja);
                             Options.Instance.VisinaDispleja = int.Parse(VisinaDispleja);
+
+                            CitacKartica.TreningInstance.SetComPort(Options.Instance.COMPortReader);
+                            CitacKartica.UplateInstance.SetComPort(Options.Instance.COMPortWriter);
                         }
                         else if (temp.ToUpper().StartsWith("EXIT"))
                         {

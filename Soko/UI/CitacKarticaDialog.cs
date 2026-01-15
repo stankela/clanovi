@@ -105,6 +105,8 @@ namespace Soko.UI
                 msg += " VisinaDispleja " + Options.Instance.VisinaDispleja.ToString();
                 Form1.Instance.sendToPipeClient(msg);
             }
+            CitacKartica.TreningInstance.SetComPort(Options.Instance.COMPortReader);
+            CitacKartica.UplateInstance.SetComPort(Options.Instance.COMPortWriter);
         }
 
         private void ckbPrikaziDisplejPrekoCelogEkrana_CheckedChanged(object sender, EventArgs e)
