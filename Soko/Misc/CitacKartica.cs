@@ -926,10 +926,17 @@ namespace Soko
 
         public override bool tryReadCard(out int broj)
         {
-            broj = 9241;
-            string item;
-            if (concurrentQueue.TryDequeue(out item))
+            broj = -1;
+            string serijskiBroj;
+            if (!concurrentQueue.TryDequeue(out serijskiBroj))
             {
+                return false;
+            }
+            Int64 serijskiBrojKartice = Int64.Parse(serijskiBroj);
+            Clan clan = CitacKarticaDictionary.Instance.findClanBySerijskiBrojKartice(serijskiBrojKartice);
+            if (clan != null)
+            {
+                broj = clan.BrojKartice.Value;
                 return true;
             }
             return false;
@@ -937,12 +944,12 @@ namespace Soko
 
         public override void readCard(out int broj)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Citac kartica R10A ne podrzava upisivanje");
         }
 
         public override bool writeCard(string sID, out long serialCardNo)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException("Citac kartica R10A ne podrzava upisivanje");
         }
     }
 }

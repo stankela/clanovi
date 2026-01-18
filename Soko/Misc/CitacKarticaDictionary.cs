@@ -22,6 +22,8 @@ namespace Soko.Misc
         }
 
         private IDictionary<int, Clan> clanoviSaKarticom;
+        private bool cuvajSerijskeBrojeve;
+        private IDictionary<Int64, Clan> clanoviSaKarticomSerijskiBroj;
         private IDictionary<int, List<UplataClanarine>> prethodneUplate;
         private IDictionary<int, UplataClanarine> uplateGodisnjaClanarina;
         private IDictionary<int, UplataClanarine> uplateGodisnjaClanarinaPrethGod;
@@ -50,10 +52,16 @@ namespace Soko.Misc
         protected CitacKarticaDictionary()
         {
             clanoviSaKarticom = new Dictionary<int, Clan>();
+            clanoviSaKarticomSerijskiBroj = new Dictionary<Int64, Clan>();
             prethodneUplate = new Dictionary<int, List<UplataClanarine>>();
             uplateGodisnjaClanarina = new Dictionary<int, UplataClanarine>();
             uplateGodisnjaClanarinaPrethGod = new Dictionary<int, UplataClanarine>();
             danasnjaOcitavanja = new HashedSet();
+
+            // TODO4: Da bi "cuvajSerijskeBrojeve = true" radilo (tj da bi bilo moguce ocitavanje kartica samo
+            // pomocu serijskog broja), mora u programu da postoji nacin kako da se obradjuje slucaj kada dva clana
+            // imaju kartice sa istim serijskim brojem, tj program ne sme da dozvoli da se to desi
+            cuvajSerijskeBrojeve = true;
         }
 
         public void Init()
@@ -68,9 +76,29 @@ namespace Soko.Misc
                     CurrentSessionContext.Bind(session);
 
                     clanoviSaKarticom = new Dictionary<int, Clan>();
+                    clanoviSaKarticomSerijskiBroj = new Dictionary<Int64, Clan>();
                     foreach (Clan clan in DAOFactoryFactory.DAOFactory.GetClanDAO().findClanoviSaKarticom())
                     {
                         clanoviSaKarticom.Add(clan.BrojKartice.Value, clan);
+                        if (cuvajSerijskeBrojeve)
+                        {
+                            if (!clanoviSaKarticomSerijskiBroj.ContainsKey(clan.SerijskiBrojKartice.Value))
+                            {
+                                clanoviSaKarticomSerijskiBroj.Add(clan.SerijskiBrojKartice.Value, clan);
+                            }
+                            else
+                            {
+                                // Ovo su trenutni duplikati
+                                // 2840136493
+                                //  170334628
+                                //  982247587
+                                // 1042360474
+                                // 3403802531
+                                // MessageDialogs.showMessage(clan.SerijskiBrojKartice.Value.ToString(), "");
+                                // TODO4: Trebalo bi cuvati u nekoj listi sve clanove cije kartice imaju iste
+                                // serijske brojeve
+                            }
+                        }
                     }
 
                     GrupaDAO grupaDAO = DAOFactoryFactory.DAOFactory.GetGrupaDAO();
@@ -180,6 +208,15 @@ namespace Soko.Misc
             return null;
         }
 
+        public Clan findClanBySerijskiBrojKartice(Int64 serijskiBrojKartice)
+        {
+            if (clanoviSaKarticomSerijskiBroj.ContainsKey(serijskiBrojKartice))
+            {
+                return clanoviSaKarticomSerijskiBroj[serijskiBrojKartice];
+            }
+            return null;
+        }
+
         public UplataClanarine findUplata(Clan clan)
         {
             if (uplateGodisnjaClanarina.ContainsKey(clan.Id))
@@ -224,6 +261,10 @@ namespace Soko.Misc
                 if (!clanoviSaKarticom.ContainsKey(clan.BrojKartice.Value))
                 {
                     clanoviSaKarticom.Add(clan.BrojKartice.Value, clan);
+                    if (cuvajSerijskeBrojeve)
+                    {
+                        clanoviSaKarticomSerijskiBroj.Add(clan.SerijskiBrojKartice.Value, clan);
+                    }
                 }
             }
             else

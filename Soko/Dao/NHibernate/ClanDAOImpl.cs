@@ -114,6 +114,26 @@ namespace Bilten.Dao.NHibernate
             }
         }
 
+        public virtual Clan findForSerijskiBrojKartice(Int64 serijskiBrojKartice)
+        {
+            try
+            {
+                IQuery q = Session.CreateQuery(@"from Clan c where c.SerijskiBrojKartice = :broj");
+                q.SetInt64("broj", serijskiBrojKartice);
+                IList<Clan> result = q.List<Clan>();
+                if (result.Count > 0)
+                    return result[0];
+                else
+                    return null;
+            }
+            catch (HibernateException ex)
+            {
+                string message = String.Format(
+                    "{0} \n\n{1}", Strings.DatabaseAccessExceptionMessage, ex.Message);
+                throw new InfrastructureException(message, ex);
+            }
+        }
+
         public virtual IList<Clan> findKojiNePlacajuClanarinu()
         {
             try
