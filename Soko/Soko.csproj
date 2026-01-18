@@ -18,7 +18,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -33,6 +33,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,6 +45,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -54,6 +56,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
@@ -155,6 +158,16 @@
     <Compile Include="Misc\SqlCeUtilities.cs" />
     <Compile Include="Misc\SingleInstanceApplication.cs" />
     <Compile Include="Misc\Util.cs" />
+    <Compile Include="RawInput\DataStructures.cs" />
+    <Compile Include="RawInput\Enumerations.cs" />
+    <Compile Include="RawInput\KeyMapper.cs" />
+    <Compile Include="RawInput\KeyPressEvent.cs" />
+    <Compile Include="RawInput\PreMessageFilter.cs" />
+    <Compile Include="RawInput\RawInput.cs" />
+    <Compile Include="RawInput\RawInputEventArg.cs" />
+    <Compile Include="RawInput\RawKeyboard.cs" />
+    <Compile Include="RawInput\RegistryAccess.cs" />
+    <Compile Include="RawInput\Win32.cs" />
     <Compile Include="Report\AktivniClanoviGrupeIzvestaj.cs" />
     <Compile Include="Report\AktivniClanoviIzvestaj.cs" />
     <Compile Include="Report\EvidencijaTreningaIzvestaj.cs" />
@@ -593,6 +606,7 @@
     <Compile Include="UI\UplataClanarineDialog.Designer.cs">
       <DependentUpon>UplataClanarineDialog.cs</DependentUpon>
     </Compile>
+    <None Include="RawInput\Values for keyboard make-break %28scan%29 code.pdf" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Data\NHibernate\Mappings\FinansijskaCelina.hbm.xml" />

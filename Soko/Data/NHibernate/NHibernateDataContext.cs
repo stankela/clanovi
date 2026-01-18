@@ -249,7 +249,7 @@ namespace Soko.Data.NHibernate
             IList<T> result = GetByCriteria<T>(query);
 
             List<T> distinctResult = new List<T>();
-            ISet<T> set = new HashedSet<T>();
+            Iesi.Collections.Generic.ISet<T> set = new HashedSet<T>();
             foreach (T obj in result)
             {
                 if (set.Add(obj))

@@ -18,6 +18,8 @@ using Soko.Exceptions;
 using Bilten.Dao.NHibernate;
 using RFID.NativeInterface;
 using RFID.Utils;
+using RawInput_dll;
+using System.Collections.Concurrent;
 
 namespace Soko
 {
@@ -29,7 +31,8 @@ namespace Soko
             get
             {
                 if (treningInstance == null)
-                    treningInstance = new PanonitCitacKartica(Options.Instance.COMPortReader);
+                    //treningInstance = new PanonitCitacKartica(Options.Instance.COMPortReader);
+                    treningInstance = new R10ACitacKartica();
                 return treningInstance;
             }
         }
@@ -48,8 +51,6 @@ namespace Soko
         public abstract void readCard(out int broj);
         public abstract bool tryReadCard(out int broj);
         public abstract bool writeCard(string sID, out Int64 serialCardNo);
-        public abstract void ReadLoop();
-        public abstract void RequestStop();
 
         public virtual void SetComPort(int comPort)
         {
@@ -58,6 +59,91 @@ namespace Soko
         public static readonly string NAME_FIELD = "SDV";
         public static readonly int TEST_KARTICA_BROJ = 100000;
         public static readonly string TEST_KARTICA_NAME = "TEST KARTICA";
+
+        // Volatile is used as hint to the compiler that this data 
+        // member will be accessed by multiple threads. 
+        private volatile bool _shouldStop = false;
+
+        public void RequestStop()
+        {
+            _shouldStop = true;
+        }
+
+        public void ReadLoop()
+        {
+            // TODO2: Proveri da li je sve u ovom metodu thread safe.
+            bool lastRead = false;
+            bool pendingClear = false;
+            int visibleCount = 0;
+            int skipCount = 0;
+
+            while (!_shouldStop)
+            {
+                if (lastRead)
+                {
+                    // Preskoci narednih CitacKarticaThreadSkipCount ocitavanja.
+                    // Kod radi samo za CitacKarticaThreadSkipCount > 0.
+                    lastRead = false;
+                    skipCount = 1;
+                }
+                else
+                {
+                    if (skipCount > 0 && ++skipCount > Options.Instance.CitacKarticaThreadSkipCount)
+                    {
+                        skipCount = 0;
+                    }
+                    if (skipCount == 0)
+                    {
+                        lastRead = TryReadDolazakNaTrening(pendingClear);
+                    }
+                }
+
+                if (lastRead)
+                {
+                    // Prikazivanje treba da bude vidljivo tokom trajanja CitacKarticaThreadVisibleCount intervala.
+                    pendingClear = true;
+                    visibleCount = 1;
+                }
+                else if (pendingClear)
+                {
+                    ++visibleCount;
+                    if (visibleCount > Options.Instance.CitacKarticaThreadVisibleCount)
+                    {
+                        CitacKarticaForm citacKarticaForm = Form1.Instance.CitacKarticaForm;
+                        if (citacKarticaForm != null)
+                        {
+                            citacKarticaForm.Clear();
+                        }
+                        pendingClear = false;
+                    }
+                }
+
+                Thread.Sleep(Options.Instance.CitacKarticaThreadInterval);
+            }
+        }
+
+        private bool TryReadDolazakNaTrening(bool obrisiPrePrikazivanja)
+        {
+            AdminForm af = Form1.Instance.AdminForm;
+            bool measureTime = af != null;
+
+            Stopwatch watch = null;
+            if (measureTime)
+            {
+                watch = Stopwatch.StartNew();
+            }
+
+            int broj;
+            bool result = tryReadCard(out broj);
+
+            if (measureTime)
+            {
+                watch.Stop();
+                af.newOcitavanje(watch.ElapsedMilliseconds);
+            }
+
+            return result && handleOcitavanjeKarticeTrening(broj, DateTime.Now, obrisiPrePrikazivanja);
+        }
 
         public static bool handleOcitavanjeKarticeTrening(int broj, DateTime vremeOcitavanja,
             bool obrisiPrePrikazivanja)
@@ -258,10 +344,6 @@ namespace Soko
     public class PanonitCitacKartica : CitacKartica
     {
         private Object readAndWriteLock = new Object();
-
-        // Volatile is used as hint to the compiler that this data 
-        // member will be accessed by multiple threads. 
-        private volatile bool _shouldStop = false;
 
         private RFIDReader mReader;
         private string DEFAULT_KEY = "FFFFFFFFFFFF";
@@ -694,86 +776,173 @@ namespace Soko
 
             return retval == 1;
         }
+    }
 
-        private bool TryReadDolazakNaTrening(bool obrisiPrePrikazivanja)
+    public class R10ACitacKartica : CitacKartica
+    {
+        public R10ACitacKartica()
         {
-            AdminForm af = Form1.Instance.AdminForm;
-            bool measureTime = af != null;
-
-            Stopwatch watch = null;
-            if (measureTime)
-            {
-                watch = Stopwatch.StartNew();
-            }
-
-            int broj;
-            bool result = tryReadCard(out broj);
-
-            if (measureTime)
-            {
-                watch.Stop();
-                af.newOcitavanje(watch.ElapsedMilliseconds);
-            }
-
-            return result && handleOcitavanjeKarticeTrening(broj, DateTime.Now, obrisiPrePrikazivanja);
+            Form1.Instance.CitacKarticaForm.GetRawInput().KeyPressed += OnKeyPressed;
+            // TODO4: Potrebno je negde odraditi GetRawInput().KeyPressed -= OnKeyPressed;
         }
 
-        public override void ReadLoop()
+        class KeyEvent
         {
-            // TODO2: Proveri da li je sve u ovom metodu thread safe.
-            bool lastRead = false;
-            bool pendingClear = false;
-            int visibleCount = 0;
-            int skipCount = 0;
+            public string VKeyName;
+            public string KeyPressState;
 
-            while (!_shouldStop)
+            public KeyEvent(string name, string state)
             {
-                if (lastRead)
+                VKeyName = name;
+                KeyPressState = state;
+            }
+        }
+
+        private int index = 0;
+        private KeyEvent[] buffer = null;  // circular buffer of last 28 digits
+        private static ConcurrentQueue<string> concurrentQueue = new ConcurrentQueue<string>();
+
+        private void OnKeyPressed(object sender, RawInputEventArg e)
+        {
+            if (buffer == null)
+            {
+                buffer = new KeyEvent[28];  // circular buffer of last 28 digits
+                for (int i = 0; i < 28; ++i)
                 {
-                    // Preskoci narednih CitacKarticaThreadSkipCount ocitavanja.
-                    // Kod radi samo za CitacKarticaThreadSkipCount > 0.
-                    lastRead = false;
-                    skipCount = 1;
+                    buffer[i] = new KeyEvent("", "");
+                }
+            }
+            buffer[index] = new KeyEvent(e.KeyPressEvent.VKeyName, e.KeyPressEvent.KeyPressState);
+            index = (index + 1) % 28;
+            if (e.KeyPressEvent.VKeyName != "ENTER" || e.KeyPressEvent.KeyPressState != "BREAK")
+            {
+                return;
+            }
+            // Detektovali smo zadnji karakter u nizu. Proveri svih 28 karaktera
+            string input = checkInput(index);
+            if (input != "")
+            {
+                concurrentQueue.Enqueue(input);
+            }
+        }
+
+        private string checkInput(int index)
+        {
+            // Primer korektnog inputa je ";0722287837?", plus ENTER na kraju. Za svaki karakter imamo MAKE i BREAK.
+            // MAKE predstavlja pritisak tastera, BREAK predstavlja otpustanje. Znaku '?' prethodi desni SHIFT
+            // (tj. RSHIFT)
+            string result = "";
+            string[] vKeyNames = new string[28] {
+                "OEMSEMICOLON",
+                "OEMSEMICOLON",
+                /* proizvoljnih deset cifara. svaka cifra se ponavlja dva puta (pritisak tastera i otpustanje */
+                "D0","D0","D1","D1","D2","D2","D3","D3","D4","D4","D5","D5","D6","D6","D7","D7","D8","D8","D9","D9",
+                "RSHIFT", "OEMQUESTION", "RSHIFT", "OEMQUESTION", "ENTER", "ENTER"
+            };
+            string[] vKeyPressStates = new string[28] {
+                "MAKE",
+                "BREAK",
+                "MAKE","BREAK","MAKE","BREAK","MAKE","BREAK","MAKE","BREAK","MAKE","BREAK",
+                "MAKE","BREAK","MAKE","BREAK","MAKE","BREAK","MAKE","BREAK","MAKE","BREAK",
+                "MAKE", "MAKE", "BREAK", "BREAK", "MAKE", "BREAK"
+            };
+            for (int i = 0; i < 28; ++i, index = (index + 1) % 28)
+            {
+                KeyEvent e = buffer[index];
+                if (e.KeyPressState != vKeyPressStates[i])
+                    return "";
+                if (i < 2 || i >= 22)
+                {
+                    if (i == 23 || i == 25)
+                    {
+                        // Ovaj slucaj obradjujem posebno, zato sto je na srpskoj tastaturi znak '?' u stvari '-',
+                        // tj. umesto OEMQUESTION imamo OEMMINUS
+                        // TODO4: Mozda da izostavim proveru za ova dva indeksa (23 i 25), zato sto bi za neku
+                        // tastaturu koja nije ni srpska ni engleska mogla da se pojavi neka treca vrednost. Takodje,
+                        // i za znak ';' bi nesto slicno moglo da se desi.
+                        if (e.VKeyName != "OEMQUESTION" && e.VKeyName != "OEMMINUS")
+                            return "";
+                    }
+                    else if (e.VKeyName != vKeyNames[i])
+                        return "";
                 }
                 else
                 {
-                    if (skipCount > 0 && ++skipCount > Options.Instance.CitacKarticaThreadSkipCount)
+                    if (!isDigit(e.VKeyName))
+                        return "";
+                    if (e.KeyPressState == "MAKE")
                     {
-                        skipCount = 0;
+                        int nextIndex = (index + 1) % 28;
+                        KeyEvent nextEv = buffer[nextIndex];
+                        if (nextEv.KeyPressState != "BREAK")
+                            return "";
                     }
-                    if (skipCount == 0)
+                    else if (e.KeyPressState == "BREAK")
                     {
-                        lastRead = TryReadDolazakNaTrening(pendingClear);
+                        int prevIndex = index - 1;
+                        if (prevIndex == -1)
+                            prevIndex = 27;
+                        KeyEvent prevEv = buffer[prevIndex];
+                        if (prevEv.KeyPressState != "MAKE")
+                            return "";
+                        char digit = getDigit(e.VKeyName);
+                        if (digit != getDigit(prevEv.VKeyName))
+                            return "";
+                        result += digit;
                     }
+                    else
+                        return "";
                 }
+            }
+            return result;
+        }
 
-                if (lastRead)
-                {
-                    // Prikazivanje treba da bude vidljivo tokom trajanja CitacKarticaThreadVisibleCount intervala.
-                    pendingClear = true;
-                    visibleCount = 1;
-                }
-                else if (pendingClear)
-                {
-                    ++visibleCount;
-                    if (visibleCount > Options.Instance.CitacKarticaThreadVisibleCount)
-                    {
-                        CitacKarticaForm citacKarticaForm = Form1.Instance.CitacKarticaForm;
-                        if (citacKarticaForm != null)
-                        {
-                            citacKarticaForm.Clear();
-                        }
-                        pendingClear = false;
-                    }
-                }
-                
-                Thread.Sleep(Options.Instance.CitacKarticaThreadInterval);
+        private bool isDigit(string vKeyName)
+        {
+            if (vKeyName.Length != 2 || vKeyName[0] != 'D')
+                return false;
+            switch (vKeyName[1])
+            {
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    return true;
+                default:
+                    return false;
             }
         }
 
-        public override void RequestStop()
+        private char getDigit(string vKeyName)
         {
-            _shouldStop = true;
+            return vKeyName[1];
+        }
+
+        public override bool tryReadCard(out int broj)
+        {
+            broj = 9241;
+            string item;
+            if (concurrentQueue.TryDequeue(out item))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public override void readCard(out int broj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool writeCard(string sID, out long serialCardNo)
+        {
+            throw new NotImplementedException();
         }
     }
 }

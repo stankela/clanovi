@@ -11,6 +11,7 @@ using Soko.Domain;
 using NHibernate;
 using Soko.Data;
 using NHibernate.Context;
+using RawInput_dll;
 
 namespace Soko.UI
 {
@@ -21,6 +22,32 @@ namespace Soko.UI
         private Font font;
         private string msg;
         private Color color;
+
+        private RawInput _rawinput;
+        public RawInput GetRawInput()
+        {
+            return _rawinput;
+        }
+
+        // Vrednost false obezbedjuje da ce se generisati keyboard ulaz sa RFID citaca cak i ako Form1 nije u
+        // foregroundu.
+        private const bool CaptureOnlyInForeground = false;
+
+        private void podesiKeyboardRawInput()
+        {
+            // Resenje preuzeto sa
+            // www.codeproject.com/articles/Using-Raw-Input-from-C-to-handle-multiple-keyboard
+
+            _rawinput = new RawInput(Handle, CaptureOnlyInForeground);
+
+            // Adding a message filter will cause keypresses to be handled
+            // Ovo znaci da nakon sto se izvrsi OnKeyPressed, nece se generisati dodatni key eventi. Ako se izostavi
+            // ovaj poziv, i ako je npr TextBox u fokusu kada ocitam karticu na RFID citacu koji generise keyboard
+            // ulaz, tekst ce se ispisati u TextBoxu.
+            _rawinput.AddMessageFilter();
+
+            //Win32.DeviceAudit();            // Writes a file DeviceAudit.txt to the current directory
+        }
 
         public CitacKarticaForm()
         {
@@ -36,6 +63,7 @@ namespace Soko.UI
 
         private void CitacKarticaForm_Load(object sender, EventArgs e)
         {
+            podesiKeyboardRawInput();
             maxGrupa = getMaxGrupa();
             PodesiVelicinu();
         }

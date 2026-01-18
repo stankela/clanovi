@@ -190,12 +190,12 @@ namespace Soko.UI
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             /*if (Options.Instance.TraziLozinkuPreOtvaranjaProzora)
-                return;
+                    return;
 
-            if (this.WindowState == FormWindowState.Minimized)
-            {
-                e.Cancel = true;
-            }*/
+                if (this.WindowState == FormWindowState.Minimized)
+                {
+                    e.Cancel = true;
+                }*/
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
