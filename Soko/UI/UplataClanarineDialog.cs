@@ -431,7 +431,8 @@ namespace Soko.UI
         private void ReadKartica()
         {
             int broj;
-            CitacKartica.UplateInstance.readCard(out broj);
+            string serijskiBroj;
+            CitacKartica.UplateInstance.readCard(out broj, out serijskiBroj);
 
             // SelectedClan will be updated in txtBrojClana_TextChanged
             txtBrojClana.Text = broj.ToString();

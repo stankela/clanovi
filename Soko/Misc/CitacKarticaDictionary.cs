@@ -58,9 +58,10 @@ namespace Soko.Misc
             uplateGodisnjaClanarinaPrethGod = new Dictionary<int, UplataClanarine>();
             danasnjaOcitavanja = new HashedSet();
 
-            // TODO4: Da bi "cuvajSerijskeBrojeve = true" radilo (tj da bi bilo moguce ocitavanje kartica samo
-            // pomocu serijskog broja), mora u programu da postoji nacin kako da se obradjuje slucaj kada dva clana
-            // imaju kartice sa istim serijskim brojem, tj program ne sme da dozvoli da se to desi
+            // TODO4: Ovo treba onemoguciti (tj postaviti na false). Da bi "cuvajSerijskeBrojeve = true" radilo
+            // (tj da bi bilo moguce ocitavanje kartica samo pomocu serijskog broja), mora u programu da postoji
+            // nacin kako da se obradjuje slucaj kada dva clana imaju kartice sa istim serijskim brojem, tj program
+            // ne sme da dozvoli da se to desi
             cuvajSerijskeBrojeve = true;
         }
 
@@ -263,6 +264,12 @@ namespace Soko.Misc
                     clanoviSaKarticom.Add(clan.BrojKartice.Value, clan);
                     if (cuvajSerijskeBrojeve)
                     {
+                        if (clanoviSaKarticomSerijskiBroj.ContainsKey(clan.SerijskiBrojKartice.Value))
+                        {
+                            // Ovo se desava kada napravimo karticu za novog clana tako sto prebrisemo karticu nekog
+                            // postojeceg clana. 
+                            clanoviSaKarticomSerijskiBroj.Remove(clan.SerijskiBrojKartice.Value);
+                        }
                         clanoviSaKarticomSerijskiBroj.Add(clan.SerijskiBrojKartice.Value, clan);
                     }
                 }
