@@ -120,6 +120,8 @@ namespace HidGlobal.OK.SampleCodes.Utilities
             string output = smartCardReader.Transmit(input);
 
             ConsoleWriter.Instance.PrintCommand(description + "0x" + blockNumber.ToString("X2"), input, output);
+            if (output != "9000")
+                throw new Exception();
         }
         public static void UpdateBinaryCommand(ISecureChannel secureChannel, string description, UpdateBinaryCommand.Type type, byte blockNumber, string data)
         {
@@ -150,6 +152,8 @@ namespace HidGlobal.OK.SampleCodes.Utilities
             string output = smartCardReader.Transmit(input);
 
             ConsoleWriter.Instance.PrintCommand(description + keySlot.ToString("X2"), input, output);
+            if (output != "9000")
+                throw new Exception();
         }
         public static void GetDataCommand(ISmartCardReader smartCardReader, string description, GetDataCommand.Type type)
         {

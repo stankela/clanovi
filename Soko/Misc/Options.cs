@@ -264,8 +264,6 @@ namespace Soko
             set { useCardReaderLog = value; }
         }
 
-        // TODO4: Izbaci ovu opciju kada zavrsis prelazak na novi format kartica
-
         private bool writePraznaDataCard = false;
         public bool WritePraznaDataCard
         {

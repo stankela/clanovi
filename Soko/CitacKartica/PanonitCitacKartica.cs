@@ -45,26 +45,21 @@ namespace Soko
             Log.Info("", data.PasswordA + " " + data.Control + " " + data.PasswordB);
         }
 
-        private ulong ReadDataCardImpl(ref string sID, ref string sName)
+        private ulong ReadDataCardImpl(out string sID, out string sName)
         {
+            sID = "";
+            sName = "";
+
             if (!mReader.ConnectDevice(comPort) || !mReader.BindCard(false))
                 return 0;
 
-            TipKartice tipKartice;
             int sectorNo = 3;
             RFIDReader.RFIDSectorData data = mReader.ReadData(sectorNo, false, KEY);
-            if (data == null)
-                tipKartice = TipKartice.Prazna;
-            else
+            if (data != null)
             {
                 LogSector(sectorNo, data);
-                if (data.Block0 == "53445632303233000000000000000000")
-                    tipKartice = TipKartice.NoviFormat;
-                else if (data.Block0 == "00000000000000000000000000000000")
-                    tipKartice = TipKartice.Prazna;
-                else
-                    tipKartice = TipKartice.Panonit;
             }
+            TipKartice tipKartice = getTipKartice(data != null ? data.Block0 : null);
 
             if (tipKartice == TipKartice.Prazna || tipKartice == TipKartice.Panonit)
                 return 2;
@@ -90,29 +85,28 @@ namespace Soko
             return 1;
         }
 
-        protected override ulong ReadDataCard(ref string sID, ref string sName, ref string serialNumber)
+        protected override ulong ReadDataCard(out string sID, out string sName, out string serialNumber)
         {
-            ulong retval = ReadDataCardImpl(ref sID, ref sName);
+            serialNumber = "";
+
+            ulong retval = ReadDataCardImpl(out sID, out sName);
             if (retval == 1)
                 mReader.Beep();
             return retval;
         }
 
-        private ulong SetKeys()
+        private ulong SetKeys(string password)
         {
-            // Write key to blocks 7, 15 and 23. The structure of the key is as follows:
-            // KEY is the A key for the sector. FF078069 are the access bits for that sector (they define what data
-            // is modifiable with which key). DEFAULT_KEY is the B key.
-            string keyBlock = KEY + "FF078069" + DEFAULT_KEY;
-            if (!mReader.WriteDataToBlock(1, 3, false, DEFAULT_KEY, keyBlock))
+            // Write key to blocks 7, 15 and 23
+            if (!mReader.WriteDataToBlock(1, 3, false, password, KEY_BLOCK))
                 return 0;
-            Log.Info("Write key to block 7:", keyBlock);
-            if (!mReader.WriteDataToBlock(3, 3, false, DEFAULT_KEY, keyBlock))
+            Log.Info("Write key to block 7:", KEY_BLOCK);
+            if (!mReader.WriteDataToBlock(3, 3, false, password, KEY_BLOCK))
                 return 0;
-            Log.Info("Write key to block 15:", keyBlock);
-            if (!mReader.WriteDataToBlock(5, 3, false, DEFAULT_KEY, keyBlock))
+            Log.Info("Write key to block 15:", KEY_BLOCK);
+            if (!mReader.WriteDataToBlock(5, 3, false, password, KEY_BLOCK))
                 return 0;
-            Log.Info("Write key to block 23:", keyBlock);
+            Log.Info("Write key to block 23:", KEY_BLOCK);
             return 1;
         }
 
@@ -131,15 +125,13 @@ namespace Soko
             // write "SDV" to block 20
             if (sName != "SDV")
                 throw new Exception("Greska u programu.");
-            value = "53445600000000000000000000000000";
-            Log.Info("Write data to block 20:", value);
-            if (!mReader.WriteDataToBlock(5, 0, false, KEY, value))
+            Log.Info("Write data to block 20:", SDV_BLOCK);
+            if (!mReader.WriteDataToBlock(5, 0, false, KEY, SDV_BLOCK))
                 return 0;
 
             // Napravi da kartica bude u formatu TipKartice.NoviFormat - write "SDV2023" to block 12
-            value = "53445632303233000000000000000000";
-            Log.Info("Write data to block 12:", value);
-            if (!mReader.WriteDataToBlock(3, 0, false, KEY, value))
+            Log.Info("Write data to block 12:", SDV2023_BLOCK);
+            if (!mReader.WriteDataToBlock(3, 0, false, KEY, SDV2023_BLOCK))
                 return 0;
 
             return 1;
@@ -160,7 +152,7 @@ namespace Soko
 
             serialCardNo = Convert.ToInt64(mReader.CurrentCardNo, 16);
 
-            if (SetKeys() == 1)  // Prazna kartica
+            if (SetKeys(DEFAULT_KEY) == 1)  // Prazna kartica
                 return SetData(sID, sName, mReader.CurrentCardNo);
 
             // NoviFormat ili Panonit kartica.
@@ -176,28 +168,20 @@ namespace Soko
         // Konvertuje iz TipKartice.NoviFormat u TipKartice.Prazna
         private ulong WritePraznaDataCard()
         {
-            // write default key to blocks 7, 15 and 23
-            string keyBlock = DEFAULT_KEY + "FF078069" + DEFAULT_KEY;
-            if (!mReader.WriteDataToBlock(1, 3, false, KEY, keyBlock))
+            // TODO4: Mislim da ovde treba upisivati default key (tako je kod OMNIKEY 5422)
+            // Write key to blocks 7, 15 and 23
+            if (SetKeys(KEY) == 0)
                 return 0;
-            Log.Info("Write key to block 7:", keyBlock);
-            if (!mReader.WriteDataToBlock(3, 3, false, KEY, keyBlock))
-                return 0;
-            Log.Info("Write key to block 15:", keyBlock);
-            if (!mReader.WriteDataToBlock(5, 3, false, KEY, keyBlock))
-                return 0;
-            Log.Info("Write key to block 23:", keyBlock);
 
             // write zero data to blocks 6, 12 and 20
-            string value = "00000000000000000000000000000000";
-            Log.Info("Write data to block 6:", value);
-            if (!mReader.WriteDataToBlock(1, 2, false, DEFAULT_KEY, value))
+            Log.Info("Write data to block 6:", ZERO_BLOCK);
+            if (!mReader.WriteDataToBlock(1, 2, false, DEFAULT_KEY, ZERO_BLOCK))
                 return 0;
-            Log.Info("Write data to block 12:", value);
-            if (!mReader.WriteDataToBlock(3, 0, false, DEFAULT_KEY, value))
+            Log.Info("Write data to block 12:", ZERO_BLOCK);
+            if (!mReader.WriteDataToBlock(3, 0, false, DEFAULT_KEY, ZERO_BLOCK))
                 return 0;
-            Log.Info("Write data to block 20:", value);
-            if (!mReader.WriteDataToBlock(5, 0, false, DEFAULT_KEY, value))
+            Log.Info("Write data to block 20:", ZERO_BLOCK);
+            if (!mReader.WriteDataToBlock(5, 0, false, DEFAULT_KEY, ZERO_BLOCK))
                 return 0;
 
             //mReader.EnableCheck = true;  // TODO4: RAII ?

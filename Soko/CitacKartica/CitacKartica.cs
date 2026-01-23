@@ -65,10 +65,9 @@ namespace Soko
 
         public virtual void readCard(out int broj, out string serijskiBroj)
         {
-            string sID = "";
-            string name = "";
+            string sID;
+            string name;
             broj = -1;
-            serijskiBroj = "-1";
 
             AdminForm af = Form1.Instance.AdminForm;
             bool measureTime = af != null;
@@ -84,12 +83,12 @@ namespace Soko
             {
                 lock (readAndWriteLock)
                 {
-                    retval = ReadDataCard(ref sID, ref name, ref serijskiBroj);
+                    retval = ReadDataCard(out sID, out name, out serijskiBroj);
                 }
             }
             else
             {
-                retval = ReadDataCard(ref sID, ref name, ref serijskiBroj);
+                retval = ReadDataCard(out sID, out name, out serijskiBroj);
             }
 
             if (measureTime)
@@ -119,7 +118,7 @@ namespace Soko
             }
         }
 
-        protected virtual ulong ReadDataCard(ref string sID, ref string sName, ref string serialNumber)
+        protected virtual ulong ReadDataCard(out string sID, out string sName, out string serialNumber)
         {
             throw new Exception("Method ReadDataCard should be overriden by the derived class");
         }
@@ -166,22 +165,21 @@ namespace Soko
 
         public virtual bool tryReadCard(out int broj, out string serijskiBroj)
         {
-            string sID = "";
-            string name = "";
+            string sID;
+            string name;
             broj = -1;
-            serijskiBroj = "-1";
 
             ulong retval;
             if (Options.Instance.JedinstvenProgram)
             {
                 lock (readAndWriteLock)
                 {
-                    retval = ReadDataCard(ref sID, ref name, ref serijskiBroj);
+                    retval = ReadDataCard(out sID, out name, out serijskiBroj);
                 }
             }
             else
             {
-                retval = ReadDataCard(ref sID, ref name, ref serijskiBroj);
+                retval = ReadDataCard(out sID, out name, out serijskiBroj);
             }
 
             // Sesija.Instance.Log("C READ: " + retval.ToString());
@@ -197,8 +195,28 @@ namespace Soko
         public static readonly int TEST_KARTICA_BROJ = 100000;
         public static readonly string TEST_KARTICA_NAME = "TEST KARTICA";
 
-        protected string DEFAULT_KEY = "FFFFFFFFFFFF";
-        protected string KEY = "13072004abcd";
+        protected static readonly string DEFAULT_KEY = "FFFFFFFFFFFF";
+        protected static readonly string KEY = "13072004abcd";
+        protected static readonly string SDV_BLOCK = "53445600000000000000000000000000";
+        protected static readonly string SDV2023_BLOCK = "53445632303233000000000000000000";
+        protected static readonly string ZERO_BLOCK = "00000000000000000000000000000000";
+
+        // The structure of the key block is as follows: KEY is the A key for the sector. FF078069 are access bits
+        // for that sector (they define what data is modifiable with which key). DEFAULT_KEY is the B key.
+        protected static readonly string KEY_BLOCK = KEY + "FF078069" + DEFAULT_KEY;
+        protected static readonly string DEFAULT_KEY_BLOCK = DEFAULT_KEY + "FF078069" + DEFAULT_KEY;
+
+        protected TipKartice getTipKartice(string block12Data)
+        {
+            if (String.IsNullOrEmpty(block12Data))
+                return TipKartice.Prazna;
+            if (block12Data == SDV2023_BLOCK)
+                return TipKartice.NoviFormat;
+            else if (block12Data == ZERO_BLOCK)
+                return TipKartice.Prazna;
+            else
+                return TipKartice.Panonit;
+        }
 
         protected bool dobroFormatiranaKartica(string sID, string name, out int broj)
         {
@@ -268,7 +286,7 @@ namespace Soko
 
         protected string EncodeID(string sID, string CurrentCardNo)
         {
-            string value = "00000000000000000000000000000000";
+            string value = ZERO_BLOCK;
             char[] value2 = value.ToCharArray();
 
             // Format je "n6 n1 n5 id1 n7 n0 id0 n2 n4 n3" + ostatak id
