@@ -6,11 +6,15 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using static Soko.CitacKartica;
 
 namespace Soko.UI
 {
     public partial class CitacKarticaDialog : Form
     {
+        private int oldCitacUplateIndex;
+        private int oldCitacTreningIndex;
+
         public CitacKarticaDialog()
         {
             InitializeComponent();
@@ -28,12 +32,24 @@ namespace Soko.UI
             "Oktobar",
             "Novembar",
             "Decembar"});
+
+            cmbCitacKarticaUplate.Items.AddRange(
+                // Convert TipCitaca[] to object[]
+                Array.ConvertAll(CitacKartica.GetTipoviCitaca(), x => (object)x));
+            cmbCitacKarticaTrening.Items.AddRange(Array.ConvertAll(CitacKartica.GetTipoviCitaca(), x => (object)x));
         }
 
         private void CitacKarticaDialog_Load(object sender, EventArgs e)
         {
+            cmbCitacKarticaUplate.SelectedIndex = Options.Instance.CitacKarticaUplate;
+            cmbCitacKarticaTrening.SelectedIndex = Options.Instance.CitacKarticaTrening;
+            oldCitacUplateIndex = cmbCitacKarticaUplate.SelectedIndex;
+            oldCitacTreningIndex = cmbCitacKarticaTrening.SelectedIndex;
+
+            updateCOMPortVisibility();
             cmbCOMPortReader.SelectedIndex = Options.Instance.COMPortReader - 1;
             cmbCOMPortWriter.SelectedIndex = Options.Instance.COMPortWriter - 1;
+
             cmbPoslednjiMesecZaGodisnjeClanarine.SelectedIndex = Options.Instance.PoslednjiMesecZaGodisnjeClanarine - 1;
             txtPoslednjiDanZaUplate.Text = Options.Instance.PoslednjiDanZaUplate.ToString();
             txtVelicinaSlova.Text = Options.Instance.VelicinaSlovaZaCitacKartica.ToString();
@@ -41,6 +57,18 @@ namespace Soko.UI
             ckbPrikaziImeClana.Checked = Options.Instance.PrikaziImeClanaKodOcitavanjaKartice;
             ckbPrikaziDisplejPrekoCelogEkrana.Checked = Options.Instance.PrikaziDisplejPrekoCelogEkrana;
             updatePrikaziDisplejPrekoCelogEkrana();
+        }
+
+        private void updateCOMPortVisibility()
+        {
+            cmbCOMPortWriter.Enabled = cmbCitacKarticaUplate.SelectedItem != null
+                && cmbCitacKarticaUplate.SelectedItem.ToString() == TipCitaca.Panonit.ToString();
+            cmbCOMPortWriter.Visible = cmbCOMPortWriter.Enabled;
+            lblCOMPortWriter.Visible = cmbCOMPortWriter.Visible;
+            cmbCOMPortReader.Enabled = cmbCitacKarticaTrening.SelectedItem != null
+                && cmbCitacKarticaTrening.SelectedItem.ToString() == TipCitaca.Panonit.ToString();
+            cmbCOMPortReader.Visible = cmbCOMPortReader.Enabled;
+            lblCOMPortReader.Visible = cmbCOMPortReader.Visible;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -75,7 +103,34 @@ namespace Soko.UI
                     return;
                 }
             }
-            
+            string errorMsg;
+            if (oldCitacUplateIndex != cmbCitacKarticaUplate.SelectedIndex)
+            {
+                TipCitaca citacUplate = CitacKartica.GetTipoviCitaca()[cmbCitacKarticaUplate.SelectedIndex];
+                if (!CitacKartica.ValidateCitacUplate(citacUplate, out errorMsg))
+                {
+                    MessageDialogs.showMessage("Neispravna vrednost za citac kartica za uplate.\n\n" + errorMsg,
+                        this.Text);
+                    cmbCitacKarticaUplate.Focus();
+                    this.DialogResult = DialogResult.None;
+                    return;
+                }
+            }
+            if (oldCitacTreningIndex != cmbCitacKarticaTrening.SelectedIndex)
+            {
+                TipCitaca citacTrening = CitacKartica.GetTipoviCitaca()[cmbCitacKarticaTrening.SelectedIndex];
+                if (!CitacKartica.ValidateCitacTrening(citacTrening, out errorMsg))
+                {
+                    MessageDialogs.showMessage("Neispravna vrednost za citac kartica za trening.\n\n" + errorMsg,
+                        this.Text);
+                    cmbCitacKarticaTrening.Focus();
+                    this.DialogResult = DialogResult.None;
+                    return;
+                }
+            }
+
+            Options.Instance.CitacKarticaUplate = cmbCitacKarticaUplate.SelectedIndex;
+            Options.Instance.CitacKarticaTrening = cmbCitacKarticaTrening.SelectedIndex;    
             Options.Instance.COMPortReader = cmbCOMPortReader.SelectedIndex + 1;
             Options.Instance.COMPortWriter = cmbCOMPortWriter.SelectedIndex + 1;
             Options.Instance.PoslednjiMesecZaGodisnjeClanarine = cmbPoslednjiMesecZaGodisnjeClanarine.SelectedIndex + 1;
@@ -90,9 +145,20 @@ namespace Soko.UI
                 Options.Instance.VisinaDispleja = int.Parse(txtVisinaDispleja.Text);
             }
 
+            if (oldCitacUplateIndex != cmbCitacKarticaUplate.SelectedIndex)
+            {
+                CitacKartica.UpdateUplateInstanceFromOptions();
+            }
+            if (oldCitacTreningIndex != cmbCitacKarticaTrening.SelectedIndex)
+            {
+                CitacKartica.UpdateTreningInstanceFromOptions();
+            }
+
             if (!Options.Instance.JedinstvenProgram && Options.Instance.IsProgramZaClanarinu)
             {
                 string msg = "CitacKarticaOpcije";
+                msg += " CitacKarticaUplate " + Options.Instance.CitacKarticaUplate.ToString();
+                msg += " CitacKarticaTrening " + Options.Instance.CitacKarticaTrening.ToString();
                 msg += " COMPortReader " + Options.Instance.COMPortReader.ToString();
                 msg += " COMPortWriter " + Options.Instance.COMPortWriter.ToString();
                 msg += " PoslednjiDanZaUplate " + Options.Instance.PoslednjiDanZaUplate.ToString();
@@ -105,8 +171,6 @@ namespace Soko.UI
                 msg += " VisinaDispleja " + Options.Instance.VisinaDispleja.ToString();
                 Form1.Instance.sendToPipeClient(msg);
             }
-            CitacKartica.TreningInstance.SetComPort(Options.Instance.COMPortReader);
-            CitacKartica.UplateInstance.SetComPort(Options.Instance.COMPortWriter);
         }
 
         private void ckbPrikaziDisplejPrekoCelogEkrana_CheckedChanged(object sender, EventArgs e)
@@ -137,6 +201,16 @@ namespace Soko.UI
                 txtSirinaDispleja.Enabled = false;
                 txtVisinaDispleja.Enabled = false;
             }
+        }
+
+        private void cmbCitacKarticaUplate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            updateCOMPortVisibility();
+        }
+
+        private void cmbCitacKarticaTrening_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            updateCOMPortVisibility();
         }
     }
 }

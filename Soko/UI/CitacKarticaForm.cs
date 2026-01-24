@@ -147,6 +147,20 @@ namespace Soko.UI
 
         public void Prikazi(string msg, Color color)
         {
+            // Ovaj metod (i metod Clear) se poziva sa background threada u kome se izvrsava citac kartica za trening.
+
+            // Accessing the UI elements (controls) is thread-safe only if called from the main UI thread. If the
+            // call is not from the UI thread, we must marshal the call back to the UI thread using the control's
+            // Invoke method.
+
+            // We first use the InvokeRequired property to check if the current thread is different from the UI
+            // thread, and then use Invoke to execute a delegate on the correct thread. 
+            if (this.InvokeRequired)
+            {
+                // Ovo ce ponovo pozvati Prikazi(), ali iz main UI threada
+                this.Invoke(new Action<string, Color>(Prikazi), new object[] { msg, color });
+                return;
+            }
             this.msg = msg;
             this.color = color;
             this.Invalidate();
@@ -160,6 +174,11 @@ namespace Soko.UI
 
         public void Clear()
         {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(Clear), new object[] { });
+                return;
+            }
             this.msg = String.Empty;
             this.Invalidate();
             this.Update();

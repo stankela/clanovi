@@ -194,14 +194,15 @@ namespace Soko
             set { citacKarticaThreadInterval = value; }
         }
 
-        private int citacKarticaThreadSkipCount = 2;
+        private int citacKarticaThreadSkipCount = 4;
         public int CitacKarticaThreadSkipCount
         {
             get { return citacKarticaThreadSkipCount; }
             set { citacKarticaThreadSkipCount = value; }
         }
 
-        private int citacKarticaThreadVisibleCount = 5;
+        // TODO4: Mozda da ovo moze da se menja u CitacKarticaDialog
+        private int citacKarticaThreadVisibleCount = 6;
         public int CitacKarticaThreadVisibleCount
         {
             get { return citacKarticaThreadVisibleCount; }
@@ -269,6 +270,20 @@ namespace Soko
         {
             get { return writePraznaDataCard; }
             set { writePraznaDataCard = value; }
+        }
+
+        private int citacKarticaUplate = 0;
+        public int CitacKarticaUplate
+        {
+            get { return citacKarticaUplate; }
+            set { citacKarticaUplate = value; }
+        }
+
+        private int citacKarticaTrening = 0;
+        public int CitacKarticaTrening
+        {
+            get { return citacKarticaTrening; }
+            set { citacKarticaTrening = value; }
         }
     }
 }

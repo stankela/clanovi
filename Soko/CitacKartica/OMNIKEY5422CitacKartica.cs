@@ -84,7 +84,7 @@ namespace Soko
             string blockData = readBlock(reader, 0x0c, keySlot);
             TipKartice tipKartice = getTipKartice(blockData);
 
-            System.Windows.Forms.MessageBox.Show(blockData);
+            //System.Windows.Forms.MessageBox.Show(blockData);
 
             if (tipKartice == TipKartice.Prazna || tipKartice == TipKartice.Panonit)
                 return 2;
@@ -117,6 +117,11 @@ namespace Soko
             if (String.IsNullOrEmpty(readerName))
             {
                 findContactlessReader();
+                if (String.IsNullOrEmpty(readerName))
+                {
+                    // Citac kartica nije prikljucen, pa je readerName ostao null
+                    return 0;
+                }
             }
             var reader = new SmartCardReader(readerName);
             try

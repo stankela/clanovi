@@ -47,6 +47,10 @@
             this.txtVisinaDispleja = new System.Windows.Forms.TextBox();
             this.lblPoslednjiMesecZaGodisnjeClanarine = new System.Windows.Forms.Label();
             this.cmbPoslednjiMesecZaGodisnjeClanarine = new System.Windows.Forms.ComboBox();
+            this.lblCitacKarticaUplate = new System.Windows.Forms.Label();
+            this.cmbCitacKarticaUplate = new System.Windows.Forms.ComboBox();
+            this.lblCitacKarticaTrening = new System.Windows.Forms.Label();
+            this.cmbCitacKarticaTrening = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // cmbCOMPortReader
@@ -84,7 +88,7 @@
             "COM 28",
             "COM 29",
             "COM 30"});
-            this.cmbCOMPortReader.Location = new System.Drawing.Point(21, 182);
+            this.cmbCOMPortReader.Location = new System.Drawing.Point(180, 238);
             this.cmbCOMPortReader.Name = "cmbCOMPortReader";
             this.cmbCOMPortReader.Size = new System.Drawing.Size(132, 21);
             this.cmbCOMPortReader.TabIndex = 0;
@@ -92,16 +96,16 @@
             // lblCOMPortReader
             // 
             this.lblCOMPortReader.AutoSize = true;
-            this.lblCOMPortReader.Location = new System.Drawing.Point(18, 166);
+            this.lblCOMPortReader.Location = new System.Drawing.Point(177, 222);
             this.lblCOMPortReader.Name = "lblCOMPortReader";
-            this.lblCOMPortReader.Size = new System.Drawing.Size(127, 13);
+            this.lblCOMPortReader.Size = new System.Drawing.Size(52, 13);
             this.lblCOMPortReader.TabIndex = 1;
-            this.lblCOMPortReader.Text = "COM port za citac kartica";
+            this.lblCOMPortReader.Text = "COM port";
             // 
             // btnOK
             // 
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Location = new System.Drawing.Point(147, 395);
+            this.btnOK.Location = new System.Drawing.Point(18, 394);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 2;
@@ -112,7 +116,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(237, 395);
+            this.btnCancel.Location = new System.Drawing.Point(108, 394);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 3;
@@ -154,7 +158,7 @@
             "COM 28",
             "COM 29",
             "COM 30"});
-            this.cmbCOMPortWriter.Location = new System.Drawing.Point(180, 182);
+            this.cmbCOMPortWriter.Location = new System.Drawing.Point(180, 180);
             this.cmbCOMPortWriter.Name = "cmbCOMPortWriter";
             this.cmbCOMPortWriter.Size = new System.Drawing.Size(132, 21);
             this.cmbCOMPortWriter.TabIndex = 4;
@@ -162,11 +166,11 @@
             // lblCOMPortWriter
             // 
             this.lblCOMPortWriter.AutoSize = true;
-            this.lblCOMPortWriter.Location = new System.Drawing.Point(177, 166);
+            this.lblCOMPortWriter.Location = new System.Drawing.Point(177, 164);
             this.lblCOMPortWriter.Name = "lblCOMPortWriter";
-            this.lblCOMPortWriter.Size = new System.Drawing.Size(129, 13);
+            this.lblCOMPortWriter.Size = new System.Drawing.Size(52, 13);
             this.lblCOMPortWriter.TabIndex = 5;
-            this.lblCOMPortWriter.Text = "COM port za pisac kartica";
+            this.lblCOMPortWriter.Text = "COM port";
             // 
             // lblPoslednjiDanZaUplate
             // 
@@ -195,7 +199,7 @@
             // 
             // txtVelicinaSlova
             // 
-            this.txtVelicinaSlova.Location = new System.Drawing.Point(189, 122);
+            this.txtVelicinaSlova.Location = new System.Drawing.Point(149, 122);
             this.txtVelicinaSlova.Name = "txtVelicinaSlova";
             this.txtVelicinaSlova.Size = new System.Drawing.Size(45, 20);
             this.txtVelicinaSlova.TabIndex = 10;
@@ -203,7 +207,7 @@
             // ckbPrikaziBoje
             // 
             this.ckbPrikaziBoje.AutoSize = true;
-            this.ckbPrikaziBoje.Location = new System.Drawing.Point(21, 229);
+            this.ckbPrikaziBoje.Location = new System.Drawing.Point(21, 296);
             this.ckbPrikaziBoje.Name = "ckbPrikaziBoje";
             this.ckbPrikaziBoje.Size = new System.Drawing.Size(237, 17);
             this.ckbPrikaziBoje.TabIndex = 11;
@@ -213,7 +217,7 @@
             // ckbPrikaziImeClana
             // 
             this.ckbPrikaziImeClana.AutoSize = true;
-            this.ckbPrikaziImeClana.Location = new System.Drawing.Point(21, 262);
+            this.ckbPrikaziImeClana.Location = new System.Drawing.Point(21, 329);
             this.ckbPrikaziImeClana.Name = "ckbPrikaziImeClana";
             this.ckbPrikaziImeClana.Size = new System.Drawing.Size(105, 17);
             this.ckbPrikaziImeClana.TabIndex = 12;
@@ -223,7 +227,7 @@
             // ckbPrikaziDisplejPrekoCelogEkrana
             // 
             this.ckbPrikaziDisplejPrekoCelogEkrana.AutoSize = true;
-            this.ckbPrikaziDisplejPrekoCelogEkrana.Location = new System.Drawing.Point(21, 301);
+            this.ckbPrikaziDisplejPrekoCelogEkrana.Location = new System.Drawing.Point(291, 296);
             this.ckbPrikaziDisplejPrekoCelogEkrana.Name = "ckbPrikaziDisplejPrekoCelogEkrana";
             this.ckbPrikaziDisplejPrekoCelogEkrana.Size = new System.Drawing.Size(184, 17);
             this.ckbPrikaziDisplejPrekoCelogEkrana.TabIndex = 13;
@@ -234,7 +238,7 @@
             // lblSirinaDispleja
             // 
             this.lblSirinaDispleja.AutoSize = true;
-            this.lblSirinaDispleja.Location = new System.Drawing.Point(55, 325);
+            this.lblSirinaDispleja.Location = new System.Drawing.Point(325, 320);
             this.lblSirinaDispleja.Name = "lblSirinaDispleja";
             this.lblSirinaDispleja.Size = new System.Drawing.Size(71, 13);
             this.lblSirinaDispleja.TabIndex = 14;
@@ -243,7 +247,7 @@
             // lblVisinaDispleja
             // 
             this.lblVisinaDispleja.AutoSize = true;
-            this.lblVisinaDispleja.Location = new System.Drawing.Point(55, 351);
+            this.lblVisinaDispleja.Location = new System.Drawing.Point(325, 346);
             this.lblVisinaDispleja.Name = "lblVisinaDispleja";
             this.lblVisinaDispleja.Size = new System.Drawing.Size(73, 13);
             this.lblVisinaDispleja.TabIndex = 15;
@@ -251,14 +255,14 @@
             // 
             // txtSirinaDispleja
             // 
-            this.txtSirinaDispleja.Location = new System.Drawing.Point(141, 322);
+            this.txtSirinaDispleja.Location = new System.Drawing.Point(411, 317);
             this.txtSirinaDispleja.Name = "txtSirinaDispleja";
             this.txtSirinaDispleja.Size = new System.Drawing.Size(42, 20);
             this.txtSirinaDispleja.TabIndex = 16;
             // 
             // txtVisinaDispleja
             // 
-            this.txtVisinaDispleja.Location = new System.Drawing.Point(141, 348);
+            this.txtVisinaDispleja.Location = new System.Drawing.Point(411, 343);
             this.txtVisinaDispleja.Name = "txtVisinaDispleja";
             this.txtVisinaDispleja.Size = new System.Drawing.Size(42, 20);
             this.txtVisinaDispleja.TabIndex = 17;
@@ -281,13 +285,55 @@
             this.cmbPoslednjiMesecZaGodisnjeClanarine.Size = new System.Drawing.Size(121, 21);
             this.cmbPoslednjiMesecZaGodisnjeClanarine.TabIndex = 19;
             // 
+            // lblCitacKarticaUplate
+            // 
+            this.lblCitacKarticaUplate.AutoSize = true;
+            this.lblCitacKarticaUplate.Location = new System.Drawing.Point(18, 164);
+            this.lblCitacKarticaUplate.Name = "lblCitacKarticaUplate";
+            this.lblCitacKarticaUplate.Size = new System.Drawing.Size(112, 13);
+            this.lblCitacKarticaUplate.TabIndex = 20;
+            this.lblCitacKarticaUplate.Text = "Citac kartica za uplate";
+            // 
+            // cmbCitacKarticaUplate
+            // 
+            this.cmbCitacKarticaUplate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCitacKarticaUplate.FormattingEnabled = true;
+            this.cmbCitacKarticaUplate.Location = new System.Drawing.Point(21, 180);
+            this.cmbCitacKarticaUplate.Name = "cmbCitacKarticaUplate";
+            this.cmbCitacKarticaUplate.Size = new System.Drawing.Size(121, 21);
+            this.cmbCitacKarticaUplate.TabIndex = 21;
+            this.cmbCitacKarticaUplate.SelectedIndexChanged += new System.EventHandler(this.cmbCitacKarticaUplate_SelectedIndexChanged);
+            // 
+            // lblCitacKarticaTrening
+            // 
+            this.lblCitacKarticaTrening.AutoSize = true;
+            this.lblCitacKarticaTrening.Location = new System.Drawing.Point(18, 222);
+            this.lblCitacKarticaTrening.Name = "lblCitacKarticaTrening";
+            this.lblCitacKarticaTrening.Size = new System.Drawing.Size(115, 13);
+            this.lblCitacKarticaTrening.TabIndex = 22;
+            this.lblCitacKarticaTrening.Text = "Citac kartica za trening";
+            // 
+            // cmbCitacKarticaTrening
+            // 
+            this.cmbCitacKarticaTrening.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCitacKarticaTrening.FormattingEnabled = true;
+            this.cmbCitacKarticaTrening.Location = new System.Drawing.Point(21, 238);
+            this.cmbCitacKarticaTrening.Name = "cmbCitacKarticaTrening";
+            this.cmbCitacKarticaTrening.Size = new System.Drawing.Size(121, 21);
+            this.cmbCitacKarticaTrening.TabIndex = 23;
+            this.cmbCitacKarticaTrening.SelectedIndexChanged += new System.EventHandler(this.cmbCitacKarticaTrening_SelectedIndexChanged);
+            // 
             // CitacKarticaDialog
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(339, 441);
+            this.ClientSize = new System.Drawing.Size(486, 441);
+            this.Controls.Add(this.cmbCitacKarticaTrening);
+            this.Controls.Add(this.lblCitacKarticaTrening);
+            this.Controls.Add(this.cmbCitacKarticaUplate);
+            this.Controls.Add(this.lblCitacKarticaUplate);
             this.Controls.Add(this.cmbPoslednjiMesecZaGodisnjeClanarine);
             this.Controls.Add(this.lblPoslednjiMesecZaGodisnjeClanarine);
             this.Controls.Add(this.txtVisinaDispleja);
@@ -340,5 +386,9 @@
         private System.Windows.Forms.TextBox txtVisinaDispleja;
         private System.Windows.Forms.Label lblPoslednjiMesecZaGodisnjeClanarine;
         private System.Windows.Forms.ComboBox cmbPoslednjiMesecZaGodisnjeClanarine;
+        private System.Windows.Forms.Label lblCitacKarticaUplate;
+        private System.Windows.Forms.ComboBox cmbCitacKarticaUplate;
+        private System.Windows.Forms.Label lblCitacKarticaTrening;
+        private System.Windows.Forms.ComboBox cmbCitacKarticaTrening;
     }
 }

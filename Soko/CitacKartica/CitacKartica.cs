@@ -30,6 +30,7 @@ namespace Soko
     public abstract class CitacKartica
     {
         protected Object readAndWriteLock = new Object();
+        protected static Object createLock = new Object();
 
         public enum TipKartice
         {
@@ -38,16 +39,31 @@ namespace Soko
             NoviFormat
         }
 
+        public enum TipCitaca
+        {
+            Panonit,
+            OMNIKEY5422,
+            R10A
+        }
+
+        public static TipCitaca[] GetTipoviCitaca()
+        {
+            return (TipCitaca[])Enum.GetValues(typeof(TipCitaca));
+        }
+
         private static CitacKartica treningInstance;
         public static CitacKartica TreningInstance
         {
             get
             {
-                if (treningInstance == null)
-                    //treningInstance = new PanonitCitacKartica(Options.Instance.COMPortReader);
-                    treningInstance = new R10ACitacKartica();
-                    //treningInstance = new OMNIKEY5422CitacKartica();
-                return treningInstance;
+                lock (createLock)
+                {
+                    if (treningInstance == null)
+                    {
+                        InitTreningInstanceFromOptions();
+                    }
+                    return treningInstance;
+                }
             }
         }
 
@@ -56,11 +72,90 @@ namespace Soko
         {
             get
             {
-                if (uplateInstance == null)
-                    //uplateInstance = new PanonitCitacKartica(Options.Instance.COMPortWriter);
-                    uplateInstance = new OMNIKEY5422CitacKartica();
-                return uplateInstance;
+                lock (createLock)
+                {
+                    if (uplateInstance == null)
+                    {
+                        InitUplateInstanceFromOptions();
+                    }
+                    return uplateInstance;
+                }
             }
+        }
+
+        public static void UpdateUplateInstanceFromOptions()
+        {
+            InitUplateInstanceFromOptions();
+        }
+
+        private static void InitUplateInstanceFromOptions()
+        {
+            TipCitaca tipCitaca = CitacKartica.GetTipoviCitaca()[Options.Instance.CitacKarticaUplate];
+            switch (tipCitaca)
+            {
+                case TipCitaca.Panonit:
+                    uplateInstance = new PanonitCitacKartica(Options.Instance.COMPortWriter);
+                    break;
+                case TipCitaca.OMNIKEY5422:
+                    uplateInstance = new OMNIKEY5422CitacKartica();
+                    break;
+                case TipCitaca.R10A:
+                    throw new Exception("Citac kartica R10A ne podrzava upisivanje na karticu");
+            }
+        }
+
+        public static void UpdateTreningInstanceFromOptions()
+        {
+            StopTreningInstance();
+
+            CitacKarticaForm citacKarticaForm = Form1.Instance.CitacKarticaForm;
+            if (citacKarticaForm != null)
+            {
+                citacKarticaForm.Clear();
+            }
+
+            InitTreningInstanceFromOptions();
+
+            Form1.Instance.pokreniCitacKarticaThread();
+        }
+
+        private static void InitTreningInstanceFromOptions()
+        {
+            TipCitaca tipCitaca = CitacKartica.GetTipoviCitaca()[Options.Instance.CitacKarticaTrening];
+            switch (tipCitaca)
+            {
+                case TipCitaca.Panonit:
+                    treningInstance = new PanonitCitacKartica(Options.Instance.COMPortReader);
+                    break;
+                case TipCitaca.OMNIKEY5422:
+                    treningInstance = new OMNIKEY5422CitacKartica();
+                    break;
+                case TipCitaca.R10A:
+                    treningInstance = new R10ACitacKartica();
+                    break;
+            }
+        }
+
+        private static void StopTreningInstance()
+        {
+            lock (createLock)
+            {
+                if (treningInstance != null)
+                {
+                    treningInstance.RequestStop();
+                    while (treningInstance.IsRunning())
+                    {
+                        Thread.Sleep(500);
+                    }
+                    treningInstance.Cleanup();
+                }
+                treningInstance = null;
+            }
+        }
+
+        // TODO4: Ovo bi trebalo pomocu Dispose
+        public virtual void Cleanup()
+        {
         }
 
         public virtual void readCard(out int broj, out string serijskiBroj)
@@ -116,6 +211,21 @@ namespace Soko
                     "Proverite da li je uredjaj prikljucen, i da li je podesen COM port.";
                 throw new ReadCardException(msg);
             }
+        }
+
+        public static bool ValidateCitacUplate(TipCitaca citacUplate, out string errorMsg)
+        {
+            errorMsg = "";
+            if (citacUplate != TipCitaca.R10A)
+                return true;
+            errorMsg = "Citac kartica R10A ne podrzava upisivanje kartica.";
+            return false;
+        }
+
+        public static bool ValidateCitacTrening(TipCitaca citacTrening, out string errorMsg)
+        {
+            errorMsg = "";
+            return true;
         }
 
         protected virtual ulong ReadDataCard(out string sID, out string sName, out string serialNumber)
@@ -187,8 +297,10 @@ namespace Soko
             return retval == 1 && dobroFormatiranaKartica(sID, name, out broj);
         }
 
-        public virtual void SetComPort(int comPort)
+        private bool running = false;
+        public bool IsRunning()
         {
+            return running;
         }
 
         public static readonly string NAME_FIELD = "SDV";
@@ -335,55 +447,62 @@ namespace Soko
 
         public void ReadLoop()
         {
-            // TODO2: Proveri da li je sve u ovom metodu thread safe.
-            bool lastRead = false;
-            bool pendingClear = false;
+            // TODO4: Proveri da li je sve u ovom metodu thread safe.
+            running = true;
+
+            // Koliko dugo treba da bude vidljivo ocitavanje
             int visibleCount = 0;
+            // Koliko dugo treba sacekati pre nego sto bude moguce novo ocitavanje
             int skipCount = 0;
+            // Da li prilikom prikazivanja novog ocitavanja postoji prethodno ocitavanje koje treba obrisati
+            bool pendingClear = false;
 
-            while (!_shouldStop)
+            // Kod pretpostavlja da je CitacKarticaThreadSkipCount <= CitacKarticaThreadVisibleCount
+            if (Options.Instance.CitacKarticaThreadSkipCount > Options.Instance.CitacKarticaThreadVisibleCount)
+                throw new Exception("Greska u programu");
+
+            while (true)
             {
-                if (lastRead)
+                if (skipCount > 0)
                 {
-                    // Preskoci narednih CitacKarticaThreadSkipCount ocitavanja.
-                    // Kod radi samo za CitacKarticaThreadSkipCount > 0.
-                    lastRead = false;
-                    skipCount = 1;
+                    --skipCount;
                 }
-                else
+                if (visibleCount > 0)
                 {
-                    if (skipCount > 0 && ++skipCount > Options.Instance.CitacKarticaThreadSkipCount)
-                    {
-                        skipCount = 0;
-                    }
-                    if (skipCount == 0)
-                    {
-                        lastRead = TryReadDolazakNaTrening(pendingClear);
-                    }
+                    --visibleCount;
                 }
+                if (skipCount == 0)
+                {
+                    // Prestani sa ocitavanjem ako je stigao StopRequest
+                    if (!_shouldStop && TryReadDolazakNaTrening(pendingClear))
+                    {
+                        skipCount = Options.Instance.CitacKarticaThreadSkipCount;
+                        visibleCount = Options.Instance.CitacKarticaThreadVisibleCount;
+                        pendingClear = true;
+                    }
+                    else if (visibleCount == 0)
+                    {
+                        // Zavrsi sa ReadLoop tek nakon sto je poslednje ocitavanje kompletiralo svoj interval na
+                        // displeju. citacKarticaForm.Clear() ce biti pozvan u UI threadu, u
+                        // UpdateTreningInstanceFromOptions() (imao sam problema kada sam pozivao u ReadLoop threadu).
+                        if (_shouldStop) break;
 
-                if (lastRead)
-                {
-                    // Prikazivanje treba da bude vidljivo tokom trajanja CitacKarticaThreadVisibleCount intervala.
-                    pendingClear = true;
-                    visibleCount = 1;
-                }
-                else if (pendingClear)
-                {
-                    ++visibleCount;
-                    if (visibleCount > Options.Instance.CitacKarticaThreadVisibleCount)
-                    {
-                        CitacKarticaForm citacKarticaForm = Form1.Instance.CitacKarticaForm;
-                        if (citacKarticaForm != null)
+                        if (pendingClear)
                         {
-                            citacKarticaForm.Clear();
+                            CitacKarticaForm citacKarticaForm = Form1.Instance.CitacKarticaForm;
+                            if (citacKarticaForm != null)
+                            {
+                                citacKarticaForm.Clear();
+                            }
+                            pendingClear = false;
                         }
-                        pendingClear = false;
                     }
                 }
+                // inace (ako je skipCount > 0) ne radimo nista jer znamo da je visibleCount > 0
 
-                Thread.Sleep(Options.Instance.CitacKarticaThreadInterval);
+                Thread.Sleep(TimeSpan.FromMilliseconds(Options.Instance.CitacKarticaThreadInterval));
             }
+            running = false;
         }
 
         private bool TryReadDolazakNaTrening(bool obrisiPrePrikazivanja)

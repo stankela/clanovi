@@ -10,7 +10,7 @@ namespace Soko
 
         private int comPort;
 
-        public override void SetComPort(int comPort)
+        public void SetComPort(int comPort)
         {
             this.comPort = comPort;
         }

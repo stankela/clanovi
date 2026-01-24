@@ -29,6 +29,8 @@ namespace Soko.UI
         const string FontSizeRegKey = "FontSize";
         const string StampacPotvrdaRegKey = "StampacPotvrda";
         const string StampacIzvestajRegKey = "StampacIzvestaj";
+        const string CitacKarticaUplateRegKey = "CitacKarticaUplate";
+        const string CitacKarticaTreningRegKey = "CitacKarticaTrening";
         const string COMPortReaderRegKey = "COMPortReader";
         const string COMPortWriterRegKey = "COMPortWriter";
         const string PoslednjiDanZaUplateRegKey = "PoslednjiDanZaUplate";
@@ -98,6 +100,10 @@ namespace Soko.UI
                     Options.Instance.PrinterNamePotvrda = (string)regkey.GetValue(StampacPotvrdaRegKey);
                 if (regkey.GetValue(StampacIzvestajRegKey) != null)
                     Options.Instance.PrinterNameIzvestaj = (string)regkey.GetValue(StampacIzvestajRegKey);
+                if (regkey.GetValue(CitacKarticaUplateRegKey) != null)
+                    Options.Instance.CitacKarticaUplate = int.Parse((string)regkey.GetValue(CitacKarticaUplateRegKey));
+                if (regkey.GetValue(CitacKarticaTreningRegKey) != null)
+                    Options.Instance.CitacKarticaTrening = int.Parse((string)regkey.GetValue(CitacKarticaTreningRegKey));
                 if (regkey.GetValue(COMPortReaderRegKey) != null)
                     Options.Instance.COMPortReader = int.Parse((string)regkey.GetValue(COMPortReaderRegKey));
                 if (regkey.GetValue(COMPortWriterRegKey) != null)
@@ -126,14 +132,8 @@ namespace Soko.UI
                     Options.Instance.LogToFile = bool.Parse((string)regkey.GetValue(LogToFileRegKey));
                 if (regkey.GetValue(TraziLozinkuPreOtvaranjaProzoraRegKey) != null)
                     Options.Instance.TraziLozinkuPreOtvaranjaProzora = bool.Parse((string)regkey.GetValue(TraziLozinkuPreOtvaranjaProzoraRegKey));
-                if (regkey.GetValue(CitacKarticaThreadIntervalRegKey) != null)
-                    Options.Instance.CitacKarticaThreadInterval = int.Parse((string)regkey.GetValue(CitacKarticaThreadIntervalRegKey));
-                if (regkey.GetValue(CitacKarticaThreadSkipCountRegKey) != null)
-                    Options.Instance.CitacKarticaThreadSkipCount = int.Parse((string)regkey.GetValue(CitacKarticaThreadSkipCountRegKey));
-                if (regkey.GetValue(CitacKarticaThreadVisibleCountRegKey) != null)
-                    Options.Instance.CitacKarticaThreadVisibleCount = int.Parse((string)regkey.GetValue(CitacKarticaThreadVisibleCountRegKey));
-                if (regkey.GetValue(CitacKarticaThreadPauzaZaBrisanjeRegKey) != null)
-                    Options.Instance.CitacKarticaThreadPauzaZaBrisanje = int.Parse((string)regkey.GetValue(CitacKarticaThreadPauzaZaBrisanjeRegKey));
+                //if (regkey.GetValue(CitacKarticaThreadVisibleCountRegKey) != null)
+                    //Options.Instance.CitacKarticaThreadVisibleCount = int.Parse((string)regkey.GetValue(CitacKarticaThreadVisibleCountRegKey));
                 if (regkey.GetValue(NedostajuceUplateStartDateRegKey) != null)
                     Options.Instance.NedostajuceUplateStartDate = DateTime.Parse((string)regkey.GetValue(NedostajuceUplateStartDateRegKey));
                 regkey.Close();
@@ -159,6 +159,8 @@ namespace Soko.UI
                 stampacIzvestaj = Options.Instance.PrinterNameIzvestaj;
             regkey.SetValue(StampacIzvestajRegKey, stampacIzvestaj);
 
+            regkey.SetValue(CitacKarticaUplateRegKey, Options.Instance.CitacKarticaUplate.ToString());
+            regkey.SetValue(CitacKarticaTreningRegKey, Options.Instance.CitacKarticaTrening.ToString());
             regkey.SetValue(COMPortReaderRegKey, Options.Instance.COMPortReader.ToString());
             regkey.SetValue(COMPortWriterRegKey, Options.Instance.COMPortWriter.ToString());
             regkey.SetValue(PoslednjiDanZaUplateRegKey, Options.Instance.PoslednjiDanZaUplate.ToString());
@@ -173,10 +175,7 @@ namespace Soko.UI
             regkey.SetValue(LozinkaTimerMinutiRegKey, Options.Instance.LozinkaTimerMinuti.ToString());
             regkey.SetValue(LogToFileRegKey, Options.Instance.LogToFile.ToString());
             regkey.SetValue(TraziLozinkuPreOtvaranjaProzoraRegKey, Options.Instance.TraziLozinkuPreOtvaranjaProzora.ToString());
-            regkey.SetValue(CitacKarticaThreadIntervalRegKey, Options.Instance.CitacKarticaThreadInterval.ToString());
-            regkey.SetValue(CitacKarticaThreadSkipCountRegKey, Options.Instance.CitacKarticaThreadSkipCount.ToString());
-            regkey.SetValue(CitacKarticaThreadVisibleCountRegKey, Options.Instance.CitacKarticaThreadVisibleCount.ToString());
-            regkey.SetValue(CitacKarticaThreadPauzaZaBrisanjeRegKey, Options.Instance.CitacKarticaThreadPauzaZaBrisanje.ToString());
+            //regkey.SetValue(CitacKarticaThreadVisibleCountRegKey, Options.Instance.CitacKarticaThreadVisibleCount.ToString());
             regkey.SetValue(NedostajuceUplateStartDateRegKey, Options.Instance.NedostajuceUplateStartDate.ToString("dd-MM-yyyy"));
       
             regkey.Close();
@@ -1233,6 +1232,11 @@ namespace Soko.UI
             CitacKarticaForm citacKarticaForm = new CitacKarticaForm();
             citacKarticaForm.Show();
 
+            pokreniCitacKarticaThread();
+        }
+
+        public void pokreniCitacKarticaThread()
+        {
             Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.TreningInstance.ReadLoop));
             citacKarticaThread.Start();
         }
@@ -1314,6 +1318,8 @@ namespace Soko.UI
                         }
                         else if (temp.ToUpper().StartsWith("CitacKarticaOpcije".ToUpper()))
                         {
+                            string CitacKarticaUplate = String.Empty;
+                            string CitacKarticaTrening = String.Empty;
                             string COMPortReader = String.Empty;
                             string COMPortWriter = String.Empty;
                             string PoslednjiDanZaUplate = String.Empty;
@@ -1328,7 +1334,15 @@ namespace Soko.UI
                             string[] parts = temp.Split(' ');
                             for (int i = 1; i < parts.Length; i = i + 2)
                             {
-                                if (parts[i].ToUpper() == "COMPortReader".ToUpper())
+                                if (parts[i].ToUpper() == "CitacKarticaUplate".ToUpper())
+                                {
+                                    CitacKarticaUplate = parts[i + 1];
+                                }
+                                else if (parts[i].ToUpper() == "CitacKarticaTrening".ToUpper())
+                                {
+                                    CitacKarticaTrening = parts[i + 1];
+                                }
+                                else if (parts[i].ToUpper() == "COMPortReader".ToUpper())
                                 {
                                     COMPortReader = parts[i + 1];
                                 }
@@ -1370,6 +1384,8 @@ namespace Soko.UI
                                 }
                             }
 
+                            Options.Instance.CitacKarticaUplate = int.Parse(CitacKarticaUplate);
+                            Options.Instance.CitacKarticaTrening = int.Parse(CitacKarticaTrening);
                             Options.Instance.COMPortReader = int.Parse(COMPortReader);
                             Options.Instance.COMPortWriter = int.Parse(COMPortWriter);
                             Options.Instance.PoslednjiDanZaUplate = int.Parse(PoslednjiDanZaUplate);
@@ -1381,8 +1397,8 @@ namespace Soko.UI
                             Options.Instance.SirinaDispleja = int.Parse(SirinaDispleja);
                             Options.Instance.VisinaDispleja = int.Parse(VisinaDispleja);
 
-                            CitacKartica.TreningInstance.SetComPort(Options.Instance.COMPortReader);
-                            CitacKartica.UplateInstance.SetComPort(Options.Instance.COMPortWriter);
+                            CitacKartica.UpdateUplateInstanceFromOptions();
+                            CitacKartica.UpdateTreningInstanceFromOptions();
                         }
                         else if (temp.ToUpper().StartsWith("EXIT"))
                         {

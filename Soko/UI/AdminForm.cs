@@ -20,10 +20,6 @@ namespace Soko.UI
             txtBrojPonavljanja.Text = Options.Instance.BrojPokusajaCitacKartica.ToString();
             ckbLogToFile.Checked = Options.Instance.LogToFile;
             ckbTraziLozinkuPreOtvaranjaProzora.Checked = Options.Instance.TraziLozinkuPreOtvaranjaProzora;
-            txtCitacKarticaThreadInterval.Text = Options.Instance.CitacKarticaThreadInterval.ToString();
-            txtCitacKarticaThreadSkipCount.Text = Options.Instance.CitacKarticaThreadSkipCount.ToString();
-            txtCitacKarticaThreadVisibleCount.Text = Options.Instance.CitacKarticaThreadVisibleCount.ToString();
-            txtCitacKarticaThreadPauzaZaBrisanje.Text = Options.Instance.CitacKarticaThreadPauzaZaBrisanje.ToString();
             txtWritePraznaDataCard.Text = Options.Instance.WritePraznaDataCard.ToString();
 
             lstLogFiles.SelectionMode = SelectionMode.MultiExtended;
@@ -100,42 +96,6 @@ namespace Soko.UI
         private void ckbTraziLozinkuPreOtvaranjaProzora_CheckedChanged(object sender, EventArgs e)
         {
             Options.Instance.TraziLozinkuPreOtvaranjaProzora = ckbTraziLozinkuPreOtvaranjaProzora.Checked;
-        }
-
-        private void btnPromeniCitacKarticaThreadInterval_Click(object sender, EventArgs e)
-        {
-            int newValue;
-            if (int.TryParse(txtCitacKarticaThreadInterval.Text, out newValue))
-            {
-                Options.Instance.CitacKarticaThreadInterval = newValue;
-            }
-        }
-
-        private void btnPromeniCitacKarticaThreadSkipCount_Click(object sender, EventArgs e)
-        {
-            int newValue;
-            if (int.TryParse(txtCitacKarticaThreadSkipCount.Text, out newValue))
-            {
-                Options.Instance.CitacKarticaThreadSkipCount = newValue;
-            }
-        }
-
-        private void btnPromeniCitacKarticaThreadVisibleCount_Click(object sender, EventArgs e)
-        {
-            int newValue;
-            if (int.TryParse(txtCitacKarticaThreadVisibleCount.Text, out newValue))
-            {
-                Options.Instance.CitacKarticaThreadVisibleCount = newValue;
-            }
-        }
-
-        private void btnPromeniCitacKarticaThreadPauzaZaBrisanje_Click(object sender, EventArgs e)
-        {
-            int newValue;
-            if (int.TryParse(txtCitacKarticaThreadPauzaZaBrisanje.Text, out newValue))
-            {
-                Options.Instance.CitacKarticaThreadPauzaZaBrisanje = newValue;
-            }
         }
 
         private void btnWritePraznaDataCard_Click(object sender, EventArgs e)

@@ -12,7 +12,11 @@ namespace Soko
         public R10ACitacKartica()
         {
             Form1.Instance.CitacKarticaForm.GetRawInput().KeyPressed += OnKeyPressed;
-            // TODO4: Potrebno je negde odraditi GetRawInput().KeyPressed -= OnKeyPressed;
+        }
+
+        public override void Cleanup()
+        {
+            Form1.Instance.CitacKarticaForm.GetRawInput().KeyPressed -= OnKeyPressed;
         }
 
         class KeyEvent
@@ -153,19 +157,42 @@ namespace Soko
             return vKeyName[1];
         }
 
+        private Int64 getBigEndianEquivalent(string serijskiBroj)
+        {
+            string hex = Int64.Parse(serijskiBroj).ToString("X");
+            if (hex.Length < 8)
+            {
+                for (int i = 0; i < 8 - hex.Length; ++i)
+                {
+                    hex = "0" + hex;
+                }
+            }
+
+            // Reverse the byte order by processing pairs in reverse and prepending them
+            string reverseHex = "";
+            for (int i = 0; i < hex.Length; i += 2)
+            {
+                reverseHex = hex.Substring(i, 2) + reverseHex;
+            }
+
+            return Convert.ToInt64(reverseHex, 16);
+        }
+
         public override bool tryReadCard(out int broj, out string serijskiBroj)
         {
             broj = -1;
+            if (!concurrentQueue.TryDequeue(out serijskiBroj))
+            {
+                return false;
+            }
+
             // Decimalni broj koji se ocitava sa R10A citaca je dobijen little-endian converzijom hexadecimalnog
             // stringa za serijski broj koji se nalazi na kartici. Npr ako se na kartici nalazi string DD3C0D2B,
             // (DD je na indeksu 0), R10A ce ocitati 722287837 decimalno. Panonit i OMNIKEY citaci tretiraju
             // string kao big endian (DD je most significant bajt u broju), i konvertovace ga u 3711700267, i tako
             // smestiti u bazu podataka.
-            if (!concurrentQueue.TryDequeue(out serijskiBroj))
-            {
-                return false;
-            }
-            Int64 serijskiBrojKartice = Int64.Parse(serijskiBroj);
+            Int64 serijskiBrojKartice = getBigEndianEquivalent(serijskiBroj);
+
             Clan clan = CitacKarticaDictionary.Instance.findClanBySerijskiBrojKartice(serijskiBrojKartice);
             if (clan != null)
             {
