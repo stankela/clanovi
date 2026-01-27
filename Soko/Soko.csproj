@@ -617,6 +617,7 @@
     <None Include="RawInput\Values for keyboard make-break %28scan%29 code.pdf" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="UPUTSTVO_ZA_CITAC_KARTICA.txt" />
     <EmbeddedResource Include="Data\NHibernate\Mappings\FinansijskaCelina.hbm.xml" />
     <EmbeddedResource Include="Data\NHibernate\Mappings\DolazakNaTreningMesecni.hbm.xml">
       <SubType>Designer</SubType>
@@ -627,7 +628,6 @@
     <EmbeddedResource Include="Update\DatabaseUpdate_version2.txt" />
     <EmbeddedResource Include="Update\DatabaseUpdate_version4.txt" />
     <EmbeddedResource Include="Update\DatabaseUpdate_version0.txt" />
-    <Content Include="UPUTSTVO_ZA_DVA_PROGRAMA.txt" />
     <EmbeddedResource Include="Data\NHibernate\Mappings\Mesto.hbm.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>

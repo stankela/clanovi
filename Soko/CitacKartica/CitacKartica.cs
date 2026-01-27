@@ -17,7 +17,6 @@ namespace Soko
     public abstract class CitacKartica
     {
         protected Object readAndWriteLock = new Object();
-        protected static Object createLock = new Object();
 
         public enum TipKartice
         {
@@ -43,14 +42,13 @@ namespace Soko
         {
             get
             {
-                lock (createLock)
+                // Ne koristim lock zato sto je u C# citanje i pisanje reference variabli thread-safe (videti
+                // komentar u CitacKartica.ReadLoop())
+                if (treningInstance == null)
                 {
-                    if (treningInstance == null)
-                    {
-                        InitTreningInstanceFromOptions();
-                    }
-                    return treningInstance;
+                    InitTreningInstanceFromOptions();
                 }
+                return treningInstance;
             }
         }
 
@@ -59,14 +57,11 @@ namespace Soko
         {
             get
             {
-                lock (createLock)
+                if (uplateInstance == null)
                 {
-                    if (uplateInstance == null)
-                    {
-                        InitUplateInstanceFromOptions();
-                    }
-                    return uplateInstance;
+                    InitUplateInstanceFromOptions();
                 }
+                return uplateInstance;
             }
         }
 
@@ -95,6 +90,7 @@ namespace Soko
         {
             StopTreningInstance();
 
+            // Obrisi zadnje prikazivanje
             CitacKarticaForm citacKarticaForm = Form1.Instance.CitacKarticaForm;
             if (citacKarticaForm != null)
             {
@@ -102,7 +98,6 @@ namespace Soko
             }
 
             InitTreningInstanceFromOptions();
-
             Form1.Instance.pokreniCitacKarticaThread();
         }
 
@@ -125,22 +120,18 @@ namespace Soko
 
         private static void StopTreningInstance()
         {
-            lock (createLock)
+            if (treningInstance != null)
             {
-                if (treningInstance != null)
+                treningInstance.RequestStop();
+                while (treningInstance.IsRunning())
                 {
-                    treningInstance.RequestStop();
-                    while (treningInstance.IsRunning())
-                    {
-                        Thread.Sleep(500);
-                    }
-                    treningInstance.Cleanup();
+                    Thread.Sleep(250);
                 }
-                treningInstance = null;
+                treningInstance.Cleanup();
             }
+            treningInstance = null;
         }
 
-        // TODO4: Ovo bi trebalo pomocu Dispose
         public virtual void Cleanup()
         {
         }
@@ -413,7 +404,9 @@ namespace Soko
 
         public void ReadLoop()
         {
-            // TODO4: Proveri da li je sve u ovom metodu thread safe.
+            // Nije potreban lock za "running = true", zato sto je u C# citanje i pisanje sledecih tipova atomic:
+            // bool, char, byte, sbyte, short, ushort, uint, int, float, i reference tipovi.
+            // Isto vazi i za citanje/pisanje _shouldStop.
             running = true;
 
             // Koliko dugo treba da bude vidljivo ocitavanje

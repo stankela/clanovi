@@ -1054,11 +1054,13 @@ namespace Soko.UI
                 {
                     new SqlCeUtilities().CreateDatabase(ConfigurationParameters.DatabaseFile,
                         ConfigurationParameters.Password);
-                    // Update broj verzije baze
+
+                    // Update broj verzije baze na poslednju verziju. Najpre dodajemo novi row u praznu tabelu
+                    // verzija_baze (i postavljamo verziju na 0), a zatim apdejtujemo verziju baze da bude
+                    // Program.VERZIJA_PROGRAMA. To znaci da kada nakon ovoga pozovemo new VersionUpdater().update(),
+                    // nikakav apdejt baze vise nece biti radjen.
                     SqlCeUtilities.ExecuteScript(ConfigurationParameters.DatabaseFile, ConfigurationParameters.Password,
                         "Soko.Update.DatabaseUpdate_version0.txt", true);
-                    // TODO4: Da li ovde treba da se prosledi 0 ili 1 umesto Program.VERZIJA_PROGRAMA?
-                    // Preostali apdejti ce se izvrsiti dole u new VersionUpdater().update()
                     SqlCeUtilities.updateDatabaseVersionNumber(Program.VERZIJA_PROGRAMA);
 
                     MessageDialogs.showMessage("Kreirana nova prazna baza podataka.", programName);
@@ -1095,10 +1097,13 @@ namespace Soko.UI
 
             initlozinkaTimer();
 
+            CitacKartica.UpdateUplateInstanceFromOptions();
             if (Options.Instance.PokreniCitacKartica)
             {
                 initCitacKarticaDictionary();
-                pokreniCitacKartica();
+                prikaziCitacKarticaDisplej();
+                CitacKartica.UpdateTreningInstanceFromOptions();
+                pokreniCitacKarticaThread();
             }
         }
 
@@ -1129,12 +1134,10 @@ namespace Soko.UI
             }
         }
 
-        public void pokreniCitacKartica()
+        public void prikaziCitacKarticaDisplej()
         {
             CitacKarticaForm citacKarticaForm = new CitacKarticaForm();
             citacKarticaForm.Show();
-
-            pokreniCitacKarticaThread();
         }
 
         public void pokreniCitacKarticaThread()
