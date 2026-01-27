@@ -1,15 +1,11 @@
 ﻿using Bilten.Dao;
 using Bilten.Dao.NHibernate;
 using NHibernate;
-using NHibernate.Context;
 using Soko.Data;
 using Soko.Domain;
-using Soko.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Soko.Misc
 {
@@ -106,14 +102,7 @@ namespace Soko.Misc
 
         public void OnOcitavanjeKartice(int brojKartice, DateTime vremeOcitavanja)
         {
-            if (Options.Instance.JedinstvenProgram)
-            {
-                ocitavanja.Add(new Ocitavanje(brojKartice, vremeOcitavanja));
-            }
-            else if (!Options.Instance.IsProgramZaClanarinu)
-            { 
-                // TODO3
-            }
+            ocitavanja.Add(new Ocitavanje(brojKartice, vremeOcitavanja));
         }
 
         private void createLogStreamWriter()

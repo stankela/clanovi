@@ -7,9 +7,6 @@ using Soko.Domain;
 using Soko.UI;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Soko.Misc
 {
@@ -33,10 +30,6 @@ namespace Soko.Misc
         {
             get { return danasnjaOcitavanja; }
         }
-
-        public const string DODAJ_CLANA = "DodajClana";
-        public const string DODAJ_UPLATE = "DodajUplate";
-        public const string UPDATE_NEPLACA_CLANARINU = "UpdateNeplacaClanarinu";
 
         private static CitacKarticaDictionary instance;
         public static CitacKarticaDictionary Instance
@@ -257,84 +250,57 @@ namespace Soko.Misc
 
         public void DodajClanaSaKarticom(Clan clan)
         {
-            if (Options.Instance.JedinstvenProgram || !Options.Instance.IsProgramZaClanarinu)
+            if (!clanoviSaKarticom.ContainsKey(clan.BrojKartice.Value))
             {
-                if (!clanoviSaKarticom.ContainsKey(clan.BrojKartice.Value))
+                clanoviSaKarticom.Add(clan.BrojKartice.Value, clan);
+                if (cuvajSerijskeBrojeve)
                 {
-                    clanoviSaKarticom.Add(clan.BrojKartice.Value, clan);
-                    if (cuvajSerijskeBrojeve)
+                    if (clanoviSaKarticomSerijskiBroj.ContainsKey(clan.SerijskiBrojKartice.Value))
                     {
-                        if (clanoviSaKarticomSerijskiBroj.ContainsKey(clan.SerijskiBrojKartice.Value))
-                        {
-                            // Ovo se desava kada napravimo karticu za novog clana tako sto prebrisemo karticu nekog
-                            // postojeceg clana. 
-                            clanoviSaKarticomSerijskiBroj.Remove(clan.SerijskiBrojKartice.Value);
-                        }
-                        clanoviSaKarticomSerijskiBroj.Add(clan.SerijskiBrojKartice.Value, clan);
+                        // Ovo se desava kada napravimo karticu za novog clana tako sto prebrisemo karticu nekog
+                        // postojeceg clana. 
+                        clanoviSaKarticomSerijskiBroj.Remove(clan.SerijskiBrojKartice.Value);
                     }
+                    clanoviSaKarticomSerijskiBroj.Add(clan.SerijskiBrojKartice.Value, clan);
                 }
-            }
-            else
-            {
-                Form1.Instance.sendToPipeClient(DODAJ_CLANA + " " + clan.Id);
             }
         }
 
         public void DodajUplate(IList<UplataClanarine> uplate)
         {
-            if (Options.Instance.JedinstvenProgram || !Options.Instance.IsProgramZaClanarinu)
+            DateTime sledeciMesec = DateTime.Now.AddMonths(1);
+            foreach (UplataClanarine u in uplate)
             {
-                DateTime sledeciMesec = DateTime.Now.AddMonths(1);
-                foreach (UplataClanarine u in uplate)
-                {
 
-                    if (u.Grupa.ImaGodisnjuClanarinu && u.VaziOd.Value.Year == DateTime.Now.Year)
+                if (u.Grupa.ImaGodisnjuClanarinu && u.VaziOd.Value.Year == DateTime.Now.Year)
+                {
+                    if (!uplateGodisnjaClanarina.ContainsKey(u.Clan.Id))
                     {
-                        if (!uplateGodisnjaClanarina.ContainsKey(u.Clan.Id))
-                        {
-                            uplateGodisnjaClanarina.Add(u.Clan.Id, u);
-                        }
+                        uplateGodisnjaClanarina.Add(u.Clan.Id, u);
+                    }
+                }
+                else
+                {
+                    if (prethodneUplate.ContainsKey(u.Clan.Id))
+                    {
+                        prethodneUplate[u.Clan.Id].Add(u);
                     }
                     else
                     {
-                        if (prethodneUplate.ContainsKey(u.Clan.Id))
-                        {
-                            prethodneUplate[u.Clan.Id].Add(u);
-                        }
-                        else
-                        {
-                            List<UplataClanarine> uplate2 = new List<UplataClanarine>();
-                            uplate2.Add(u);
-                            prethodneUplate.Add(u.Clan.Id, uplate2);
-                        }
+                        List<UplataClanarine> uplate2 = new List<UplataClanarine>();
+                        uplate2.Add(u);
+                        prethodneUplate.Add(u.Clan.Id, uplate2);
                     }
                 }
-            }
-            else
-            {
-                string uplateStr = String.Empty;
-                foreach (UplataClanarine u in uplate)
-                {
-                    uplateStr += " " + u.Id.ToString();
-                }
-                Form1.Instance.sendToPipeClient(DODAJ_UPLATE + uplateStr);
             }
         }
 
         public void UpdateNeplacaClanarinu(int brojKartice, bool neplacaClanarinu)
         {
-            if (Options.Instance.JedinstvenProgram || !Options.Instance.IsProgramZaClanarinu)
+            Clan clan = findClan(brojKartice);
+            if (clan != null)
             {
-                Clan clan = findClan(brojKartice);
-                if (clan != null)
-                {
-                    clan.NeplacaClanarinu = neplacaClanarinu;
-                }
-            }
-            else
-            {
-                Form1.Instance.sendToPipeClient(UPDATE_NEPLACA_CLANARINU
-                    + " " + brojKartice.ToString() + " " + neplacaClanarinu.ToString());
+                clan.NeplacaClanarinu = neplacaClanarinu;
             }
         }
     }

@@ -1,12 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using Microsoft.Win32;
-using Soko.Exceptions;
 using Soko.Report;
 using Soko.Domain;
 using Soko.Data;
@@ -15,9 +11,7 @@ using NHibernate.Context;
 using Bilten.Dao;
 using Soko.Misc;
 using System.Threading;
-using System.IO.Pipes;
 using System.IO;
-using System.Diagnostics;
 using Bilten.Dao.NHibernate;
 using Iesi.Collections;
 
@@ -56,10 +50,6 @@ namespace Soko.UI
         private System.Timers.Timer citacKarticaDictionaryTimer;
         private bool passwordExpired;
         public static Form1 Instance;
-        public AnonymousPipeServerStream pipeServer;
-        private Process clientProcess;
-        public StreamWriter pipeServerStreamWriter;
-        private bool clientStarted;
 
         public Form1()
         {
@@ -199,32 +189,10 @@ namespace Soko.UI
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (Options.Instance.JedinstvenProgram)
-            {
-                zaustaviCitacKartica();
-                lozinkaTimer.Stop();
-                Sesija.Instance.EndSession();
-                saveOptions();
-            }
-            else if (Options.Instance.IsProgramZaClanarinu)
-            {
-                lozinkaTimer.Stop();
-                Sesija.Instance.EndSession();
-                saveOptions();
-
-                sendToPipeClient("Exit");
-
-                clientProcess.Close();
-                if (pipeServerStreamWriter != null)
-                    ((IDisposable)pipeServerStreamWriter).Dispose();
-                if (pipeServer != null)
-                    ((IDisposable)pipeServer).Dispose();
-            }
-            else
-            {
-                // Stavljeno u ApplicationExit zato sto se iz nekog razloga FormClosed ne poziva za ovaj slucaj
-            }
-
+            zaustaviCitacKartica();
+            lozinkaTimer.Stop();
+            Sesija.Instance.EndSession();
+            saveOptions();
             NHibernateHelper.Instance.SessionFactory.Close();
         }
 
@@ -1077,126 +1045,60 @@ namespace Soko.UI
             // TODO3: Probaj da ucitavanje opcija i apdejt baze prebacis u klasu Program.
             loadOptions();
 
-            if (Options.Instance.JedinstvenProgram || Options.Instance.IsProgramZaClanarinu)
+            if (!File.Exists(ConfigurationParameters.DatabaseFile))
             {
-                if (!File.Exists(ConfigurationParameters.DatabaseFile))
+                string programName = "Program za clanarinu";
+                if (MessageDialogs.queryConfirmation("Ne postoji baza podataka '"
+                    + ConfigurationParameters.DatabaseFile + "'. Da li zelite da kreirate novu praznu bazu "
+                    + "podataka?", programName))
                 {
-                    string programName = "Program za clanarinu";
-                    if (MessageDialogs.queryConfirmation("Ne postoji baza podataka '"
-                        + ConfigurationParameters.DatabaseFile + "'. Da li zelite da kreirate novu praznu bazu "
-                        + "podataka?", programName))
-                    {
-                        new SqlCeUtilities().CreateDatabase(ConfigurationParameters.DatabaseFile,
-                            ConfigurationParameters.Password);
-                        // Update broj verzije baze
-                        SqlCeUtilities.ExecuteScript(ConfigurationParameters.DatabaseFile, ConfigurationParameters.Password,
-                            "Soko.Update.DatabaseUpdate_version0.txt", true);
-                        // TODO4: Da li ovde treba da se prosledi 0 ili 1 umesto Program.VERZIJA_PROGRAMA?
-                        // Preostali apdejti ce se izvrsiti dole u new VersionUpdater().update()
-                        SqlCeUtilities.updateDatabaseVersionNumber(Program.VERZIJA_PROGRAMA);
+                    new SqlCeUtilities().CreateDatabase(ConfigurationParameters.DatabaseFile,
+                        ConfigurationParameters.Password);
+                    // Update broj verzije baze
+                    SqlCeUtilities.ExecuteScript(ConfigurationParameters.DatabaseFile, ConfigurationParameters.Password,
+                        "Soko.Update.DatabaseUpdate_version0.txt", true);
+                    // TODO4: Da li ovde treba da se prosledi 0 ili 1 umesto Program.VERZIJA_PROGRAMA?
+                    // Preostali apdejti ce se izvrsiti dole u new VersionUpdater().update()
+                    SqlCeUtilities.updateDatabaseVersionNumber(Program.VERZIJA_PROGRAMA);
 
-                        MessageDialogs.showMessage("Kreirana nova prazna baza podataka.", programName);
-                        if (File.Exists("NHibernateConfig"))
-                            File.Delete("NHibernateConfig");
-                    }
+                    MessageDialogs.showMessage("Kreirana nova prazna baza podataka.", programName);
+                    if (File.Exists("NHibernateConfig"))
+                        File.Delete("NHibernateConfig");
                 }
             }
-            
+
             // This creates singleton instance of NHibernateHelper and builds session factory
             NHibernateHelper nh = NHibernateHelper.Instance;
 
-            if (Options.Instance.JedinstvenProgram || Options.Instance.IsProgramZaClanarinu)
+            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Show();
+            try
             {
-                Cursor.Current = Cursors.WaitCursor;
-                Cursor.Show();
-                try
-                {
-                    new VersionUpdater().update();
-                }
-                catch (Exception ex)
-                {
-                    MessageDialogs.showError(ex.Message, this.Text);
-                    // TODO3: Prekini program.
-                }
-                finally
-                {
-                    Cursor.Hide();
-                    Cursor.Current = Cursors.Arrow;
-                }
+                new VersionUpdater().update();
+            }
+            catch (Exception ex)
+            {
+                MessageDialogs.showError(ex.Message, this.Text);
+                // TODO3: Prekini program.
+            }
+            finally
+            {
+                Cursor.Hide();
+                Cursor.Current = Cursors.Arrow;
             }
 
-            if (Options.Instance.JedinstvenProgram)
+            this.Text = "Uplata clanarine";
+            refreshAdminModeUI(Options.Instance.AdminMode);
+            //LocalizeUI();
+
+            Sesija.Instance.InitSession();
+
+            initlozinkaTimer();
+
+            if (Options.Instance.PokreniCitacKartica)
             {
-                this.Text = "Uplata clanarine";
-                refreshAdminModeUI(Options.Instance.AdminMode);
-                //LocalizeUI();
-
-                Sesija.Instance.InitSession();
-
-                initlozinkaTimer();
-
-                if (Options.Instance.PokreniCitacKartica)
-                {
-                    initCitacKarticaDictionary();
-                    pokreniCitacKartica();
-                }
-            }
-            else if (Options.Instance.IsProgramZaClanarinu)
-            {
-                this.Text = "Uplata clanarine";
-                refreshAdminModeUI(Options.Instance.AdminMode);
-                //LocalizeUI();
-
-                Sesija.Instance.InitSession();
-
-                initlozinkaTimer();
-
-                if (Options.Instance.PokreniCitacKartica)
-                {
-                    pipeServer = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
-                    clientProcess = new Process();
-                    clientProcess.StartInfo.FileName = Options.Instance.ClientPath;
-                    // Pass the client process a handle to the server.
-                    clientProcess.StartInfo.Arguments = pipeServer.GetClientHandleAsString();
-                    clientProcess.StartInfo.UseShellExecute = false;
-
-                    clientStarted = true;
-                    try
-                    {
-                        clientProcess.Start();
-                    }
-                    catch (Exception)
-                    {
-                        clientStarted = false;
-                        MessageDialogs.showMessage("GRESKA: Ne mogu da pokrenem citac kartica '" + Options.Instance.ClientPath + "'",
-                            Form1.Instance.Text);
-                    }
-                    pipeServer.DisposeLocalCopyOfClientHandle();
-
-                    if (clientStarted)
-                    {
-                        pipeServerStreamWriter = new StreamWriter(pipeServer);
-                    }
-                }
-            }
-            else
-            {
-                if (Options.Instance.PokreniCitacKartica)
-                {
-                    initCitacKarticaDictionary();
-                    pokreniCitacKartica();
-                    pokreniPipeClientThread();
-                }
-            }
-        }
-
-        private void Form1_Shown(object sender, EventArgs e)
-        {
-            if (!Options.Instance.JedinstvenProgram && !Options.Instance.IsProgramZaClanarinu)
-            {
-                // TODO3: Probaj da nadjes bolji nacin za sakrivanje Form1, zato sto se u ovom slucaju (tj. kada se
-                // Visible postavi na false) ipak Form1 prikaze za trenutak pre nego sto se sakrije.
-                this.Visible = false;
+                initCitacKarticaDictionary();
+                pokreniCitacKartica();
             }
         }
 
@@ -1239,174 +1141,6 @@ namespace Soko.UI
         {
             Thread citacKarticaThread = new Thread(new ThreadStart(CitacKartica.TreningInstance.ReadLoop));
             citacKarticaThread.Start();
-        }
-
-        private void pokreniPipeClientThread()
-        {
-            Thread pipeClientThread = new Thread(new ThreadStart(Form1.Instance.pipeClientWorker));
-            pipeClientThread.Start();
-        }
-
-        private void pipeClientWorker()
-        {
-            using (PipeStream pipeClient = new AnonymousPipeClientStream(PipeDirection.In, Options.Instance.PipeHandle))
-            {
-                using (StreamReader sr = new StreamReader(pipeClient))
-                {
-                    string temp;
-
-                    // Read the server data.
-                    while ((temp = sr.ReadLine()) != null)
-                    {
-                        if (temp.ToUpper().StartsWith(CitacKarticaDictionary.DODAJ_CLANA.ToUpper()))
-                        {
-                            try
-                            {
-                                using (ISession session = NHibernateHelper.Instance.OpenSession())
-                                using (session.BeginTransaction())
-                                {
-                                    CurrentSessionContext.Bind(session);
-
-                                    string[] parts = temp.Split(' ');
-                                    ClanDAO clanDAO = DAOFactoryFactory.DAOFactory.GetClanDAO();
-                                    Clan clan = clanDAO.FindById(int.Parse(parts[1]));
-                                    
-                                    CitacKarticaDictionary.Instance.DodajClanaSaKarticom(clan);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageDialogs.showError(ex.Message, this.Text);
-                            }
-                            finally
-                            {
-                                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
-                            }
-                        }
-                        else if (temp.ToUpper().StartsWith(CitacKarticaDictionary.DODAJ_UPLATE.ToUpper()))
-                        {
-                            try
-                            {
-                                using (ISession session = NHibernateHelper.Instance.OpenSession())
-                                using (session.BeginTransaction())
-                                {
-                                    CurrentSessionContext.Bind(session);
-
-                                    List<UplataClanarine> uplate = new List<UplataClanarine>();
-                                    string[] parts = temp.Split(' ');
-                                    UplataClanarineDAO uplataClanarineDAO = DAOFactoryFactory.DAOFactory.GetUplataClanarineDAO();
-                                    for (int i = 1; i < parts.Length; ++i)
-                                    {
-                                        uplate.Add(uplataClanarineDAO.FindById(int.Parse(parts[i])));
-                                    }
-                                    CitacKarticaDictionary.Instance.DodajUplate(uplate);
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageDialogs.showError(ex.Message, this.Text);
-                            }
-                            finally
-                            {
-                                CurrentSessionContext.Unbind(NHibernateHelper.Instance.SessionFactory);
-                            }
-                        }
-                        else if (temp.ToUpper().StartsWith(CitacKarticaDictionary.UPDATE_NEPLACA_CLANARINU.ToUpper()))
-                        {
-                            string[] parts = temp.Split(' ');
-                            CitacKarticaDictionary.Instance.UpdateNeplacaClanarinu(int.Parse(parts[1]), bool.Parse(parts[2]));
-                        }
-                        else if (temp.ToUpper().StartsWith("CitacKarticaOpcije".ToUpper()))
-                        {
-                            string CitacKarticaUplate = String.Empty;
-                            string CitacKarticaTrening = String.Empty;
-                            string COMPortReader = String.Empty;
-                            string COMPortWriter = String.Empty;
-                            string PoslednjiDanZaUplate = String.Empty;
-                            string PoslednjiMesecZaGodisnjeClanarine = String.Empty;
-                            string VelicinaSlovaZaCitacKartica = String.Empty;
-                            string PrikaziBojeKodOcitavanja = String.Empty;
-                            string PrikaziImeClanaKodOcitavanjaKartice = String.Empty;
-                            string PrikaziDisplejPrekoCelogEkrana = String.Empty;
-                            string SirinaDispleja = String.Empty;
-                            string VisinaDispleja = String.Empty;
-
-                            string[] parts = temp.Split(' ');
-                            for (int i = 1; i < parts.Length; i = i + 2)
-                            {
-                                if (parts[i].ToUpper() == "CitacKarticaUplate".ToUpper())
-                                {
-                                    CitacKarticaUplate = parts[i + 1];
-                                }
-                                else if (parts[i].ToUpper() == "CitacKarticaTrening".ToUpper())
-                                {
-                                    CitacKarticaTrening = parts[i + 1];
-                                }
-                                else if (parts[i].ToUpper() == "COMPortReader".ToUpper())
-                                {
-                                    COMPortReader = parts[i + 1];
-                                }
-                                else if (parts[i].ToUpper() == "COMPortWriter".ToUpper())
-                                {
-                                    COMPortWriter = parts[i + 1];
-                                }
-                                else if (parts[i].ToUpper() == "PoslednjiDanZaUplate".ToUpper())
-                                {
-                                    PoslednjiDanZaUplate = parts[i + 1];
-                                }
-                                else if (parts[i].ToUpper() == "PoslednjiMesecZaGodisnjeClanarine".ToUpper())
-                                {
-                                    PoslednjiMesecZaGodisnjeClanarine = parts[i + 1];
-                                }
-                                else if (parts[i].ToUpper() == "VelicinaSlovaZaCitacKartica".ToUpper())
-                                {
-                                    VelicinaSlovaZaCitacKartica = parts[i + 1];
-                                }
-                                else if (parts[i].ToUpper() == "PrikaziBojeKodOcitavanja".ToUpper())
-                                {
-                                    PrikaziBojeKodOcitavanja = parts[i + 1];
-                                }
-                                else if (parts[i].ToUpper() == "PrikaziImeClanaKodOcitavanjaKartice".ToUpper())
-                                {
-                                    PrikaziImeClanaKodOcitavanjaKartice = parts[i + 1];
-                                }
-                                else if (parts[i].ToUpper() == "PrikaziDisplejPrekoCelogEkrana".ToUpper())
-                                {
-                                    PrikaziDisplejPrekoCelogEkrana = parts[i + 1];
-                                }
-                                else if (parts[i].ToUpper() == "SirinaDispleja".ToUpper())
-                                {
-                                    SirinaDispleja = parts[i + 1];
-                                }
-                                else if (parts[i].ToUpper() == "VisinaDispleja".ToUpper())
-                                {
-                                    VisinaDispleja = parts[i + 1];
-                                }
-                            }
-
-                            Options.Instance.CitacKarticaUplate = int.Parse(CitacKarticaUplate);
-                            Options.Instance.CitacKarticaTrening = int.Parse(CitacKarticaTrening);
-                            Options.Instance.COMPortReader = int.Parse(COMPortReader);
-                            Options.Instance.COMPortWriter = int.Parse(COMPortWriter);
-                            Options.Instance.PoslednjiDanZaUplate = int.Parse(PoslednjiDanZaUplate);
-                            Options.Instance.PoslednjiMesecZaGodisnjeClanarine = int.Parse(PoslednjiMesecZaGodisnjeClanarine);
-                            Options.Instance.VelicinaSlovaZaCitacKartica = int.Parse(VelicinaSlovaZaCitacKartica);
-                            Options.Instance.PrikaziBojeKodOcitavanja = bool.Parse(PrikaziBojeKodOcitavanja);
-                            Options.Instance.PrikaziImeClanaKodOcitavanjaKartice = bool.Parse(PrikaziImeClanaKodOcitavanjaKartice);
-                            Options.Instance.PrikaziDisplejPrekoCelogEkrana = bool.Parse(PrikaziDisplejPrekoCelogEkrana);
-                            Options.Instance.SirinaDispleja = int.Parse(SirinaDispleja);
-                            Options.Instance.VisinaDispleja = int.Parse(VisinaDispleja);
-
-                            CitacKartica.UpdateUplateInstanceFromOptions();
-                            CitacKartica.UpdateTreningInstanceFromOptions();
-                        }
-                        else if (temp.ToUpper().StartsWith("EXIT"))
-                        {
-                            Application.Exit();
-                        }
-                    }
-                }
-            }
         }
 
         // TODO3: Razmisli da li treba biranje fin. celine i za 3 izvestaja vezana za evidenciju na treningu.
@@ -1484,12 +1218,6 @@ namespace Soko.UI
 
         private void mnSimulatorCitacaKartica_Click(object sender, EventArgs e)
         {
-            if (!Options.Instance.JedinstvenProgram)
-            {
-                MessageBox.Show("Simulator citaca kartica radi samo kada citac nije poseban program.\n" +
-                    "Postavite JedinstvenProgram na true u fajlu Options.txt");
-                return;
-            }
             SimulatorCitacaKarticaForm f = new SimulatorCitacaKarticaForm();
             f.ShowDialog();
         }
@@ -1720,23 +1448,6 @@ namespace Soko.UI
                 {
                     lozinkaTimer.Interval = Options.Instance.LozinkaTimerMinuti * 60 * 1000;
                 }
-            }
-        }
-
-        public void sendToPipeClient(string msg)
-        {
-            try
-            {
-                if (pipeServerStreamWriter != null)
-                {
-                    pipeServerStreamWriter.AutoFlush = true;
-                    pipeServerStreamWriter.WriteLine(msg);
-                }
-            }
-            catch (Exception ex)
-            {
-                // Exception is raised if the pipe is broken  or disconnected.
-                MessageDialogs.showMessage(ex.Message, Form1.Instance.Text);
             }
         }
 

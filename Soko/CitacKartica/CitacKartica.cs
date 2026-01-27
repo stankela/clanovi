@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Drawing;
 using NHibernate;
 using Soko.Data;
-using NHibernate.Context;
 using Bilten.Dao;
 using Soko.Domain;
 using Soko.UI;
@@ -17,13 +11,6 @@ using System.Diagnostics;
 using Soko.Exceptions;
 using Bilten.Dao.NHibernate;
 using RFID.NativeInterface;
-using RFID.Utils;
-using RawInput_dll;
-using System.Collections.Concurrent;
-using HidGlobal.OK.Readers;
-using HidGlobal.OK.Readers.Components;
-using HidGlobal.OK.Readers.AViatoR.Components;
-using HidGlobal.OK.SampleCodes.Utilities;
 
 namespace Soko
 {
@@ -174,14 +161,7 @@ namespace Soko
             }
 
             ulong retval;
-            if (Options.Instance.JedinstvenProgram)
-            {
-                lock (readAndWriteLock)
-                {
-                    retval = ReadDataCard(out sID, out name, out serijskiBroj);
-                }
-            }
-            else
+            lock (readAndWriteLock)
             {
                 retval = ReadDataCard(out sID, out name, out serijskiBroj);
             }
@@ -247,14 +227,7 @@ namespace Soko
             }
 
             ulong retval;
-            if (Options.Instance.JedinstvenProgram)
-            {
-                lock (readAndWriteLock)
-                {
-                    retval = WriteDataCard(sID, sName, out serialCardNo);
-                }
-            }
-            else
+            lock (readAndWriteLock)
             {
                 retval = WriteDataCard(sID, sName, out serialCardNo);
             }
@@ -280,14 +253,7 @@ namespace Soko
             broj = -1;
 
             ulong retval;
-            if (Options.Instance.JedinstvenProgram)
-            {
-                lock (readAndWriteLock)
-                {
-                    retval = ReadDataCard(out sID, out name, out serijskiBroj);
-                }
-            }
-            else
+            lock (readAndWriteLock)
             {
                 retval = ReadDataCard(out sID, out name, out serijskiBroj);
             }

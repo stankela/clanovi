@@ -1,6 +1,5 @@
 using System;
 using System.Drawing;
-using System.IO;
 
 namespace Soko
 {
@@ -214,34 +213,6 @@ namespace Soko
         {
             get { return citacKarticaThreadPauzaZaBrisanje; }
             set { citacKarticaThreadPauzaZaBrisanje = value; }
-        }
-
-        private bool jedinstvenProgram = true;
-        public bool JedinstvenProgram
-        {
-            get { return jedinstvenProgram; }
-            set { jedinstvenProgram = value; }
-        }
-
-        private bool isProgramZaClanarinu = true;
-        public bool IsProgramZaClanarinu
-        {
-            get { return isProgramZaClanarinu; }
-            set { isProgramZaClanarinu = value; }
-        }
-
-        private string clientPath = @"..\CitacKartica\CitacKartica.exe";
-        public string ClientPath
-        {
-            get { return clientPath; }
-            set { clientPath = value; }
-        }
-
-        private string pipeHandle;
-        public string PipeHandle
-        {
-            get { return pipeHandle; }
-            set { pipeHandle = value; }
         }
 
         private DateTime nedostajuceUplateStartDate = new DateTime(2016, 9, 1, 0, 0, 0);

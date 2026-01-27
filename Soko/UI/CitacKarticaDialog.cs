@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using static Soko.CitacKartica;
 
@@ -152,24 +146,6 @@ namespace Soko.UI
             if (oldCitacTreningIndex != cmbCitacKarticaTrening.SelectedIndex)
             {
                 CitacKartica.UpdateTreningInstanceFromOptions();
-            }
-
-            if (!Options.Instance.JedinstvenProgram && Options.Instance.IsProgramZaClanarinu)
-            {
-                string msg = "CitacKarticaOpcije";
-                msg += " CitacKarticaUplate " + Options.Instance.CitacKarticaUplate.ToString();
-                msg += " CitacKarticaTrening " + Options.Instance.CitacKarticaTrening.ToString();
-                msg += " COMPortReader " + Options.Instance.COMPortReader.ToString();
-                msg += " COMPortWriter " + Options.Instance.COMPortWriter.ToString();
-                msg += " PoslednjiDanZaUplate " + Options.Instance.PoslednjiDanZaUplate.ToString();
-                msg += " PoslednjiMesecZaGodisnjeClanarine " + Options.Instance.PoslednjiMesecZaGodisnjeClanarine.ToString();
-                msg += " VelicinaSlovaZaCitacKartica " + Options.Instance.VelicinaSlovaZaCitacKartica.ToString();
-                msg += " PrikaziBojeKodOcitavanja " + Options.Instance.PrikaziBojeKodOcitavanja.ToString();
-                msg += " PrikaziImeClanaKodOcitavanjaKartice " + Options.Instance.PrikaziImeClanaKodOcitavanjaKartice.ToString();
-                msg += " PrikaziDisplejPrekoCelogEkrana " + Options.Instance.PrikaziDisplejPrekoCelogEkrana.ToString();
-                msg += " SirinaDispleja " + Options.Instance.SirinaDispleja.ToString();
-                msg += " VisinaDispleja " + Options.Instance.VisinaDispleja.ToString();
-                Form1.Instance.sendToPipeClient(msg);
             }
         }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using HidGlobal.OK.Readers;
 using HidGlobal.OK.Readers.AViatoR.Components;
 using HidGlobal.OK.Readers.Components;
