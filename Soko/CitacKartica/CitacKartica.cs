@@ -29,7 +29,8 @@ namespace Soko
         {
             Panonit,
             OMNIKEY5422,
-            R10A
+            R10A,
+            PCSC
         }
 
         public static TipCitaca[] GetTipoviCitaca()
@@ -83,6 +84,9 @@ namespace Soko
                     break;
                 case TipCitaca.R10A:
                     throw new Exception("Citac kartica R10A ne podrzava upisivanje na karticu");
+                case TipCitaca.PCSC:
+                    uplateInstance = new PcscCitacKartica();
+                    break;
             }
         }
 
@@ -114,6 +118,9 @@ namespace Soko
                     break;
                 case TipCitaca.R10A:
                     treningInstance = new R10ACitacKartica();
+                    break;
+                case TipCitaca.PCSC:
+                    treningInstance = new PcscCitacKartica();
                     break;
             }
         }

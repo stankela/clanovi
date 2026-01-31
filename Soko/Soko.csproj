@@ -71,6 +71,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libs\NHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="PCSC, Version=5.1.0.0, Culture=neutral, PublicKeyToken=13b76e54a2ee80a7, processorArchitecture=MSIL">
+      <HintPath>..\packages\PCSC.5.1.0\lib\net40\PCSC.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -89,6 +93,38 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CitacKartica\PanonitCitacKartica.cs" />
+    <Compile Include="CitacKartica\PcscCitacKartica.cs" />
+    <Compile Include="CitacKartica\pcsc\Mifare1kTest\GeneralAuthenticate.cs" />
+    <Compile Include="CitacKartica\pcsc\Mifare1kTest\KeyStructure.cs" />
+    <Compile Include="CitacKartica\pcsc\Mifare1kTest\KeyType.cs" />
+    <Compile Include="CitacKartica\pcsc\Mifare1kTest\MifareCard.cs" />
+    <Compile Include="CitacKartica\pcsc\pcsc-examples.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\Apdu.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\ClaHighPart.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\ClassByte.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\CommandApdu.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\ConstructGetResponse.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\ExtendedFileType.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\Extensions\ByteExt.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\Extensions\SCardErrorExt.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\FileDescriptor.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\FileShareMode.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\FileStructureInfo.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\FileStructureType.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\FileType.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\IIsoReader.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\InstructionByte.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\InstructionCode.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\InvalidApduException.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\IsoCase.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\IsoReader.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\RecordInfo.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\Response.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\ResponseApdu.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\ResponseApduEnumerator.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\SecureMessagingFormat.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\SW1Code.cs" />
+    <Compile Include="CitacKartica\pcsc\PCSC.Iso7816\TlvDataType.cs" />
     <Compile Include="CitacKartica\R10ACitacKartica.cs" />
     <Compile Include="Dao\ClanDAO.cs" />
     <Compile Include="Dao\DolazakNaTreningDAO.cs" />
@@ -479,6 +515,7 @@
     </Compile>
     <None Include="App.config" />
     <EmbeddedResource Include="create_all_objects.sqlce" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
